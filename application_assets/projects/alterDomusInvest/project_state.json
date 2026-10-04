@@ -1,0 +1,16 @@
+{
+  "project": "alterDomusInvest",
+  "schema_version": "1.0",
+  "last_updated": "2026-09-24T00:00:00.000000+00:00",
+  "last_run_id": null,
+  "discovery": {
+    "dom_fingerprint": "",
+    "brd_fingerprint": "",
+    "last_discovered": null,
+    "cached_output": null
+  },
+  "test_cases": [],
+  "run_history": [],
+  "gaps": [],
+  "new_additions": []
+}

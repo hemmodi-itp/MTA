@@ -1,0 +1,504 @@
+{
+  "project": "sauceLabs",
+  "total_scenarios": 13,
+  "scenarios": [
+    {
+      "scenario_id": "BS-001",
+      "title": "Display Complete Inventory Page Layout",
+      "business_objective": "Ensure users can access all inventory page components for product browsing",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is successfully authenticated and logged in"
+      ],
+      "steps": [
+        "Navigate to the inventory page",
+        "Verify header displays application logo, hamburger menu, shopping cart icon, and cart badge",
+        "Verify product sort dropdown is visible with sorting options",
+        "Verify inventory list displays all available products",
+        "Verify footer displays footer information and social media links"
+      ],
+      "expected_result": "Complete inventory page layout is displayed with all required components visible and functional",
+      "business_rules": [
+        "BR-01",
+        "BR-02"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-002",
+      "title": "Verify All Six Inventory Products Display",
+      "business_objective": "Ensure complete product catalog is available for customer selection",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page"
+      ],
+      "steps": [
+        "Count the number of inventory products displayed",
+        "Verify each product card contains product image, name, description, price, and Add to Cart button"
+      ],
+      "expected_result": "Exactly six inventory products are displayed with complete product information on each card",
+      "business_rules": [
+        "BR-02"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-002: Verify All Inventory Items are Displayed",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-003",
+      "title": "Add Single Product to Shopping Cart",
+      "business_objective": "Enable customers to select products for purchase",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Cart is empty or contains other items",
+        "Target product is not already in cart"
+      ],
+      "steps": [
+        "Click the Add to Cart button on a specific product",
+        "Verify the button changes to Remove",
+        "Verify the cart badge increments by one"
+      ],
+      "expected_result": "Product is added to cart, button changes to Remove, and cart badge shows updated count",
+      "business_rules": [
+        "BR-03",
+        "BR-04",
+        "BR-05"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-003: Add Single Item to Cart",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-003: Add Single Item to Cart",
+          "requirement_id": "REQ-009",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-004",
+      "title": "Remove Product from Shopping Cart",
+      "business_objective": "Allow customers to modify their cart by removing unwanted items",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "At least one product is already in the cart",
+        "Target product shows Remove button"
+      ],
+      "steps": [
+        "Click the Remove button on a product that is in the cart",
+        "Verify the button changes back to Add to Cart",
+        "Verify the cart badge decreases by one"
+      ],
+      "expected_result": "Product is removed from cart, button changes to Add to Cart, and cart badge shows decreased count",
+      "business_rules": [
+        "BR-03",
+        "BR-04"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-004: Remove Item from Cart",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-004: Remove Item from Cart",
+          "requirement_id": "REQ-011",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-005",
+      "title": "Sort Products by Name Alphabetically",
+      "business_objective": "Help customers find products easily by alphabetical organization",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Products are displayed in default order"
+      ],
+      "steps": [
+        "Click on the product sort dropdown",
+        "Select Name (A to Z) option",
+        "Verify products are rearranged in alphabetical order by name"
+      ],
+      "expected_result": "Products are displayed in alphabetical order from A to Z by product name",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-006: Sort Products by Name (A-Z)",
+          "requirement_id": "REQ-012",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-006",
+      "title": "Sort Products by Name Reverse Alphabetically",
+      "business_objective": "Provide alternative product organization for customer convenience",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Products are displayed in any current order"
+      ],
+      "steps": [
+        "Click on the product sort dropdown",
+        "Select Name (Z to A) option",
+        "Verify products are rearranged in reverse alphabetical order by name"
+      ],
+      "expected_result": "Products are displayed in reverse alphabetical order from Z to A by product name",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-007: Sort Products by Name (Z-A)",
+          "requirement_id": "REQ-013",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-007",
+      "title": "Sort Products by Price Low to High",
+      "business_objective": "Enable price-conscious customers to find affordable options first",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Products are displayed in any current order"
+      ],
+      "steps": [
+        "Click on the product sort dropdown",
+        "Select Price (low to high) option",
+        "Verify products are rearranged in ascending price order"
+      ],
+      "expected_result": "Products are displayed with lowest priced items first, ascending to highest priced items",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-008: Sort Products by Price (Low to High)",
+          "requirement_id": "REQ-014",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-008",
+      "title": "Sort Products by Price High to Low",
+      "business_objective": "Allow customers to view premium products first",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Products are displayed in any current order"
+      ],
+      "steps": [
+        "Click on the product sort dropdown",
+        "Select Price (high to low) option",
+        "Verify products are rearranged in descending price order"
+      ],
+      "expected_result": "Products are displayed with highest priced items first, descending to lowest priced items",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-009: Sort Products by Price (High to Low)",
+          "requirement_id": "REQ-015",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-009",
+      "title": "Navigate to Product Details Page",
+      "business_objective": "Provide customers with detailed product information for informed purchasing decisions",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Products are displayed with clickable images and titles"
+      ],
+      "steps": [
+        "Click on a product image or product title",
+        "Verify navigation occurs to the Product Details page for the selected product"
+      ],
+      "expected_result": "User is navigated to the Product Details page showing detailed information for the selected product",
+      "business_rules": [
+        "BR-07"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-010: Navigate to Product Details",
+          "requirement_id": "REQ-016",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-010",
+      "title": "Access Shopping Cart Page",
+      "business_objective": "Allow customers to review and manage their selected items",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Shopping cart icon is visible in the header"
+      ],
+      "steps": [
+        "Click on the shopping cart icon",
+        "Verify navigation occurs to the shopping cart page"
+      ],
+      "expected_result": "User is navigated to the shopping cart page displaying current cart contents",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-011: Open Shopping Cart",
+          "requirement_id": "REQ-017",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-011",
+      "title": "Open Navigation Menu",
+      "business_objective": "Provide users access to application navigation options",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "Hamburger menu icon is visible in the header"
+      ],
+      "steps": [
+        "Click on the hamburger menu icon",
+        "Verify the sidebar menu opens with navigation options"
+      ],
+      "expected_result": "Sidebar menu opens displaying available navigation options",
+      "business_rules": [
+        "BR-10"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-012: Open Hamburger Menu",
+          "requirement_id": "REQ-018",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-012",
+      "title": "Logout and Return to Login Page",
+      "business_objective": "Securely terminate user session and redirect to authentication",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is logged in and on the inventory page",
+        "Hamburger menu is accessible"
+      ],
+      "steps": [
+        "Click on the hamburger menu icon to open sidebar menu",
+        "Click on the Logout option",
+        "Verify redirection to the Login page occurs"
+      ],
+      "expected_result": "User session is terminated and user is redirected to the Login page",
+      "business_rules": [
+        "BR-09"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-013: Logout Successfully",
+          "requirement_id": "REQ-019",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    },
+    {
+      "scenario_id": "BS-013",
+      "title": "Maintain Cart Contents After Page Refresh",
+      "business_objective": "Ensure cart persistence during user session for improved shopping experience",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is on the inventory page",
+        "One or more items have been added to the cart",
+        "Cart badge shows current item count"
+      ],
+      "steps": [
+        "Note the current cart contents and badge count",
+        "Refresh the browser page",
+        "Verify cart selections and badge count remain unchanged"
+      ],
+      "expected_result": "Cart contents and badge count are preserved after page refresh",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-015: Refresh Inventory Page",
+          "requirement_id": "REQ-020",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products"
+    }
+  ],
+  "modules": [
+    "M02"
+  ]
+}

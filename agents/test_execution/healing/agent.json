@@ -1,0 +1,63 @@
+{
+  "name": "HealingAgent",
+  "registry_key": "healing",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.healing.agent",
+  "version": "2.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Native ADK agent that heals failing Playwright .spec.ts tests via a Gemini-backed LlmAgent wrapped in a LoopAgent — genuine tool-calling diagnosis/repair/verify loop, not a deterministic root-cause table. Full replacement of the prior implementation; no composition or fallback to it.",
+  "inputs": [
+    {
+      "name": "project_name",
+      "type": "string",
+      "required": true,
+      "description": "Used to derive execution/test_creation paths"
+    },
+    {
+      "name": "report_json",
+      "type": "string",
+      "required": false,
+      "description": "Playwright JSON report path; defaults to the latest report on disk"
+    },
+    {
+      "name": "module_filter",
+      "type": "string",
+      "required": false,
+      "description": "Scope to one module's DOM elements"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "specs_healed",
+      "type": "integer",
+      "description": "Spec files with at least one applied patch"
+    },
+    {
+      "name": "tests_healed",
+      "type": "integer",
+      "description": "Total test() blocks patched"
+    },
+    {
+      "name": "not_healable",
+      "type": "array",
+      "description": "Tests the model judged a real defect, never patched"
+    }
+  ],
+  "dependencies": [
+    "UIExecutionAgent"
+  ],
+  "skills": [
+    "propose_locator_fix",
+    "propose_timing_fix",
+    "propose_compilation_fix",
+    "propose_test_data_fix",
+    "propose_navigation_fix",
+    "propose_fixture_fix",
+    "apply_patch",
+    "run_tests",
+    "mark_not_healable"
+  ],
+  "doc": "agent.md"
+}

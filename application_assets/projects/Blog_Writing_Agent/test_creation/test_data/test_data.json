@@ -1,0 +1,292 @@
+[
+  {
+    "testdata_id": "TD-001",
+    "scenario_id": "M01_BS_001",
+    "scenario_title": "Navigate to Main Menu",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_main_menu_element",
+        "field_type": "navigation",
+        "value": "LOC-0004"
+      },
+      {
+        "field_name": "assert_menu_container",
+        "field_type": "assertion",
+        "value": "Main Menu"
+      },
+      {
+        "field_name": "assert_navigation_options",
+        "field_type": "assertion",
+        "value": "Navigation Options"
+      },
+      {
+        "field_name": "assert_min_menu_items",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Main menu interface fails to open or present navigation options",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_main_menu_element",
+                "field_type": "navigation",
+                "value": "LOC-0004"
+              },
+              {
+                "field_name": "assert_menu_container",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "assert_navigation_options",
+                "field_type": "assertion",
+                "value": "Menu Unavailable"
+              },
+              {
+                "field_name": "assert_min_menu_items",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Main menu interface failed to open or render navigation options."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-002",
+    "scenario_id": "M01_BS_002",
+    "scenario_title": "Deploy Blog Agent Service",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "target_deploy_button",
+        "field_type": "navigation",
+        "value": "LOC-0003"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Blog Agent Service"
+      },
+      {
+        "field_name": "expected_status_message",
+        "field_type": "assertion",
+        "value": "Deployment process successfully initiated"
+      },
+      {
+        "field_name": "expected_redirect_url",
+        "field_type": "url",
+        "value": "/control-panel/deployments/blog-agent/status"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Deployment process fails to initiate due to service error",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "target_deploy_button",
+                "field_type": "navigation",
+                "value": "LOC-0003"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": "Blog Agent Service"
+              },
+              {
+                "field_name": "expected_status_message",
+                "field_type": "assertion",
+                "value": "Failed to initiate deployment process"
+              },
+              {
+                "field_name": "expected_redirect_url",
+                "field_type": "url",
+                "value": "/control-panel/deployments/blog-agent/error"
+              }
+            ],
+            "expected_error": "Unable to trigger deployment for blog agent service"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-003",
+    "scenario_id": "M01_BS_003",
+    "scenario_title": "Stop Active Process",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_stop_target",
+        "field_type": "navigation",
+        "value": "LOC-0002"
+      },
+      {
+        "field_name": "assert_process_status",
+        "field_type": "assertion",
+        "value": "Terminated"
+      },
+      {
+        "field_name": "assert_termination_message",
+        "field_type": "assertion",
+        "value": "Process execution halted successfully."
+      },
+      {
+        "field_name": "count_min_running_processes",
+        "field_type": "count_min",
+        "value": "0"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Process fails to terminate and remains in active state",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_stop_target",
+                "field_type": "navigation",
+                "value": "LOC-0002"
+              },
+              {
+                "field_name": "assert_process_status",
+                "field_type": "assertion",
+                "value": "Running"
+              },
+              {
+                "field_name": "assert_termination_message",
+                "field_type": "assertion",
+                "value": "Unable to stop execution."
+              },
+              {
+                "field_name": "count_min_running_processes",
+                "field_type": "count_min",
+                "value": "1"
+              }
+            ],
+            "expected_error": "Process execution could not be terminated."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-004",
+    "scenario_id": "M01_BS_004",
+    "scenario_title": "Jump to Section Heading",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "select_section_anchor",
+        "field_type": "navigation",
+        "value": "#key-features"
+      },
+      {
+        "field_name": "assert_heading_text",
+        "field_type": "assertion",
+        "value": "Key Features"
+      },
+      {
+        "field_name": "assert_target_url",
+        "field_type": "url",
+        "value": "https://blog.example.com/posts/guide-to-automation#key-features"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Target section anchor is broken or target heading element is missing from the document",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_section_anchor",
+                "field_type": "navigation",
+                "value": "#non-existent-heading"
+              },
+              {
+                "field_name": "assert_heading_text",
+                "field_type": "assertion",
+                "value": "Key Features"
+              },
+              {
+                "field_name": "assert_target_url",
+                "field_type": "url",
+                "value": "https://blog.example.com/posts/guide-to-automation#non-existent-heading"
+              }
+            ],
+            "expected_error": "Element matching target heading anchor not found in DOM"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "M01_BS_005",
+    "scenario_title": "Interact with Generic UI Element",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_target_selector",
+        "field_type": "navigation",
+        "value": "LOC-0001"
+      },
+      {
+        "field_name": "assert_element_presence",
+        "field_type": "assertion",
+        "value": "Element LOC-0001 is displayed"
+      },
+      {
+        "field_name": "assert_ui_event_triggered",
+        "field_type": "assertion",
+        "value": "Element event triggered successfully"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Target interactive element is missing from the active page",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_target_selector",
+                "field_type": "navigation",
+                "value": "LOC-0001_MISSING"
+              },
+              {
+                "field_name": "assert_element_presence",
+                "field_type": "assertion",
+                "value": "Element LOC-0001_MISSING is displayed"
+              },
+              {
+                "field_name": "assert_ui_event_triggered",
+                "field_type": "assertion",
+                "value": "Element event triggered successfully"
+              }
+            ],
+            "expected_error": "Element with selector LOC-0001_MISSING not found"
+          }
+        ]
+      }
+    ]
+  }
+]

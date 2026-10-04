@@ -1,0 +1,26 @@
+{
+  "name": "EvidenceCollectionAgent",
+  "registry_key": "evidence_collection",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.evidence_collection.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Packages the Playwright Executor's recordings into one evidence bundle per test, linked to its BRD acceptance criterion: inputs sent (synthetic data flagged), observed output (new page text, messages, chat reply, HTTP response, downloaded documents opened and read for text/headings/tables/pages), every artifact with sha256, API/console observations, and a completeness check; writes an evidence manifest. No verdicts.",
+  "inputs": [
+    { "name": "execution_run", "type": "object", "required": false, "description": "PlaywrightExecutorAgent output" },
+    { "name": "action_plan", "type": "object", "required": false, "description": "ActionGenerationAgent output (inputs, unmappable/blocked tests)" },
+    { "name": "test_cases", "type": "list", "required": false, "description": "Test input and expected behaviour per bundle" },
+    { "name": "requirements", "type": "list", "required": false, "description": "Acceptance-criterion statements per bundle" },
+    { "name": "run_id", "type": "string", "required": false, "description": "Locates the run's artifact folder" },
+    { "name": "mode", "type": "string", "required": true, "description": "brd_only skips" },
+    { "name": "live_url", "type": "string", "required": true, "description": "Empty skips" }
+  ],
+  "outputs": [
+    { "name": "evidence_collection", "type": "object", "description": "status, counts, by_criterion, manifest, bundles[{bundle_id, test_code, criterion_code, criterion_statement, execution_status, inputs, observed{ui_output, messages, reply, documents, http_response}, expectations, artifacts, observations, completeness, digest}]" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

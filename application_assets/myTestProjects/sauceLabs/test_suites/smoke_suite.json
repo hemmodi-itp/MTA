@@ -1,0 +1,30 @@
+{
+  "suite_id": "smoke",
+  "name": "Smoke Tests",
+  "description": "Quick sanity check — 1 positive scenario per module. Run after every deployment.",
+  "type": "smoke",
+  "scope": "cross_module",
+
+  "scenarios": [
+    { "id": "SC-M01-001", "grep": "positive" },
+    { "id": "SC-M01-002", "grep": "negative — XSS injection attempt" },
+    { "id": "SC-M01-003", "grep": "negative — SQL injection" },
+    { "id": "SC-M03-001", "grep": "SQL injection" }
+],
+
+  "all_modules": false,
+  "modules": [],
+
+  "execution": {
+    "headless": true,
+    "retries": 1,
+    "timeout": 60000,
+    "parallel": 2
+  },
+
+  "metadata": {
+    "owner": "QA Team",
+    "estimated_runtime_sec": 120,
+    "notes": "Add one happy-path scenario ID per module. Keep this suite fast — under 5 minutes."
+  }
+}

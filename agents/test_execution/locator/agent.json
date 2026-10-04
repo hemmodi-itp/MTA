@@ -1,0 +1,25 @@
+{
+  "name": "LocatorAgent",
+  "registry_key": "locator",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.locator.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Gap-filler agent — assigns CSS locators to intents.yaml entries that don't already have a locator_id, via a live DOM scan. Skips entirely if a URL is unavailable or every intent is already grounded.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Used to derive test_creation paths" },
+    { "name": "url", "type": "string", "required": false, "description": "Required to actually run a scan; agent skips without it" },
+    { "name": "browser", "type": "string", "required": false, "description": "chromium (default) | firefox | webkit" },
+    { "name": "headless", "type": "boolean", "required": false, "description": "Default true" }
+  ],
+  "outputs": [
+    { "name": "intents_newly_grounded", "type": "integer", "description": "Intents patched with a new locator_id this run" },
+    { "name": "intents_total", "type": "integer", "description": "Total intents in intents.yaml" },
+    { "name": "locators_path", "type": "string", "description": "test_creation/locators.json" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

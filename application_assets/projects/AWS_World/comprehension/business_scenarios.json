@@ -1,0 +1,169 @@
+{
+  "project": "AWS_WORLD",
+  "total_scenarios": 5,
+  "scenarios": [
+    {
+      "scenario_id": "M01_BS_001",
+      "title": "Navigate to page information using navigation bar",
+      "business_objective": "Enable users to quickly access page information through direct navigation",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS World homepage",
+        "Navigation bar is visible and functional"
+      ],
+      "steps": [
+        "User views the navigation bar on the homepage",
+        "User clicks on a navigation item to fetch page information",
+        "System retrieves and displays the requested page information"
+      ],
+      "expected_result": "User successfully accesses the desired page information directly through the navigation bar",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "28c6dd818dfc4bab831e05ef1d153d42476be4b076604e7d0a329693f5f831c4"
+    },
+    {
+      "scenario_id": "M01_BS_002",
+      "title": "Browse new AWS items in What's New section",
+      "business_objective": "Keep users informed about latest AWS offerings and updates",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the AWS World homepage",
+        "What's New section is populated with current AWS items"
+      ],
+      "steps": [
+        "User navigates to the What's New section on the homepage",
+        "User browses through the list of new AWS items",
+        "User selects a specific new item to view details"
+      ],
+      "expected_result": "User successfully views and accesses information about new AWS items",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "b31652cd99cfb684534ffe6b22f917d8914652d58a6334d0d02ec9c827a7c12a"
+    },
+    {
+      "scenario_id": "M01_BS_003",
+      "title": "View client showcase through image carousel",
+      "business_objective": "Display AWS client success stories through visual presentation",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS World homepage",
+        "Image carousel is loaded with client images"
+      ],
+      "steps": [
+        "User views the image carousel on the homepage",
+        "User navigates through carousel images showing specific clients",
+        "User clicks on a client image to view more details"
+      ],
+      "expected_result": "User successfully views client information through the interactive image carousel",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "cc066ee65778d3180e31ba745ec6f3bd7bad20cf2f646394f3c9fc23a75cab45"
+    },
+    {
+      "scenario_id": "M01_BS_004",
+      "title": "Read customer success stories through story cards",
+      "business_objective": "Showcase customer experiences and build trust through testimonials",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the AWS World homepage",
+        "Customer Story Cards section is populated with stories"
+      ],
+      "steps": [
+        "User scrolls to the Customer Story Cards section",
+        "User browses available customer story cards",
+        "User clicks on a specific story card to read the full customer story"
+      ],
+      "expected_result": "User successfully accesses and reads detailed customer stories through the card interface",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "1ed3673106ca09701d467db4d974eff3ee9e414661ef771502c2bb7b71dee5b5"
+    },
+    {
+      "scenario_id": "M01_BS_005",
+      "title": "Explore AWS products information from homepage",
+      "business_objective": "Provide users with comprehensive AWS product information access",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS World homepage",
+        "AWS product information is available and accessible"
+      ],
+      "steps": [
+        "User arrives at the AWS World homepage",
+        "User explores available AWS product information sections",
+        "User selects and reviews specific AWS product details"
+      ],
+      "expected_result": "User successfully discovers and accesses comprehensive AWS product information from the homepage",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.8,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "0613c0a4ecf1f9c143fed38bfc35545967182928e3c3fff87b50a3b99fa5ce9e"
+    }
+  ],
+  "modules": [
+    "M01"
+  ]
+}

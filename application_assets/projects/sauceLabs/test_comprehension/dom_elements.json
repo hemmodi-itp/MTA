@@ -1,0 +1,268 @@
+{
+  "url": "https://www.saucedemo.com/",
+  "project": "sauceLabs",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "input",
+      "display_text": "Username",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": "Username",
+        "aria_label": "Username",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "username",
+        "id": "user-name",
+        "name": "user-name",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "textbox",
+          "name": "Username"
+        },
+        "get_by_placeholder": {
+          "placeholder": "Username"
+        },
+        "get_by_testid": {
+          "testid": "username"
+        }
+      },
+      "technical_locators": {
+        "css": "#user-name",
+        "xpath": "//*[@id=\"user-name\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "username"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "username"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "user-name"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "placeholder": "Username"
+          },
+          "score": 120,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "textbox",
+            "name": "Username"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "user-name"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "input",
+      "display_text": "Password",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": "Password",
+        "aria_label": "Password",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "password",
+        "id": "password",
+        "name": "password",
+        "type": "password"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "textbox",
+          "name": "Password"
+        },
+        "get_by_placeholder": {
+          "placeholder": "Password"
+        },
+        "get_by_testid": {
+          "testid": "password"
+        }
+      },
+      "technical_locators": {
+        "css": "#password",
+        "xpath": "//*[@id=\"password\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "password"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "password"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "password"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "placeholder": "Password"
+          },
+          "score": 120,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "textbox",
+            "name": "Password"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "password"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "login-button",
+        "id": "login-button",
+        "name": "login-button",
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "login-button"
+        }
+      },
+      "technical_locators": {
+        "css": "#login-button",
+        "xpath": "//*[@id=\"login-button\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "login-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "login-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "login-button"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "login-button"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ]
+}

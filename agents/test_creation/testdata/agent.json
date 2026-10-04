@@ -1,0 +1,27 @@
+{
+  "name": "TestDataAgent",
+  "registry_key": "testdata",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.testdata.agent",
+  "version": "1.1.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Reads business scenarios and generates positive/negative/boundary test data variants per scenario, in parallel, with a 3-tier fallback (NS HTTP, alt model, deterministic Python).",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Used to derive comprehension/test_creation paths" },
+    { "name": "connector_mode", "type": "string", "required": false, "description": "Optional LLM connector override" },
+    { "name": "comprehension/business_scenarios.json", "type": "file", "required": true, "description": "Scenarios to generate data for — MissingInputError if absent" },
+    { "name": "comprehension/interaction_catalog.json", "type": "file", "required": false, "description": "Preferred source of field_name hints ({scenario_id: [fill_field_name,...]}) for matching Test Data field names to real UI intents" },
+    { "name": "test_creation/intents.yaml", "type": "file", "required": false, "description": "Legacy field_name-hint fallback when interaction_catalog.json is absent — reads each fill-intent's source_scenarios (now populated by SemanticMapAgent's backlink instead of the unwired legacy ArtifactGeneratorAgent testcases pass)" }
+  ],
+  "outputs": [
+    { "name": "datasets_generated", "type": "integer", "description": "New datasets produced this run" },
+    { "name": "datasets_valid", "type": "integer", "description": "Datasets that passed validation" },
+    { "name": "coverage_pct", "type": "integer", "description": "Percent of scenarios with a usable positive dataset" },
+    { "name": "coverage_warning", "type": "boolean", "description": "True when coverage_pct < 50" }
+  ],
+  "dependencies": [],
+  "skills": ["test_data_generation"],
+  "doc": "agent.md"
+}

@@ -1,0 +1,14 @@
+{
+  "counters": {
+    "M01": {
+      "BS": 5
+    }
+  },
+  "content_index": {
+    "M01:BS:28c6dd818dfc4bab831e05ef1d153d42476be4b076604e7d0a329693f5f831c4": "M01_BS_001",
+    "M01:BS:b31652cd99cfb684534ffe6b22f917d8914652d58a6334d0d02ec9c827a7c12a": "M01_BS_002",
+    "M01:BS:cc066ee65778d3180e31ba745ec6f3bd7bad20cf2f646394f3c9fc23a75cab45": "M01_BS_003",
+    "M01:BS:1ed3673106ca09701d467db4d974eff3ee9e414661ef771502c2bb7b71dee5b5": "M01_BS_004",
+    "M01:BS:0613c0a4ecf1f9c143fed38bfc35545967182928e3c3fff87b50a3b99fa5ce9e": "M01_BS_005"
+  }
+}

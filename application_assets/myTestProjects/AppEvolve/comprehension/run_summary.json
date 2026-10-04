@@ -1,0 +1,12 @@
+{
+  "status": "partial",
+  "intents_path": "application_assets\\projects\\AppEvolve\\test_creation\\intents.yaml",
+  "dom_status": "success",
+  "dom_intents_count": 0,
+  "dom_intents_path": "application_assets\\projects\\AppEvolve\\comprehension\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\AppEvolve\\comprehension\\dom_elements.json",
+  "comprehension_status": "failed",
+  "comprehension_error": "An error occurred (UnrecognizedClientException) when calling the Converse operation: The security token included in the request is invalid",
+  "mode": "both",
+  "module": "discovery"
+}

@@ -1,0 +1,42 @@
+{
+  "project": "AppEvolve",
+  "module": "interaction",
+  "scenarios": [
+    {
+      "scenario_id": "SC-003",
+      "title": "Interact with AppEvolve (Selenium Projects Page)",
+      "business_objective": "Allow user to interact with elements on AppEvolve (Selenium Projects Page)",
+      "actor": "User",
+      "preconditions": [
+        "AppEvolve (Selenium Projects Page) page is loaded"
+      ],
+      "steps": [
+        "Click the element",
+        "Click the structure and governance",
+        "Click the events",
+        "Click the ecosystem",
+        "Click the history",
+        "Click the get involved",
+        "Click the sponsors",
+        "Click the sponsor us",
+        "Click the downloads",
+        "Click the documentation",
+        "Click the projects",
+        "Click the support",
+        "Click the blog",
+        "Click the english",
+        "Click the portugus brasileiro",
+        "Click the element",
+        "Click the visit conference website for more information",
+        "Click the w3c recommendation",
+        "Click the learn more"
+      ],
+      "expected_result": "Interaction completes as expected",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null
+    }
+  ]
+}

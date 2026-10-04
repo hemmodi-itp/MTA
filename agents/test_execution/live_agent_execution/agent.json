@@ -1,0 +1,86 @@
+{
+  "name": "LiveAgentExecutionAgent",
+  "registry_key": "live_agent_execution",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.live_agent_execution.agent",
+  "version": "1.1.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Auto-detects how to talk to the deployed agent (HTTP endpoint or web chat UI via Playwright), sends every generated test prompt, and grades the replies with Gemini as judge.",
+  "inputs": [
+    {
+      "name": "mode",
+      "type": "string",
+      "required": true,
+      "description": "Skipped when brd_only"
+    },
+    {
+      "name": "live_url",
+      "type": "string",
+      "required": false,
+      "description": "Deployed agent URL (required in live modes)"
+    },
+    {
+      "name": "test_cases",
+      "type": "array",
+      "required": true,
+      "description": "Generated tests, each with its DB id"
+    },
+    {
+      "name": "agent_profile",
+      "type": "object",
+      "required": true,
+      "description": "Interface hints and purpose from RepoAnalysisAgent"
+    },
+    {
+      "name": "on_test_update",
+      "type": "callable",
+      "required": false,
+      "description": "Per-test progress callback (test_id, fields)"
+    },
+    {
+      "name": "emit",
+      "type": "callable",
+      "required": false,
+      "description": "Progress callback (message, level)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "live_reachable",
+      "type": "boolean",
+      "description": "Whether any transport reached the agent"
+    },
+    {
+      "name": "live_status",
+      "type": "string",
+      "description": "connected | unreachable (URL down) | no_interface (site up, no chat box/API)"
+    },
+    {
+      "name": "transport",
+      "type": "string",
+      "description": "http | web_ui"
+    },
+    {
+      "name": "connection_detail",
+      "type": "string",
+      "description": "Endpoint/body shape or page used"
+    },
+    {
+      "name": "live_error",
+      "type": "string|null",
+      "description": "Why the agent could not be reached"
+    },
+    {
+      "name": "execution_results",
+      "type": "array",
+      "description": "Per-test status, judge score, reasoning, latency and reply"
+    }
+  ],
+  "dependencies": [],
+  "skills": [
+    "response_judging"
+  ],
+  "doc": "agent.md"
+}

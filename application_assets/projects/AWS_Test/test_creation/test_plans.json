@@ -1,0 +1,909 @@
+{
+  "M04_BS_001": {
+    "tests": [
+      {
+        "name": "positive — navigate to Partner Solutions section using navigation bar",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "partner_programs",
+            "message": "Partner navigation should be visible"
+          },
+          {
+            "action": "verifyCount",
+            "locator_key": "partner_programs",
+            "value": 3,
+            "message": "Navigation should have at least 3 items"
+          },
+          {
+            "action": "click",
+            "locator_key": "partner_programs"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/partners/solutions",
+            "message": "User should be navigated to the Partner Solutions section"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "aws_partners_4",
+            "value": "AWS Partner Solutions",
+            "message": "Section heading should display correctly"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "partner_programs",
+            "value": "partner programs",
+            "message": "Expected content should be present in the section"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M04_BS_002": {
+    "tests": [
+      {
+        "name": "positive — view AWS Partner Network getting started information",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "aws_partner_central"
+          },
+          {
+            "action": "click",
+            "locator_key": "aws_partner_central"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/partners/partner-network",
+            "message": "User should navigate to the AWS Partner Network section"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "aws_partner_central",
+            "value": "Getting Started with AWS Partner Network",
+            "message": "Getting started heading should be visible"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "explore_partner_programs",
+            "value": "Join the AWS Partner Network to grow your business",
+            "message": "Partner network guidance content should be displayed"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "partner_paths",
+            "value": "Apply now to become an AWS Partner",
+            "message": "Clear next steps should be provided to users"
+          }
+        ]
+      },
+      {
+        "name": "negative — key partner network content missing or incorrect",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "aws_partner_central"
+          },
+          {
+            "action": "click",
+            "locator_key": "aws_partner_central"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/partners/partner-network",
+            "message": "User should navigate to the AWS Partner Network section"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "aws_partner_central",
+            "value": "",
+            "message": "Partner Network getting started section heading should not be empty"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M04_BS_003": {
+    "tests": [
+      {
+        "name": "positive — explore AWS Partner benefits and expansion opportunities",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "become_an_aws_partner"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "become_an_aws_partner",
+            "message": "Why become AWS Partner section should be visible"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "become_an_aws_partner",
+            "value": "Partner Benefits",
+            "message": "Partner benefits section should contain benefits heading"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "become_an_aws_partner",
+            "value": "expansion opportunities",
+            "message": "Section should display expansion opportunities information"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "become_an_aws_partner",
+            "value": "value proposition",
+            "message": "Section should present clear value proposition"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "co_sell_with_aws",
+            "message": "Co-sell with AWS opportunity should be visible"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "sell_in_aws_marketplace_2",
+            "message": "AWS Marketplace selling option should be visible"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M04_BS_004": {
+    "tests": [
+      {
+        "name": "positive — browse and view details in What's New section",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "what_s_new_posts_read_about_the_latest"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "what_s_new_posts_read_about_the_latest",
+            "message": "What's New section should be visible on the page"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "what_s_new_posts_read_about_the_latest",
+            "value": "What's New",
+            "message": "What's New heading should be displayed"
+          },
+          {
+            "action": "click",
+            "locator_key": "what_s_new_posts_read_about_the_latest"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "what_s_new_posts_read_about_the_latest",
+            "value": "AWS",
+            "message": "Content should contain AWS Partner program related information"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "what_s_new_section_heading",
+      "what_s_new_cards_container",
+      "individual_update_cards",
+      "card_detail_content"
+    ]
+  },
+  "M04_BS_005": {
+    "tests": [
+      {
+        "name": "positive — discover AWS Partner success stories and innovations",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "explore_all_success_stories"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "explore_all_success_stories",
+            "message": "Partner Success with AWS section should be visible"
+          },
+          {
+            "action": "click",
+            "locator_key": "explore_all_success_stories"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "the_network_achieves_85_model_accuracy_in",
+            "message": "Partner success stories should be displayed after navigation"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "the_network_achieves_85_model_accuracy_in",
+            "value": "machine learning solution on AWS",
+            "message": "Success story should contain innovation details driven by partners"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "partner_success_section",
+      "success_stories_list",
+      "innovation_content_area",
+      "use_cases_section"
+    ]
+  },
+  "M01_BS_001": {
+    "tests": [
+      {
+        "name": "positive — navigate to Products page via navigation bar successfully loads page information",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "navigate_products_12"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/products",
+            "message": "URL should contain /products after clicking Products navigation"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "navigate_products_12",
+            "value": "AWS Products and Services",
+            "message": "Page heading should display AWS Products and Services"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "navigate_products_12",
+            "value": "Explore our comprehensive cloud computing services",
+            "message": "Page content should contain service exploration text"
+          },
+          {
+            "action": "verifyCount",
+            "locator_key": "navigate_products_12",
+            "value": 5,
+            "message": "At least 5 service cards should be visible on the products page"
+          }
+        ]
+      },
+      {
+        "name": "negative — navigation to Products page fails when page heading does not load",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "navigate_products_12"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/products",
+            "message": "URL should contain /products after clicking Products navigation"
+          },
+          {
+            "action": "verifyText",
+            "locator_key": "navigate_products_12",
+            "value": "",
+            "message": "Page heading should be empty indicating failed load"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Page heading locator for AWS Products and Services",
+      "Page content locator for service description text",
+      "Service cards container locator for counting elements"
+    ]
+  },
+  "M01_BS_002": {
+    "tests": [
+      {
+        "name": "positive — browse new AWS items in What's New section and view details",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "a_loc_0068"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "a_loc_0068",
+            "message": "What's New section should be visible on the homepage"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "a_loc_0068",
+            "value": "What's New with AWS",
+            "message": "What's New section should display the correct heading"
+          },
+          {
+            "action": "click",
+            "locator_key": "a_loc_0068"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/about-aws/whats-new/2023/",
+            "message": "User should be redirected to the What's New details page"
+          }
+        ]
+      },
+      {
+        "name": "negative — What's New section unavailable or content missing",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "a_loc_0068"
+          },
+          {
+            "action": "verifyHidden",
+            "locator_key": "a_loc_0068",
+            "message": "What's New section should handle unavailable content gracefully"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for What's New section heading text verification",
+      "Locator for new items list container",
+      "Locator for individual new item titles",
+      "Locator for item count verification",
+      "Locator for specific item 'Amazon EC2 M7i instances'"
+    ]
+  },
+  "M01_BS_003": {
+    "tests": [
+      {
+        "name": "positive — view and navigate through client images in carousel",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "overview_3"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "overview_3",
+            "message": "Client carousel section should be visible on homepage"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "overview_3",
+            "value": "Our Trusted Clients",
+            "message": "Carousel should display the expected heading"
+          },
+          {
+            "action": "verifyCount",
+            "locator_key": "overview_3",
+            "value": 3,
+            "message": "Carousel should contain at least 3 client images"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "client_carousel_container - for targeting the specific client showcase carousel section",
+      "carousel_next_button - for navigating to next carousel item",
+      "carousel_previous_button - for navigating to previous carousel item",
+      "carousel_indicators - for direct navigation to specific carousel items",
+      "client_images - for verifying specific client images like Netflix, Airbnb, Spotify are displayed"
+    ]
+  },
+  "M01_BS_004": {
+    "tests": [
+      {
+        "name": "positive — browse customer success stories through story cards",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "aws",
+            "message": "Customer Story Cards section should be visible"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "aws",
+            "message": "Customer success stories should be displayed"
+          },
+          {
+            "action": "verifyCount",
+            "locator_key": "aws",
+            "value": 3,
+            "message": "At least 3 customer story cards should be visible"
+          },
+          {
+            "action": "click",
+            "locator_key": "aws"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "aws",
+            "value": "customer testimonials and success cases",
+            "message": "Story details should contain customer testimonials and success cases"
+          }
+        ]
+      },
+      {
+        "name": "negative — customer story cards section not available or content missing",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "aws",
+            "message": "Should attempt to scroll to Customer Story Cards section"
+          },
+          {
+            "action": "verifyCount",
+            "locator_key": "aws",
+            "value": 0,
+            "message": "No customer story cards should be available when content is missing"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "customer_story_cards_section - locator for Customer Story Cards section",
+      "customer_story_card - locator for individual customer story cards",
+      "netflix_case_study_card - locator for Netflix Case Study card specifically",
+      "story_content_area - locator for story detail content area"
+    ]
+  },
+  "M01_BS_006": {
+    "tests": [
+      {
+        "name": "positive — navigate through Products menu to find Amazon Quick service",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "solutions_4",
+            "message": "Products menu should be visible in navigation"
+          },
+          {
+            "action": "click",
+            "locator_key": "solutions_4"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/amazon-quick",
+            "message": "User should be redirected to Amazon Quick service page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "products_menu - for clicking on the Products menu in navigation",
+      "products_popup_menu - for verifying the opened products popup menu",
+      "amazon_quick_card - for locating the Amazon Quick service card in the menu",
+      "amazon_quick_link - for clicking on Amazon Quick to access the service",
+      "amazon_quick_heading - for verifying the service page heading"
+    ]
+  },
+  "M01_BS_007": {
+    "tests": [
+      {
+        "name": "positive — authenticated user can browse all homepage content sections",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "navigate_products_12",
+            "message": "Homepage navigation bar should be accessible to authenticated users"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "navigate_products_12",
+            "value": "What's New",
+            "message": "What's New section should be visible and contain latest AWS updates"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "navigate_products_12",
+            "message": "Image carousel should display client images for authenticated users"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "navigate_products_12",
+            "value": "customer success stories",
+            "message": "Customer success stories section should be accessible in story cards"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "homepage_navigation_bar",
+      "whats_new_section",
+      "image_carousel",
+      "success_stories_section"
+    ]
+  },
+  "M04_BS_006": {
+    "tests": [
+      {
+        "name": "positive — complete automated workflow execution for partner onboarding succeeds",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/aws/partner/onboarding/complete",
+            "message": "User should be on the partner onboarding completion page"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Both partner workflows should execute without any page errors"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [
+      "Execute automated workflows - no action available to trigger or validate automated workflow execution",
+      "Verify workflow completion status - no action to check workflow execution status or completion"
+    ],
+    "missing_locators": [
+      "get_started_workflow_trigger - element to initiate Get Started for Free workflow",
+      "workflow_status_indicator - element showing workflow execution status",
+      "amazon_quick_search_workflow_trigger - element to initiate Amazon Quick product search workflow",
+      "workflow_completion_confirmation - element confirming all workflow steps processed successfully"
+    ]
+  },
+  "M04_BS_008": {
+    "tests": [
+      {
+        "name": "positive — guest user initiates partner registration process and reaches login page",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "contact_us_7",
+            "value": "AWS Partner Network",
+            "message": "Partner section heading should be visible on the page"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "contact_us_7",
+            "value": "Join thousands of partners",
+            "message": "Partner content should be displayed to encourage registration"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "contact_us_7",
+            "value": "sign in to aws console",
+            "message": "Sign in link should be available for partner registration"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "https://signin.aws.amazon.com/signin",
+            "message": "User should be redirected to AWS login page to complete partner registration"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Become an AWS Partner button - needed to initiate partner registration flow",
+      "Partner section - needed to verify scroll target after button click",
+      "Sign in to AWS console link - needed to navigate to login page"
+    ]
+  },
+  "M01_BS_008": {
+    "tests": [
+      {
+        "name": "positive — guest user can browse all homepage content sections without authentication",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "https://aws.amazon.com"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "AWS",
+            "message": "AWS homepage should load successfully"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "navigate_products_12",
+            "message": "Products navigation should be visible for browsing"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "sdks_tools",
+            "message": "SDKs & Tools section should be accessible to guest users"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "sign_in_to_console_4"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "sign_in_to_console_4",
+            "message": "Sign in to console option should be available for guest users"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Homepage should load without JavaScript errors for guest users"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "What's New section locator needed to verify expected_whats_new_section content",
+      "Image Carousel locator needed to verify expected_image_carousel content",
+      "Customer Story Cards locator needed to verify expected_customer_stories content",
+      "Main navigation bar locator needed for scroll_navigation_bar interaction",
+      "Content sections container locator needed to verify min_content_sections_count of 3"
+    ]
+  },
+  "M01_BS_009": {
+    "tests": [
+      {
+        "name": "positive — access comprehensive AWS product information from homepage",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "solutions_4"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "solutions_4",
+            "value": "AWS Products",
+            "message": "AWS Products heading should be visible on the products page"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "solutions_4",
+            "value": "Amazon Web Services offers reliable, scalable, and inexpensive cloud computing services",
+            "message": "AWS service description should be displayed on the products page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Navigation element for 'Products and Services' section",
+      "Element containing 'AWS Products' heading text",
+      "Element containing AWS service description text",
+      "Navigation element for 'Compute Services' details",
+      "Container element for counting displayed products"
+    ]
+  },
+  "M01_BS_010": {
+    "tests": [
+      {
+        "name": "positive — explore AWS service updates through What's New section",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "AWS",
+            "message": "Page should contain AWS in title"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "a_loc_0068",
+            "value": "What's New",
+            "message": "What's New section should be visible on the page"
+          },
+          {
+            "action": "click",
+            "locator_key": "a_loc_0068"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "aws",
+            "message": "Should navigate to AWS updates or features page"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "a_loc_0068",
+            "message": "AWS service updates content should be displayed"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "whats_new_section_heading - needed to verify 'What's New with AWS' heading",
+      "service_update_items_list - needed to browse through AWS update items and verify minimum count of 5 items",
+      "amazon_ec2_update_item - needed to verify specific service update item for Amazon EC2",
+      "learn_more_link - needed to select specific features for detailed information",
+      "feature_description_content - needed to verify detailed AWS service features and capabilities information"
+    ]
+  },
+  "M01_BS_011": {
+    "tests": [
+      {
+        "name": "positive — navigate to Amazon QuickSight through Products menu succeeds",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "solutions_4"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/quicksight",
+            "message": "User should navigate to Amazon QuickSight service page"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "solutions_4",
+            "value": "Amazon QuickSight",
+            "message": "Amazon QuickSight heading should be visible on the service page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "products_menu - clickable Products menu item to open product listings",
+      "quicksight_search_input - search input field to find Amazon QuickSight in product listings",
+      "quicksight_service_link - clickable link to Amazon QuickSight service from search results",
+      "quicksight_page_heading - heading element containing 'Amazon QuickSight' text on service page"
+    ]
+  },
+  "M04_BS_007": {
+    "tests": [
+      {
+        "name": "positive — comprehensive automated test suite execution completes successfully",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 1: PASSED - First automated test case should execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 2: PASSED - Second automated test case should execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 3: PASSED - Third automated test case should execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 4: PASSED - Fourth automated test case should execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 5: PASSED - Fifth automated test case should execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "All automated test cases completed successfully"
+          }
+        ]
+      },
+      {
+        "name": "negative — test suite execution with one failed test case shows incomplete status",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 1: FAILED - First test case execution should fail as expected"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 2: PASSED - Second test case should still execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 3: PASSED - Third test case should still execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 4: PASSED - Fourth test case should still execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test Case 5: PASSED - Fifth test case should still execute successfully"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Test execution incomplete - 1 test case failed"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [
+      "executeTestCase",
+      "validateTestResult",
+      "checkTestStatus"
+    ],
+    "missing_locators": [
+      "test_case_one_status",
+      "test_case_two_status",
+      "test_case_three_status",
+      "test_case_four_status",
+      "test_case_five_status",
+      "overall_test_status",
+      "test_execution_panel",
+      "test_results_display"
+    ]
+  }
+}

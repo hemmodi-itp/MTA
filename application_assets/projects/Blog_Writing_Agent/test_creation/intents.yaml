@@ -1,0 +1,56 @@
+project: Blog_Writing_Agent
+source: ui_scanner
+intents:
+- intent_id: DOM_INT_001
+  intent_name: click_element
+  action: click
+  locator_id: LOC-0001
+  value: null
+  expected_result: null
+  module_id: null
+  source_scenarios:
+  - M01_BS_001
+  - M01_BS_002
+  - M01_BS_003
+  - M01_BS_005
+- intent_id: DOM_INT_002
+  intent_name: click_stop
+  action: click
+  locator_id: LOC-0002
+  value: null
+  expected_result: stop_opened
+  module_id: null
+  source_scenarios:
+  - M01_BS_002
+  - M01_BS_003
+- intent_id: DOM_INT_003
+  intent_name: click_deploy
+  action: click
+  locator_id: LOC-0003
+  value: null
+  expected_result: deploy_opened
+  module_id: null
+  source_scenarios:
+  - M01_BS_001
+  - M01_BS_002
+  - M01_BS_003
+  - M01_BS_005
+- intent_id: DOM_INT_004
+  intent_name: click_main_menu
+  action: click
+  locator_id: LOC-0004
+  value: null
+  expected_result: main_menu_opened
+  module_id: null
+  source_scenarios:
+  - M01_BS_001
+  - M01_BS_005
+- intent_id: DOM_INT_005
+  intent_name: click_link_to_heading
+  action: click
+  locator_id: LOC-0008
+  value: null
+  expected_result: link_to_heading_opened
+  module_id: null
+  source_scenarios:
+  - M01_BS_004

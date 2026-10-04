@@ -1,0 +1,2163 @@
+{
+  "url": "https://www.saucedemo.com/inventory.html",
+  "project": "sauceLabs",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "button",
+      "display_text": "Open Menu",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "react-burger-menu-btn",
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Open Menu"
+        },
+        "get_by_text": {
+          "text": "Open Menu"
+        }
+      },
+      "technical_locators": {
+        "css": "#react-burger-menu-btn",
+        "xpath": "//*[@id=\"react-burger-menu-btn\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "react-burger-menu-btn"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "react-burger-menu-btn"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Open Menu"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "button",
+      "display_text": "Close Menu",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "react-burger-cross-btn",
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Close Menu"
+        },
+        "get_by_text": {
+          "text": "Close Menu"
+        }
+      },
+      "technical_locators": {
+        "css": "#react-burger-cross-btn",
+        "xpath": "//*[@id=\"react-burger-cross-btn\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "react-burger-cross-btn"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "react-burger-cross-btn"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Close Menu"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "button",
+      "display_text": "Add to cart",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "add-to-cart-sauce-labs-backpack",
+        "id": "add-to-cart-sauce-labs-backpack",
+        "name": "add-to-cart-sauce-labs-backpack",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Add to cart"
+        },
+        "get_by_text": {
+          "text": "Add to cart"
+        },
+        "get_by_testid": {
+          "testid": "add-to-cart-sauce-labs-backpack"
+        }
+      },
+      "technical_locators": {
+        "css": "#add-to-cart-sauce-labs-backpack",
+        "xpath": "//*[@id=\"add-to-cart-sauce-labs-backpack\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "add-to-cart-sauce-labs-backpack"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "add-to-cart-sauce-labs-backpack"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "add-to-cart-sauce-labs-backpack"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Add to cart"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "add-to-cart-sauce-labs-backpack"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": false
+      },
+      "intent_hints": [
+        "add_to_cart"
+      ]
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "button",
+      "display_text": "Add to cart",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "add-to-cart-sauce-labs-bike-light",
+        "id": "add-to-cart-sauce-labs-bike-light",
+        "name": "add-to-cart-sauce-labs-bike-light",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Add to cart"
+        },
+        "get_by_text": {
+          "text": "Add to cart"
+        },
+        "get_by_testid": {
+          "testid": "add-to-cart-sauce-labs-bike-light"
+        }
+      },
+      "technical_locators": {
+        "css": "#add-to-cart-sauce-labs-bike-light",
+        "xpath": "//*[@id=\"add-to-cart-sauce-labs-bike-light\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "add-to-cart-sauce-labs-bike-light"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "add-to-cart-sauce-labs-bike-light"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "add-to-cart-sauce-labs-bike-light"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Add to cart"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "add-to-cart-sauce-labs-bike-light"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "add_to_cart"
+      ]
+    },
+    {
+      "locator_id": "LOC-0005",
+      "tag": "button",
+      "display_text": "Add to cart",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "add-to-cart-sauce-labs-bolt-t-shirt",
+        "id": "add-to-cart-sauce-labs-bolt-t-shirt",
+        "name": "add-to-cart-sauce-labs-bolt-t-shirt",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Add to cart"
+        },
+        "get_by_text": {
+          "text": "Add to cart"
+        },
+        "get_by_testid": {
+          "testid": "add-to-cart-sauce-labs-bolt-t-shirt"
+        }
+      },
+      "technical_locators": {
+        "css": "#add-to-cart-sauce-labs-bolt-t-shirt",
+        "xpath": "//*[@id=\"add-to-cart-sauce-labs-bolt-t-shirt\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "add-to-cart-sauce-labs-bolt-t-shirt"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "add-to-cart-sauce-labs-bolt-t-shirt"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "add-to-cart-sauce-labs-bolt-t-shirt"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Add to cart"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "add-to-cart-sauce-labs-bolt-t-shirt"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "add_to_cart"
+      ]
+    },
+    {
+      "locator_id": "LOC-0006",
+      "tag": "button",
+      "display_text": "Add to cart",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "add-to-cart-sauce-labs-fleece-jacket",
+        "id": "add-to-cart-sauce-labs-fleece-jacket",
+        "name": "add-to-cart-sauce-labs-fleece-jacket",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Add to cart"
+        },
+        "get_by_text": {
+          "text": "Add to cart"
+        },
+        "get_by_testid": {
+          "testid": "add-to-cart-sauce-labs-fleece-jacket"
+        }
+      },
+      "technical_locators": {
+        "css": "#add-to-cart-sauce-labs-fleece-jacket",
+        "xpath": "//*[@id=\"add-to-cart-sauce-labs-fleece-jacket\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "add-to-cart-sauce-labs-fleece-jacket"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "add-to-cart-sauce-labs-fleece-jacket"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "add-to-cart-sauce-labs-fleece-jacket"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Add to cart"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "add-to-cart-sauce-labs-fleece-jacket"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "add_to_cart"
+      ]
+    },
+    {
+      "locator_id": "LOC-0007",
+      "tag": "button",
+      "display_text": "Add to cart",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "add-to-cart-sauce-labs-onesie",
+        "id": "add-to-cart-sauce-labs-onesie",
+        "name": "add-to-cart-sauce-labs-onesie",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Add to cart"
+        },
+        "get_by_text": {
+          "text": "Add to cart"
+        },
+        "get_by_testid": {
+          "testid": "add-to-cart-sauce-labs-onesie"
+        }
+      },
+      "technical_locators": {
+        "css": "#add-to-cart-sauce-labs-onesie",
+        "xpath": "//*[@id=\"add-to-cart-sauce-labs-onesie\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "add-to-cart-sauce-labs-onesie"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "add-to-cart-sauce-labs-onesie"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "add-to-cart-sauce-labs-onesie"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Add to cart"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "add-to-cart-sauce-labs-onesie"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "add_to_cart"
+      ]
+    },
+    {
+      "locator_id": "LOC-0008",
+      "tag": "button",
+      "display_text": "Add to cart",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "add-to-cart-test.allthethings()-t-shirt-(red)",
+        "id": "add-to-cart-test.allthethings()-t-shirt-(red)",
+        "name": "add-to-cart-test.allthethings()-t-shirt-(red)",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Add to cart"
+        },
+        "get_by_text": {
+          "text": "Add to cart"
+        },
+        "get_by_testid": {
+          "testid": "add-to-cart-test.allthethings()-t-shirt-(red)"
+        }
+      },
+      "technical_locators": {
+        "css": "#add-to-cart-test.allthethings()-t-shirt-(red)",
+        "xpath": "//*[@id=\"add-to-cart-test.allthethings()-t-shirt-(red)\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "add-to-cart-test.allthethings()-t-shirt-(red)"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "add-to-cart-test.allthethings()-t-shirt-(red)"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "add-to-cart-test.allthethings()-t-shirt-(red)"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Add to cart"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "add-to-cart-test.allthethings()-t-shirt-(red)"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "add_to_cart"
+      ]
+    },
+    {
+      "locator_id": "LOC-0009",
+      "tag": "select",
+      "display_text": "Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)",
+      "semantic_locators": {
+        "role": "combobox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "product-sort-container",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "combobox",
+          "name": "Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)"
+        },
+        "get_by_text": {
+          "text": "Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)"
+        },
+        "get_by_testid": {
+          "testid": "product-sort-container"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div:nth-of-type(2)>div>span>select",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/span[1]/select[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "product-sort-container"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "product-sort-container"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "combobox",
+            "name": "Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0010",
+      "tag": "a",
+      "display_text": "All Items",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "inventory-sidebar-link",
+        "id": "inventory_sidebar_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "All Items"
+        },
+        "get_by_text": {
+          "text": "All Items"
+        },
+        "get_by_testid": {
+          "testid": "inventory-sidebar-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#inventory_sidebar_link",
+        "xpath": "//*[@id=\"inventory_sidebar_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "inventory-sidebar-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "inventory-sidebar-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "inventory_sidebar_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "All Items"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0011",
+      "tag": "a",
+      "display_text": "About",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "about-sidebar-link",
+        "id": "about_sidebar_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "About"
+        },
+        "get_by_text": {
+          "text": "About"
+        },
+        "get_by_testid": {
+          "testid": "about-sidebar-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#about_sidebar_link",
+        "xpath": "//*[@id=\"about_sidebar_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "about-sidebar-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "about-sidebar-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "about_sidebar_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "About"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0012",
+      "tag": "a",
+      "display_text": "Logout",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "logout-sidebar-link",
+        "id": "logout_sidebar_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Logout"
+        },
+        "get_by_text": {
+          "text": "Logout"
+        },
+        "get_by_testid": {
+          "testid": "logout-sidebar-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#logout_sidebar_link",
+        "xpath": "//*[@id=\"logout_sidebar_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "logout-sidebar-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "logout-sidebar-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "logout_sidebar_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Logout"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0013",
+      "tag": "a",
+      "display_text": "Reset App State",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "reset-sidebar-link",
+        "id": "reset_sidebar_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Reset App State"
+        },
+        "get_by_text": {
+          "text": "Reset App State"
+        },
+        "get_by_testid": {
+          "testid": "reset-sidebar-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#reset_sidebar_link",
+        "xpath": "//*[@id=\"reset_sidebar_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "reset-sidebar-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "reset-sidebar-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "reset_sidebar_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Reset App State"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0014",
+      "tag": "a",
+      "display_text": "4",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "shopping-cart-link",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "4"
+        },
+        "get_by_text": {
+          "text": "4"
+        },
+        "get_by_testid": {
+          "testid": "shopping-cart-link"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "shopping-cart-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "shopping-cart-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "4"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0015",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-4-img-link",
+        "id": "item_4_img_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "item-4-img-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_4_img_link",
+        "xpath": "//*[@id=\"item_4_img_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-4-img-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-4-img-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_4_img_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0016",
+      "tag": "a",
+      "display_text": "Sauce Labs Backpack",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-4-title-link",
+        "id": "item_4_title_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Sauce Labs Backpack"
+        },
+        "get_by_text": {
+          "text": "Sauce Labs Backpack"
+        },
+        "get_by_testid": {
+          "testid": "item-4-title-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_4_title_link",
+        "xpath": "//*[@id=\"item_4_title_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-4-title-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-4-title-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_4_title_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Sauce Labs Backpack"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0017",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-0-img-link",
+        "id": "item_0_img_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "item-0-img-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_0_img_link",
+        "xpath": "//*[@id=\"item_0_img_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-0-img-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-0-img-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_0_img_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0018",
+      "tag": "a",
+      "display_text": "Sauce Labs Bike Light",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-0-title-link",
+        "id": "item_0_title_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Sauce Labs Bike Light"
+        },
+        "get_by_text": {
+          "text": "Sauce Labs Bike Light"
+        },
+        "get_by_testid": {
+          "testid": "item-0-title-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_0_title_link",
+        "xpath": "//*[@id=\"item_0_title_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-0-title-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-0-title-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_0_title_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Sauce Labs Bike Light"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0019",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-1-img-link",
+        "id": "item_1_img_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "item-1-img-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_1_img_link",
+        "xpath": "//*[@id=\"item_1_img_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-1-img-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-1-img-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_1_img_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0020",
+      "tag": "a",
+      "display_text": "Sauce Labs Bolt T-Shirt",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-1-title-link",
+        "id": "item_1_title_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Sauce Labs Bolt T-Shirt"
+        },
+        "get_by_text": {
+          "text": "Sauce Labs Bolt T-Shirt"
+        },
+        "get_by_testid": {
+          "testid": "item-1-title-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_1_title_link",
+        "xpath": "//*[@id=\"item_1_title_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-1-title-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-1-title-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_1_title_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Sauce Labs Bolt T-Shirt"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0021",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-5-img-link",
+        "id": "item_5_img_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "item-5-img-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_5_img_link",
+        "xpath": "//*[@id=\"item_5_img_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-5-img-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-5-img-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_5_img_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0022",
+      "tag": "a",
+      "display_text": "Sauce Labs Fleece Jacket",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-5-title-link",
+        "id": "item_5_title_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Sauce Labs Fleece Jacket"
+        },
+        "get_by_text": {
+          "text": "Sauce Labs Fleece Jacket"
+        },
+        "get_by_testid": {
+          "testid": "item-5-title-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_5_title_link",
+        "xpath": "//*[@id=\"item_5_title_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-5-title-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-5-title-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_5_title_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Sauce Labs Fleece Jacket"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0023",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-2-img-link",
+        "id": "item_2_img_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "item-2-img-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_2_img_link",
+        "xpath": "//*[@id=\"item_2_img_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-2-img-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-2-img-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_2_img_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0024",
+      "tag": "a",
+      "display_text": "Sauce Labs Onesie",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-2-title-link",
+        "id": "item_2_title_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Sauce Labs Onesie"
+        },
+        "get_by_text": {
+          "text": "Sauce Labs Onesie"
+        },
+        "get_by_testid": {
+          "testid": "item-2-title-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_2_title_link",
+        "xpath": "//*[@id=\"item_2_title_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-2-title-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-2-title-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_2_title_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Sauce Labs Onesie"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0025",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-3-img-link",
+        "id": "item_3_img_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "item-3-img-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_3_img_link",
+        "xpath": "//*[@id=\"item_3_img_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-3-img-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-3-img-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_3_img_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0026",
+      "tag": "a",
+      "display_text": "Test.allTheThings() T-Shirt (Red)",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "item-3-title-link",
+        "id": "item_3_title_link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Test.allTheThings() T-Shirt (Red)"
+        },
+        "get_by_text": {
+          "text": "Test.allTheThings() T-Shirt (Red)"
+        },
+        "get_by_testid": {
+          "testid": "item-3-title-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#item_3_title_link",
+        "xpath": "//*[@id=\"item_3_title_link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "item-3-title-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "item-3-title-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "item_3_title_link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Test.allTheThings() T-Shirt (Red)"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0027",
+      "tag": "a",
+      "display_text": "Twitter",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "social-twitter",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Twitter"
+        },
+        "get_by_text": {
+          "text": "Twitter"
+        },
+        "get_by_testid": {
+          "testid": "social-twitter"
+        }
+      },
+      "technical_locators": {
+        "css": "div>footer>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/footer[1]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "social-twitter"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "social-twitter"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Twitter"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0028",
+      "tag": "a",
+      "display_text": "Facebook",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "social-facebook",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Facebook"
+        },
+        "get_by_text": {
+          "text": "Facebook"
+        },
+        "get_by_testid": {
+          "testid": "social-facebook"
+        }
+      },
+      "technical_locators": {
+        "css": "div>footer>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/footer[1]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "social-facebook"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "social-facebook"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Facebook"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0029",
+      "tag": "a",
+      "display_text": "LinkedIn",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "social-linkedin",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "LinkedIn"
+        },
+        "get_by_text": {
+          "text": "LinkedIn"
+        },
+        "get_by_testid": {
+          "testid": "social-linkedin"
+        }
+      },
+      "technical_locators": {
+        "css": "div>footer>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/footer[1]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "social-linkedin"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "social-linkedin"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "LinkedIn"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "suite_id": "module_navigation",
+  "name": "Navigation Module",
+  "description": "All scenarios for the navigation module",
+  "type": "module",
+  "scope": "module_navigation",
+  "scenarios": [
+    "SC-002"
+  ],
+  "all_modules": false,
+  "modules": [
+    "module_navigation"
+  ],
+  "execution": {
+    "headless": true,
+    "parallel": 1
+  },
+  "metadata": {
+    "owner": "QA Team"
+  }
+}

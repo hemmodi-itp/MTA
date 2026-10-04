@@ -1,0 +1,27 @@
+project:
+  name: App_Compliance_with_docs
+  application_name: BRD Compliance Tester
+  url: http://localhost:5173/   # top-level — enables DiscoveryAgent's DOM scan; local Vite dev server, must be running
+  browser: chromium
+  headless: true
+  interactive_scan: false
+
+# No brd_dir set — no BRD document exists for this target app itself, so
+# DiscoveryAgent runs URL-only mode: DOM scan → synthetic scenarios
+# (no LLM comprehension call needed for scenario seeding).
+
+# script_generation refuses to write specs for scenarios with no module_id
+# when project.yaml declares no modules — a single module is required even
+# for a one-page app so generated specs have a module folder to land in.
+modules:
+  - id: M01
+    name: Home
+    url: http://localhost:5173/   # local Vite dev server — must be running before this project executes
+
+test_generation:
+  max_negative_cases: 1
+  max_boundary_cases: 1
+  max_data_iterations: 1
+
+test_execution:
+  suite: App_Compliance_with_docs

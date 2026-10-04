@@ -1,0 +1,116 @@
+# agent_evaluation.yaml — evaluate a user's app (AI agent, form app, document generator, …) from its GitHub repo
+#
+# Driven by api/pipeline.py (started from the frontend's "New Project" flow), not main.py: every step reads/writes
+# Postgres through tools/agent_eval/run_store.py instead of application_assets/ project files.
+#
+# Execution model — a DAG, not a straight line:
+#   needs:     steps this one waits for. Independent branches run concurrently, so the code-evidence branch
+#              (repo_analysis, requirement_traceability, repository_review) overlaps the browser branch
+#              (runtime_discovery → … → pass_fail), which is where nearly all wall-clock time goes.
+#   critical:  a failure stops the run (nothing can be scored without it). A failing non-critical step is recorded,
+#              its dependents still run and degrade gracefully (e.g. no runtime evidence → criteria judged from code),
+#              and the report lists it under limitations.
+#   timeout_s: soft deadline; the engines carry their own budgets, this is the backstop for a hung call.
+#   provides:  result keys the step writes into the shared request. Two steps that can run concurrently may not
+#              write the same key (checked when the workflow loads).
+#
+# Submission modes (Project.mode):
+#   brd_and_live  repo has a BRD + app is deployed   → all steps
+#   live_only     app is deployed, no BRD            → brd_builder writes a BRD from the authenticated runtime profile
+#   brd_only      BRD in repo, not deployed          → runtime steps skip; criteria are judged from the code only
+
+steps:
+  - name: repo_fetch
+    description: "Verify the GitHub repo is reachable and fetch the files the evaluation needs, pinned to one commit"
+    critical: true
+    timeout_s: 900
+    provides: [repo_dir, repo_full_name, repo_tree, repo_metadata, commit_sha, branch, repo_coverage]
+  - name: repo_intelligence
+    description: "Deterministic knowledge graph + code chunks (routes, forms, agents, prompts, tests), cached per commit"
+    needs: [repo_fetch]
+    critical: true
+    timeout_s: 900
+    provides: [repo_graph, code_chunks, repo_model, snapshot_id]
+  - name: repo_analysis
+    description: "Gemini reads the code → app profile (purpose, capabilities, interface)"
+    needs: [repo_fetch]
+    timeout_s: 600
+    provides: [agent_profile, code_digest, file_tree, brd_candidates]
+  - name: runtime_discovery
+    description: "Runtime Discovery Engine: open the live app in a browser (log in with the test account if set) and profile forms, buttons, downloads, chat, auth, API calls and user flows"
+    needs: [repo_intelligence]
+    timeout_s: 1200
+    provides: [runtime_profile]
+  - name: app_classification
+    description: "Application Classification Engine: runtime + code signals → Chatbot / Form Application / Dashboard / Document Generator / REST API / Workflow System / Static Website / Hybrid Application"
+    needs: [runtime_discovery, repo_intelligence]
+    timeout_s: 120
+    provides: [app_classification]
+  - name: brd_builder
+    description: "Use the repo's BRD, or write one from the authenticated runtime profile / code → quote-verified requirements with atomic acceptance criteria"
+    needs: [repo_analysis, runtime_discovery]
+    critical: true
+    timeout_s: 1500
+    provides: [requirements, brd_markdown, brd_source, brd_path, limitations]
+  - name: agent_test_generation
+    description: "Runtime tests for criteria the live app can exercise, sized to the execution budget, each linked to its AC-xx.y"
+    needs: [brd_builder, app_classification]
+    timeout_s: 900
+    provides: [test_cases, static_only_criteria]
+  - name: action_generation
+    description: "Action Generation Engine: each test → grounded browser/HTTP actions on elements discovered on the live app"
+    needs: [agent_test_generation, app_classification]
+    timeout_s: 900
+    provides: [action_plan]
+  - name: playwright_executor
+    description: "Playwright Executor: run every ready plan in Chromium (session from discovery, adaptive parallelism) and record outcomes, screenshots, page text, replies, downloads, network and console errors"
+    needs: [action_generation]
+    timeout_s: 7800
+    provides: [execution_run, execution_error]
+  - name: evidence_collection
+    description: "Evidence Collection Engine: one bundle per test linked to its acceptance criterion"
+    needs: [playwright_executor]
+    timeout_s: 600
+    provides: [evidence_collection]
+  - name: output_validation
+    description: "Output Validation Engine: deterministic checks + Gemini judging each pass criterion with verified quotes"
+    needs: [evidence_collection]
+    timeout_s: 1200
+    provides: [output_validation]
+  - name: pass_fail
+    description: "Pass/Fail Engine: verdict per test (failed = app defect, inconclusive = MTA limitation) and per acceptance criterion"
+    needs: [output_validation]
+    timeout_s: 300
+    provides: [pass_fail, execution_results, live_reachable, live_status]
+  - name: live_agent_execution
+    description: "Fallback only: chat/API apps — tests the browser workflow could not run, sent to the auto-detected interface and judged; results appended"
+    needs: [pass_fail]
+    timeout_s: 1800
+    provides: [execution_results, live_reachable, live_status, live_error, transport, connection_detail]
+  - name: requirement_traceability
+    description: "Per criterion: hybrid retrieval, verifier samples, validated citations, wiring proof → static verdict (runtime evidence merged later)"
+    needs: [brd_builder, repo_intelligence]
+    critical: true
+    timeout_s: 2400
+    provides: [criterion_verdicts, evidence_items, traced_requirements, static_trace, llm_failures]
+  - name: repository_review
+    description: "Scanner rules + LLM design review → findings (security, architecture, agent design, readiness)"
+    needs: [repo_intelligence, repo_analysis]
+    timeout_s: 900
+    provides: [findings]
+  - name: brd_compliance
+    description: "Merge runtime evidence into the static trace, then the BRD compliance matrix: requirement → criterion → evidence → verdict, code-vs-runtime discrepancies"
+    needs: [requirement_traceability, live_agent_execution]
+    timeout_s: 300
+    provides: [brd_compliance, criterion_verdicts, evidence_items, traced_requirements]
+  - name: compliance_scoring
+    description: "Evidence-weighted BRD compliance + confidence band, verification depth, scorecard, gates"
+    needs: [brd_compliance, repository_review]
+    critical: true
+    timeout_s: 300
+    provides: [score, summary, recommendations]
+  - name: final_report
+    description: "Final Evaluation Report: decision, summary, compliance matrix, runtime results, code-vs-runtime, findings, gates, recommendations, coverage, limitations (JSON + Markdown + printable HTML)"
+    needs: [compliance_scoring]
+    timeout_s: 300
+    provides: [final_report]

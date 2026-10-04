@@ -1,0 +1,160 @@
+{
+  "url": "https://www.saucedemo.com/inventory.html",
+  "project": "sauceLabs",
+  "page_name": "sauceLabs",
+  "intent_count": 19,
+  "intents": [
+    {
+      "intent_id": "INT-001",
+      "intent_name": "click_open_menu",
+      "action": "click",
+      "locator_id": "LOC-0001",
+      "value": null,
+      "expected_result": "open_menu_opened"
+    },
+    {
+      "intent_id": "INT-002",
+      "intent_name": "click_close_menu",
+      "action": "click",
+      "locator_id": "LOC-0002",
+      "value": null,
+      "expected_result": "close_menu_opened"
+    },
+    {
+      "intent_id": "INT-003",
+      "intent_name": "click_add_to_cart",
+      "action": "click",
+      "locator_id": "LOC-0003",
+      "value": null,
+      "expected_result": "add_to_cart_opened"
+    },
+    {
+      "intent_id": "INT-004",
+      "intent_name": "select_name_a_to_z_name_z_to_a_price_low_to_high_price_high_to_low",
+      "action": "select",
+      "locator_id": "LOC-0009",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "INT-005",
+      "intent_name": "click_all_items",
+      "action": "click",
+      "locator_id": "LOC-0010",
+      "value": null,
+      "expected_result": "all_items_opened"
+    },
+    {
+      "intent_id": "INT-006",
+      "intent_name": "click_about",
+      "action": "click",
+      "locator_id": "LOC-0011",
+      "value": null,
+      "expected_result": "about_opened"
+    },
+    {
+      "intent_id": "INT-007",
+      "intent_name": "click_logout",
+      "action": "click",
+      "locator_id": "LOC-0012",
+      "value": null,
+      "expected_result": "logout_opened"
+    },
+    {
+      "intent_id": "INT-008",
+      "intent_name": "click_reset_app_state",
+      "action": "click",
+      "locator_id": "LOC-0013",
+      "value": null,
+      "expected_result": "reset_app_state_opened"
+    },
+    {
+      "intent_id": "INT-009",
+      "intent_name": "click_4",
+      "action": "click",
+      "locator_id": "LOC-0014",
+      "value": null,
+      "expected_result": "4_opened"
+    },
+    {
+      "intent_id": "INT-010",
+      "intent_name": "click_element",
+      "action": "click",
+      "locator_id": "LOC-0015",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "INT-011",
+      "intent_name": "click_sauce_labs_backpack",
+      "action": "click",
+      "locator_id": "LOC-0016",
+      "value": null,
+      "expected_result": "sauce_labs_backpack_opened"
+    },
+    {
+      "intent_id": "INT-012",
+      "intent_name": "click_sauce_labs_bike_light",
+      "action": "click",
+      "locator_id": "LOC-0018",
+      "value": null,
+      "expected_result": "sauce_labs_bike_light_opened"
+    },
+    {
+      "intent_id": "INT-013",
+      "intent_name": "click_sauce_labs_bolt_tshirt",
+      "action": "click",
+      "locator_id": "LOC-0020",
+      "value": null,
+      "expected_result": "sauce_labs_bolt_tshirt_opened"
+    },
+    {
+      "intent_id": "INT-014",
+      "intent_name": "click_sauce_labs_fleece_jacket",
+      "action": "click",
+      "locator_id": "LOC-0022",
+      "value": null,
+      "expected_result": "sauce_labs_fleece_jacket_opened"
+    },
+    {
+      "intent_id": "INT-015",
+      "intent_name": "click_sauce_labs_onesie",
+      "action": "click",
+      "locator_id": "LOC-0024",
+      "value": null,
+      "expected_result": "sauce_labs_onesie_opened"
+    },
+    {
+      "intent_id": "INT-016",
+      "intent_name": "click_testallthethings_tshirt_red",
+      "action": "click",
+      "locator_id": "LOC-0026",
+      "value": null,
+      "expected_result": "testallthethings_tshirt_red_opened"
+    },
+    {
+      "intent_id": "INT-017",
+      "intent_name": "click_twitter",
+      "action": "click",
+      "locator_id": "LOC-0027",
+      "value": null,
+      "expected_result": "twitter_opened"
+    },
+    {
+      "intent_id": "INT-018",
+      "intent_name": "click_facebook",
+      "action": "click",
+      "locator_id": "LOC-0028",
+      "value": null,
+      "expected_result": "facebook_opened"
+    },
+    {
+      "intent_id": "INT-019",
+      "intent_name": "click_linkedin",
+      "action": "click",
+      "locator_id": "LOC-0029",
+      "value": null,
+      "expected_result": "linkedin_opened"
+    }
+  ]
+}

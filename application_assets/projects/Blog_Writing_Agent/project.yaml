@@ -1,0 +1,20 @@
+project:
+  name: Blog_Writing_Agent
+  application_name: Blog Writing Agent
+  url: http://localhost:8501/
+  browser: chromium
+  headless: true
+  interactive_scan: false
+
+modules:
+  - id: M01
+    name: Home
+    url: http://localhost:8501/
+
+test_generation:
+  max_negative_cases: 1
+  max_boundary_cases: 1
+  max_data_iterations: 1
+
+test_execution:
+  suite: Blog_Writing_Agent

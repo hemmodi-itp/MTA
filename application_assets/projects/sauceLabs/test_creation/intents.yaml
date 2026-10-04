@@ -1,0 +1,42 @@
+project: sauceLabs
+source: ui_scanner
+intents:
+- intent_id: DOM_INT_001
+  intent_name: enter_username
+  action: fill
+  locator_id: LOC-0001
+  value: null
+  expected_result: null
+  module_id: null
+  source_scenarios:
+  - M01_BS_001
+  - M01_BS_002
+  - M01_BS_003
+  - M01_BS_004
+  - M01_BS_005
+- intent_id: DOM_INT_002
+  intent_name: enter_password
+  action: fill
+  locator_id: LOC-0002
+  value: null
+  expected_result: null
+  module_id: null
+  source_scenarios:
+  - M01_BS_001
+  - M01_BS_002
+  - M01_BS_003
+  - M01_BS_004
+  - M01_BS_005
+- intent_id: DOM_INT_003
+  intent_name: enter_loginbutton
+  action: fill
+  locator_id: LOC-0003
+  value: null
+  expected_result: null
+  module_id: null
+  source_scenarios:
+  - M01_BS_001
+  - M01_BS_002
+  - M01_BS_003
+  - M01_BS_004
+  - M01_BS_005

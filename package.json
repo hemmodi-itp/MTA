@@ -1,0 +1,17 @@
+{
+  "name": "agentic-qa-platform",
+  "version": "1.0.0",
+  "description": "Playwright TypeScript test execution for agentic-qa-platform",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "test:unit": "vitest run"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^20.19.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

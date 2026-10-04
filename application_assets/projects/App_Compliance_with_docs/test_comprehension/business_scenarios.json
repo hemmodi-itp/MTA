@@ -1,0 +1,333 @@
+{
+  "project": "App_Compliance_with_docs",
+  "total_scenarios": 11,
+  "scenarios": [
+    {
+      "scenario_id": "GEN_BS_001",
+      "title": "Toggle Application Theme using Dark Mode Switch",
+      "business_objective": "Enable users to toggle the visual interface between light and dark themes to improve user experience and accessibility.",
+      "actor": "User",
+      "preconditions": [
+        "The user is on an active application page containing the dark mode toggle switch."
+      ],
+      "steps": [
+        "User clicks the dark mode switch element (LOC-0001)."
+      ],
+      "expected_result": "The visual theme of the application toggles to dark mode.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": "4716286f5559ac3b268de9ad60595677d4da579e8a3854bfd0e4b13b161b80d0"
+    },
+    {
+      "scenario_id": "GEN_BS_002",
+      "title": "Open Demo Project",
+      "business_objective": "Allow users to open and inspect a pre-configured demo project.",
+      "actor": "User",
+      "preconditions": [
+        "The user is navigating the application interface where project choices are present."
+      ],
+      "steps": [
+        "User clicks the option to open the demo project (LOC-0002)."
+      ],
+      "expected_result": "The application opens and loads the demo project.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": "3132e6327071897a612d6f9c1c183e69be2c1a74470597e1de5e246e6977dd6d"
+    },
+    {
+      "scenario_id": "GEN_BS_003",
+      "title": "Access BRD Compliance Criterion Level View",
+      "business_objective": "Provide functionality to access and review compliance details at the BRD criterion level.",
+      "actor": "User",
+      "preconditions": [
+        "The user is viewing the compliance navigation controls."
+      ],
+      "steps": [
+        "User clicks the element to access the BRD compliance criterion level (LOC-0003)."
+      ],
+      "expected_result": "The application navigates to the BRD compliance criterion level view.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": "c192ff4f5fc578e633910819774130304e4f4eb27bb9faff982cf5fe7a39b6a0"
+    },
+    {
+      "scenario_id": "GEN_BS_004",
+      "title": "Create a New Project",
+      "business_objective": "Allow users to initiate the creation of a new project.",
+      "actor": "User",
+      "preconditions": [
+        "The user is on a page with project management controls available."
+      ],
+      "steps": [
+        "User clicks the control to create a new project (LOC-0004)."
+      ],
+      "expected_result": "The application opens the project creation workflow.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": "74059d482c459c368ab35ad923a75bcea5b02199e8db10531b095251780dac4a"
+    },
+    {
+      "scenario_id": "M01_BS_001",
+      "title": "Switch Application Theme to Dark Mode",
+      "business_objective": "Allow user to switch the visual theme of the application to dark mode for improved readability or preference.",
+      "actor": "User",
+      "preconditions": [
+        "User is navigating the application page in standard display mode."
+      ],
+      "steps": [
+        "User clicks the 'Switch to dark mode' button."
+      ],
+      "expected_result": "The application interface theme updates to dark mode.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Home",
+      "content_hash": "084fa37fb42a1e1f86f7aaf45035beb39120ddc3d10bd42ca299a072d4587eb0"
+    },
+    {
+      "scenario_id": "M01_BS_002",
+      "title": "Open Demo Project",
+      "business_objective": "Enable the user to open and explore the built-in demo project.",
+      "actor": "User",
+      "preconditions": [
+        "User is on the main application interface."
+      ],
+      "steps": [
+        "User clicks the 'Open the demo project' button."
+      ],
+      "expected_result": "The system loads and displays the demo project context.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Home",
+      "content_hash": "67043e3cc37007dfb0be35c976ada6dcad6ac72229a97317e61b41e59014fac4"
+    },
+    {
+      "scenario_id": "M01_BS_003",
+      "title": "Access BRD Compliance Criterion Level View",
+      "business_objective": "Allow user to navigate directly to the BRD compliance criterion level information.",
+      "actor": "User",
+      "preconditions": [
+        "User is navigating the application page."
+      ],
+      "steps": [
+        "User clicks the 'BRD compliance criterion level' button."
+      ],
+      "expected_result": "The system navigates to and displays the BRD compliance criterion level view.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Home",
+      "content_hash": "dfd0677c8660c19a4697ee81099a8b52b60e2345db270e7bcaa83e0dd0f4b508"
+    },
+    {
+      "scenario_id": "M01_BS_004",
+      "title": "Create New Project",
+      "business_objective": "Allow user to trigger the creation of a new project within the system.",
+      "actor": "User",
+      "preconditions": [
+        "User is on the main navigation or workspace page."
+      ],
+      "steps": [
+        "User clicks the 'New project' button."
+      ],
+      "expected_result": "The system opens the project creation screen or initiates a new project workflow.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Home",
+      "content_hash": "2e3f0ac8458d04d95fe30aa550efaf98aa252d45b99f4981257ec67550d83613"
+    },
+    {
+      "scenario_id": "M01_BS_005",
+      "title": "Delete Item or Resource",
+      "business_objective": "Enable users to remove selected items or projects from the system",
+      "actor": "User",
+      "preconditions": [
+        "User is logged into the application",
+        "An item or project eligible for deletion is selected or visible"
+      ],
+      "steps": [
+        "User locates the item to be deleted",
+        "User clicks the delete button (selector: LOC-0005)",
+        "User confirms the deletion request if prompted"
+      ],
+      "expected_result": "The target item or project is removed from the system",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M01",
+      "module_name": "Home",
+      "content_hash": "73b771e9c8851a1159fdb11f5651a725dfb1836ef5e13669c3afda51de99d66d"
+    },
+    {
+      "scenario_id": "M01_BS_006",
+      "title": "Access Shopflow Demo",
+      "business_objective": "Allow users to open and explore the Shopflow demo project",
+      "actor": "User",
+      "preconditions": [
+        "User is on the main application interface"
+      ],
+      "steps": [
+        "User navigates to the demo section",
+        "User clicks the Shopflow demo option (selector: LOC-0006)"
+      ],
+      "expected_result": "The Shopflow demo project interface is loaded and displayed to the user",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Home",
+      "content_hash": "e957ca124512666250ce56d813abfed151e45a68e7113b874b3420a77a22d8d7"
+    },
+    {
+      "scenario_id": "M01_BS_007",
+      "title": "Execute Open Action",
+      "business_objective": "Allow users to open selected resources or views",
+      "actor": "User",
+      "preconditions": [
+        "User is navigating the application page"
+      ],
+      "steps": [
+        "User selects the item or document to be viewed",
+        "User clicks the open action button (selector: LOC-0007)"
+      ],
+      "expected_result": "The target item or document is opened and rendered in the view",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "synthetic_brd.md",
+          "page_number": null,
+          "section": "Clickable Elements (buttons, links)",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M01",
+      "module_name": "Home",
+      "content_hash": "97a85a84ba1b419bea16a25051905ced6e9353ff52f025f8e1f82205eb40f92a"
+    }
+  ],
+  "modules": [
+    "M01"
+  ]
+}

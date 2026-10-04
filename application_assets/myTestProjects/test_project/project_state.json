@@ -1,0 +1,27 @@
+{
+  "project": "test_project",
+  "schema_version": "1.0",
+  "last_updated": "2026-07-09T17:00:32.787778+00:00",
+  "last_run_id": "test-fallback-001",
+  "discovery": {
+    "dom_fingerprint": "",
+    "brd_fingerprint": "",
+    "last_discovered": "",
+    "cached_output": {}
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 0,
+    "grounded_intents": 0,
+    "passing_tests": 0,
+    "failing_tests": 0
+  },
+  "business_scenarios": {},
+  "test_cases": {},
+  "new_additions": [],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": []
+}

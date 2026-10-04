@@ -1,0 +1,62 @@
+{
+  "button_loc_0001": {
+    "type": "testid",
+    "locator": "stBaseButton-headerNoPadding",
+    "description": "",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "_default"
+  },
+  "stop": {
+    "type": "role",
+    "locator": "button",
+    "description": "Stop",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "_default",
+    "name": "Stop"
+  },
+  "deploy": {
+    "type": "role",
+    "locator": "button",
+    "name": "Deploy",
+    "description": "Deploy",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "_default"
+  },
+  "main_menu": {
+    "type": "role",
+    "locator": "button",
+    "name": "Main menu",
+    "description": "Main menu",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "_default"
+  },
+  "a_loc_0005": {
+    "type": "css",
+    "locator": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr>td:nth-of-type(2)>a",
+    "description": "",
+    "_source_locator_id": "LOC-0005",
+    "_module_id": "_default"
+  },
+  "a_loc_0006": {
+    "type": "css",
+    "locator": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr:nth-of-type(2)>td:nth-of-type(2)>a",
+    "description": "",
+    "_source_locator_id": "LOC-0006",
+    "_module_id": "_default"
+  },
+  "a_loc_0007": {
+    "type": "css",
+    "locator": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr:nth-of-type(3)>td:nth-of-type(2)>a",
+    "description": "",
+    "_source_locator_id": "LOC-0007",
+    "_module_id": "_default"
+  },
+  "link_to_heading": {
+    "type": "role",
+    "locator": "link",
+    "name": "Link to heading",
+    "description": "Link to heading",
+    "_source_locator_id": "LOC-0008",
+    "_module_id": "_default"
+  }
+}

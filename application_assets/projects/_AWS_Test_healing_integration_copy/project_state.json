@@ -1,0 +1,440 @@
+{
+  "project": "AWS_Test",
+  "schema_version": "1.0",
+  "last_updated": "2026-07-10T16:06:40.535072+00:00",
+  "last_run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3",
+  "discovery": {
+    "dom_fingerprint": "sha256:80770cd4c99124b8f5820342acf785d0576386d245892fba0a4dcc2927e11994",
+    "brd_fingerprint": "sha256:cce799cad80bc14668820650506d04971405d7509a0f48282039dcec050ea7fa",
+    "last_discovered": "2026-07-13T05:08:30.583470+00:00",
+    "cached_output": {
+      "status": "partial",
+      "intents_path": "application_assets\\projects\\AWS_Test\\test_creation\\intents.yaml",
+      "partial_reasons": [
+        "comprehension timed out after 60s",
+        "DOM scan timed out after 60s — kept 20 intent(s) captured before the deadline"
+      ],
+      "dom_status": "partial",
+      "dom_intents_count": 20,
+      "dom_intents_path": "application_assets\\projects\\AWS_Test\\comprehension\\modules\\M02\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\AWS_Test\\comprehension\\modules\\M02\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "DOM_INT_001",
+          "intent_name": "enter_element",
+          "action": "fill",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_002",
+          "intent_name": "enter_allow_crosscontext_behavioral_ads",
+          "action": "fill",
+          "locator_id": "LOC-0004",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_003",
+          "intent_name": "enter_opt_out_of_crosscontext_behavioral_ads",
+          "action": "fill",
+          "locator_id": "LOC-0005",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_004",
+          "intent_name": "enter_im_looking_for",
+          "action": "fill",
+          "locator_id": "LOC-0006",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_006",
+          "intent_name": "click_accept",
+          "action": "click",
+          "locator_id": "LOC-0009",
+          "value": null,
+          "expected_result": "accept_opened"
+        },
+        {
+          "intent_id": "DOM_INT_007",
+          "intent_name": "click_decline",
+          "action": "click",
+          "locator_id": "LOC-0010",
+          "value": null,
+          "expected_result": "decline_opened"
+        },
+        {
+          "intent_id": "DOM_INT_008",
+          "intent_name": "click_customize",
+          "action": "click",
+          "locator_id": "LOC-0011",
+          "value": null,
+          "expected_result": "customize_opened"
+        },
+        {
+          "intent_id": "DOM_INT_009",
+          "intent_name": "click_cancel",
+          "action": "click",
+          "locator_id": "LOC-0012",
+          "value": null,
+          "expected_result": "cancel_opened"
+        },
+        {
+          "intent_id": "DOM_INT_010",
+          "intent_name": "click_save_preferences",
+          "action": "click",
+          "locator_id": "LOC-0013",
+          "value": null,
+          "expected_result": "save_preferences_opened"
+        },
+        {
+          "intent_id": "DOM_INT_011",
+          "intent_name": "click_element",
+          "action": "click",
+          "locator_id": "LOC-0016",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_012",
+          "intent_name": "click_filter_all",
+          "action": "click",
+          "locator_id": "LOC-0019",
+          "value": null,
+          "expected_result": "filter_all_opened"
+        },
+        {
+          "intent_id": "DOM_INT_013",
+          "intent_name": "click_english",
+          "action": "click",
+          "locator_id": "LOC-0021",
+          "value": null,
+          "expected_result": "english_opened"
+        },
+        {
+          "intent_id": "DOM_INT_014",
+          "intent_name": "click_support",
+          "action": "click",
+          "locator_id": "LOC-0022",
+          "value": null,
+          "expected_result": "support_opened"
+        },
+        {
+          "intent_id": "DOM_INT_015",
+          "intent_name": "click_my_account",
+          "action": "click",
+          "locator_id": "LOC-0023",
+          "value": null,
+          "expected_result": "my_account_opened"
+        },
+        {
+          "intent_id": "DOM_INT_016",
+          "intent_name": "click_discover_aws",
+          "action": "click",
+          "locator_id": "LOC-0025",
+          "value": null,
+          "expected_result": "discover_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_017",
+          "intent_name": "click_products",
+          "action": "click",
+          "locator_id": "LOC-0026",
+          "value": null,
+          "expected_result": "products_opened"
+        },
+        {
+          "intent_id": "DOM_INT_018",
+          "intent_name": "click_solutions",
+          "action": "click",
+          "locator_id": "LOC-0027",
+          "value": null,
+          "expected_result": "solutions_opened"
+        },
+        {
+          "intent_id": "DOM_INT_019",
+          "intent_name": "click_pricing",
+          "action": "click",
+          "locator_id": "LOC-0028",
+          "value": null,
+          "expected_result": "pricing_opened"
+        },
+        {
+          "intent_id": "DOM_INT_020",
+          "intent_name": "click_resources",
+          "action": "click",
+          "locator_id": "LOC-0029",
+          "value": null,
+          "expected_result": "resources_opened"
+        },
+        {
+          "intent_id": "DOM_INT_111",
+          "intent_name": "click_play",
+          "action": "click",
+          "locator_id": "LOC-0034",
+          "value": null,
+          "expected_result": "play_opened"
+        }
+      ],
+      "comprehension_status": "success",
+      "comprehension_source": "dom_synthesized",
+      "scenarios_count": 21,
+      "business_scenarios_path": "application_assets\\projects\\AWS_Test\\comprehension\\business_scenarios.json",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 21,
+    "grounded_intents": 0,
+    "passing_tests": 2,
+    "failing_tests": 12
+  },
+  "business_scenarios": {},
+  "test_cases": {
+    "SC-001": {
+      "name": "Save Changes",
+      "scenario": "SC-001",
+      "suite": null,
+      "status": "failing",
+      "test_data_hash": "sha256:666c555fa7edcca628c0bfc61566580fed30182a228645f22c8a531227edd426",
+      "last_run": "2026-07-10",
+      "last_run_id": "24414466-f260-4810-98cd-3d5585929772"
+    },
+    "SC-002": {
+      "name": "Browse AWS_Test",
+      "scenario": "SC-002",
+      "suite": null,
+      "status": "failing",
+      "test_data_hash": "sha256:05cbd3c70f7b385851da8c03943a7f81218b0cdf821a63f7a1a5ebca7de8dfb3",
+      "last_run": "2026-07-10",
+      "last_run_id": "24414466-f260-4810-98cd-3d5585929772"
+    },
+    "SC-003": {
+      "name": "Interact with AWS_Test",
+      "scenario": "SC-003",
+      "suite": null,
+      "status": "failing",
+      "test_data_hash": "sha256:ffcaa1fb6a3ab8e31464c2b05f3ad1fd4a5c677b3b1a6c3b62b8c8d8eab7c0ea",
+      "last_run": "2026-07-10",
+      "last_run_id": "24414466-f260-4810-98cd-3d5585929772"
+    },
+    "M01_BS_001": {
+      "name": "Navigate using navigation bar to fetch page information",
+      "scenario": "M01_BS_001",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:002f5c5c4263fe496921e9f72a576c4bf7d4fbe782ae66e4e7a42c051f768f37",
+      "last_run": "2026-07-10",
+      "last_run_id": "4a0a70f4-9bef-4cac-9269-32b4a8f776c8"
+    },
+    "M01_BS_002": {
+      "name": "Browse new AWS items in What's New section",
+      "scenario": "M01_BS_002",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:c91d71facfdee48f2b8110c05cd43b2e82cd6dd8e3ec142c03c778d5dbdeb3a8",
+      "last_run": "2026-07-10",
+      "last_run_id": "4a0a70f4-9bef-4cac-9269-32b4a8f776c8"
+    },
+    "M01_BS_003": {
+      "name": "View client images through image carousel",
+      "scenario": "M01_BS_003",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:58cdcaac8b9e157196932f975bbb29d5ec7bc2213df9114dfbcf5221331d1236",
+      "last_run": "2026-07-10",
+      "last_run_id": "4a0a70f4-9bef-4cac-9269-32b4a8f776c8"
+    },
+    "M01_BS_004": {
+      "name": "Browse customer success stories through story cards",
+      "scenario": "M01_BS_004",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:354bfeee90415c8f92a42fc4df1d344a93e0c7a96b96451b0379bd0a3716cd31",
+      "last_run": "2026-07-10",
+      "last_run_id": "4a0a70f4-9bef-4cac-9269-32b4a8f776c8"
+    },
+    "M01_BS_005": {
+      "name": "Return to top of page using back to top functionality",
+      "scenario": "M01_BS_005",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:793091e29cf9f190cb17f28abd5af3714151bd447d99ff9c00d856098c1da63f",
+      "last_run": "2026-07-10",
+      "last_run_id": "4a0a70f4-9bef-4cac-9269-32b4a8f776c8"
+    },
+    "SC-004": {
+      "name": "User Registration",
+      "scenario": "SC-004",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:5fdb641950a1c72a2a0cafa0d2a10fb165135c13607200897f6525c650819491",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-005": {
+      "name": "Search Products",
+      "scenario": "SC-005",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:791bd86d36d1579a056a0bf3654c4ed47736c5669214e72120123eb92742d653",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-006": {
+      "name": "User Sign In",
+      "scenario": "SC-006",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:687e382136bb6136c22db8e834cc6b0835818673739dd52b1ceed3436f58da56",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-007": {
+      "name": "Add Item",
+      "scenario": "SC-007",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:3277b5da39f519a755b1fd6459cdbdc0920d59a7931ddc6dddf328f636a0d403",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-008": {
+      "name": "Create Account",
+      "scenario": "SC-008",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:ba49fc083782679f4671b697f83da0e98bd85abd773df41b30d749d6c6218c71",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-009": {
+      "name": "Browse AWS_Test",
+      "scenario": "SC-009",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:855176d5a6923da4bd4a85bd65f77c379f49e4aa41f6f0eee8cd021327be3618",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-010": {
+      "name": "Interact with AWS_Test",
+      "scenario": "SC-010",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:25aad239c5e046de0d1a4699305a7ee01cbcdcf8003aec7c60b6970a0dd7e6e8",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_001": {
+      "name": "User navigates Aurora page using navigation bar",
+      "scenario": "M02_BS_001",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:9488a23f6bd4e65276f89ed444bcede9977ae71986332948938dbeb422b8db85",
+      "last_run": "2026-07-10",
+      "last_run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3"
+    },
+    "M02_BS_002": {
+      "name": "User reads Aurora introduction information",
+      "scenario": "M02_BS_002",
+      "suite": "M02",
+      "status": "passing",
+      "test_data_hash": "sha256:c85014fa1f73a66fe5dd629c3ce8ec0807939d28d0abb2bfe88145c0c1b190d6",
+      "last_run": "2026-07-10",
+      "last_run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3"
+    },
+    "M02_BS_003": {
+      "name": "User explores Aurora benefits information",
+      "scenario": "M02_BS_003",
+      "suite": "M02",
+      "status": "passing",
+      "test_data_hash": "sha256:b952923ec766776e009d5f3468979bb3723d9bf0a8eec4fdc3a977547b254201",
+      "last_run": "2026-07-10",
+      "last_run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3"
+    },
+    "M02_BS_004": {
+      "name": "User views customer success stories",
+      "scenario": "M02_BS_004",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:980c18ad26c050b8f00bb57a7bd4785d4b36938630f8870d5222612f8875211e",
+      "last_run": "2026-07-10",
+      "last_run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3"
+    },
+    "M02_BS_005": {
+      "name": "User follows Get Started with Aurora workflow",
+      "scenario": "M02_BS_005",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:f8ccd2a8d93de25ea8989ba1f69af6bc2420cc0b3008bb21a7550256cb34eee9",
+      "last_run": "2026-07-10",
+      "last_run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3"
+    },
+    "M02_BS_006": {
+      "name": "User explores Aurora pricing information",
+      "scenario": "M02_BS_006",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:17dc3f965f8c991041428d22bb54849ce82f4f28c5843af64404116d2bc7303b",
+      "last_run": "2026-07-10",
+      "last_run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3"
+    }
+  },
+  "new_additions": [
+    "M01_BS_001",
+    "M01_BS_003",
+    "M01_BS_005",
+    "SC-004",
+    "SC-005",
+    "SC-006",
+    "SC-007",
+    "SC-008",
+    "SC-009",
+    "SC-010",
+    "SC-002",
+    "SC-003",
+    "M02_BS_001",
+    "M02_BS_004",
+    "M02_BS_005"
+  ],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": [
+    {
+      "run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3",
+      "timestamp": "2026-07-10T16:06:40.385676+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 7,
+      "failed": 11,
+      "total": 18
+    },
+    {
+      "run_id": "4a0a70f4-9bef-4cac-9269-32b4a8f776c8",
+      "timestamp": "2026-07-10T10:10:01.695860+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 2,
+      "failed": 15,
+      "total": 17
+    },
+    {
+      "run_id": "24414466-f260-4810-98cd-3d5585929772",
+      "timestamp": "2026-07-09T19:15:09.312618+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 3,
+      "failed": 28,
+      "total": 31
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "sessions": [
+    {
+      "session_number": 1,
+      "start_time": 1783533457.867424,
+      "end_time": 1783533749.2415824,
+      "end_reason": "user_closed",
+      "click_events": [],
+      "page_transitions": []
+    }
+  ],
+  "all_click_events": [],
+  "all_api_calls": [
+    {
+      "url": "https://keycloak-dev.appevolve.intuitive.ai/realms/appevolve/protocol/openid-connect/login-status-iframe.html/init?client_id=app&origin=https%3A%2F%2Fpt-dev.appevolve.intuitive.ai",
+      "method": "GET",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://keycloak-dev.appevolve.intuitive.ai/realms/appevolve/protocol/openid-connect/token",
+      "method": "POST",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://pt-dev.appevolve.intuitive.ai/api/dashboard/counts",
+      "method": "GET",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://pt-dev.appevolve.intuitive.ai/api/dashboard/daily-counts?type=user&module=CODEVOLVE&days=7&keepZeroDays=true",
+      "method": "GET",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://pt-dev.appevolve.intuitive.ai/api/dashboard/daily-counts?type=client&module=CODEVOLVE&days=7&keepZeroDays=true",
+      "method": "GET",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://pt-dev.appevolve.intuitive.ai/api/dashboard/daily-counts?type=project&module=CODEVOLVE&days=7&keepZeroDays=true",
+      "method": "GET",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://pt-dev.appevolve.intuitive.ai/api/agentic/projects",
+      "method": "GET",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://pt-dev.appevolve.intuitive.ai/api/projects/search",
+      "method": "POST",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    },
+    {
+      "url": "https://keycloak-dev.appevolve.intuitive.ai/realms/appevolve/protocol/openid-connect/login-status-iframe.html/init?client_id=app&origin=https%3A%2F%2Fpt-dev.appevolve.intuitive.ai",
+      "method": "GET",
+      "after_seq": 0,
+      "page_path": "/appevolve/dashboard"
+    }
+  ],
+  "all_page_transitions": []
+}

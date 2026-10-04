@@ -1,0 +1,13 @@
+{
+  "status": "failed",
+  "intents_path": "application_assets\\projects\\App_Compliance_with_docs\\test_creation\\intents.yaml",
+  "dom_status": "success",
+  "dom_intents_count": 7,
+  "dom_intents_path": "application_assets\\projects\\App_Compliance_with_docs\\test_comprehension\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\App_Compliance_with_docs\\test_comprehension\\dom_elements.json",
+  "comprehension_status": "failed",
+  "scenarios_count": 0,
+  "business_scenarios_path": "",
+  "mode": "url_only",
+  "module": "discovery"
+}

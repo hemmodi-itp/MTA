@@ -1,0 +1,70 @@
+{
+  "name": "RepoAnalysisAgent",
+  "registry_key": "repo_analysis",
+  "category": "comprehension",
+  "module_path": "agents.comprehension.repo_analysis.agent",
+  "version": "2.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Reads the repository (any kind of app: agent, chatbot, form app, document generator, dashboard, API, CLI, library) and uses Gemini to infer its purpose, capabilities and interface; repository content is fenced as untrusted. On LLM failure returns partial with a deterministic profile (name, README, frameworks, routes).",
+  "inputs": [
+    {
+      "name": "repo_dir",
+      "type": "string",
+      "required": true,
+      "description": "Extracted repository root from RepoFetchAgent"
+    },
+    {
+      "name": "repo_full_name",
+      "type": "string",
+      "required": false,
+      "description": "owner/repo, for prompt context"
+    },
+    {
+      "name": "repo_metadata",
+      "type": "object",
+      "required": false,
+      "description": "GitHub description/language"
+    },
+    {
+      "name": "live_url",
+      "type": "string",
+      "required": false,
+      "description": "Deployed URL, if any"
+    },
+    {
+      "name": "connector_mode",
+      "type": "string",
+      "required": false,
+      "description": "Optional LLM connector override"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "agent_profile",
+      "type": "object",
+      "description": "Purpose, capabilities, interface (type: http_api|web_chat_ui|web_form_app|document_generator|dashboard|cli|library|unknown, endpoints, framework), observed_risks (hints passed to RepositoryReviewAgent); degraded=true when built without the LLM"
+    },
+    {
+      "name": "code_digest",
+      "type": "string",
+      "description": "Prioritised concatenation of key source files"
+    },
+    {
+      "name": "file_tree",
+      "type": "string",
+      "description": "Rendered repository file tree"
+    },
+    {
+      "name": "brd_candidates",
+      "type": "array",
+      "description": "Repo paths that look like requirement documents"
+    }
+  ],
+  "dependencies": [],
+  "skills": [
+    "repo_analysis"
+  ],
+  "doc": "agent.md"
+}

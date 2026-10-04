@@ -1,0 +1,132 @@
+agents:
+  # ── Fallback schema ────────────────────────────────────────────────────────
+  # Every fallback tier for every agent lives here, and every tier ships
+  # `enabled: false` by default — a disabled tier means the step fails
+  # immediately when the primary path fails, rather than silently degrading
+  # to a reroute/alt-model/rule-based result. Flip a specific entry's
+  # `enabled` to `true` to opt back into that tier.
+  #
+  # connector_type values in a `fallbacks:` entry:
+  #   ns_http          — reroute to NeuroStack (agent_name: which NS agent to call)
+  #   alt_model        — same connector, lighter model (model: override, default haiku)
+  #   python_stub      — deterministic Python/rule-based degrade (agents/common/fallback_core.py
+  #                      or fallback_module/fallback_class for a standalone stub agent).
+  #                      The orchestrator's whole-agent swap needs fallback_module +
+  #                      fallback_class; without them it skips the tier with a warning.
+  #   dom_synthesized  — discovery-only: rule-based scenario synthesis from raw DOM
+  #                      clicks when BRD comprehension fails/times out (no LLM)
+  #
+  # Consumed by two independent layers, both reading this same list:
+  #   - agents/orchestrator/agent.py:_try_with_fallbacks — whole-agent-swap when a
+  #     step's execute() raises or returns status="failed". It dispatches ns_http and
+  #     python_stub (with fallback_module) tiers only; alt_model/dom_synthesized are
+  #     per-call tiers handled inside the agent and are skipped here with a warning.
+  #   - agents/base_agent.py:execute_with_fallback (or an agent's own bespoke tier
+  #     logic, e.g. DiscoveryAgent/ScriptGenerationAgent) — per-LLM-call tier
+  #     switching inside a single step
+
+  # ── Internal agents (existing Python, same process) ───────────────────────
+  comprehension:
+    connector_type: internal
+    inputs: [project_name, brd_dir]
+    outputs: [business_scenarios_path, scenarios_count]
+    fallbacks:
+      - connector_type: ns_http
+        agent_name: comprehension_agent      # the NeuroStack-side agent name
+        enabled: false
+      - connector_type: python_stub
+        fallback_module: agents.comprehension.comprehension_agent.agent
+        fallback_class: ComprehensionAgentStub
+        enabled: false
+
+  discovery:
+    connector_type: internal
+    inputs: [project_name, url, brd_dir]
+    outputs: [business_scenarios_path, intents_path]
+    fallbacks:
+      - connector_type: ns_http          # NeuroStack reroute before DOM synthesis (agent.py's _run_comprehension)
+        enabled: false
+      - connector_type: dom_synthesized  # rule-based click scenarios when BRD comprehension fails/times out
+        enabled: false
+
+  testdata:
+    connector_type: internal
+    inputs: [project_name, intents_path]
+    outputs: [test_data_path]
+    fallbacks:
+      - connector_type: ns_http
+        enabled: false
+      - connector_type: alt_model
+        model: claude-haiku-4-5-20251001
+        enabled: false
+      - connector_type: python_stub
+        enabled: false
+
+  semantic_map:
+    connector_type: internal
+    inputs: [project_name]
+    outputs: [scenario_element_map_path]
+    fallbacks:
+      - connector_type: ns_http
+        enabled: false
+      - connector_type: alt_model
+        model: claude-haiku-4-5-20251001
+        enabled: false
+      - connector_type: python_stub
+        enabled: false
+
+  locator:
+    connector_type: internal
+    inputs: [project_name, intents_path]
+    outputs: [locators_path]
+
+  script_generation:
+    connector_type: internal
+    inputs: [project_name, test_cases_path, locators_path]
+    outputs: [scripts_path]
+    # Tier-2 last-resort fallback (agents/common/fallback_core.py) writes one
+    # real "page loads" test plus test.skip() stubs for everything else, for
+    # any scenario the LLM (and NS reroute) can't produce a spec for.
+    # enabled: false = OFF: an unfixable scenario is skipped (left uncovered,
+    # retried next run) instead of getting a permanent stub file.
+    fallbacks:
+      - connector_type: ns_http
+        enabled: false
+      - connector_type: alt_model
+        model: claude-haiku-4-5-20251001
+        enabled: false
+      - connector_type: python_stub
+        enabled: false
+
+  execution:
+    connector_type: internal
+    inputs: [project_name, scripts_path, suite]
+    outputs: [execution_results]
+
+  healing:
+    connector_type: internal
+    inputs: [project_name, execution_results]
+    outputs: [healed_results]
+
+  reporting:
+    connector_type: internal
+    inputs: [project_name, execution_results]
+    outputs: [report_path]
+
+  artifact_generator_intents:
+    connector_type: internal
+    inputs: [project_name, business_scenarios_path]
+    outputs: [intents_path]
+    fallbacks:
+      - connector_type: ns_http
+        agent_name: artifact_generator_intents
+        enabled: false
+
+  artifact_generator_testcases:
+    connector_type: internal
+    inputs: [project_name, intents_path, test_data_path]
+    outputs: [test_cases_path]
+    fallbacks:
+      - connector_type: ns_http
+        agent_name: artifact_generator_testcases
+        enabled: false

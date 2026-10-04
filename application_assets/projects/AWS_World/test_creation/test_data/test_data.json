@@ -1,0 +1,392 @@
+[
+  {
+    "testdata_id": "TD-001",
+    "scenario_id": "M01_BS_001",
+    "scenario_title": "Navigate to page information using navigation bar",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_navigation_item",
+        "field_type": "navigation",
+        "value": "About Us"
+      },
+      {
+        "field_name": "expected_page_heading",
+        "field_type": "assertion",
+        "value": "About AWS World"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/about"
+      },
+      {
+        "field_name": "expected_page_content",
+        "field_type": "assertion",
+        "value": "Learn more about our mission and values"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation item leads to missing or broken page",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_navigation_item",
+                "field_type": "navigation",
+                "value": "About Us"
+              },
+              {
+                "field_name": "expected_page_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/about"
+              },
+              {
+                "field_name": "expected_page_content",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Page content failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-002",
+    "scenario_id": "M01_BS_002",
+    "scenario_title": "Browse new AWS items in What's New section",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_whats_new_section",
+        "field_type": "navigation",
+        "value": "What's New"
+      },
+      {
+        "field_name": "expected_section_heading",
+        "field_type": "assertion",
+        "value": "What's New with AWS"
+      },
+      {
+        "field_name": "min_aws_items_count",
+        "field_type": "count_min",
+        "value": "5"
+      },
+      {
+        "field_name": "select_aws_item",
+        "field_type": "assertion",
+        "value": "Amazon EC2 Instance Types Update"
+      },
+      {
+        "field_name": "expected_item_details",
+        "field_type": "assertion",
+        "value": "Learn about the latest EC2 instance capabilities"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/whats-new/ec2-instance-update"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "What's New section missing or empty",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_whats_new_section",
+                "field_type": "navigation",
+                "value": "What's New"
+              },
+              {
+                "field_name": "expected_section_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_aws_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "select_aws_item",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_item_details",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/error/404"
+              }
+            ],
+            "expected_error": "What's New section is currently unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-003",
+    "scenario_id": "M01_BS_003",
+    "scenario_title": "View client showcase through image carousel",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "view_carousel_section",
+        "field_type": "navigation",
+        "value": "client-showcase-carousel"
+      },
+      {
+        "field_name": "expected_carousel_heading",
+        "field_type": "assertion",
+        "value": "Our Client Success Stories"
+      },
+      {
+        "field_name": "min_client_images_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "click_client_image",
+        "field_type": "navigation",
+        "value": "first-client-image"
+      },
+      {
+        "field_name": "expected_client_details",
+        "field_type": "assertion",
+        "value": "Client Details"
+      },
+      {
+        "field_name": "expected_detail_url",
+        "field_type": "url",
+        "value": "/client-showcase/details"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Carousel content fails to load or display",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "view_carousel_section",
+                "field_type": "navigation",
+                "value": "client-showcase-carousel"
+              },
+              {
+                "field_name": "expected_carousel_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_client_images_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "click_client_image",
+                "field_type": "navigation",
+                "value": "first-client-image"
+              },
+              {
+                "field_name": "expected_client_details",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_detail_url",
+                "field_type": "url",
+                "value": "/404"
+              }
+            ],
+            "expected_error": "Carousel content unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-004",
+    "scenario_id": "M01_BS_004",
+    "scenario_title": "Read customer success stories through story cards",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "Customer Story Cards"
+      },
+      {
+        "field_name": "expected_story_cards",
+        "field_type": "assertion",
+        "value": "customer success stories"
+      },
+      {
+        "field_name": "min_story_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "click_story_card",
+        "field_type": "navigation",
+        "value": "story card link"
+      },
+      {
+        "field_name": "expected_full_story",
+        "field_type": "assertion",
+        "value": "detailed customer story content"
+      },
+      {
+        "field_name": "expected_story_url",
+        "field_type": "url",
+        "value": "/customer-stories/"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Customer Story Cards section not populated or missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "Customer Story Cards"
+              },
+              {
+                "field_name": "expected_story_cards",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_story_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "click_story_card",
+                "field_type": "navigation",
+                "value": "story card link"
+              },
+              {
+                "field_name": "expected_full_story",
+                "field_type": "assertion",
+                "value": "No stories available"
+              },
+              {
+                "field_name": "expected_story_url",
+                "field_type": "url",
+                "value": "/customer-stories/"
+              }
+            ],
+            "expected_error": "No customer stories are currently available"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "M01_BS_005",
+    "scenario_title": "Explore AWS products information from homepage",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_homepage_section",
+        "field_type": "navigation",
+        "value": "AWS Products"
+      },
+      {
+        "field_name": "expected_products_heading",
+        "field_type": "assertion",
+        "value": "AWS Products & Services"
+      },
+      {
+        "field_name": "expected_product_categories",
+        "field_type": "assertion",
+        "value": "Compute, Storage, Database, Machine Learning, Analytics"
+      },
+      {
+        "field_name": "select_product_detail",
+        "field_type": "navigation",
+        "value": "Amazon EC2"
+      },
+      {
+        "field_name": "expected_product_description",
+        "field_type": "assertion",
+        "value": "Scalable computing capacity in the Amazon Web Services (AWS) cloud"
+      },
+      {
+        "field_name": "min_product_items_count",
+        "field_type": "count_min",
+        "value": "10"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Missing or incorrect product information sections",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_homepage_section",
+                "field_type": "navigation",
+                "value": "AWS Products"
+              },
+              {
+                "field_name": "expected_products_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_product_categories",
+                "field_type": "assertion",
+                "value": "Compute, Storage, Database, Machine Learning, Analytics"
+              },
+              {
+                "field_name": "select_product_detail",
+                "field_type": "navigation",
+                "value": "Amazon EC2"
+              },
+              {
+                "field_name": "expected_product_description",
+                "field_type": "assertion",
+                "value": "Scalable computing capacity in the Amazon Web Services (AWS) cloud"
+              },
+              {
+                "field_name": "min_product_items_count",
+                "field_type": "count_min",
+                "value": "10"
+              }
+            ],
+            "expected_error": "Products section heading not found or not visible"
+          }
+        ]
+      }
+    ]
+  }
+]

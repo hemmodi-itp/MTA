@@ -1,0 +1,82 @@
+{
+  "BS-001": {
+    "scenario_title": "New Investor Registration and Onboarding",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.locator('#input_34_278879')",
+        "relevance": "investor identification number input — used for account creation"
+      },
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.locator('#input_34_8_3')",
+        "relevance": "first name input — used for basic information capture"
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.locator('#input_34_8_6')",
+        "relevance": "last name input — used for basic information capture"
+      },
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.locator('#input_34_3')",
+        "relevance": "email address input — used for contact information"
+      },
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.locator('#input_34_4')",
+        "relevance": "phone number input — used for contact information"
+      },
+      {
+        "locator_id": "LOC-0010",
+        "playwright_expr": "page.locator('#input_34_5')",
+        "relevance": "address input — used for profile details"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.locator('#searchsubmit')",
+        "relevance": "submit button — used to submit onboarding application"
+      }
+    ]
+  },
+  "BS-004": {
+    "scenario_title": "Investor Profile Management and Updates",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.locator('#input_34_8_3')",
+        "relevance": "first name field — used to edit contact details"
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.locator('#input_34_8_6')",
+        "relevance": "last name field — used to edit contact details"
+      },
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.locator('#input_34_3')",
+        "relevance": "email field — used to update contact information"
+      },
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.locator('#input_34_4')",
+        "relevance": "phone field — used to update contact information"
+      },
+      {
+        "locator_id": "LOC-0010",
+        "playwright_expr": "page.locator('#input_34_5')",
+        "relevance": "address field — used to update personal information"
+      },
+      {
+        "locator_id": "LOC-0013",
+        "playwright_expr": "page.locator('#choice_34_14_0')",
+        "relevance": "investor classification option — used to update classifications"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.locator('#searchsubmit')",
+        "relevance": "save button — used to save profile changes"
+      }
+    ]
+  }
+}

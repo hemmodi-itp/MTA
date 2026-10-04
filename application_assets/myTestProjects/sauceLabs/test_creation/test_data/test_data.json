@@ -1,0 +1,323 @@
+[
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "BS-001",
+    "scenario_title": "View Complete Inventory Page Layout",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-006",
+    "scenario_id": "BS-002",
+    "scenario_title": "Display All Six Inventory Products",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-007",
+    "scenario_id": "BS-003",
+    "scenario_title": "Add Single Product to Shopping Cart",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-008",
+    "scenario_id": "BS-004",
+    "scenario_title": "Remove Product from Shopping Cart",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-009",
+    "scenario_id": "BS-005",
+    "scenario_title": "Sort Products Alphabetically A to Z",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-010",
+    "scenario_id": "BS-006",
+    "scenario_title": "Sort Products Alphabetically Z to A",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Name (Z to A)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "empty",
+        "description": "No sort option selected",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": ""
+          }
+        ],
+        "expected_error": "Please select a sort option"
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "whitespace",
+        "description": "Sort option contains only whitespace",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "   "
+          }
+        ],
+        "expected_error": "Invalid sort option selected"
+      },
+      {
+        "variant_id": "NEG-003",
+        "variant_type": "special_chars",
+        "description": "XSS injection attempt in sort selection",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "<script>alert('xss')</script>"
+          }
+        ],
+        "expected_error": "Invalid sort option format"
+      },
+      {
+        "variant_id": "NEG-004",
+        "variant_type": "sql_injection",
+        "description": "SQL injection attempt in sort selection",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "' OR '1'='1"
+          }
+        ],
+        "expected_error": "Invalid sort option value"
+      },
+      {
+        "variant_id": "NEG-005",
+        "variant_type": "wrong_format",
+        "description": "Invalid sort option not in dropdown list",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "Random Order XYZ"
+          }
+        ],
+        "expected_error": "Selected sort option is not available"
+      },
+      {
+        "variant_id": "NEG-006",
+        "variant_type": "too_long",
+        "description": "Sort option value exceeds maximum length",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "expected_error": "Sort option value too long"
+      },
+      {
+        "variant_id": "NEG-007",
+        "variant_type": "at_boundary",
+        "description": "Sort option at maximum character boundary",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "expected_error": "Sort option not recognized"
+      },
+      {
+        "variant_id": "NEG-008",
+        "variant_type": "url_input",
+        "description": "URL input in sort selection field",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "https://evil.com/redirect"
+          }
+        ],
+        "expected_error": "Invalid sort option format"
+      },
+      {
+        "variant_id": "NEG-009",
+        "variant_type": "unicode",
+        "description": "Unicode characters in sort selection",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "Name (🔥 to 🎉)"
+          }
+        ],
+        "expected_error": "Sort option contains invalid characters"
+      },
+      {
+        "variant_id": "NEG-010",
+        "variant_type": "random",
+        "description": "Unexpected random value in sort selection",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "12345!@#$%"
+          }
+        ],
+        "expected_error": "Invalid sort option selected"
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-011",
+    "scenario_id": "BS-007",
+    "scenario_title": "Sort Products by Price Low to High",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-012",
+    "scenario_id": "BS-008",
+    "scenario_title": "Sort Products by Price High to Low",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Price (high to low)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "empty",
+        "description": "No sort option selected",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": ""
+          }
+        ],
+        "expected_error": "Please select a sort option"
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "special_chars",
+        "description": "XSS injection attempt in sort selection",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "<script>alert('xss')</script>"
+          }
+        ],
+        "expected_error": "Invalid sort option selected"
+      },
+      {
+        "variant_id": "NEG-003",
+        "variant_type": "sql_injection",
+        "description": "SQL injection attempt in sort selection",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "' OR '1'='1"
+          }
+        ],
+        "expected_error": "Invalid sort option selected"
+      },
+      {
+        "variant_id": "NEG-004",
+        "variant_type": "wrong_format",
+        "description": "Invalid sort option not in dropdown",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "Invalid Sort Option"
+          }
+        ],
+        "expected_error": "Selected sort option is not available"
+      },
+      {
+        "variant_id": "NEG-005",
+        "variant_type": "url_input",
+        "description": "URL injection in sort selection",
+        "fields": [
+          {
+            "field_name": "select_sort_option",
+            "field_type": "select",
+            "value": "https://evil.com/redirect"
+          }
+        ],
+        "expected_error": "Invalid sort option selected"
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-013",
+    "scenario_id": "BS-009",
+    "scenario_title": "Navigate to Product Details Page",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-014",
+    "scenario_id": "BS-010",
+    "scenario_title": "Access Shopping Cart Page",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-015",
+    "scenario_id": "BS-011",
+    "scenario_title": "Open Navigation Menu",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-016",
+    "scenario_id": "BS-012",
+    "scenario_title": "Logout from Application",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-017",
+    "scenario_id": "BS-013",
+    "scenario_title": "Verify Cart Persistence During Interface Interactions",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-018",
+    "scenario_id": "BS-014",
+    "scenario_title": "Maintain Cart State After Page Refresh",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  }
+]

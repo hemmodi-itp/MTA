@@ -1,0 +1,22 @@
+scenario_id,module_id,module_name,title,description,status,last_result,spec_file,last_run
+M01_BS_001,M01,HomePage,Navigate using navigation bar to fetch page information,Enable users to quickly access page information through direct navigation,generated,failed,M01/test_M01_BS_001_navigate_using_navigation_bar_to_fetch_page_information.spec.ts,2026-07-10
+M01_BS_002,M01,HomePage,Browse new AWS items in What's New section,Keep users informed about latest AWS offerings and updates,generated,failed,M01/test_M01_BS_002_browse_new_aws_items_in_what_s_new_section.spec.ts,2026-07-10
+M01_BS_003,M01,HomePage,View client images through image carousel,Showcase AWS client relationships and build credibility through visual representation,generated,failed,M01/test_M01_BS_003_view_client_images_through_image_carousel.spec.ts,2026-07-10
+M01_BS_004,M01,HomePage,Browse customer success stories through story cards,Demonstrate AWS value through customer testimonials and success cases,generated,failed,M01/test_M01_BS_004_browse_customer_success_stories_through_story_cards.spec.ts,2026-07-10
+M01_BS_005,M01,HomePage,Return to top of page using back to top functionality,Improve user navigation experience by providing quick access to page header,generated,failed,M01/test_M01_BS_005_return_to_top_of_page_using_back_to_top_functionality.spec.ts,2026-07-10
+M02_BS_001,M02,Amazon Aurora,User navigates Aurora page using navigation bar,Enable users to quickly access page information through direct navigation,generated,failed,M02/test_M02_BS_001_user_navigates_aurora_page_using_navigation_bar.spec.ts,2026-07-10
+M02_BS_002,M02,Amazon Aurora,User reads Aurora introduction information,Provide users with comprehensive understanding of what Aurora is,generated,passed,M02/test_M02_BS_002_user_reads_aurora_introduction_information.spec.ts,2026-07-10
+M02_BS_003,M02,Amazon Aurora,User explores Aurora benefits information,Educate users about the advantages and value proposition of Aurora,generated,passed,M02/test_M02_BS_003_user_explores_aurora_benefits_information.spec.ts,2026-07-10
+M02_BS_004,M02,Amazon Aurora,User views customer success stories,Provide social proof and real-world examples of Aurora success through customer testimonials,generated,failed,M02/test_M02_BS_004_user_views_customer_success_stories.spec.ts,2026-07-10
+M02_BS_005,M02,Amazon Aurora,User follows Get Started with Aurora workflow,Guide users to Aurora resources and documentation for implementation,generated,failed,M02/test_M02_BS_005_user_follows_get_started_with_aurora_workflow.spec.ts,2026-07-10
+M02_BS_006,M02,Amazon Aurora,User explores Aurora pricing information,Provide detailed pricing information and feature costs to help users make informed decisions,generated,failed,M02/test_M02_BS_006_user_explores_aurora_pricing_information.spec.ts,2026-07-10
+SC-001,,,Save Changes,Allow user to save changes on AWS_Test,generated,,test_SC-001_save_changes.spec.ts,
+SC-002,,,Use AWS_Test,Allow user to use aws_test on AWS_Test,generated,,test_SC-002_use_aws_test.spec.ts,
+SC-003,,,Browse AWS_Test,Allow user to navigate the AWS_Test interface,generated,,test_SC-003_browse_aws_test.spec.ts,
+SC-004,,,Interact with AWS_Test,Allow user to interact with elements on AWS_Test,generated,,test_SC-004_interact_with_aws_test.spec.ts,
+SC-005,,,Search Products,Allow user to search products on AWS_Test,generated,,test_SC-005_search_products.spec.ts,
+SC-006,,,User Sign In,Allow user to user sign in on AWS_Test,generated,,test_SC-006_user_sign_in.spec.ts,
+SC-007,,,Add Item,Allow user to add item on AWS_Test,generated,,test_SC-007_add_item.spec.ts,
+SC-008,,,Create Account,Allow user to create account on AWS_Test,generated,,test_SC-008_create_account.spec.ts,
+SC-009,,,Browse AWS_Test,Allow user to navigate the AWS_Test interface,generated,,test_SC-009_browse_aws_test.spec.ts,
+SC-010,,,Interact with AWS_Test,Allow user to interact with elements on AWS_Test,generated,,test_SC-010_interact_with_aws_test.spec.ts,

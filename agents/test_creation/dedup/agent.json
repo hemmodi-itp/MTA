@@ -1,0 +1,25 @@
+{
+  "name": "SemanticDedupAgent",
+  "registry_key": "dedup",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.dedup.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Single-LLM-call agent that classifies newly proposed test cases as genuinely new coverage or semantic duplicates of test cases already in the project.",
+  "inputs": [
+    { "name": "existing_test_cases", "type": "array", "required": false, "description": "Test cases already in project_state" },
+    { "name": "proposed_test_cases", "type": "array", "required": false, "description": "Newly generated candidate test cases" },
+    { "name": "connector_mode", "type": "string", "required": false, "description": "Optional LLM connector override" }
+  ],
+  "outputs": [
+    { "name": "approved", "type": "array", "description": "Proposed TCs that add genuinely new coverage" },
+    { "name": "rejected", "type": "array", "description": "Proposed TCs that duplicate existing coverage" },
+    { "name": "approved_count", "type": "integer", "description": "Count of approved TCs" },
+    { "name": "rejected_count", "type": "integer", "description": "Count of rejected TCs" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

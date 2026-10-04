@@ -1,0 +1,23 @@
+{
+  "name": "OutputValidationAgent",
+  "registry_key": "output_validation",
+  "category": "evaluation",
+  "module_path": "agents.evaluation.output_validation.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Compares each evidence bundle's observed output with its BRD expectation using deterministic checks (flow completed; document produced, readable, non-empty, requested format, reflects the input; reply, 2xx or page change; negative input visibly rejected; no server/page errors; stated time limits) and a Gemini judge per pass criterion whose 'met' claims must quote the actual output verbatim (verified; ungrounded claims downgraded). No final verdict.",
+  "inputs": [
+    { "name": "evidence_collection", "type": "object", "required": true, "description": "EvidenceCollectionAgent output (bundles)" },
+    { "name": "app_classification", "type": "object", "required": false, "description": "App type, given to the judge as context" },
+    { "name": "run_id", "type": "string", "required": false, "description": "Locates the artifact folder for full document text" },
+    { "name": "mode", "type": "string", "required": true, "description": "brd_only skips" }
+  ],
+  "outputs": [
+    { "name": "output_validation", "type": "object", "description": "counts, results[{bundle_id, test_code, criterion_code, status, checks[{id, name, oracle, result, detail, weight}], judge{assessment, score, reasoning, criteria_results[{criterion, result, quote, quote_verified}], ungrounded_quotes}, core_failures, supporting_failures, summary}]" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

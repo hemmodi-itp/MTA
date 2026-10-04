@@ -1,0 +1,3388 @@
+[
+  {
+    "testdata_id": "TD-001",
+    "scenario_id": "SC-001",
+    "scenario_title": "Save Changes",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "enter_element",
+        "field_type": "text",
+        "value": "advertisement tracking"
+      },
+      {
+        "field_name": "enter_allow_crosscontext_behavioral_ads",
+        "field_type": "text",
+        "value": "yes"
+      },
+      {
+        "field_name": "enter_opt_out_crosscontext_behavioral_ads",
+        "field_type": "text",
+        "value": "no"
+      },
+      {
+        "field_name": "enter_im_looking_for",
+        "field_type": "text",
+        "value": "privacy settings"
+      },
+      {
+        "field_name": "enter_search",
+        "field_type": "text",
+        "value": "data collection preferences"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Empty required fields",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "enter_element",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "enter_allow_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "yes"
+              },
+              {
+                "field_name": "enter_opt_out_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "no"
+              },
+              {
+                "field_name": "enter_im_looking_for",
+                "field_type": "text",
+                "value": "privacy settings"
+              },
+              {
+                "field_name": "enter_search",
+                "field_type": "text",
+                "value": "data collection preferences"
+              }
+            ],
+            "expected_error": "Element field is required"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Input at maximum field length",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "enter_element",
+                "field_type": "text",
+                "value": "this is a very long advertisement tracking preference description that tests the maximum character limit for this input field and should be exactly at the boundary of what is allowed by the system validation rules"
+              },
+              {
+                "field_name": "enter_allow_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "yes"
+              },
+              {
+                "field_name": "enter_opt_out_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "no"
+              },
+              {
+                "field_name": "enter_im_looking_for",
+                "field_type": "text",
+                "value": "privacy settings"
+              },
+              {
+                "field_name": "enter_search",
+                "field_type": "text",
+                "value": "data collection preferences"
+              }
+            ],
+            "expected_error": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-002",
+    "scenario_id": "SC-002",
+    "scenario_title": "User Login",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_sign_in_target",
+        "field_type": "navigation",
+        "value": "sign_in_to_console"
+      },
+      {
+        "field_name": "expected_console_heading",
+        "field_type": "assertion",
+        "value": "Sign In to AWS Console"
+      },
+      {
+        "field_name": "expected_login_form",
+        "field_type": "assertion",
+        "value": "username"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Sign in console button not found or page fails to load",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_sign_in_target",
+                "field_type": "navigation",
+                "value": "sign_in_to_console"
+              },
+              {
+                "field_name": "expected_console_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_login_form",
+                "field_type": "assertion",
+                "value": "username"
+              }
+            ],
+            "expected_error": "Sign in console page failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-003",
+    "scenario_id": "SC-003",
+    "scenario_title": "Create Account",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_create_account",
+        "field_type": "navigation",
+        "value": "create_account_opened"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "/create-account"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Create Account"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Create account button not functional or page fails to load",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_create_account",
+                "field_type": "navigation",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "/error"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": "Page Not Found"
+              }
+            ],
+            "expected_error": "Unable to navigate to create account page"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-004",
+    "scenario_id": "SC-004",
+    "scenario_title": "User Registration",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "event reinvent 2026 build whats next join us nov 30 to dec 4 in las vegas save 1200 with early bird pricing ends august 25 register today"
+      },
+      {
+        "field_name": "expected_result",
+        "field_type": "assertion",
+        "value": "event_reinvent_2026_build_whats_next_join_us_nov_30_to_dec_4_in_las_vegas_save_1200_with_early_bird_pricing_ends_august_25_register_today_opened"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Expected element or content not found after click",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "event reinvent 2026 build whats next join us nov 30 to dec 4 in las vegas save 1200 with early bird pricing ends august 25 register today"
+              },
+              {
+                "field_name": "expected_result",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Registration page failed to load or expected content not displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "SC-005",
+    "scenario_title": "Search Products",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "industrial siemens mobility turns 175 years of data into searchable insights with aws ai view the story"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Siemens Mobility turns 175 years of data into searchable insights with AWS AI"
+      },
+      {
+        "field_name": "expected_content",
+        "field_type": "assertion",
+        "value": "View the story"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation target not found or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "industrial siemens mobility turns 175 years of data into searchable insights with aws ai view the story"
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "404"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_content",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Page not found or content unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-006",
+    "scenario_id": "SC-006",
+    "scenario_title": "User Sign In",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "government solutions designed to help government agencies modernize meet mandates reduce costs and deliver mission outcomes view industry"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Government Solutions"
+      },
+      {
+        "field_name": "expected_content",
+        "field_type": "assertion",
+        "value": "modernize meet mandates reduce costs"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/government-solutions"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation target not found or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "government solutions designed to help government agencies modernize meet mandates reduce costs and deliver mission outcomes view industry"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_content",
+                "field_type": "assertion",
+                "value": "modernize meet mandates reduce costs"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/government-solutions"
+              }
+            ],
+            "expected_error": "Page content failed to load or heading not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-007",
+    "scenario_id": "SC-007",
+    "scenario_title": "Add Item",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "telecommunications accelerate innovation scale with confidence and add agility with cloudbased telecom solutions view industry"
+      },
+      {
+        "field_name": "expected_page_content",
+        "field_type": "assertion",
+        "value": "telecommunications_accelerate_innovation_scale_with_confidence_and_add_agility_with_cloudbased_telecom_solutions_view_industry_opened"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Telecommunications Solutions"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation target not found or page fails to load",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "telecommunications accelerate innovation scale with confidence and add agility with cloudbased telecom solutions view industry"
+              },
+              {
+                "field_name": "expected_page_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": "Page Not Found"
+              }
+            ],
+            "expected_error": "Navigation failed - target section not accessible"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-008",
+    "scenario_id": "SC-008",
+    "scenario_title": "Create Account",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_create_account",
+        "field_type": "navigation",
+        "value": "create_an_aws_account_opened"
+      },
+      {
+        "field_name": "expected_page_title",
+        "field_type": "assertion",
+        "value": "Create AWS Account"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/create-account"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Account creation page fails to load or navigation error",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_create_account",
+                "field_type": "navigation",
+                "value": "page_not_found"
+              },
+              {
+                "field_name": "expected_page_title",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/404"
+              }
+            ],
+            "expected_error": "Page not found or navigation failed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-009",
+    "scenario_id": "SC-009",
+    "scenario_title": "Browse AWS_Test",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_target_section",
+        "field_type": "navigation",
+        "value": "AWS_Test interface"
+      },
+      {
+        "field_name": "expected_filter_button",
+        "field_type": "assertion",
+        "value": "filter all"
+      },
+      {
+        "field_name": "expected_contact_link",
+        "field_type": "assertion",
+        "value": "contact us"
+      },
+      {
+        "field_name": "expected_story_content",
+        "field_type": "assertion",
+        "value": "agentic ai data leaders"
+      },
+      {
+        "field_name": "min_industry_sections",
+        "field_type": "count_min",
+        "value": "6"
+      },
+      {
+        "field_name": "expected_page_url",
+        "field_type": "url",
+        "value": "/aws-test"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key navigation elements missing or incorrect",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_target_section",
+                "field_type": "navigation",
+                "value": "AWS_Test interface"
+              },
+              {
+                "field_name": "expected_filter_button",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_contact_link",
+                "field_type": "assertion",
+                "value": "contact us"
+              },
+              {
+                "field_name": "expected_story_content",
+                "field_type": "assertion",
+                "value": "agentic ai data leaders"
+              },
+              {
+                "field_name": "min_industry_sections",
+                "field_type": "count_min",
+                "value": "6"
+              },
+              {
+                "field_name": "expected_page_url",
+                "field_type": "url",
+                "value": "/aws-test"
+              }
+            ],
+            "expected_error": "Filter button not found or not clickable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-010",
+    "scenario_id": "SC-010",
+    "scenario_title": "Interact with AWS_Test",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "accept"
+      },
+      {
+        "field_name": "expected_page_title",
+        "field_type": "assertion",
+        "value": "AWS_Test"
+      },
+      {
+        "field_name": "expected_button_visible",
+        "field_type": "assertion",
+        "value": "Start free with AWS"
+      },
+      {
+        "field_name": "min_navigation_elements",
+        "field_type": "count_min",
+        "value": "10"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Target element not found or page elements missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "nonexistent_element"
+              },
+              {
+                "field_name": "expected_page_title",
+                "field_type": "assertion",
+                "value": "AWS_Test"
+              },
+              {
+                "field_name": "expected_button_visible",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_navigation_elements",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Element not found or page failed to load properly"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-011",
+    "scenario_id": "M01_BS_001",
+    "scenario_title": "Navigate using navigation bar to fetch page information",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_navigation_element",
+        "field_type": "navigation",
+        "value": "Products"
+      },
+      {
+        "field_name": "expected_page_heading",
+        "field_type": "assertion",
+        "value": "AWS Products and Services"
+      },
+      {
+        "field_name": "expected_page_content",
+        "field_type": "assertion",
+        "value": "Explore our comprehensive cloud computing services"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/products"
+      },
+      {
+        "field_name": "min_service_cards",
+        "field_type": "count_min",
+        "value": "5"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation element missing or page content not loaded",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_navigation_element",
+                "field_type": "navigation",
+                "value": "Products"
+              },
+              {
+                "field_name": "expected_page_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_page_content",
+                "field_type": "assertion",
+                "value": "Explore our comprehensive cloud computing services"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/products"
+              },
+              {
+                "field_name": "min_service_cards",
+                "field_type": "count_min",
+                "value": "5"
+              }
+            ],
+            "expected_error": "Page heading not found or failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-012",
+    "scenario_id": "M01_BS_002",
+    "scenario_title": "Browse new AWS items in What's New section",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_section",
+        "field_type": "navigation",
+        "value": "What's New"
+      },
+      {
+        "field_name": "expected_section_heading",
+        "field_type": "assertion",
+        "value": "What's New with AWS"
+      },
+      {
+        "field_name": "min_new_items_count",
+        "field_type": "count_min",
+        "value": "5"
+      },
+      {
+        "field_name": "expected_item_category",
+        "field_type": "assertion",
+        "value": "AWS Services"
+      },
+      {
+        "field_name": "click_item_title",
+        "field_type": "assertion",
+        "value": "Amazon EC2 M7i instances"
+      },
+      {
+        "field_name": "expected_detail_url",
+        "field_type": "url",
+        "value": "/about-aws/whats-new/2023/"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "What's New section unavailable or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_to_section",
+                "field_type": "navigation",
+                "value": "What's New"
+              },
+              {
+                "field_name": "expected_section_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_new_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "expected_item_category",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "click_item_title",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_detail_url",
+                "field_type": "url",
+                "value": "/404"
+              }
+            ],
+            "expected_error": "What's New section is currently unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-013",
+    "scenario_id": "M01_BS_003",
+    "scenario_title": "View client images through image carousel",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_carousel_section",
+        "field_type": "navigation",
+        "value": "client-showcase-carousel"
+      },
+      {
+        "field_name": "expected_carousel_heading",
+        "field_type": "assertion",
+        "value": "Our Trusted Clients"
+      },
+      {
+        "field_name": "expected_client_images",
+        "field_type": "assertion",
+        "value": "Netflix, Airbnb, Spotify"
+      },
+      {
+        "field_name": "min_carousel_items_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "expected_navigation_controls",
+        "field_type": "assertion",
+        "value": "Previous, Next, Indicators"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Carousel content not loaded or missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_carousel_section",
+                "field_type": "navigation",
+                "value": "client-showcase-carousel"
+              },
+              {
+                "field_name": "expected_carousel_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_client_images",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_carousel_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "expected_navigation_controls",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Carousel failed to load client images"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-014",
+    "scenario_id": "M01_BS_004",
+    "scenario_title": "Browse customer success stories through story cards",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "Customer Story Cards"
+      },
+      {
+        "field_name": "expected_cards_visible",
+        "field_type": "assertion",
+        "value": "customer success stories"
+      },
+      {
+        "field_name": "min_story_cards_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "click_story_card",
+        "field_type": "navigation",
+        "value": "Netflix Case Study"
+      },
+      {
+        "field_name": "expected_story_content",
+        "field_type": "assertion",
+        "value": "customer testimonials and success cases"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Customer Story Cards section not available or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "Customer Story Cards"
+              },
+              {
+                "field_name": "expected_cards_visible",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_story_cards_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "click_story_card",
+                "field_type": "navigation",
+                "value": "Netflix Case Study"
+              },
+              {
+                "field_name": "expected_story_content",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Customer story cards are not available or failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-015",
+    "scenario_id": "M01_BS_005",
+    "scenario_title": "Return to top of page using back to top functionality",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "top"
+      },
+      {
+        "field_name": "expected_back_to_top_button",
+        "field_type": "assertion",
+        "value": "Back to top"
+      },
+      {
+        "field_name": "expected_header_visible",
+        "field_type": "assertion",
+        "value": "AWS"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "#top"
+      },
+      {
+        "field_name": "scroll_position_y",
+        "field_type": "assertion",
+        "value": "0"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Back to top button not found or navigation fails",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "top"
+              },
+              {
+                "field_name": "expected_back_to_top_button",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_header_visible",
+                "field_type": "assertion",
+                "value": "AWS"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "#top"
+              },
+              {
+                "field_name": "scroll_position_y",
+                "field_type": "assertion",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Back to top button not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-016",
+    "scenario_id": "M02_BS_001",
+    "scenario_title": "User navigates Aurora page using navigation bar",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_section",
+        "field_type": "navigation",
+        "value": "About Aurora"
+      },
+      {
+        "field_name": "click_navigation_element",
+        "field_type": "navigation",
+        "value": "Features"
+      },
+      {
+        "field_name": "expected_page_heading",
+        "field_type": "assertion",
+        "value": "Aurora Platform Overview"
+      },
+      {
+        "field_name": "expected_content_keyword",
+        "field_type": "assertion",
+        "value": "navigation"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/aurora/features"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation element not found or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_to_section",
+                "field_type": "navigation",
+                "value": "About Aurora"
+              },
+              {
+                "field_name": "click_navigation_element",
+                "field_type": "navigation",
+                "value": "Features"
+              },
+              {
+                "field_name": "expected_page_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_content_keyword",
+                "field_type": "assertion",
+                "value": "navigation"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/aurora/features"
+              }
+            ],
+            "expected_error": "Page heading not found or content failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-017",
+    "scenario_id": "M02_BS_002",
+    "scenario_title": "User reads Aurora introduction information",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_to_section",
+        "field_type": "navigation",
+        "value": "What is Aurora"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "What is Aurora"
+      },
+      {
+        "field_name": "expected_description_content",
+        "field_type": "assertion",
+        "value": "Aurora is a comprehensive platform that provides users with advanced features and capabilities"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "#what-is-aurora"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Required Aurora section content is missing or incorrect",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_to_section",
+                "field_type": "navigation",
+                "value": "What is Aurora"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_description_content",
+                "field_type": "assertion",
+                "value": "Aurora is a comprehensive platform that provides users with advanced features and capabilities"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "#what-is-aurora"
+              }
+            ],
+            "expected_error": "Aurora section heading not found"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "scroll_to_section",
+                "field_type": "navigation",
+                "value": "What is Aurora"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": "What is Aurora"
+              },
+              {
+                "field_name": "expected_description_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "#what-is-aurora"
+              }
+            ],
+            "expected_error": "Aurora description content not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-018",
+    "scenario_id": "M02_BS_003",
+    "scenario_title": "User explores Aurora benefits information",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_benefits_section",
+        "field_type": "navigation",
+        "value": "Benefits of Aurora"
+      },
+      {
+        "field_name": "expected_benefits_heading",
+        "field_type": "assertion",
+        "value": "Benefits of Aurora"
+      },
+      {
+        "field_name": "expected_benefit_content",
+        "field_type": "assertion",
+        "value": "advantages and value proposition"
+      },
+      {
+        "field_name": "min_benefits_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Benefits section or content not available",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_benefits_section",
+                "field_type": "navigation",
+                "value": "Benefits of Aurora"
+              },
+              {
+                "field_name": "expected_benefits_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_benefit_content",
+                "field_type": "assertion",
+                "value": "advantages and value proposition"
+              },
+              {
+                "field_name": "min_benefits_count",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Benefits section heading not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-019",
+    "scenario_id": "M02_BS_004",
+    "scenario_title": "User views customer success stories",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target",
+        "field_type": "navigation",
+        "value": "Customer Story Cards section"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Customer Success Stories"
+      },
+      {
+        "field_name": "click_story_card",
+        "field_type": "navigation",
+        "value": "individual story card"
+      },
+      {
+        "field_name": "expected_testimonial_content",
+        "field_type": "assertion",
+        "value": "detailed testimonials"
+      },
+      {
+        "field_name": "min_story_cards_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Customer Stories section missing or content not loaded",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target",
+                "field_type": "navigation",
+                "value": "Customer Story Cards section"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "click_story_card",
+                "field_type": "navigation",
+                "value": "individual story card"
+              },
+              {
+                "field_name": "expected_testimonial_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_story_cards_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Customer stories content failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-020",
+    "scenario_id": "M02_BS_005",
+    "scenario_title": "User follows Get Started with Aurora workflow",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "expected_redirect_url",
+        "field_type": "url",
+        "value": "https://aws.amazon.com/rds/aurora/resources/"
+      },
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "search field"
+      },
+      {
+        "field_name": "search_user_guide",
+        "field_type": "assertion",
+        "value": "User Guide"
+      },
+      {
+        "field_name": "expected_user_guide_card",
+        "field_type": "assertion",
+        "value": "User Guide card"
+      },
+      {
+        "field_name": "min_guide_results",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "User Guide content not available or search fails",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "expected_redirect_url",
+                "field_type": "url",
+                "value": "https://aws.amazon.com/rds/aurora/resources/"
+              },
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "search field"
+              },
+              {
+                "field_name": "search_user_guide",
+                "field_type": "assertion",
+                "value": "User Guide"
+              },
+              {
+                "field_name": "expected_user_guide_card",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_guide_results",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "User Guide card not found or search returned no results"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-021",
+    "scenario_id": "M02_BS_006",
+    "scenario_title": "User explores Aurora pricing information",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_pricing_section",
+        "field_type": "navigation",
+        "value": "Pricing"
+      },
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "Additional features and costs"
+      },
+      {
+        "field_name": "expected_expandable_sections",
+        "field_type": "count_min",
+        "value": "16"
+      },
+      {
+        "field_name": "expected_expand_control",
+        "field_type": "assertion",
+        "value": "+ sign"
+      },
+      {
+        "field_name": "expected_collapse_control",
+        "field_type": "assertion",
+        "value": "- sign"
+      },
+      {
+        "field_name": "expected_pricing_content",
+        "field_type": "assertion",
+        "value": "detailed pricing information"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key pricing section not found or unavailable",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_pricing_section",
+                "field_type": "navigation",
+                "value": "Pricing"
+              },
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "Additional features and costs"
+              },
+              {
+                "field_name": "expected_expandable_sections",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "expected_expand_control",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_collapse_control",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_pricing_content",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Additional features and costs section not found or expandable controls unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-022",
+    "scenario_id": "M02_BS_007",
+    "scenario_title": "Guest user explores Aurora product features",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_aurora_page",
+        "field_type": "url",
+        "value": "/aurora"
+      },
+      {
+        "field_name": "expected_product_heading",
+        "field_type": "assertion",
+        "value": "Amazon Aurora"
+      },
+      {
+        "field_name": "browse_showcase_section",
+        "field_type": "navigation",
+        "value": "product-showcase"
+      },
+      {
+        "field_name": "expected_features_content",
+        "field_type": "assertion",
+        "value": "High Performance"
+      },
+      {
+        "field_name": "min_feature_items",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Missing or corrupted product content",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_to_aurora_page",
+                "field_type": "url",
+                "value": "/aurora"
+              },
+              {
+                "field_name": "expected_product_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "browse_showcase_section",
+                "field_type": "navigation",
+                "value": "product-showcase"
+              },
+              {
+                "field_name": "expected_features_content",
+                "field_type": "assertion",
+                "value": "High Performance"
+              },
+              {
+                "field_name": "min_feature_items",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Product heading not found on page"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-023",
+    "scenario_id": "M02_BS_008",
+    "scenario_title": "Logged in user accesses Aurora product information",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_aurora_page",
+        "field_type": "navigation",
+        "value": "Aurora product page"
+      },
+      {
+        "field_name": "expected_page_title",
+        "field_type": "assertion",
+        "value": "Aurora - Product Information"
+      },
+      {
+        "field_name": "expected_description_section",
+        "field_type": "assertion",
+        "value": "Aurora Description"
+      },
+      {
+        "field_name": "expected_benefits_section",
+        "field_type": "assertion",
+        "value": "Aurora Benefits"
+      },
+      {
+        "field_name": "min_customer_stories",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/products/aurora"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key product sections missing or incorrect",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_aurora_page",
+                "field_type": "navigation",
+                "value": "Aurora product page"
+              },
+              {
+                "field_name": "expected_page_title",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_description_section",
+                "field_type": "assertion",
+                "value": "Aurora Description"
+              },
+              {
+                "field_name": "expected_benefits_section",
+                "field_type": "assertion",
+                "value": "Aurora Benefits"
+              },
+              {
+                "field_name": "min_customer_stories",
+                "field_type": "count_min",
+                "value": "3"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/products/aurora"
+              }
+            ],
+            "expected_error": "Page title not found or empty"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-024",
+    "scenario_id": "M02_BS_009",
+    "scenario_title": "User executes automated workflows successfully",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "initiate_workflow_name",
+        "field_type": "assertion",
+        "value": "Get Started with Aurora"
+      },
+      {
+        "field_name": "verify_first_completion",
+        "field_type": "assertion",
+        "value": "Workflow completed successfully"
+      },
+      {
+        "field_name": "execute_pricing_workflow",
+        "field_type": "assertion",
+        "value": "Pricing exploration workflow"
+      },
+      {
+        "field_name": "confirm_second_completion",
+        "field_type": "assertion",
+        "value": "Workflow completed successfully"
+      },
+      {
+        "field_name": "expected_workflow_status",
+        "field_type": "assertion",
+        "value": "Both workflows executed without errors"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Workflow execution fails or incomplete",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "initiate_workflow_name",
+                "field_type": "assertion",
+                "value": "Get Started with Aurora"
+              },
+              {
+                "field_name": "verify_first_completion",
+                "field_type": "assertion",
+                "value": "Workflow failed to complete"
+              },
+              {
+                "field_name": "execute_pricing_workflow",
+                "field_type": "assertion",
+                "value": "Pricing exploration workflow"
+              },
+              {
+                "field_name": "confirm_second_completion",
+                "field_type": "assertion",
+                "value": "Workflow failed to complete"
+              },
+              {
+                "field_name": "expected_workflow_status",
+                "field_type": "assertion",
+                "value": "Workflow execution error occurred"
+              }
+            ],
+            "expected_error": "One or more automated workflows failed to execute successfully"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-025",
+    "scenario_id": "M02_BS_010",
+    "scenario_title": "System executes all automated test cases",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "execute_test_case_one",
+        "field_type": "assertion",
+        "value": "Test Case 1: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_two",
+        "field_type": "assertion",
+        "value": "Test Case 2: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_three",
+        "field_type": "assertion",
+        "value": "Test Case 3: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_four",
+        "field_type": "assertion",
+        "value": "Test Case 4: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_five",
+        "field_type": "assertion",
+        "value": "Test Case 5: PASSED"
+      },
+      {
+        "field_name": "verify_test_results",
+        "field_type": "assertion",
+        "value": "All automated test cases completed successfully"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Test case execution failure",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "execute_test_case_one",
+                "field_type": "assertion",
+                "value": "Test Case 1: FAILED"
+              },
+              {
+                "field_name": "execute_test_case_two",
+                "field_type": "assertion",
+                "value": "Test Case 2: PASSED"
+              },
+              {
+                "field_name": "execute_test_case_three",
+                "field_type": "assertion",
+                "value": "Test Case 3: PASSED"
+              },
+              {
+                "field_name": "execute_test_case_four",
+                "field_type": "assertion",
+                "value": "Test Case 4: PASSED"
+              },
+              {
+                "field_name": "execute_test_case_five",
+                "field_type": "assertion",
+                "value": "Test Case 5: PASSED"
+              },
+              {
+                "field_name": "verify_test_results",
+                "field_type": "assertion",
+                "value": "1 test case failed validation criteria"
+              }
+            ],
+            "expected_error": "Automated test suite execution failed - not all test cases passed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-026",
+    "scenario_id": "M03_BS_007",
+    "scenario_title": "Browse AWS Aurora pricing page with navigation to different pricing models",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_pricing_section",
+        "field_type": "navigation",
+        "value": "AWS Aurora pricing product showcase"
+      },
+      {
+        "field_name": "locate_navigation_bar",
+        "field_type": "assertion",
+        "value": "pricing models navigation bar"
+      },
+      {
+        "field_name": "expected_on_demand_pricing",
+        "field_type": "assertion",
+        "value": "On-Demand pricing information"
+      },
+      {
+        "field_name": "expected_reserved_pricing",
+        "field_type": "assertion",
+        "value": "Reserved Instance pricing information"
+      },
+      {
+        "field_name": "expected_serverless_pricing",
+        "field_type": "assertion",
+        "value": "Aurora Serverless pricing information"
+      },
+      {
+        "field_name": "min_pricing_models_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key pricing content missing or navigation fails",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_pricing_section",
+                "field_type": "navigation",
+                "value": "AWS Aurora pricing product showcase"
+              },
+              {
+                "field_name": "locate_navigation_bar",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_on_demand_pricing",
+                "field_type": "assertion",
+                "value": "On-Demand pricing information"
+              },
+              {
+                "field_name": "expected_reserved_pricing",
+                "field_type": "assertion",
+                "value": "Reserved Instance pricing information"
+              },
+              {
+                "field_name": "expected_serverless_pricing",
+                "field_type": "assertion",
+                "value": "Aurora Serverless pricing information"
+              },
+              {
+                "field_name": "min_pricing_models_count",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Navigation bar for pricing models not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-027",
+    "scenario_id": "M03_BS_008",
+    "scenario_title": "Access Understand Pricing section to learn how to get started",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_section",
+        "field_type": "navigation",
+        "value": "Understand Pricing"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "How to get started"
+      },
+      {
+        "field_name": "expected_guidance_content",
+        "field_type": "assertion",
+        "value": "getting started guidance"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/pricing#understand-pricing"
+      },
+      {
+        "field_name": "min_guidance_items",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Required section or content not found on page",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_to_section",
+                "field_type": "navigation",
+                "value": "Understand Pricing"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_guidance_content",
+                "field_type": "assertion",
+                "value": "getting started guidance"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/pricing#understand-pricing"
+              },
+              {
+                "field_name": "min_guidance_items",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Getting started heading not found in Understand Pricing section"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-028",
+    "scenario_id": "M03_BS_009",
+    "scenario_title": "Review payment options in How to Pay section",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_section",
+        "field_type": "navigation",
+        "value": "How to Pay"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "How to Pay"
+      },
+      {
+        "field_name": "expected_payment_methods",
+        "field_type": "assertion",
+        "value": "Credit Card, Bank Transfer, AWS Credits, Direct Debit"
+      },
+      {
+        "field_name": "expected_descriptions_visible",
+        "field_type": "assertion",
+        "value": "Payment method descriptions and details"
+      },
+      {
+        "field_name": "min_payment_options_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Payment section not found or empty",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_to_section",
+                "field_type": "navigation",
+                "value": "How to Pay"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_payment_methods",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_descriptions_visible",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_payment_options_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "How to Pay section not found or payment options not displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-029",
+    "scenario_id": "M03_BS_010",
+    "scenario_title": "Browse pricing information for multiple AWS products",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_firewall_pricing",
+        "field_type": "navigation",
+        "value": "AWS WAF & Shield pricing section"
+      },
+      {
+        "field_name": "navigate_ec2_pricing",
+        "field_type": "navigation",
+        "value": "Amazon EC2 pricing section"
+      },
+      {
+        "field_name": "navigate_glue_pricing",
+        "field_type": "navigation",
+        "value": "AWS Glue pricing section"
+      },
+      {
+        "field_name": "navigate_iot_pricing",
+        "field_type": "navigation",
+        "value": "AWS IoT Core pricing section"
+      },
+      {
+        "field_name": "expected_firewall_content",
+        "field_type": "assertion",
+        "value": "AWS WAF pricing per web ACL"
+      },
+      {
+        "field_name": "expected_ec2_content",
+        "field_type": "assertion",
+        "value": "On-Demand pricing per hour"
+      },
+      {
+        "field_name": "expected_glue_content",
+        "field_type": "assertion",
+        "value": "ETL job pricing per DPU-Hour"
+      },
+      {
+        "field_name": "expected_iot_content",
+        "field_type": "assertion",
+        "value": "Message pricing per million messages"
+      },
+      {
+        "field_name": "min_products_count",
+        "field_type": "count_min",
+        "value": "10"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key pricing sections missing or unavailable",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_firewall_pricing",
+                "field_type": "navigation",
+                "value": "AWS WAF & Shield pricing section"
+              },
+              {
+                "field_name": "navigate_ec2_pricing",
+                "field_type": "navigation",
+                "value": "Amazon EC2 pricing section"
+              },
+              {
+                "field_name": "navigate_glue_pricing",
+                "field_type": "navigation",
+                "value": "AWS Glue pricing section"
+              },
+              {
+                "field_name": "navigate_iot_pricing",
+                "field_type": "navigation",
+                "value": "AWS IoT Core pricing section"
+              },
+              {
+                "field_name": "expected_firewall_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_ec2_content",
+                "field_type": "assertion",
+                "value": "Service temporarily unavailable"
+              },
+              {
+                "field_name": "expected_glue_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_iot_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_products_count",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Required pricing sections are not available or failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-030",
+    "scenario_id": "M03_BS_011",
+    "scenario_title": "Get started with AWS services for free",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_get_started_button",
+        "field_type": "navigation",
+        "value": "Get Started for Free"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "https://aws.amazon.com/pricing/?nc2=h_pr_hub"
+      },
+      {
+        "field_name": "verify_new_tab",
+        "field_type": "assertion",
+        "value": "new tab opened"
+      },
+      {
+        "field_name": "verify_original_tab",
+        "field_type": "assertion",
+        "value": "original page remains open"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Button not found or navigation fails",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_get_started_button",
+                "field_type": "navigation",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "https://aws.amazon.com/pricing/?nc2=h_pr_hub"
+              },
+              {
+                "field_name": "verify_new_tab",
+                "field_type": "assertion",
+                "value": "new tab opened"
+              },
+              {
+                "field_name": "verify_original_tab",
+                "field_type": "assertion",
+                "value": "original page remains open"
+              }
+            ],
+            "expected_error": "Get Started for Free button not found"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Wrong redirect URL after click",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_get_started_button",
+                "field_type": "navigation",
+                "value": "Get Started for Free"
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "https://aws.amazon.com/404"
+              },
+              {
+                "field_name": "verify_new_tab",
+                "field_type": "assertion",
+                "value": "new tab opened"
+              },
+              {
+                "field_name": "verify_original_tab",
+                "field_type": "assertion",
+                "value": "original page remains open"
+              }
+            ],
+            "expected_error": "Incorrect redirect URL - expected pricing page"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-031",
+    "scenario_id": "M03_BS_012",
+    "scenario_title": "Request customized pricing quote from AWS sales",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "click_pricing_quote_button",
+        "field_type": "navigation",
+        "value": "Request a Pricing quote"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "https://aws.amazon.com/contact-us/sales-support-pricing/?ch=cta&cta=contact-sales"
+      },
+      {
+        "field_name": "expected_page_heading",
+        "field_type": "assertion",
+        "value": "Contact AWS Sales"
+      },
+      {
+        "field_name": "expected_contact_form",
+        "field_type": "assertion",
+        "value": "pricing quote request form"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation fails or lands on wrong page",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_pricing_quote_button",
+                "field_type": "navigation",
+                "value": "Request a Pricing quote"
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "https://aws.amazon.com/404"
+              },
+              {
+                "field_name": "expected_page_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_contact_form",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Page not found or failed to load contact form"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-032",
+    "scenario_id": "M01_BS_006",
+    "scenario_title": "Navigate through Products menu to find specific AWS services",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_products_menu",
+        "field_type": "navigation",
+        "value": "Products"
+      },
+      {
+        "field_name": "expected_popup_menu",
+        "field_type": "assertion",
+        "value": "AWS products menu popup"
+      },
+      {
+        "field_name": "locate_amazon_quick_card",
+        "field_type": "assertion",
+        "value": "Amazon Quick"
+      },
+      {
+        "field_name": "click_amazon_quick",
+        "field_type": "navigation",
+        "value": "Amazon Quick service"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "/amazon-quick"
+      },
+      {
+        "field_name": "expected_service_heading",
+        "field_type": "assertion",
+        "value": "Amazon Quick"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Amazon Quick service not available or missing from menu",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_products_menu",
+                "field_type": "navigation",
+                "value": "Products"
+              },
+              {
+                "field_name": "expected_popup_menu",
+                "field_type": "assertion",
+                "value": "AWS products menu popup"
+              },
+              {
+                "field_name": "locate_amazon_quick_card",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "click_amazon_quick",
+                "field_type": "navigation",
+                "value": "Amazon Quick service"
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "/404"
+              },
+              {
+                "field_name": "expected_service_heading",
+                "field_type": "assertion",
+                "value": "Page Not Found"
+              }
+            ],
+            "expected_error": "Amazon Quick service not found in products menu"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-033",
+    "scenario_id": "M01_BS_007",
+    "scenario_title": "Browse homepage content as authenticated user",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "access_homepage_navigation",
+        "field_type": "navigation",
+        "value": "homepage navigation bar"
+      },
+      {
+        "field_name": "browse_whats_new_section",
+        "field_type": "assertion",
+        "value": "What's New"
+      },
+      {
+        "field_name": "view_client_images",
+        "field_type": "assertion",
+        "value": "image carousel"
+      },
+      {
+        "field_name": "read_success_stories",
+        "field_type": "assertion",
+        "value": "customer success stories"
+      },
+      {
+        "field_name": "min_carousel_images",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key homepage sections not loading or missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "access_homepage_navigation",
+                "field_type": "navigation",
+                "value": "homepage navigation bar"
+              },
+              {
+                "field_name": "browse_whats_new_section",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "view_client_images",
+                "field_type": "assertion",
+                "value": "image carousel"
+              },
+              {
+                "field_name": "read_success_stories",
+                "field_type": "assertion",
+                "value": "customer success stories"
+              },
+              {
+                "field_name": "min_carousel_images",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "What's New section failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-034",
+    "scenario_id": "M04_BS_001",
+    "scenario_title": "Navigate between different Partner sections using navigation bar",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_partner_header",
+        "field_type": "navigation",
+        "value": "Partner Solutions"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/partners/solutions"
+      },
+      {
+        "field_name": "expected_section_heading",
+        "field_type": "assertion",
+        "value": "AWS Partner Solutions"
+      },
+      {
+        "field_name": "expected_content_keyword",
+        "field_type": "assertion",
+        "value": "partner programs"
+      },
+      {
+        "field_name": "min_navigation_items",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation fails or lands on wrong section",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_partner_header",
+                "field_type": "navigation",
+                "value": "Partner Solutions"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/404"
+              },
+              {
+                "field_name": "expected_section_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_content_keyword",
+                "field_type": "assertion",
+                "value": "partner programs"
+              },
+              {
+                "field_name": "min_navigation_items",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Page not found or navigation failed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-035",
+    "scenario_id": "M04_BS_002",
+    "scenario_title": "View AWS Partner Network getting started information",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_section",
+        "field_type": "navigation",
+        "value": "AWS Partner Network"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Getting Started with AWS Partner Network"
+      },
+      {
+        "field_name": "expected_guidance_content",
+        "field_type": "assertion",
+        "value": "Join the AWS Partner Network to grow your business"
+      },
+      {
+        "field_name": "expected_next_steps",
+        "field_type": "assertion",
+        "value": "Apply now to become an AWS Partner"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/partners/partner-network"
+      },
+      {
+        "field_name": "min_guidance_steps_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key partner network content missing or incorrect",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_to_section",
+                "field_type": "navigation",
+                "value": "AWS Partner Network"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_guidance_content",
+                "field_type": "assertion",
+                "value": "Join the AWS Partner Network to grow your business"
+              },
+              {
+                "field_name": "expected_next_steps",
+                "field_type": "assertion",
+                "value": "Apply now to become an AWS Partner"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/partners/partner-network"
+              },
+              {
+                "field_name": "min_guidance_steps_count",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Partner Network getting started section heading not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-036",
+    "scenario_id": "M04_BS_003",
+    "scenario_title": "Explore AWS Partner benefits and expansion opportunities",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_to_section",
+        "field_type": "navigation",
+        "value": "Why become AWS Partner"
+      },
+      {
+        "field_name": "expected_benefits_heading",
+        "field_type": "assertion",
+        "value": "Partner Benefits"
+      },
+      {
+        "field_name": "expected_expansion_content",
+        "field_type": "assertion",
+        "value": "expansion opportunities"
+      },
+      {
+        "field_name": "expected_value_proposition",
+        "field_type": "assertion",
+        "value": "value proposition"
+      },
+      {
+        "field_name": "min_benefit_items",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Required section or content not available",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_to_section",
+                "field_type": "navigation",
+                "value": "Why become AWS Partner"
+              },
+              {
+                "field_name": "expected_benefits_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_expansion_content",
+                "field_type": "assertion",
+                "value": "expansion opportunities"
+              },
+              {
+                "field_name": "expected_value_proposition",
+                "field_type": "assertion",
+                "value": "value proposition"
+              },
+              {
+                "field_name": "min_benefit_items",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Partner benefits section heading not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-037",
+    "scenario_id": "M04_BS_004",
+    "scenario_title": "Browse latest updates in What's New section",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "What's New"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "What's New"
+      },
+      {
+        "field_name": "min_cards_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "expected_content_keyword",
+        "field_type": "assertion",
+        "value": "AWS Partner program"
+      },
+      {
+        "field_name": "click_card_title",
+        "field_type": "assertion",
+        "value": "Latest Partner Program Updates"
+      },
+      {
+        "field_name": "expected_detail_content",
+        "field_type": "assertion",
+        "value": "announcements"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "What's New section not available or empty",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "What's New"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_cards_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "expected_content_keyword",
+                "field_type": "assertion",
+                "value": "AWS Partner program"
+              },
+              {
+                "field_name": "click_card_title",
+                "field_type": "assertion",
+                "value": "Latest Partner Program Updates"
+              },
+              {
+                "field_name": "expected_detail_content",
+                "field_type": "assertion",
+                "value": "announcements"
+              }
+            ],
+            "expected_error": "What's New section is not available or contains no updates"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-038",
+    "scenario_id": "M04_BS_005",
+    "scenario_title": "Discover AWS Partner success stories and innovations",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_section_target",
+        "field_type": "navigation",
+        "value": "Partner Success with AWS"
+      },
+      {
+        "field_name": "expected_success_stories",
+        "field_type": "assertion",
+        "value": "success stories from AWS Partners worldwide"
+      },
+      {
+        "field_name": "expected_innovations_content",
+        "field_type": "assertion",
+        "value": "customer innovations driven by partners"
+      },
+      {
+        "field_name": "expected_use_cases",
+        "field_type": "assertion",
+        "value": "partner use cases and achievements"
+      },
+      {
+        "field_name": "min_partner_stories_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Missing or incorrect section content",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_section_target",
+                "field_type": "navigation",
+                "value": "Partner Success with AWS"
+              },
+              {
+                "field_name": "expected_success_stories",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_innovations_content",
+                "field_type": "assertion",
+                "value": "customer innovations driven by partners"
+              },
+              {
+                "field_name": "expected_use_cases",
+                "field_type": "assertion",
+                "value": "partner use cases and achievements"
+              },
+              {
+                "field_name": "min_partner_stories_count",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "Partner success stories content not found or failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-039",
+    "scenario_id": "M04_BS_006",
+    "scenario_title": "Complete automated workflow execution for partner onboarding",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "execute_get_started_workflow",
+        "field_type": "assertion",
+        "value": "Get Started for Free workflow completed successfully"
+      },
+      {
+        "field_name": "verify_workflow_status",
+        "field_type": "assertion",
+        "value": "Workflow executed without errors"
+      },
+      {
+        "field_name": "execute_amazon_quick_search",
+        "field_type": "assertion",
+        "value": "Amazon Quick product search workflow completed"
+      },
+      {
+        "field_name": "verify_second_workflow_status",
+        "field_type": "assertion",
+        "value": "Second workflow completed without errors"
+      },
+      {
+        "field_name": "validate_all_steps_processed",
+        "field_type": "assertion",
+        "value": "All workflow steps successfully processed"
+      },
+      {
+        "field_name": "expected_partner_page_url",
+        "field_type": "url",
+        "value": "/aws/partner/onboarding/complete"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Workflow execution failure or missing success indicators",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "execute_get_started_workflow",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "verify_workflow_status",
+                "field_type": "assertion",
+                "value": "Workflow executed without errors"
+              },
+              {
+                "field_name": "execute_amazon_quick_search",
+                "field_type": "assertion",
+                "value": "Amazon Quick product search workflow completed"
+              },
+              {
+                "field_name": "verify_second_workflow_status",
+                "field_type": "assertion",
+                "value": "Second workflow completed without errors"
+              },
+              {
+                "field_name": "validate_all_steps_processed",
+                "field_type": "assertion",
+                "value": "All workflow steps successfully processed"
+              },
+              {
+                "field_name": "expected_partner_page_url",
+                "field_type": "url",
+                "value": "/aws/partner/onboarding/complete"
+              }
+            ],
+            "expected_error": "Get Started workflow did not complete successfully"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-040",
+    "scenario_id": "M04_BS_007",
+    "scenario_title": "Execute comprehensive automated test suite for partner functionality",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "execute_test_case_one",
+        "field_type": "assertion",
+        "value": "Test Case 1: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_two",
+        "field_type": "assertion",
+        "value": "Test Case 2: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_three",
+        "field_type": "assertion",
+        "value": "Test Case 3: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_four",
+        "field_type": "assertion",
+        "value": "Test Case 4: PASSED"
+      },
+      {
+        "field_name": "execute_test_case_five",
+        "field_type": "assertion",
+        "value": "Test Case 5: PASSED"
+      },
+      {
+        "field_name": "verify_all_tests_status",
+        "field_type": "assertion",
+        "value": "All automated test cases completed successfully"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Test case execution failure",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "execute_test_case_one",
+                "field_type": "assertion",
+                "value": "Test Case 1: FAILED"
+              },
+              {
+                "field_name": "execute_test_case_two",
+                "field_type": "assertion",
+                "value": "Test Case 2: PASSED"
+              },
+              {
+                "field_name": "execute_test_case_three",
+                "field_type": "assertion",
+                "value": "Test Case 3: PASSED"
+              },
+              {
+                "field_name": "execute_test_case_four",
+                "field_type": "assertion",
+                "value": "Test Case 4: PASSED"
+              },
+              {
+                "field_name": "execute_test_case_five",
+                "field_type": "assertion",
+                "value": "Test Case 5: PASSED"
+              },
+              {
+                "field_name": "verify_all_tests_status",
+                "field_type": "assertion",
+                "value": "Test execution incomplete - 1 test case failed"
+              }
+            ],
+            "expected_error": "Automated test suite validation failed - not all test cases passed successfully"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-041",
+    "scenario_id": "M04_BS_008",
+    "scenario_title": "Guest user initiates partner registration process",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "partner section"
+      },
+      {
+        "field_name": "expected_partner_heading",
+        "field_type": "assertion",
+        "value": "AWS Partner Network"
+      },
+      {
+        "field_name": "expected_signin_link",
+        "field_type": "assertion",
+        "value": "sign in to aws console"
+      },
+      {
+        "field_name": "expected_redirect_url",
+        "field_type": "url",
+        "value": "https://signin.aws.amazon.com/signin"
+      },
+      {
+        "field_name": "expected_partner_content",
+        "field_type": "assertion",
+        "value": "Join thousands of partners"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Required page elements missing or incorrect",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "partner section"
+              },
+              {
+                "field_name": "expected_partner_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_signin_link",
+                "field_type": "assertion",
+                "value": "sign in to aws console"
+              },
+              {
+                "field_name": "expected_redirect_url",
+                "field_type": "url",
+                "value": "https://signin.aws.amazon.com/signin"
+              },
+              {
+                "field_name": "expected_partner_content",
+                "field_type": "assertion",
+                "value": "Join thousands of partners"
+              }
+            ],
+            "expected_error": "Partner section heading not found on page"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-042",
+    "scenario_id": "M04_BS_009",
+    "scenario_title": "Navigate partner collaboration workflow",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_work_with_partner",
+        "field_type": "navigation",
+        "value": "Work with an AWS Partner"
+      },
+      {
+        "field_name": "expected_redirect_url",
+        "field_type": "url",
+        "value": "https://aws.amazon.com/partners/work-with-partners/"
+      },
+      {
+        "field_name": "click_become_partner",
+        "field_type": "navigation",
+        "value": "Become and AWS Partner"
+      },
+      {
+        "field_name": "expected_return_page",
+        "field_type": "assertion",
+        "value": "AWS Partner page"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation links are broken or missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_work_with_partner",
+                "field_type": "navigation",
+                "value": ""
+              },
+              {
+                "field_name": "expected_redirect_url",
+                "field_type": "url",
+                "value": "https://aws.amazon.com/partners/work-with-partners/"
+              },
+              {
+                "field_name": "click_become_partner",
+                "field_type": "navigation",
+                "value": "Become and AWS Partner"
+              },
+              {
+                "field_name": "expected_return_page",
+                "field_type": "assertion",
+                "value": "AWS Partner page"
+              }
+            ],
+            "expected_error": "Work with an AWS Partner link not found or not clickable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-043",
+    "scenario_id": "M01_BS_008",
+    "scenario_title": "Browse homepage content as guest user",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_homepage_url",
+        "field_type": "url",
+        "value": "https://aws.amazon.com"
+      },
+      {
+        "field_name": "expected_whats_new_section",
+        "field_type": "assertion",
+        "value": "What's New"
+      },
+      {
+        "field_name": "expected_image_carousel",
+        "field_type": "assertion",
+        "value": "Image Carousel"
+      },
+      {
+        "field_name": "expected_customer_stories",
+        "field_type": "assertion",
+        "value": "Customer Story Cards"
+      },
+      {
+        "field_name": "scroll_navigation_bar",
+        "field_type": "navigation",
+        "value": "main navigation"
+      },
+      {
+        "field_name": "min_content_sections_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key homepage sections missing or not visible",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_homepage_url",
+                "field_type": "url",
+                "value": "https://aws.amazon.com"
+              },
+              {
+                "field_name": "expected_whats_new_section",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_image_carousel",
+                "field_type": "assertion",
+                "value": "Image Carousel"
+              },
+              {
+                "field_name": "expected_customer_stories",
+                "field_type": "assertion",
+                "value": "Customer Story Cards"
+              },
+              {
+                "field_name": "scroll_navigation_bar",
+                "field_type": "navigation",
+                "value": "main navigation"
+              },
+              {
+                "field_name": "min_content_sections_count",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "What's New section is not visible on homepage"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-044",
+    "scenario_id": "M01_BS_009",
+    "scenario_title": "Access comprehensive AWS product information from homepage",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "browse_homepage_section",
+        "field_type": "navigation",
+        "value": "Products and Services"
+      },
+      {
+        "field_name": "expected_product_heading",
+        "field_type": "assertion",
+        "value": "AWS Products"
+      },
+      {
+        "field_name": "expected_service_description",
+        "field_type": "assertion",
+        "value": "Amazon Web Services offers reliable, scalable, and inexpensive cloud computing services"
+      },
+      {
+        "field_name": "access_product_details",
+        "field_type": "navigation",
+        "value": "Compute Services"
+      },
+      {
+        "field_name": "min_products_displayed",
+        "field_type": "count_min",
+        "value": "5"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Expected content not found or missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "browse_homepage_section",
+                "field_type": "navigation",
+                "value": "Products and Services"
+              },
+              {
+                "field_name": "expected_product_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_service_description",
+                "field_type": "assertion",
+                "value": "Amazon Web Services offers reliable, scalable, and inexpensive cloud computing services"
+              },
+              {
+                "field_name": "access_product_details",
+                "field_type": "navigation",
+                "value": "Compute Services"
+              },
+              {
+                "field_name": "min_products_displayed",
+                "field_type": "count_min",
+                "value": "5"
+              }
+            ],
+            "expected_error": "Product heading is not visible on homepage"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-045",
+    "scenario_id": "M01_BS_010",
+    "scenario_title": "Explore AWS service updates through What's New section",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_whats_new_section",
+        "field_type": "navigation",
+        "value": "What's New"
+      },
+      {
+        "field_name": "expected_aws_updates_heading",
+        "field_type": "assertion",
+        "value": "What's New with AWS"
+      },
+      {
+        "field_name": "expected_service_update_item",
+        "field_type": "assertion",
+        "value": "Amazon EC2"
+      },
+      {
+        "field_name": "min_update_items_count",
+        "field_type": "count_min",
+        "value": "5"
+      },
+      {
+        "field_name": "select_feature_details",
+        "field_type": "assertion",
+        "value": "Learn more"
+      },
+      {
+        "field_name": "expected_feature_description",
+        "field_type": "assertion",
+        "value": "AWS service features and capabilities"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "What's New section unavailable or empty",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_whats_new_section",
+                "field_type": "navigation",
+                "value": "What's New"
+              },
+              {
+                "field_name": "expected_aws_updates_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_service_update_item",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_update_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "select_feature_details",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_feature_description",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "What's New section is currently unavailable or contains no updates"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-046",
+    "scenario_id": "M01_BS_011",
+    "scenario_title": "Navigate to Amazon QuickSight through Products menu",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_products_menu",
+        "field_type": "navigation",
+        "value": "Products"
+      },
+      {
+        "field_name": "search_product_name",
+        "field_type": "text",
+        "value": "Amazon QuickSight"
+      },
+      {
+        "field_name": "expected_service_heading",
+        "field_type": "assertion",
+        "value": "Amazon QuickSight"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/quicksight"
+      },
+      {
+        "field_name": "expected_service_description",
+        "field_type": "assertion",
+        "value": "Business intelligence service"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Service not found or navigation fails",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_products_menu",
+                "field_type": "navigation",
+                "value": "Products"
+              },
+              {
+                "field_name": "search_product_name",
+                "field_type": "text",
+                "value": "NonExistentService"
+              },
+              {
+                "field_name": "expected_service_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/404"
+              },
+              {
+                "field_name": "expected_service_description",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Service not found or page not available"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,177 @@
+{
+  "specs": [
+    {
+      "spec_id": "BS-001",
+      "scenario_title": "Verify Core Page Functionality and Layout",
+      "file": "test_BS-001_verify_core_page_functionality_and_layout.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T13:55:37.068906+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-002",
+      "scenario_title": "Responsive Grid Layout Validation for Desktop Viewport",
+      "file": "test_BS-002_responsive_grid_layout_validation_for_desktop_viewport.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T13:56:27.247466+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-003",
+      "scenario_title": "Responsive Grid Layout Validation for Tablet Viewport",
+      "file": "test_BS-003_responsive_grid_layout_validation_for_tablet_viewport.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T13:57:18.895536+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-004",
+      "scenario_title": "Responsive Grid Layout Validation for Mobile Viewport",
+      "file": "test_BS-004_responsive_grid_layout_validation_for_mobile_viewport.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T13:58:25.688132+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-005",
+      "scenario_title": "Lazy Loading and Infinite Scroll Functionality",
+      "file": "test_BS-005_lazy_loading_and_infinite_scroll_functionality.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T13:59:27.033807+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-006",
+      "scenario_title": "Single Category Filter Selection",
+      "file": "test_BS-006_single_category_filter_selection.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:00:22.782094+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-007",
+      "scenario_title": "Deal Card Content Validation",
+      "file": "test_BS-007_deal_card_content_validation.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:01:27.849622+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-008",
+      "scenario_title": "Add to Cart Functionality from Deal Card",
+      "file": "test_BS-008_add_to_cart_functionality_from_deal_card.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:02:22.436529+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-009",
+      "scenario_title": "Delivery Pincode Impact on Deal Availability",
+      "file": "test_BS-009_delivery_pincode_impact_on_deal_availability.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:03:23.125615+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-010",
+      "scenario_title": "Keyboard Navigation Accessibility",
+      "file": "test_BS-010_keyboard_navigation_accessibility.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:04:32.164887+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-011",
+      "scenario_title": "Lightning Deal Reservation Timer",
+      "file": "test_BS-011_lightning_deal_reservation_timer.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:05:30.987972+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-012",
+      "scenario_title": "Lightning Deal Status Updates",
+      "file": "test_BS-012_lightning_deal_status_updates.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:06:35.564251+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-013",
+      "scenario_title": "Multi-Category Filter Combination",
+      "file": "test_BS-013_multi_category_filter_combination.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:07:40.177990+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-014",
+      "scenario_title": "Lightning Deal Countdown Clock Functionality",
+      "file": "test_BS-014_lightning_deal_countdown_clock_functionality.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T14:08:42.585113+00:00",
+      "last_run": null,
+      "last_result": null
+    }
+  ],
+  "project": "AmazonTest",
+  "updated_at": "2026-06-18T14:08:42.585193+00:00",
+  "total_scenarios": 14,
+  "new_additions": [
+    "test_BS-001_verify_core_page_functionality_and_layout.spec.ts",
+    "test_BS-002_responsive_grid_layout_validation_for_desktop_viewport.spec.ts",
+    "test_BS-003_responsive_grid_layout_validation_for_tablet_viewport.spec.ts",
+    "test_BS-004_responsive_grid_layout_validation_for_mobile_viewport.spec.ts",
+    "test_BS-005_lazy_loading_and_infinite_scroll_functionality.spec.ts",
+    "test_BS-006_single_category_filter_selection.spec.ts",
+    "test_BS-007_deal_card_content_validation.spec.ts",
+    "test_BS-008_add_to_cart_functionality_from_deal_card.spec.ts",
+    "test_BS-009_delivery_pincode_impact_on_deal_availability.spec.ts",
+    "test_BS-010_keyboard_navigation_accessibility.spec.ts",
+    "test_BS-011_lightning_deal_reservation_timer.spec.ts",
+    "test_BS-012_lightning_deal_status_updates.spec.ts",
+    "test_BS-013_multi_category_filter_combination.spec.ts",
+    "test_BS-014_lightning_deal_countdown_clock_functionality.spec.ts"
+  ]
+}

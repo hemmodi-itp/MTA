@@ -1,0 +1,218 @@
+[
+  {
+    "timestamp": "2026-07-17T14:41:18.989300+00:00",
+    "kind": "locator_map_drift",
+    "project": "geminiTest4",
+    "module_id": "_project",
+    "source": "build_named_locator_map",
+    "added": [
+      "open_sidebar",
+      "listen",
+      "sign_in",
+      "sign_in_2",
+      "settings",
+      "upload_tools",
+      "flash",
+      "microphone",
+      "google_apps",
+      "sign_in_3",
+      "gemini",
+      "about_gemini_opens_in_a_new_window",
+      "get_gemini_app_opens_in_a_new_window",
+      "subscriptions_opens_in_a_new_window",
+      "for_business_opens_in_a_new_window",
+      "new_chat",
+      "a_loc_0017",
+      "google_terms_opens_in_a_new_window",
+      "google_privacy_policy_opens_in_a_new_window"
+    ],
+    "updated": [],
+    "possibly_removed": [],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-07-17T14:41:31.939719+00:00",
+    "kind": "locator_map_drift",
+    "project": "geminiTest4",
+    "module_id": "M01",
+    "source": "live_validation",
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "listen",
+      "sign_in",
+      "sign_in_2",
+      "google_apps",
+      "sign_in_3",
+      "gemini"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-07-17T14:41:42.577215+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_001",
+    "missing_actions": [],
+    "missing_locators": [
+      "prompt_textbox",
+      "model_selector"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:42:04.246303+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_002",
+    "missing_actions": [],
+    "missing_locators": [
+      "prompt_textbox",
+      "error_message"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:11.442020+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_006",
+    "missing_actions": [],
+    "missing_locators": [
+      "model_selector_dropdown",
+      "model_dropdown_list",
+      "model_dropdown_options"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:17.279765+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_007",
+    "missing_actions": [],
+    "missing_locators": [
+      "AI model dropdown selector - need locator for the dropdown containing available AI models",
+      "Active model indicator - need locator to verify which model is currently active",
+      "Error message container - need locator for displaying model selection errors"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:21.934815+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_008",
+    "missing_actions": [],
+    "missing_locators": [
+      "upgrade_dialog_heading - locator for upgrade dialog title to verify 'Upgrade Your Plan' text appears",
+      "subscription_content - locator for subscription page content to verify 'Choose a subscription plan' text appears"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:26.907357+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_009",
+    "missing_actions": [],
+    "missing_locators": [
+      "sidebar_toggle_button - The actual toggle button control to collapse/expand the sidebar",
+      "sidebar_container - The sidebar element to verify its collapsed/expanded state"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:31.986262+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_010",
+    "missing_actions": [],
+    "missing_locators": [
+      "prompt_textbox - needed to verify the prompt input field is empty after creating new conversation",
+      "conversation_indicator - needed to verify a new conversation was actually created"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:36.084011+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_011",
+    "missing_actions": [],
+    "missing_locators": [
+      "sidebar_conversation_item",
+      "conversation_content",
+      "conversation_title"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:40.498569+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_012",
+    "missing_actions": [],
+    "missing_locators": [
+      "settings_panel - A locator for the actual settings panel container that opens after clicking the settings icon",
+      "configuration_options - A locator for the configuration options within the settings panel to verify the panel content"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:50.951849+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_013",
+    "missing_actions": [],
+    "missing_locators": [
+      "search_icon",
+      "search_interface",
+      "search_input_field"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:43:56.957088+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_014",
+    "missing_actions": [],
+    "missing_locators": [
+      "focusable_elements - Need locators for interactive elements that should receive focus during Tab navigation",
+      "focus_indicator - Need locator to verify visible focus outline on currently focused element"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:44:01.697325+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_015",
+    "missing_actions": [],
+    "missing_locators": [
+      "microphone_interface - element that displays the voice input interface after clicking microphone button",
+      "permission_dialog - browser permission dialog for microphone access"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-07-17T14:44:06.552646+00:00",
+    "kind": "missing_capability",
+    "project": "geminiTest4",
+    "scenario_id": "M01_BS_016",
+    "missing_actions": [
+      "observeLoadingIndicator",
+      "triggerAIResponseGeneration",
+      "waitForAIProcessingStart"
+    ],
+    "missing_locators": [
+      "prompt_input",
+      "submit_button",
+      "loading_indicator",
+      "response_container",
+      "ai_generation_status"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  }
+]

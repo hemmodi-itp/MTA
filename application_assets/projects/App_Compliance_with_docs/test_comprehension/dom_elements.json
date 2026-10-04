@@ -1,0 +1,467 @@
+{
+  "url": "http://localhost:5173/",
+  "project": "App_Compliance_with_docs",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "button",
+      "display_text": "Switch to dark mode",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Switch to dark mode",
+        "title": "Switch to dark mode"
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Switch to dark mode"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>header>div>div>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/header[1]/div[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Switch to dark mode"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Switch to dark mode"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "button",
+      "display_text": "Open the demo project",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Open the demo project"
+        },
+        "get_by_text": {
+          "text": "Open the demo project"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>main>div>div>section>div:nth-of-type(2)>div:nth-of-type(2)>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/section[1]/div[2]/div[2]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Open the demo project"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Open the demo project"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "a",
+      "display_text": "BRD Compliance\ncriterion-level",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "BRD Compliance\ncriterion-level"
+        },
+        "get_by_text": {
+          "text": "BRD Compliance\ncriterion-level"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>header>div>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/header[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "BRD Compliance\ncriterion-level"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "BRD Compliance\ncriterion-level"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "a",
+      "display_text": "New project",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "New project"
+        },
+        "get_by_text": {
+          "text": "New project"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>main>div>div>div>div>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "New project"
+        },
+        "score": 60,
+        "unique": false,
+        "match_count": 2
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "New project"
+          },
+          "score": 60,
+          "unique": false,
+          "match_count": 2
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "a",
+      "display_text": "New project",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "New project"
+        },
+        "get_by_text": {
+          "text": "New project"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>main>div>div>div>div>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "New project"
+        },
+        "score": 60,
+        "unique": false,
+        "match_count": 2
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "New project"
+          },
+          "score": 60,
+          "unique": false,
+          "match_count": 2
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0005",
+      "tag": "button",
+      "display_text": "Delete",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Delete"
+        },
+        "get_by_text": {
+          "text": "Delete"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>main>div>div>section:nth-of-type(2)>ul>li>div:nth-of-type(2)>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/section[2]/ul[1]/li[1]/div[2]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Delete"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Delete"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0006",
+      "tag": "a",
+      "display_text": "ShopFlow (demo)",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "ShopFlow (demo)"
+        },
+        "get_by_text": {
+          "text": "ShopFlow (demo)"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>main>div>div>section:nth-of-type(2)>ul>li>div>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/section[2]/ul[1]/li[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "ShopFlow (demo)"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "ShopFlow (demo)"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0007",
+      "tag": "a",
+      "display_text": "Open",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Open"
+        },
+        "get_by_text": {
+          "text": "Open"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>main>div>div>section:nth-of-type(2)>ul>li>div:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/section[2]/ul[1]/li[1]/div[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Open"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Open"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ]
+}

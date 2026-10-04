@@ -1,0 +1,156 @@
+{
+  "M01_BS_001": {
+    "tests": [
+      {
+        "name": "positive — user opens the main menu to access navigation options",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "main_menu"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for main menu container or navigation options element to verify the main menu is expanded and visible"
+    ]
+  },
+  "M01_BS_002": {
+    "tests": [
+      {
+        "name": "positive — clicking deploy button initiates deployment for blog agent service",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "deploy"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/control-panel/deployments/blog-agent/status",
+            "message": "URL should navigate to the blog agent deployment status page after initiating deployment"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "heading_element",
+      "status_message_element"
+    ]
+  },
+  "M01_BS_003": {
+    "tests": [
+      {
+        "name": "positive — user clicks stop button to halt active process",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "stop"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for process status indicator to verify process termination state",
+      "Locator for process termination or error message banner"
+    ]
+  },
+  "M01_BS_004": {
+    "tests": [
+      {
+        "name": "positive — jump to section heading navigates viewport to target anchor",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "link_to_heading"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "#key-features",
+            "message": "URL should include the section anchor #key-features after clicking the heading link"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M01_BS_005": {
+    "tests": [
+      {
+        "name": "positive — interact with target generic UI element",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "button_loc_0001",
+            "message": "Target interactive element LOC-0001 should be displayed on the active page"
+          },
+          {
+            "action": "click",
+            "locator_key": "button_loc_0001"
+          }
+        ]
+      },
+      {
+        "name": "positive — interact with main menu element",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "main_menu",
+            "message": "Main menu element should be visible on the page"
+          },
+          {
+            "action": "click",
+            "locator_key": "main_menu"
+          }
+        ]
+      },
+      {
+        "name": "positive — interact with deploy element",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "deploy",
+            "message": "Deploy element should be visible on the page"
+          },
+          {
+            "action": "click",
+            "locator_key": "deploy"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  }
+}

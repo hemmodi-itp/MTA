@@ -1,0 +1,47 @@
+project:
+  name: AppEvolve
+  application_name: AppEvolve
+  browser: chromium
+  headless: false
+  interactive_scan:  true
+
+input:
+  brd_dir: application_assets/projects/AppEvolve/inputs
+
+auth:
+  enabled: false
+  strategy: storageState
+  setup_url: https://pt-dev.appevolve.intuitive.ai/
+  success_url: https://pt-dev.appevolve.intuitive.ai/appevolve/dashboard
+  username_env: appEvolve_username
+  password_env: appEvolve_password
+  signin_selector: '//*[@id="root"]/div/div[1]/button'
+  username_selector: '//*[@id="username"]'
+  password_selector: '//*[@id="password"]'
+  submit_selector: '//*[@id="kc-login"]'
+  storage_state_path: application_assets/projects/AppEvolve/.auth/run_auth.json
+
+modules:
+  - id: M00
+    name: Login
+    url: https://pt-dev.appevolve.intuitive.ai/
+    brd_file: module_00_login.md
+  - id: M01
+    name: Page Load & Structure
+    url: https://pt-dev.appevolve.intuitive.ai/appevolve/dashboard
+    brd_file: module_01_dashboard.md
+  - id: M02
+    name: Navigation & Links
+    brd_file: module_02_navigation.md
+  - id: M03
+    name: Project Card CTAs
+    brd_file: module_03_cta.md
+  - id: M04
+    name: Footer
+    brd_file: module_04_footer.md
+  - id: M05
+    name: User Movement & Interaction
+    brd_file: module_05_interaction.md
+
+test_execution:
+  suite: AppEvolve

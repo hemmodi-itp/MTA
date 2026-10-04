@@ -1,0 +1,23 @@
+{
+  "name": "ReportingAgent",
+  "registry_key": "reporting",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.reporting.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Aggregates Playwright JSON results and test_suite.json into HTML and JSON execution reports. Always runs regardless of upstream step failures (always_run: true in full_workflow.yaml).",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Used to derive test_execution/reports paths" },
+    { "name": "run_id", "type": "string", "required": true, "description": "Workflow run identifier" }
+  ],
+  "outputs": [
+    { "name": "report_path", "type": "string", "description": "test_execution/reports/json/{ts}_{project}.json" },
+    { "name": "html_report_path", "type": "string", "description": "test_execution/reports/html/{ts}_{project}.html" },
+    { "name": "index_path", "type": "string", "description": "test_execution/reports/index.json" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

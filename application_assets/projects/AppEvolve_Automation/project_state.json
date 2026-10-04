@@ -1,0 +1,1182 @@
+{
+  "project": "AppEvolve_Automation",
+  "schema_version": "1.0",
+  "last_updated": "2026-07-09T13:49:49.088030+00:00",
+  "last_run_id": "bbda3c51-01fd-4eae-973e-749664cce5ba",
+  "discovery": {
+    "dom_fingerprint": "sha256:646dee4768840781ac619f8ee27d7bcaa7b9d2c591b125ba60b8af9db773c881",
+    "brd_fingerprint": "sha256:c98bb931a5e6177e3ff328bbc9d06e2b210a67d407183d30911914ca8bc32824",
+    "last_discovered": "2026-07-09T11:22:43.968781+00:00",
+    "cached_output": {
+      "status": "partial",
+      "intents_path": "application_assets\\projects\\AppEvolve_Automation\\test_creation\\intents.yaml",
+      "dom_status": "success",
+      "dom_intents_count": 57,
+      "dom_intents_path": "application_assets\\projects\\AppEvolve_Automation\\comprehension\\modules\\M03\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\AppEvolve_Automation\\comprehension\\modules\\M03\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "DOM_INT_001",
+          "intent_name": "enter_search",
+          "action": "fill",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_002",
+          "intent_name": "click_element",
+          "action": "click",
+          "locator_id": "LOC-0003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_003",
+          "intent_name": "click_tour",
+          "action": "click",
+          "locator_id": "LOC-0006",
+          "value": null,
+          "expected_result": "tour_opened"
+        },
+        {
+          "intent_id": "DOM_INT_084",
+          "intent_name": "click_users3total",
+          "action": "click",
+          "locator_id": "LOC-0010",
+          "value": null,
+          "expected_result": "users3total_opened"
+        },
+        {
+          "intent_id": "DOM_INT_085",
+          "intent_name": "click_clients2total",
+          "action": "click",
+          "locator_id": "LOC-0011",
+          "value": null,
+          "expected_result": "clients2total_opened"
+        },
+        {
+          "intent_id": "DOM_INT_086",
+          "intent_name": "click_projects143total",
+          "action": "click",
+          "locator_id": "LOC-0012",
+          "value": null,
+          "expected_result": "projects143total_opened"
+        },
+        {
+          "intent_id": "DOM_INT_087",
+          "intent_name": "click_profiles0total",
+          "action": "click",
+          "locator_id": "LOC-0013",
+          "value": null,
+          "expected_result": "profiles0total_opened"
+        },
+        {
+          "intent_id": "DOM_INT_020",
+          "intent_name": "click_proj190",
+          "action": "click",
+          "locator_id": "LOC-0014",
+          "value": null,
+          "expected_result": "proj190_opened"
+        },
+        {
+          "intent_id": "DOM_INT_083",
+          "intent_name": "click_proj201",
+          "action": "click",
+          "locator_id": "LOC-0015",
+          "value": null,
+          "expected_result": "proj201_opened"
+        },
+        {
+          "intent_id": "DOM_INT_012",
+          "intent_name": "click_proj197",
+          "action": "click",
+          "locator_id": "LOC-0016",
+          "value": null,
+          "expected_result": "proj197_opened"
+        },
+        {
+          "intent_id": "DOM_INT_008",
+          "intent_name": "click_proj200",
+          "action": "click",
+          "locator_id": "LOC-0017",
+          "value": null,
+          "expected_result": "proj200_opened"
+        },
+        {
+          "intent_id": "DOM_INT_009",
+          "intent_name": "click_proj199",
+          "action": "click",
+          "locator_id": "LOC-0018",
+          "value": null,
+          "expected_result": "proj199_opened"
+        },
+        {
+          "intent_id": "DOM_INT_010",
+          "intent_name": "click_proj179",
+          "action": "click",
+          "locator_id": "LOC-0019",
+          "value": null,
+          "expected_result": "proj179_opened"
+        },
+        {
+          "intent_id": "DOM_INT_011",
+          "intent_name": "click_proj198",
+          "action": "click",
+          "locator_id": "LOC-0020",
+          "value": null,
+          "expected_result": "proj198_opened"
+        },
+        {
+          "intent_id": "DOM_INT_013",
+          "intent_name": "click_proj196",
+          "action": "click",
+          "locator_id": "LOC-0021",
+          "value": null,
+          "expected_result": "proj196_opened"
+        },
+        {
+          "intent_id": "DOM_INT_014",
+          "intent_name": "click_proj195",
+          "action": "click",
+          "locator_id": "LOC-0022",
+          "value": null,
+          "expected_result": "proj195_opened"
+        },
+        {
+          "intent_id": "DOM_INT_015",
+          "intent_name": "click_proj194",
+          "action": "click",
+          "locator_id": "LOC-0023",
+          "value": null,
+          "expected_result": "proj194_opened"
+        },
+        {
+          "intent_id": "DOM_INT_016",
+          "intent_name": "click_proj193",
+          "action": "click",
+          "locator_id": "LOC-0024",
+          "value": null,
+          "expected_result": "proj193_opened"
+        },
+        {
+          "intent_id": "DOM_INT_017",
+          "intent_name": "click_proj192",
+          "action": "click",
+          "locator_id": "LOC-0025",
+          "value": null,
+          "expected_result": "proj192_opened"
+        },
+        {
+          "intent_id": "DOM_INT_018",
+          "intent_name": "click_proj191",
+          "action": "click",
+          "locator_id": "LOC-0026",
+          "value": null,
+          "expected_result": "proj191_opened"
+        },
+        {
+          "intent_id": "DOM_INT_019",
+          "intent_name": "click_proj183",
+          "action": "click",
+          "locator_id": "LOC-0027",
+          "value": null,
+          "expected_result": "proj183_opened"
+        },
+        {
+          "intent_id": "DOM_INT_021",
+          "intent_name": "click_proj189",
+          "action": "click",
+          "locator_id": "LOC-0028",
+          "value": null,
+          "expected_result": "proj189_opened"
+        },
+        {
+          "intent_id": "DOM_INT_022",
+          "intent_name": "click_proj188",
+          "action": "click",
+          "locator_id": "LOC-0029",
+          "value": null,
+          "expected_result": "proj188_opened"
+        },
+        {
+          "intent_id": "DOM_INT_023",
+          "intent_name": "click_proj175",
+          "action": "click",
+          "locator_id": "LOC-0030",
+          "value": null,
+          "expected_result": "proj175_opened"
+        },
+        {
+          "intent_id": "DOM_INT_024",
+          "intent_name": "click_proj185",
+          "action": "click",
+          "locator_id": "LOC-0031",
+          "value": null,
+          "expected_result": "proj185_opened"
+        },
+        {
+          "intent_id": "DOM_INT_025",
+          "intent_name": "click_proj181",
+          "action": "click",
+          "locator_id": "LOC-0032",
+          "value": null,
+          "expected_result": "proj181_opened"
+        },
+        {
+          "intent_id": "DOM_INT_026",
+          "intent_name": "click_proj187",
+          "action": "click",
+          "locator_id": "LOC-0033",
+          "value": null,
+          "expected_result": "proj187_opened"
+        },
+        {
+          "intent_id": "DOM_INT_027",
+          "intent_name": "click_proj186",
+          "action": "click",
+          "locator_id": "LOC-0034",
+          "value": null,
+          "expected_result": "proj186_opened"
+        },
+        {
+          "intent_id": "DOM_INT_028",
+          "intent_name": "click_proj184",
+          "action": "click",
+          "locator_id": "LOC-0035",
+          "value": null,
+          "expected_result": "proj184_opened"
+        },
+        {
+          "intent_id": "DOM_INT_029",
+          "intent_name": "click_proj182",
+          "action": "click",
+          "locator_id": "LOC-0036",
+          "value": null,
+          "expected_result": "proj182_opened"
+        },
+        {
+          "intent_id": "DOM_INT_030",
+          "intent_name": "click_proj180",
+          "action": "click",
+          "locator_id": "LOC-0037",
+          "value": null,
+          "expected_result": "proj180_opened"
+        },
+        {
+          "intent_id": "DOM_INT_031",
+          "intent_name": "click_proj178",
+          "action": "click",
+          "locator_id": "LOC-0038",
+          "value": null,
+          "expected_result": "proj178_opened"
+        },
+        {
+          "intent_id": "DOM_INT_032",
+          "intent_name": "click_proj177",
+          "action": "click",
+          "locator_id": "LOC-0039",
+          "value": null,
+          "expected_result": "proj177_opened"
+        },
+        {
+          "intent_id": "DOM_INT_033",
+          "intent_name": "click_proj176",
+          "action": "click",
+          "locator_id": "LOC-0040",
+          "value": null,
+          "expected_result": "proj176_opened"
+        },
+        {
+          "intent_id": "DOM_INT_034",
+          "intent_name": "click_proj168",
+          "action": "click",
+          "locator_id": "LOC-0041",
+          "value": null,
+          "expected_result": "proj168_opened"
+        },
+        {
+          "intent_id": "DOM_INT_035",
+          "intent_name": "click_proj174",
+          "action": "click",
+          "locator_id": "LOC-0042",
+          "value": null,
+          "expected_result": "proj174_opened"
+        },
+        {
+          "intent_id": "DOM_INT_036",
+          "intent_name": "click_proj172",
+          "action": "click",
+          "locator_id": "LOC-0043",
+          "value": null,
+          "expected_result": "proj172_opened"
+        },
+        {
+          "intent_id": "DOM_INT_037",
+          "intent_name": "click_proj2",
+          "action": "click",
+          "locator_id": "LOC-0044",
+          "value": null,
+          "expected_result": "proj2_opened"
+        },
+        {
+          "intent_id": "DOM_INT_038",
+          "intent_name": "click_proj173",
+          "action": "click",
+          "locator_id": "LOC-0045",
+          "value": null,
+          "expected_result": "proj173_opened"
+        },
+        {
+          "intent_id": "DOM_INT_039",
+          "intent_name": "click_proj171",
+          "action": "click",
+          "locator_id": "LOC-0046",
+          "value": null,
+          "expected_result": "proj171_opened"
+        },
+        {
+          "intent_id": "DOM_INT_040",
+          "intent_name": "click_proj170",
+          "action": "click",
+          "locator_id": "LOC-0047",
+          "value": null,
+          "expected_result": "proj170_opened"
+        },
+        {
+          "intent_id": "DOM_INT_041",
+          "intent_name": "click_proj161",
+          "action": "click",
+          "locator_id": "LOC-0048",
+          "value": null,
+          "expected_result": "proj161_opened"
+        },
+        {
+          "intent_id": "DOM_INT_042",
+          "intent_name": "click_proj154",
+          "action": "click",
+          "locator_id": "LOC-0049",
+          "value": null,
+          "expected_result": "proj154_opened"
+        },
+        {
+          "intent_id": "DOM_INT_043",
+          "intent_name": "click_proj164",
+          "action": "click",
+          "locator_id": "LOC-0050",
+          "value": null,
+          "expected_result": "proj164_opened"
+        },
+        {
+          "intent_id": "DOM_INT_044",
+          "intent_name": "click_proj169",
+          "action": "click",
+          "locator_id": "LOC-0051",
+          "value": null,
+          "expected_result": "proj169_opened"
+        },
+        {
+          "intent_id": "DOM_INT_045",
+          "intent_name": "click_proj167",
+          "action": "click",
+          "locator_id": "LOC-0052",
+          "value": null,
+          "expected_result": "proj167_opened"
+        },
+        {
+          "intent_id": "DOM_INT_046",
+          "intent_name": "click_proj166",
+          "action": "click",
+          "locator_id": "LOC-0053",
+          "value": null,
+          "expected_result": "proj166_opened"
+        },
+        {
+          "intent_id": "DOM_INT_047",
+          "intent_name": "click_proj165",
+          "action": "click",
+          "locator_id": "LOC-0054",
+          "value": null,
+          "expected_result": "proj165_opened"
+        },
+        {
+          "intent_id": "DOM_INT_048",
+          "intent_name": "click_proj163",
+          "action": "click",
+          "locator_id": "LOC-0055",
+          "value": null,
+          "expected_result": "proj163_opened"
+        },
+        {
+          "intent_id": "DOM_INT_049",
+          "intent_name": "click_proj162",
+          "action": "click",
+          "locator_id": "LOC-0056",
+          "value": null,
+          "expected_result": "proj162_opened"
+        },
+        {
+          "intent_id": "DOM_INT_050",
+          "intent_name": "click_proj160",
+          "action": "click",
+          "locator_id": "LOC-0057",
+          "value": null,
+          "expected_result": "proj160_opened"
+        },
+        {
+          "intent_id": "DOM_INT_051",
+          "intent_name": "click_proj159",
+          "action": "click",
+          "locator_id": "LOC-0058",
+          "value": null,
+          "expected_result": "proj159_opened"
+        },
+        {
+          "intent_id": "DOM_INT_052",
+          "intent_name": "click_proj158",
+          "action": "click",
+          "locator_id": "LOC-0059",
+          "value": null,
+          "expected_result": "proj158_opened"
+        },
+        {
+          "intent_id": "DOM_INT_053",
+          "intent_name": "click_proj155",
+          "action": "click",
+          "locator_id": "LOC-0060",
+          "value": null,
+          "expected_result": "proj155_opened"
+        },
+        {
+          "intent_id": "DOM_INT_054",
+          "intent_name": "click_proj152",
+          "action": "click",
+          "locator_id": "LOC-0061",
+          "value": null,
+          "expected_result": "proj152_opened"
+        },
+        {
+          "intent_id": "DOM_INT_055",
+          "intent_name": "click_proj151",
+          "action": "click",
+          "locator_id": "LOC-0062",
+          "value": null,
+          "expected_result": "proj151_opened"
+        },
+        {
+          "intent_id": "DOM_INT_056",
+          "intent_name": "click_proj147",
+          "action": "click",
+          "locator_id": "LOC-0063",
+          "value": null,
+          "expected_result": "proj147_opened"
+        }
+      ],
+      "comprehension_status": "success",
+      "comprehension_source": "dom_synthesized",
+      "scenarios_count": 51,
+      "business_scenarios_path": "application_assets\\projects\\AppEvolve_Automation\\comprehension\\business_scenarios.json",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 60,
+    "grounded_intents": 0,
+    "passing_tests": 0,
+    "failing_tests": 9
+  },
+  "business_scenarios": {},
+  "test_cases": {
+    "BS-001": {
+      "name": "Successful Login with Valid Credentials",
+      "scenario": "BS-001",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:ee390dd0b148e39ee07c3d19e3e80ad4c4fe3ddb65fe77c5ccb215e036e538e6",
+      "last_run": "2026-07-07",
+      "last_run_id": "403207bd-d925-459d-8b6a-737badfff276"
+    },
+    "BS-002": {
+      "name": "Login Attempt with Invalid Password",
+      "scenario": "BS-002",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:e468f8d9004c0928097fa1d49c52d2c8ade3fdfcb0a3e20eba02a0ff8b86dc23",
+      "last_run": "2026-07-07",
+      "last_run_id": "403207bd-d925-459d-8b6a-737badfff276"
+    },
+    "BS-003": {
+      "name": "Login Attempt with Empty Credentials",
+      "scenario": "BS-003",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:a982f46cbf2b62eccf6e26d10df1a81150d9b7991d9ded30743f1f31178c62b1",
+      "last_run": "2026-07-07",
+      "last_run_id": "403207bd-d925-459d-8b6a-737badfff276"
+    },
+    "BS-004": {
+      "name": "Login Attempt with Empty Password Only",
+      "scenario": "BS-004",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:9c94c779468a1f1af83cb479ac86045fadf8151982d944cb717e5175b775f75e",
+      "last_run": "2026-07-07",
+      "last_run_id": "403207bd-d925-459d-8b6a-737badfff276"
+    },
+    "BS-005": {
+      "name": "Landing Page Access and Sign In Button Display",
+      "scenario": "BS-005",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:b4eae181d3aa93c70c8da5c9971d81baa2db3427d806cc7995ea542219c44550",
+      "last_run": "2026-07-07",
+      "last_run_id": "403207bd-d925-459d-8b6a-737badfff276"
+    },
+    "BS-006": {
+      "name": "Sign In Button Redirect to Keycloak Login Form",
+      "scenario": "BS-006",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:861a86d9bea7372d8c323df8ad630a5e9feabb7c8a21e0bff5191648a179c7b0",
+      "last_run": "2026-07-07",
+      "last_run_id": "403207bd-d925-459d-8b6a-737badfff276"
+    },
+    "BS-007": {
+      "name": "Footer displays legal information and social links",
+      "scenario": "BS-007",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:999b74caeeb1965968505516c5dd10048ae7df6914876eb1d170c624d6eca7bf",
+      "last_run": "2026-07-08",
+      "last_run_id": "2e7582a3-ba33-40df-a83f-e00aeafd35c7"
+    },
+    "BS-008": {
+      "name": "All project cards are visible without scrolling on page load",
+      "scenario": "BS-008",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:fe747a5694037cd21e449d3d908b07fb373e335c698892cb032148982a3ef65a",
+      "last_run": "2026-07-08",
+      "last_run_id": "2e7582a3-ba33-40df-a83f-e00aeafd35c7"
+    },
+    "BS-009": {
+      "name": "Page maintains responsive layout across different viewport sizes",
+      "scenario": "BS-009",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:55f2276498652a4604ed97714ff1e3ae8cac6eb6860279f8699de6e4b077a0ae",
+      "last_run": "2026-07-08",
+      "last_run_id": "2e7582a3-ba33-40df-a83f-e00aeafd35c7"
+    },
+    "M03_BS_001": {
+      "name": "Navigate through left sidebar menu items",
+      "scenario": "M03_BS_001",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:d5cc04f0ebaeecb7c112af25064474e08abb87350ea47f4e62031e1c396175e3",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_002": {
+      "name": "Search functionality in left navigation bar",
+      "scenario": "M03_BS_002",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:0b9f8e6fecd10cd93b497c471b0f91a00892bb4e89dd4ad7a071f41cfa31e418",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_003": {
+      "name": "View project status charts",
+      "scenario": "M03_BS_003",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:cdea96ae2abebb31a85aeed01e62cd774eb99678ab399331fa6c472d53be2deb",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_004": {
+      "name": "Browse project listings with scrollable navigation",
+      "scenario": "M03_BS_004",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:b13b5d7fd7bf1dc5a0449b5cc61974c7fad19d0740fe1668ec1647fcdf54b57b",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_005": {
+      "name": "Responsive design validation across multiple viewports",
+      "scenario": "M03_BS_005",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:9cefda1ebc595cda0b603bf1cf4ebf8d434c34e281848294901b56300eb91233",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_006": {
+      "name": "Verify page title contains required elements",
+      "scenario": "M03_BS_006",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:7b4820a28d90286e6347bbfaf5f4492a18e8dfa094c3b6fdbe15d969c2393e46",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_007": {
+      "name": "Validate error-free page load",
+      "scenario": "M03_BS_007",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:03cbc24730519b358b96ef1bb6c6f7a048a8cdd68cdf8776bbcbbcb0a7861640",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_008": {
+      "name": "Verify dashboard sections visibility and content",
+      "scenario": "M03_BS_008",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:ee50042e56ad1efff251befab88db549667eb0f2ae40ecf5bbddea9fd5b85121",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_009": {
+      "name": "Navigate through left sidebar menu items",
+      "scenario": "M03_BS_009",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:fc1f38a62eb6dd08e118b1112e69bce6dd18ad9c24242b83182c2c1f0d36392e",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_010": {
+      "name": "Search functionality in left navigation bar",
+      "scenario": "M03_BS_010",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:f74908442b25cdb44819667c1dd513af926db216affb0a34fae5980a1b3e0731",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_011": {
+      "name": "View project status charts and listings",
+      "scenario": "M03_BS_011",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:bfd03db424b7e99be4a2956e0bbf950299e22790c745c22a9feec56030e4640f",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_012": {
+      "name": "Navigate to new project via project links",
+      "scenario": "M03_BS_012",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:7cd0979b2a50fa1bb12b21274de40176e1dc214b6c751a8d74b73df66562e7b4",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_013": {
+      "name": "Verify page responsive design and technical requirements",
+      "scenario": "M03_BS_013",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:1b9732b15471c2bc3039b908b32a6bc233f4668c1c4933c626633b7fffa3d4d5",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_014": {
+      "name": "Dashboard Navigation Menu Verification",
+      "scenario": "M03_BS_014",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:e271b798e66ebfa3740805cbb0263d995fab1b6ad948376580f109945412ef0d",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_015": {
+      "name": "Navigation Search Functionality",
+      "scenario": "M03_BS_015",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:6e2055f495b14bc06ed01417bec7ebaecce84ba1717cae3b1faca41f0126dc69",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_016": {
+      "name": "Project Status Charts Display",
+      "scenario": "M03_BS_016",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:a473da03f641c17c2755ae9952a523cd15052077286205ddf1db2c126f2995ce",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_017": {
+      "name": "Project Listing Navigation",
+      "scenario": "M03_BS_017",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:de5304de752771efac528f14ac2db24370923061ffb26ca8e9cdb6762387586b",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_018": {
+      "name": "Responsive Design Verification",
+      "scenario": "M03_BS_018",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:fd3460a33f765bf9703d9fccf9b8e36b3212ea4d3b30fd567d70563def704eb5",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_019": {
+      "name": "Page Title Validation",
+      "scenario": "M03_BS_019",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:840dd026000fe0ba6d36814890b68845120d8d6597e3715c54cde3b38785cb3c",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_020": {
+      "name": "Error-Free Page Load Validation",
+      "scenario": "M03_BS_020",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:d3c0e2f5babb4567e458a43b641d0f43b3978a7521be2018198c029a4d1d1d97",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_021": {
+      "name": "Dashboard Section Content Verification",
+      "scenario": "M03_BS_021",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:e2d2ffc51cd7a36f4f3d6edb70afefecd655b9e2503de06f2a0e494310a233ce",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-001": {
+      "name": "Use AppEvolve",
+      "scenario": "SC-001",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:1ac880c7ca003956308a07ecd51e9025c818d4b0b8763c370d7bc9c42a5901ba",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-002": {
+      "name": "Interact with AppEvolve",
+      "scenario": "SC-002",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:f64bf003c611ee11712a061899df6f6bd8777edd9ed02e15ef4ed189c2d22e6d",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_001": {
+      "name": "View Project Details",
+      "scenario": "M04_BS_001",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:3547d5325b377ed04d1a635d5fa723f6f4f7429f2e8b49927c3e0db9a61238b7",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_002": {
+      "name": "Navigate Between Projects",
+      "scenario": "M04_BS_002",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:4ac40c8879f086d4cfd9b929e898fec2cf022c3a005f4995fc247ec379d15224",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_003": {
+      "name": "Create New Project Successfully",
+      "scenario": "M04_BS_003",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:902b2d9630967c2dde0ae83d5f0a8fda6a3ef8a3781a1bbc46e0a5cf4e95e316",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_004": {
+      "name": "Open Add Project Dialog",
+      "scenario": "M04_BS_004",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:72860f8f62c26e044454348c5d2ba6db0990a18e799d1a3e3f4efb40bcd6ed7a",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_005": {
+      "name": "Create Project with Missing Required Fields",
+      "scenario": "M04_BS_005",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:8a42ba3e3309dd16691849d9df4266c5b6de09ef02c2a9ae6213bdec4d6f96e3",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_006": {
+      "name": "Cancel Project Creation",
+      "scenario": "M04_BS_006",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:2414e5930cffd3e83490ab6ca818bea283a9666bae8f99533efc55d259574281",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_007": {
+      "name": "View Newly Created Project in Navigation",
+      "scenario": "M04_BS_007",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:fb1f60113ceca16b2cdbbe2c080373cb2f77990ce47a8fd2dac4481feb8c0885",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_008": {
+      "name": "Create Project with Duplicate Project Name",
+      "scenario": "M04_BS_008",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:c68fa6bae0ba57876cdb821460b6c988e7ce19d60a8dfde3a10edaa3d007d11e",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_009": {
+      "name": "Create Project with Invalid Project Owner",
+      "scenario": "M04_BS_009",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:028ee331de177d445899905b625a736757695a75c64ced58008c68e4023d8d5d",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_010": {
+      "name": "Create Project with Maximum Character Limits",
+      "scenario": "M04_BS_010",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:6c941d6b3fa79a9214628f99aa6745a557bfd8e1af1f652675135eea9257c62b",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_011": {
+      "name": "View Empty Project List",
+      "scenario": "M04_BS_011",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:d48574a44ae146bddd49021f40278197c3132542572f3fdf7d4efda9b5251683",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_001": {
+      "name": "Selenium Projects landing page loads successfully with correct structure",
+      "scenario": "M02_BS_001",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:b6f993ae9c84385576f35373267983628655c7d35348579e06053c6627a22c59",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_002": {
+      "name": "Global navbar displays all required navigation elements",
+      "scenario": "M02_BS_002",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:69784d839f8a498d7a4c13c812de166957a07be3a85c396376913bc20fe8d68a",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_003": {
+      "name": "Hero section displays project introduction content",
+      "scenario": "M02_BS_003",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:6002876fb87e100def398a032b5b4c92d9eac76ded17e152a15efd26e07b14f7",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_004": {
+      "name": "WebDriver project card displays complete information and actions",
+      "scenario": "M02_BS_004",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:2be4458809bcf4434a4a9f0ac9fbe4f556906c5b6bc48e298ff1ccee2c66a88f",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_005": {
+      "name": "IDE project card displays complete information with browser-specific actions",
+      "scenario": "M02_BS_005",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:39033a7985641b5c4931f00686c99b63c37935fbea39abf4ba8a66f8613f04fb",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_006": {
+      "name": "Grid project card displays complete information and actions",
+      "scenario": "M02_BS_006",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:82e2dd0ab020e13fe566c67512d9c1204280b4b6a6f0a47cc8d036f947770b2d",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_007": {
+      "name": "Footer contains complete legal and social information",
+      "scenario": "M02_BS_007",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:cb9a0207ae95d3b7b8a15a56c7e3f205b2c9b070d507481da4873ce6332e1b71",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_008": {
+      "name": "Page layout adapts correctly across different viewport sizes",
+      "scenario": "M02_BS_008",
+      "suite": "M02",
+      "status": "pending",
+      "test_data_hash": "sha256:6cc3006e92f0d7c04db9239227e77d40f7ec729facac013a4dd05c2dda00a539",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_022": {
+      "name": "Role and Permission tab interaction",
+      "scenario": "M03_BS_022",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:fe8f999f04dd3b0aba46ba42c7b67cb6542c540d34ebeaf6baf0f40301fee3ca",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_023": {
+      "name": "Complete navigation workflow validation",
+      "scenario": "M03_BS_023",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:cbec3bff2093e440c508f53a9d95d482af25772dfb5ef09d5dc50d799113e75f",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_024": {
+      "name": "Settings navigation functionality verification",
+      "scenario": "M03_BS_024",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:feb8a1700d0edfb814573218620e44e86fdf1f35b875213d38340fafb88f9bcf",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_025": {
+      "name": "Help navigation functionality verification",
+      "scenario": "M03_BS_025",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:f8634d9e60e0f7652447df75674a0ce10ddff5793cbd4c319cc4fdc7820f1902",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_026": {
+      "name": "Main navigation menu functionality verification",
+      "scenario": "M03_BS_026",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:f42864f6176f1fcd4a8d607f3d32b6c8bf6befcb263fd67d8fdf17c9af01573e",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_027": {
+      "name": "Project table functionality verification",
+      "scenario": "M03_BS_027",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:8c7ba17754e5dcc5792c62333c0b76fa3bb2e2c1c978155fb0a5f5ae1d3dcbe0",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_028": {
+      "name": "AI-Driven Legacy Code Conversion section visibility",
+      "scenario": "M03_BS_028",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:cc54b6692bb47ec9f88a36a6ec5fb88ae1bafda2ffc8ebcb6273acc0f13de0cc",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_029": {
+      "name": "Statistics and Reports section visibility verification",
+      "scenario": "M03_BS_029",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:77cb10d81cdcd34e67f0930ae738fc9e645c785cf5c5e7be1fb75ce5f976a498",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M03_BS_030": {
+      "name": "Recent Projects count display verification",
+      "scenario": "M03_BS_030",
+      "suite": "M03",
+      "status": "pending",
+      "test_data_hash": "sha256:626f69e9fd375d6c742eba8d1694d94c7e020cd7a92e6c21377fb630c8874625",
+      "last_run": "",
+      "last_run_id": ""
+    }
+  },
+  "new_additions": [
+    "BS-001",
+    "BS-002",
+    "BS-003",
+    "BS-004",
+    "BS-005",
+    "BS-006",
+    "BS-007",
+    "BS-008",
+    "BS-009",
+    "M03_BS_001",
+    "M03_BS_002",
+    "M03_BS_003",
+    "M03_BS_004",
+    "M03_BS_005",
+    "M03_BS_006",
+    "M03_BS_007",
+    "M03_BS_008",
+    "M03_BS_009",
+    "M03_BS_010",
+    "M03_BS_011",
+    "M03_BS_012",
+    "M03_BS_013",
+    "M03_BS_014",
+    "M03_BS_015",
+    "M03_BS_016",
+    "M03_BS_017",
+    "M03_BS_018",
+    "M03_BS_019",
+    "M03_BS_020",
+    "M03_BS_021",
+    "SC-001",
+    "SC-002",
+    "M04_BS_001",
+    "M04_BS_002",
+    "M04_BS_003",
+    "M04_BS_004",
+    "M04_BS_005",
+    "M04_BS_006",
+    "M04_BS_007",
+    "M04_BS_008",
+    "M04_BS_009",
+    "M04_BS_010",
+    "M04_BS_011",
+    "M02_BS_001",
+    "M02_BS_002",
+    "M02_BS_003",
+    "M02_BS_004",
+    "M02_BS_005",
+    "M02_BS_006",
+    "M02_BS_007",
+    "M02_BS_008",
+    "M03_BS_022",
+    "M03_BS_023",
+    "M03_BS_024",
+    "M03_BS_025",
+    "M03_BS_026",
+    "M03_BS_027",
+    "M03_BS_028",
+    "M03_BS_029",
+    "M03_BS_030"
+  ],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": [
+    {
+      "run_id": "6c579c6e-2d63-4841-b253-fdfc2e2cccb4",
+      "timestamp": "2026-07-09T11:49:44.835341+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 30,
+      "total": 30
+    },
+    {
+      "run_id": "2e7582a3-ba33-40df-a83f-e00aeafd35c7",
+      "timestamp": "2026-07-08T17:32:40.151830+00:00",
+      "workflow": "",
+      "status": "interrupted",
+      "passed": 0,
+      "failed": 32,
+      "total": 32
+    },
+    {
+      "run_id": "b6fd875b-9e22-48c6-a3e7-8300b7e379d4",
+      "timestamp": "2026-07-08T03:55:45.783389+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 96,
+      "total": 96
+    },
+    {
+      "run_id": "5c3c439f-0d6f-465c-8177-7863b87c47d3",
+      "timestamp": "2026-07-08T03:50:43.057881+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 96,
+      "total": 96
+    },
+    {
+      "run_id": "45d45cf8-3e4e-46a4-ac2b-19dcd7358579",
+      "timestamp": "2026-07-08T03:30:56.635655+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 96,
+      "total": 96
+    },
+    {
+      "run_id": "403207bd-d925-459d-8b6a-737badfff276",
+      "timestamp": "2026-07-07T11:59:31.104932+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 9,
+      "total": 9
+    },
+    {
+      "run_id": "19555adc-31c7-4f71-8e19-4bed58dca123",
+      "timestamp": "2026-07-07T10:39:20.953971+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 3,
+      "total": 3
+    },
+    {
+      "run_id": "3efc0fbe-e839-45d1-b3f3-a9f1aa2c691d",
+      "timestamp": "2026-07-07T08:51:24.174329+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 3,
+      "total": 3
+    },
+    {
+      "run_id": "80a88265-6b46-401b-a434-c7d262ddc13f",
+      "timestamp": "2026-07-07T07:27:10.963108+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 6,
+      "total": 6
+    }
+  ]
+}

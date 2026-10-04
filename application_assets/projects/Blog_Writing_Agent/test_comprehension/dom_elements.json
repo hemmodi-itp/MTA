@@ -1,0 +1,431 @@
+{
+  "url": "http://localhost:8501/",
+  "project": "Blog_Writing_Agent",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "stBaseButton-headerNoPadding",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "stBaseButton-headerNoPadding"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>section>div>div>div:nth-of-type(2)>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "stBaseButton-headerNoPadding"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "stBaseButton-headerNoPadding"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "button",
+      "display_text": "Stop",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "stBaseButton-header",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Stop"
+        },
+        "get_by_text": {
+          "text": "Stop"
+        },
+        "get_by_testid": {
+          "testid": "stBaseButton-header"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>div>header>div>div>div:nth-of-type(2)>div>div>span>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/header[1]/div[1]/div[1]/div[2]/div[1]/div[1]/span[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "stBaseButton-header"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "stBaseButton-header"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Stop"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "button",
+      "display_text": "Deploy",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "stBaseButton-header",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Deploy"
+        },
+        "get_by_text": {
+          "text": "Deploy"
+        },
+        "get_by_testid": {
+          "testid": "stBaseButton-header"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>div>header>div>div>div:nth-of-type(2)>div:nth-of-type(3)>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/header[1]/div[1]/div[1]/div[2]/div[3]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "stBaseButton-header"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "stBaseButton-header"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Deploy"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "button",
+      "display_text": "Main menu",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Main menu",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "stMainMenuButton",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Main menu"
+        },
+        "get_by_testid": {
+          "testid": "stMainMenuButton"
+        }
+      },
+      "technical_locators": {
+        "css": "span>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/header[1]/div[1]/div[1]/div[2]/span[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "stMainMenuButton"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "stMainMenuButton"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Main menu"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0005",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr>td:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/section[1]/div[1]/div[2]/div[1]/div[1]/div[5]/div[1]/details[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr>td:nth-of-type(2)>a"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0006",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr:nth-of-type(2)>td:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/section[1]/div[1]/div[2]/div[1]/div[1]/div[5]/div[1]/details[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[2]/td[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr:nth-of-type(2)>td:nth-of-type(2)>a"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0007",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr:nth-of-type(3)>td:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/section[1]/div[1]/div[2]/div[1]/div[1]/div[5]/div[1]/details[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[3]/td[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr:nth-of-type(3)>td:nth-of-type(2)>a"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0008",
+      "tag": "a",
+      "display_text": "Link to heading",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Link to heading",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Link to heading"
+        }
+      },
+      "technical_locators": {
+        "css": "h1>span:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/h1[1]/span[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Link to heading"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Link to heading"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+[
+  {
+    "timestamp": "2026-09-23T13:07:10.622579+00:00",
+    "kind": "locator_map_drift",
+    "project": "Blog_Writing_Agent",
+    "module_id": "_project",
+    "source": "build_named_locator_map",
+    "added": [
+      "button_loc_0001",
+      "stop",
+      "deploy",
+      "main_menu",
+      "a_loc_0005",
+      "a_loc_0006",
+      "a_loc_0007",
+      "link_to_heading"
+    ],
+    "updated": [],
+    "possibly_removed": [],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-23T13:07:21.004935+00:00",
+    "kind": "locator_map_drift",
+    "project": "Blog_Writing_Agent",
+    "module_id": "_default",
+    "source": "live_validation",
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "a_loc_0005"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-23T13:08:40.542801+00:00",
+    "kind": "missing_capability",
+    "project": "Blog_Writing_Agent",
+    "scenario_id": "M01_BS_001",
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for main menu container or navigation options element to verify the main menu is expanded and visible"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-23T13:10:10.417623+00:00",
+    "kind": "missing_capability",
+    "project": "Blog_Writing_Agent",
+    "scenario_id": "M01_BS_002",
+    "missing_actions": [],
+    "missing_locators": [
+      "heading_element",
+      "status_message_element"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-23T13:11:29.433511+00:00",
+    "kind": "missing_capability",
+    "project": "Blog_Writing_Agent",
+    "scenario_id": "M01_BS_003",
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for process status indicator to verify process termination state",
+      "Locator for process termination or error message banner"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  }
+]

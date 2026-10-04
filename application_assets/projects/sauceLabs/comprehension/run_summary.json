@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "intents_path": "application_assets\\projects\\sauceLabs\\test_creation\\intents.yaml",
+  "dom_status": "success",
+  "dom_intents_count": 19,
+  "dom_intents_path": "application_assets\\projects\\sauceLabs\\comprehension\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\sauceLabs\\comprehension\\dom_elements.json",
+  "comprehension_status": "success",
+  "scenarios_count": 13,
+  "business_scenarios_path": "application_assets\\projects\\sauceLabs\\comprehension\\business_scenarios.json",
+  "mode": "both",
+  "module": "discovery"
+}

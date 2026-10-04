@@ -1,0 +1,313 @@
+{
+  "project": "geminiTest4",
+  "schema_version": "1.0",
+  "last_updated": "2026-07-17T15:47:19.646379+00:00",
+  "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22",
+  "discovery": {
+    "dom_fingerprint": "sha256:ae242c64810550fd32c93cbfe8a387cf7b40e8f79b17a46106e8313e05abdc7e",
+    "brd_fingerprint": "sha256:ec6c97003342dcec012040466632a6faa2eed958b151300967153859804be4b6",
+    "last_discovered": "2026-07-17T14:40:26.981380+00:00",
+    "cached_output": {
+      "status": "success",
+      "intents_path": "application_assets\\projects\\geminiTest4\\test_creation\\intents.yaml",
+      "partial_reasons": [],
+      "dom_status": "success",
+      "dom_intents_count": 17,
+      "dom_intents_path": "application_assets\\projects\\geminiTest4\\comprehension\\modules\\M01\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\geminiTest4\\comprehension\\modules\\M01\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "DOM_INT_001",
+          "intent_name": "click_open_sidebar",
+          "action": "click",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": "open_sidebar_opened"
+        },
+        {
+          "intent_id": "DOM_INT_002",
+          "intent_name": "click_listen",
+          "action": "click",
+          "locator_id": "LOC-0002",
+          "value": null,
+          "expected_result": "listen_opened"
+        },
+        {
+          "intent_id": "DOM_INT_003",
+          "intent_name": "click_sign_in",
+          "action": "click",
+          "locator_id": "LOC-0003",
+          "value": null,
+          "expected_result": "sign_in_opened"
+        },
+        {
+          "intent_id": "DOM_INT_004",
+          "intent_name": "click_settings",
+          "action": "click",
+          "locator_id": "LOC-0005",
+          "value": null,
+          "expected_result": "settings_opened"
+        },
+        {
+          "intent_id": "DOM_INT_005",
+          "intent_name": "click_upload__tools",
+          "action": "click",
+          "locator_id": "LOC-0006",
+          "value": null,
+          "expected_result": "upload__tools_opened"
+        },
+        {
+          "intent_id": "DOM_INT_006",
+          "intent_name": "click_flash",
+          "action": "click",
+          "locator_id": "LOC-0007",
+          "value": null,
+          "expected_result": "flash_opened"
+        },
+        {
+          "intent_id": "DOM_INT_007",
+          "intent_name": "click_microphone",
+          "action": "click",
+          "locator_id": "LOC-0008",
+          "value": null,
+          "expected_result": "microphone_opened"
+        },
+        {
+          "intent_id": "DOM_INT_008",
+          "intent_name": "click_google_apps",
+          "action": "click",
+          "locator_id": "LOC-0009",
+          "value": null,
+          "expected_result": "google_apps_opened"
+        },
+        {
+          "intent_id": "DOM_INT_009",
+          "intent_name": "click_gemini",
+          "action": "click",
+          "locator_id": "LOC-0011",
+          "value": null,
+          "expected_result": "gemini_opened"
+        },
+        {
+          "intent_id": "DOM_INT_010",
+          "intent_name": "click_about_gemini_opens_in_a_new_window",
+          "action": "click",
+          "locator_id": "LOC-0012",
+          "value": null,
+          "expected_result": "about_gemini_opens_in_a_new_window_opened"
+        },
+        {
+          "intent_id": "DOM_INT_011",
+          "intent_name": "click_get_gemini_app_opens_in_a_new_window",
+          "action": "click",
+          "locator_id": "LOC-0013",
+          "value": null,
+          "expected_result": "get_gemini_app_opens_in_a_new_window_opened"
+        },
+        {
+          "intent_id": "DOM_INT_012",
+          "intent_name": "click_subscriptions_opens_in_a_new_window",
+          "action": "click",
+          "locator_id": "LOC-0014",
+          "value": null,
+          "expected_result": "subscriptions_opens_in_a_new_window_opened"
+        },
+        {
+          "intent_id": "DOM_INT_013",
+          "intent_name": "click_for_business_opens_in_a_new_window",
+          "action": "click",
+          "locator_id": "LOC-0015",
+          "value": null,
+          "expected_result": "for_business_opens_in_a_new_window_opened"
+        },
+        {
+          "intent_id": "DOM_INT_014",
+          "intent_name": "click_new_chat",
+          "action": "click",
+          "locator_id": "LOC-0016",
+          "value": null,
+          "expected_result": "new_chat_opened"
+        },
+        {
+          "intent_id": "DOM_INT_015",
+          "intent_name": "click_element",
+          "action": "click",
+          "locator_id": "LOC-0017",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_016",
+          "intent_name": "click_google_terms_opens_in_a_new_window",
+          "action": "click",
+          "locator_id": "LOC-0018",
+          "value": null,
+          "expected_result": "google_terms_opens_in_a_new_window_opened"
+        },
+        {
+          "intent_id": "DOM_INT_017",
+          "intent_name": "click_google_privacy_policy_opens_in_a_new_window",
+          "action": "click",
+          "locator_id": "LOC-0019",
+          "value": null,
+          "expected_result": "google_privacy_policy_opens_in_a_new_window_opened"
+        }
+      ],
+      "comprehension_status": "success",
+      "scenarios_count": 17,
+      "business_scenarios_path": "application_assets\\projects\\geminiTest4\\comprehension\\business_scenarios.json",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 12,
+    "grounded_intents": 0,
+    "passing_tests": 6,
+    "failing_tests": 6
+  },
+  "business_scenarios": {},
+  "test_cases": {
+    "M01_BS_001": {
+      "name": "Access Gemini Home Page Interface",
+      "scenario": "M01_BS_001",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:664442065ef9982a7b63b91063cd0c62b03958e2217c6d104aaa893f08200f8b",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_002": {
+      "name": "Enter Text into Prompt Interface",
+      "scenario": "M01_BS_002",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:edc8d63170643de2b9e0dc57838ad2ea7f3a9bd2cabb0549f6ebd4e6e69263a2",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_006": {
+      "name": "Browse Available AI Models",
+      "scenario": "M01_BS_006",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:83ac0723b9b4c2623a957dbc9b7a1ed754ae411024868deee3405fea93be143b",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_007": {
+      "name": "Switch AI Model",
+      "scenario": "M01_BS_007",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:b97fa153a1bd1b8e4fa0db32c2e0a331d5cd72410f658b9b546eac59ce39194c",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_008": {
+      "name": "Access Upgrade Options",
+      "scenario": "M01_BS_008",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:18a9848c7bf454259eaf34145e05accd189c8e355f78caf12956db1eab52ae4a",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_009": {
+      "name": "Toggle Sidebar Visibility",
+      "scenario": "M01_BS_009",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:2bcd07ee90d675a5f697ad35f1759787bb6cf6344e18ec3e8f8a44d9605fda3e",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_010": {
+      "name": "Start New Conversation",
+      "scenario": "M01_BS_010",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:826cd2bde6c4378a1ffe945fa87734db9b5e2796281c81dcd6a885a800b87934",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_011": {
+      "name": "Access Previous Conversations",
+      "scenario": "M01_BS_011",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:a63d719d73f391693b4257d07b5a336753307bf95002bfe2c203344442d7573e",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_012": {
+      "name": "Access Settings",
+      "scenario": "M01_BS_012",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:ff284dcfb9fd227e1cbe4d5c16790c9c02e1c7d41aad24b6530119869a004a76",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_013": {
+      "name": "Access Search Functionality",
+      "scenario": "M01_BS_013",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:bb67c9f4cbe0bbe25e718bd0dd797a94207086048d80affd5ca83dff5e863371",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_014": {
+      "name": "Navigate Using Keyboard",
+      "scenario": "M01_BS_014",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:a203f3c23f4c2db9c096ab6593f3ce3401c7d398d419822b5a5a0f6c8466f516",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    },
+    "M01_BS_015": {
+      "name": "Access Voice Input",
+      "scenario": "M01_BS_015",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:63f694f64bf4df2b6d7fae58e2f704cd0e42f71d1940a15695b561980d8d09fb",
+      "last_run": "2026-07-17",
+      "last_run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22"
+    }
+  },
+  "new_additions": [
+    "M01_BS_001",
+    "M01_BS_007",
+    "M01_BS_008",
+    "M01_BS_009",
+    "M01_BS_010",
+    "M01_BS_011"
+  ],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": [
+    {
+      "run_id": "ec93685b-8b56-43fa-ae2a-cbc279ce7d22",
+      "timestamp": "2026-07-17T15:47:19.611008+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 8,
+      "failed": 7,
+      "total": 15
+    },
+    {
+      "run_id": "58546c00-c63d-43a0-9e28-45a2a54a4123",
+      "timestamp": "2026-07-17T14:47:17.942330+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 8,
+      "failed": 7,
+      "total": 15
+    }
+  ]
+}

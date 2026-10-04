@@ -1,0 +1,66 @@
+{
+  "switch_to_dark_mode": {
+    "type": "role",
+    "locator": "button",
+    "name": "Switch to dark mode",
+    "description": "Switch to dark mode",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "_default"
+  },
+  "open_the_demo_project": {
+    "type": "role",
+    "locator": "button",
+    "name": "Open the demo project",
+    "description": "Open the demo project",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "_default"
+  },
+  "brd_compliance_criterion_level": {
+    "type": "role",
+    "locator": "link",
+    "name": "BRD Compliance\ncriterion-level",
+    "description": "BRD Compliance\ncriterion-level",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "_default"
+  },
+  "new_project": {
+    "type": "role",
+    "locator": "link",
+    "name": "New project",
+    "description": "New project",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "_default"
+  },
+  "new_project_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "New project",
+    "description": "New project",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "_default"
+  },
+  "delete": {
+    "type": "role",
+    "locator": "button",
+    "description": "Delete",
+    "_source_locator_id": "LOC-0005",
+    "_module_id": "_default",
+    "name": "Delete"
+  },
+  "shopflow_demo": {
+    "type": "role",
+    "locator": "link",
+    "description": "ShopFlow (demo)",
+    "_source_locator_id": "LOC-0006",
+    "_module_id": "_default",
+    "name": "ShopFlow (demo)"
+  },
+  "open": {
+    "type": "role",
+    "locator": "link",
+    "description": "Open",
+    "_source_locator_id": "LOC-0007",
+    "_module_id": "_default",
+    "name": "Open"
+  }
+}

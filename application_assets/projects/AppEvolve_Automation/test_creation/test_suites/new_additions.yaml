@@ -1,0 +1,47 @@
+suite: new_additions
+test_cases:
+- scenario: BS-001
+  status: failing
+  suite: new_additions
+  test_case_id: BS-001
+  test_case_name: Successful Login with Valid Credentials
+- scenario: BS-002
+  status: failing
+  suite: new_additions
+  test_case_id: BS-002
+  test_case_name: Login Attempt with Invalid Password
+- scenario: BS-003
+  status: failing
+  suite: new_additions
+  test_case_id: BS-003
+  test_case_name: Login Attempt with Empty Credentials
+- scenario: BS-004
+  status: failing
+  suite: new_additions
+  test_case_id: BS-004
+  test_case_name: Login Attempt with Empty Password Only
+- scenario: BS-005
+  status: failing
+  suite: new_additions
+  test_case_id: BS-005
+  test_case_name: Landing Page Access and Sign In Button Display
+- scenario: BS-006
+  status: failing
+  suite: new_additions
+  test_case_id: BS-006
+  test_case_name: Sign In Button Redirect to Keycloak Login Form
+- scenario: BS-007
+  status: failing
+  suite: new_additions
+  test_case_id: BS-007
+  test_case_name: Footer displays legal information and social links
+- scenario: BS-008
+  status: failing
+  suite: new_additions
+  test_case_id: BS-008
+  test_case_name: All project cards are visible without scrolling on page load
+- scenario: BS-009
+  status: failing
+  suite: new_additions
+  test_case_id: BS-009
+  test_case_name: Page maintains responsive layout across different viewport sizes

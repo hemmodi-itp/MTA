@@ -1,0 +1,90 @@
+[
+  {
+    "testdata_id": "TD-001",
+    "scenario_id": "BS-001",
+    "scenario_title": "Verify Core Page Functionality and Layout",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-002",
+    "scenario_id": "BS-002",
+    "scenario_title": "Responsive Grid Layout Validation for Desktop Viewport",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-003",
+    "scenario_id": "BS-003",
+    "scenario_title": "Responsive Grid Layout Validation for Tablet Viewport",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-004",
+    "scenario_id": "BS-004",
+    "scenario_title": "Responsive Grid Layout Validation for Mobile Viewport",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "BS-005",
+    "scenario_title": "Lazy Loading and Infinite Scroll Functionality",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-007",
+    "scenario_id": "BS-007",
+    "scenario_title": "Deal Card Content Validation",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-008",
+    "scenario_id": "BS-008",
+    "scenario_title": "Add to Cart Functionality from Deal Card",
+    "actor": "Logged-In Customer",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-010",
+    "scenario_id": "BS-010",
+    "scenario_title": "Keyboard Navigation Accessibility",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-011",
+    "scenario_id": "BS-011",
+    "scenario_title": "Lightning Deal Reservation Timer",
+    "actor": "Logged-In Customer",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-012",
+    "scenario_id": "BS-012",
+    "scenario_title": "Lightning Deal Status Updates",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-014",
+    "scenario_id": "BS-014",
+    "scenario_title": "Lightning Deal Countdown Clock Functionality",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  }
+]

@@ -1,0 +1,1425 @@
+[
+  {
+    "testdata_id": "TD-001",
+    "scenario_id": "M01_BS_001",
+    "scenario_title": "Access Gemini Home Page Interface",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_home_url",
+        "field_type": "url",
+        "value": "/gemini/home"
+      },
+      {
+        "field_name": "expected_prompt_textbox",
+        "field_type": "assertion",
+        "value": "prompt textbox"
+      },
+      {
+        "field_name": "expected_model_selector",
+        "field_type": "assertion",
+        "value": "Model selector"
+      },
+      {
+        "field_name": "expected_microphone_button",
+        "field_type": "assertion",
+        "value": "Microphone button"
+      },
+      {
+        "field_name": "expected_sidebar",
+        "field_type": "assertion",
+        "value": "Sidebar"
+      },
+      {
+        "field_name": "min_ui_components_count",
+        "field_type": "count_min",
+        "value": "4"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key UI component missing from page",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_home_url",
+                "field_type": "url",
+                "value": "/gemini/home"
+              },
+              {
+                "field_name": "expected_prompt_textbox",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_model_selector",
+                "field_type": "assertion",
+                "value": "Model selector"
+              },
+              {
+                "field_name": "expected_microphone_button",
+                "field_type": "assertion",
+                "value": "Microphone button"
+              },
+              {
+                "field_name": "expected_sidebar",
+                "field_type": "assertion",
+                "value": "Sidebar"
+              },
+              {
+                "field_name": "min_ui_components_count",
+                "field_type": "count_min",
+                "value": "4"
+              }
+            ],
+            "expected_error": "Prompt textbox is not displayed on the Home page"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "navigate_home_url",
+                "field_type": "url",
+                "value": "/gemini/home"
+              },
+              {
+                "field_name": "expected_prompt_textbox",
+                "field_type": "assertion",
+                "value": "prompt textbox"
+              },
+              {
+                "field_name": "expected_model_selector",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_microphone_button",
+                "field_type": "assertion",
+                "value": "Microphone button"
+              },
+              {
+                "field_name": "expected_sidebar",
+                "field_type": "assertion",
+                "value": "Sidebar"
+              },
+              {
+                "field_name": "min_ui_components_count",
+                "field_type": "count_min",
+                "value": "4"
+              }
+            ],
+            "expected_error": "Model selector is not displayed on the Home page"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "navigate_home_url",
+                "field_type": "url",
+                "value": "/gemini/home"
+              },
+              {
+                "field_name": "expected_prompt_textbox",
+                "field_type": "assertion",
+                "value": "prompt textbox"
+              },
+              {
+                "field_name": "expected_model_selector",
+                "field_type": "assertion",
+                "value": "Model selector"
+              },
+              {
+                "field_name": "expected_microphone_button",
+                "field_type": "assertion",
+                "value": "Microphone button"
+              },
+              {
+                "field_name": "expected_sidebar",
+                "field_type": "assertion",
+                "value": "Sidebar"
+              },
+              {
+                "field_name": "min_ui_components_count",
+                "field_type": "count_min",
+                "value": "2"
+              }
+            ],
+            "expected_error": "Insufficient UI components displayed - expected at least 4 components"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-002",
+    "scenario_id": "M01_BS_002",
+    "scenario_title": "Enter Text into Prompt Interface",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "type_prompt_text",
+        "field_type": "textarea",
+        "value": "What are the benefits of renewable energy sources?"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Empty or invalid prompt input",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "type_prompt_text",
+                "field_type": "textarea",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please enter a prompt to continue"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "type_prompt_text",
+                "field_type": "textarea",
+                "value": "   "
+              }
+            ],
+            "expected_error": "Please enter a valid prompt"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "type_prompt_text",
+                "field_type": "textarea",
+                "value": "\n\n\t"
+              }
+            ],
+            "expected_error": "Please enter a valid prompt"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Prompt text at or exceeding maximum length",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "type_prompt_text",
+                "field_type": "textarea",
+                "value": "This is a very long prompt that contains exactly two hundred and fifty-five characters to test the maximum allowed input length for the prompt textbox interface and ensure that the system handles the boundary case appropriately when users enter text at the limit."
+              }
+            ],
+            "expected_error": null
+          },
+          {
+            "fields": [
+              {
+                "field_name": "type_prompt_text",
+                "field_type": "textarea",
+                "value": "This is a very long prompt that contains more than two hundred and fifty-five characters to test what happens when users exceed the maximum allowed input length for the prompt textbox interface and verify that the system provides appropriate feedback for oversized input."
+              }
+            ],
+            "expected_error": "Prompt exceeds maximum length of 255 characters"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-003",
+    "scenario_id": "M01_BS_003",
+    "scenario_title": "Submit Prompt Using Submit Button",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "submit_prompt_text",
+        "field_type": "textarea",
+        "value": "What are the key differences between machine learning and artificial intelligence?"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Empty or whitespace-only prompt submission",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "submit_prompt_text",
+                "field_type": "textarea",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please enter a prompt before submitting"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "submit_prompt_text",
+                "field_type": "textarea",
+                "value": "   "
+              }
+            ],
+            "expected_error": "Please enter a prompt before submitting"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "submit_prompt_text",
+                "field_type": "textarea",
+                "value": "\n\n\t  \n"
+              }
+            ],
+            "expected_error": "Please enter a prompt before submitting"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Prompt text at or exceeding maximum character limit",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "submit_prompt_text",
+                "field_type": "textarea",
+                "value": "This is a very long prompt that contains exactly two hundred and fifty-five characters to test the maximum length boundary condition for prompt submission in the Gemini interface and verify that it handles the limit correctly without any issues or errors occurring during processing and validation of the input text content provided by the user when they attempt to submit their query or request for AI assistance through the chat interface system that processes natural language inputs from users who want to interact with the artificial intelligence model to get responses and answers to their questions or requests for help with various tasks and problems they may encounter in their daily work or personal projects that require intelligent assistance from an AI system like Gemini that can understand and respond to complex queries and provide helpful information or solutions based on its training data and knowledge base that has been developed through machine learning techniques and natural language processing algorithms designed to enable effective communication between humans and artificial intelligence systems in a conversational format that feels natural and intuitive for users who may not have technical expertise but still want to benefit from the capabilities of advanced AI technology in their everyday activities and decision making processes that could be enhanced through access to intelligent automated assistance and support from sophisticated language models trained on vast amounts of text data from diverse sources and domains of human knowledge and experience accumulated over many years of research and development in the field of artificial intelligence and machine learning technologies that continue to evolve and improve through ongoing innovation and scientific advancement in computer science and related disciplines focused on creating more capable and useful AI systems."
+              }
+            ],
+            "expected_error": "Prompt exceeds maximum character limit of 2000 characters"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-004",
+    "scenario_id": "M01_BS_004",
+    "scenario_title": "Submit Prompt Using Enter Key",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "enter_prompt_text",
+        "field_type": "textarea",
+        "value": "What are the benefits of renewable energy sources compared to fossil fuels?"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Empty or invalid prompt input",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "enter_prompt_text",
+                "field_type": "textarea",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please enter a prompt before submitting"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "enter_prompt_text",
+                "field_type": "textarea",
+                "value": "   "
+              }
+            ],
+            "expected_error": "Please enter a valid prompt"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Prompt at maximum character limit",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "enter_prompt_text",
+                "field_type": "textarea",
+                "value": "This is a very long prompt that contains exactly the maximum number of allowed characters to test the boundary conditions of the prompt input field and ensure it handles text at the character limit properly without truncation or error when submitted using the Enter key functionality which should work seamlessly regardless of prompt length up to the specified maximum limit that has been configured for this particular text input area in the Gemini interface design specifications."
+              }
+            ],
+            "expected_error": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-006",
+    "scenario_id": "M01_BS_006",
+    "scenario_title": "Browse Available AI Models",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_model_dropdown",
+        "field_type": "navigation",
+        "value": "model-selector-dropdown"
+      },
+      {
+        "field_name": "expected_models_list",
+        "field_type": "assertion",
+        "value": "GPT-4, Claude, Gemini Pro, LLaMA"
+      },
+      {
+        "field_name": "expected_dropdown_state",
+        "field_type": "assertion",
+        "value": "expanded"
+      },
+      {
+        "field_name": "min_models_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Model dropdown fails to display available models",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_model_dropdown",
+                "field_type": "navigation",
+                "value": "model-selector-dropdown"
+              },
+              {
+                "field_name": "expected_models_list",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_dropdown_state",
+                "field_type": "assertion",
+                "value": "expanded"
+              },
+              {
+                "field_name": "min_models_count",
+                "field_type": "count_min",
+                "value": "3"
+              }
+            ],
+            "expected_error": "No models available or failed to load model list"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_model_dropdown",
+                "field_type": "navigation",
+                "value": "model-selector-dropdown"
+              },
+              {
+                "field_name": "expected_models_list",
+                "field_type": "assertion",
+                "value": "Error loading models"
+              },
+              {
+                "field_name": "expected_dropdown_state",
+                "field_type": "assertion",
+                "value": "collapsed"
+              },
+              {
+                "field_name": "min_models_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Unable to retrieve available AI models"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-007",
+    "scenario_id": "M01_BS_007",
+    "scenario_title": "Switch AI Model",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "select_ai_model",
+        "field_type": "select",
+        "value": "GPT-4"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid model selection or unavailable model",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_ai_model",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a valid AI model"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_ai_model",
+                "field_type": "select",
+                "value": "INVALID_MODEL"
+              }
+            ],
+            "expected_error": "Selected model is not available"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_ai_model",
+                "field_type": "select",
+                "value": "null"
+              }
+            ],
+            "expected_error": "Model selection failed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-008",
+    "scenario_id": "M01_BS_008",
+    "scenario_title": "Access Upgrade Options",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_upgrade_button",
+        "field_type": "navigation",
+        "value": "Upgrade"
+      },
+      {
+        "field_name": "expected_dialog_heading",
+        "field_type": "assertion",
+        "value": "Upgrade Your Plan"
+      },
+      {
+        "field_name": "expected_subscription_content",
+        "field_type": "assertion",
+        "value": "Choose a subscription plan"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/upgrade"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Upgrade dialog or page fails to display",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_upgrade_button",
+                "field_type": "navigation",
+                "value": "Upgrade"
+              },
+              {
+                "field_name": "expected_dialog_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_subscription_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/upgrade"
+              }
+            ],
+            "expected_error": "Upgrade options failed to load"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_upgrade_button",
+                "field_type": "navigation",
+                "value": "Upgrade"
+              },
+              {
+                "field_name": "expected_dialog_heading",
+                "field_type": "assertion",
+                "value": "Error"
+              },
+              {
+                "field_name": "expected_subscription_content",
+                "field_type": "assertion",
+                "value": "Service unavailable"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/error"
+              }
+            ],
+            "expected_error": "Service temporarily unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-009",
+    "scenario_id": "M01_BS_009",
+    "scenario_title": "Toggle Sidebar Visibility",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_sidebar_toggle",
+        "field_type": "navigation",
+        "value": "sidebar-toggle-button"
+      },
+      {
+        "field_name": "expect_sidebar_collapsed",
+        "field_type": "assertion",
+        "value": "sidebar collapsed"
+      },
+      {
+        "field_name": "expect_sidebar_expanded",
+        "field_type": "assertion",
+        "value": "sidebar expanded"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Sidebar toggle element not found or not functional",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_sidebar_toggle",
+                "field_type": "navigation",
+                "value": "nonexistent-toggle-button"
+              },
+              {
+                "field_name": "expect_sidebar_collapsed",
+                "field_type": "assertion",
+                "value": "sidebar collapsed"
+              },
+              {
+                "field_name": "expect_sidebar_expanded",
+                "field_type": "assertion",
+                "value": "sidebar expanded"
+              }
+            ],
+            "expected_error": "Sidebar toggle button not found"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_sidebar_toggle",
+                "field_type": "navigation",
+                "value": "sidebar-toggle-button"
+              },
+              {
+                "field_name": "expect_sidebar_collapsed",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expect_sidebar_expanded",
+                "field_type": "assertion",
+                "value": "sidebar expanded"
+              }
+            ],
+            "expected_error": "Sidebar did not collapse as expected"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_sidebar_toggle",
+                "field_type": "navigation",
+                "value": "sidebar-toggle-button"
+              },
+              {
+                "field_name": "expect_sidebar_collapsed",
+                "field_type": "assertion",
+                "value": "sidebar collapsed"
+              },
+              {
+                "field_name": "expect_sidebar_expanded",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Sidebar did not expand as expected"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-010",
+    "scenario_id": "M01_BS_010",
+    "scenario_title": "Start New Conversation",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_new_chat_button",
+        "field_type": "navigation",
+        "value": "New Chat"
+      },
+      {
+        "field_name": "expected_conversation_created",
+        "field_type": "assertion",
+        "value": "new conversation created"
+      },
+      {
+        "field_name": "expected_empty_textbox",
+        "field_type": "assertion",
+        "value": ""
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "New Chat button not available or conversation not created",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_new_chat_button",
+                "field_type": "navigation",
+                "value": "New Chat"
+              },
+              {
+                "field_name": "expected_conversation_created",
+                "field_type": "assertion",
+                "value": "error creating conversation"
+              },
+              {
+                "field_name": "expected_empty_textbox",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Unable to create new conversation"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_new_chat_button",
+                "field_type": "navigation",
+                "value": ""
+              },
+              {
+                "field_name": "expected_conversation_created",
+                "field_type": "assertion",
+                "value": "new conversation created"
+              },
+              {
+                "field_name": "expected_empty_textbox",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "New Chat button not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-011",
+    "scenario_id": "M01_BS_011",
+    "scenario_title": "Access Previous Conversations",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_conversation",
+        "field_type": "navigation",
+        "value": "Previous conversation in sidebar"
+      },
+      {
+        "field_name": "expected_conversation_content",
+        "field_type": "assertion",
+        "value": "Conversation history messages are visible"
+      },
+      {
+        "field_name": "expected_conversation_title",
+        "field_type": "assertion",
+        "value": "Conversation title is displayed"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/conversation/"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Selected conversation fails to load or displays error",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_conversation",
+                "field_type": "navigation",
+                "value": "Previous conversation in sidebar"
+              },
+              {
+                "field_name": "expected_conversation_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_conversation_title",
+                "field_type": "assertion",
+                "value": "Conversation title is displayed"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/conversation/"
+              }
+            ],
+            "expected_error": "Unable to load conversation history"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_conversation",
+                "field_type": "navigation",
+                "value": "Previous conversation in sidebar"
+              },
+              {
+                "field_name": "expected_conversation_content",
+                "field_type": "assertion",
+                "value": "Conversation history messages are visible"
+              },
+              {
+                "field_name": "expected_conversation_title",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/conversation/"
+              }
+            ],
+            "expected_error": "Conversation not found"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_conversation",
+                "field_type": "navigation",
+                "value": "Previous conversation in sidebar"
+              },
+              {
+                "field_name": "expected_conversation_content",
+                "field_type": "assertion",
+                "value": "Conversation history messages are visible"
+              },
+              {
+                "field_name": "expected_conversation_title",
+                "field_type": "assertion",
+                "value": "Conversation title is displayed"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/error"
+              }
+            ],
+            "expected_error": "Failed to navigate to conversation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-012",
+    "scenario_id": "M01_BS_012",
+    "scenario_title": "Access Settings",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_settings_icon",
+        "field_type": "navigation",
+        "value": "Settings"
+      },
+      {
+        "field_name": "expected_settings_panel",
+        "field_type": "assertion",
+        "value": "Settings"
+      },
+      {
+        "field_name": "expected_configuration_options",
+        "field_type": "assertion",
+        "value": "configuration options"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Settings panel fails to display or shows wrong content",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_settings_icon",
+                "field_type": "navigation",
+                "value": "Settings"
+              },
+              {
+                "field_name": "expected_settings_panel",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_configuration_options",
+                "field_type": "assertion",
+                "value": "configuration options"
+              }
+            ],
+            "expected_error": "Settings panel did not open"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_settings_icon",
+                "field_type": "navigation",
+                "value": "Settings"
+              },
+              {
+                "field_name": "expected_settings_panel",
+                "field_type": "assertion",
+                "value": "Error"
+              },
+              {
+                "field_name": "expected_configuration_options",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Settings panel loaded with error content"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-013",
+    "scenario_id": "M01_BS_013",
+    "scenario_title": "Access Search Functionality",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_search_icon",
+        "field_type": "navigation",
+        "value": "Search icon"
+      },
+      {
+        "field_name": "expected_search_interface",
+        "field_type": "assertion",
+        "value": "Search interface is displayed"
+      },
+      {
+        "field_name": "expected_search_input",
+        "field_type": "assertion",
+        "value": "Search input field"
+      },
+      {
+        "field_name": "expected_search_functionality",
+        "field_type": "assertion",
+        "value": "Search content functionality"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Search interface fails to display or is missing key elements",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_search_icon",
+                "field_type": "navigation",
+                "value": "Search icon"
+              },
+              {
+                "field_name": "expected_search_interface",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_search_input",
+                "field_type": "assertion",
+                "value": "Search input field"
+              },
+              {
+                "field_name": "expected_search_functionality",
+                "field_type": "assertion",
+                "value": "Search content functionality"
+              }
+            ],
+            "expected_error": "Search interface failed to load"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_search_icon",
+                "field_type": "navigation",
+                "value": "Search icon"
+              },
+              {
+                "field_name": "expected_search_interface",
+                "field_type": "assertion",
+                "value": "Error loading search"
+              },
+              {
+                "field_name": "expected_search_input",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_search_functionality",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Search functionality is temporarily unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-014",
+    "scenario_id": "M01_BS_014",
+    "scenario_title": "Navigate Using Keyboard",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_start_element",
+        "field_type": "navigation",
+        "value": "Gemini Home page main content"
+      },
+      {
+        "field_name": "expected_focusable_elements",
+        "field_type": "assertion",
+        "value": "navigation menu, search box, main buttons, footer links"
+      },
+      {
+        "field_name": "tab_key_sequence",
+        "field_type": "navigation",
+        "value": "Tab key repeated navigation"
+      },
+      {
+        "field_name": "focus_indicator_visible",
+        "field_type": "assertion",
+        "value": "visible focus outline on active element"
+      },
+      {
+        "field_name": "min_focusable_count",
+        "field_type": "count_min",
+        "value": "5"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Interactive elements missing or not keyboard accessible",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_start_element",
+                "field_type": "navigation",
+                "value": "Gemini Home page main content"
+              },
+              {
+                "field_name": "expected_focusable_elements",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "tab_key_sequence",
+                "field_type": "navigation",
+                "value": "Tab key repeated navigation"
+              },
+              {
+                "field_name": "focus_indicator_visible",
+                "field_type": "assertion",
+                "value": "visible focus outline on active element"
+              },
+              {
+                "field_name": "min_focusable_count",
+                "field_type": "count_min",
+                "value": "5"
+              }
+            ],
+            "expected_error": "No interactive elements found or elements not keyboard accessible"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "navigate_start_element",
+                "field_type": "navigation",
+                "value": "Gemini Home page main content"
+              },
+              {
+                "field_name": "expected_focusable_elements",
+                "field_type": "assertion",
+                "value": "navigation menu, search box, main buttons, footer links"
+              },
+              {
+                "field_name": "tab_key_sequence",
+                "field_type": "navigation",
+                "value": "Tab key repeated navigation"
+              },
+              {
+                "field_name": "focus_indicator_visible",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_focusable_count",
+                "field_type": "count_min",
+                "value": "5"
+              }
+            ],
+            "expected_error": "Focus indicator not visible - accessibility violation"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "navigate_start_element",
+                "field_type": "navigation",
+                "value": "Gemini Home page main content"
+              },
+              {
+                "field_name": "expected_focusable_elements",
+                "field_type": "assertion",
+                "value": "navigation menu, search box, main buttons, footer links"
+              },
+              {
+                "field_name": "tab_key_sequence",
+                "field_type": "navigation",
+                "value": "Tab key repeated navigation"
+              },
+              {
+                "field_name": "focus_indicator_visible",
+                "field_type": "assertion",
+                "value": "visible focus outline on active element"
+              },
+              {
+                "field_name": "min_focusable_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Insufficient interactive elements found for keyboard navigation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-015",
+    "scenario_id": "M01_BS_015",
+    "scenario_title": "Access Voice Input",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_microphone_button",
+        "field_type": "navigation",
+        "value": "microphone-button"
+      },
+      {
+        "field_name": "expected_interface_display",
+        "field_type": "assertion",
+        "value": "microphone interface"
+      },
+      {
+        "field_name": "expected_permission_dialog",
+        "field_type": "assertion",
+        "value": "permission dialog"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Microphone interface or permission dialog fails to appear",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_microphone_button",
+                "field_type": "navigation",
+                "value": "microphone-button"
+              },
+              {
+                "field_name": "expected_interface_display",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_permission_dialog",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Microphone interface failed to load"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_microphone_button",
+                "field_type": "navigation",
+                "value": "microphone-button"
+              },
+              {
+                "field_name": "expected_interface_display",
+                "field_type": "assertion",
+                "value": "error message"
+              },
+              {
+                "field_name": "expected_permission_dialog",
+                "field_type": "assertion",
+                "value": "microphone access denied"
+              }
+            ],
+            "expected_error": "Microphone access permission denied"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-016",
+    "scenario_id": "M01_BS_016",
+    "scenario_title": "Monitor AI Response Generation",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "observe_loading_indicator",
+        "field_type": "assertion",
+        "value": "Loading indicator is visible"
+      },
+      {
+        "field_name": "observe_generation_start",
+        "field_type": "assertion",
+        "value": "AI response generation begins"
+      },
+      {
+        "field_name": "observe_response_completion",
+        "field_type": "assertion",
+        "value": "Response generation completed"
+      },
+      {
+        "field_name": "expected_page_location",
+        "field_type": "url",
+        "value": "/gemini/home"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Loading indicator fails to display or response never completes",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "observe_loading_indicator",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "observe_generation_start",
+                "field_type": "assertion",
+                "value": "AI response generation begins"
+              },
+              {
+                "field_name": "observe_response_completion",
+                "field_type": "assertion",
+                "value": "Response generation completed"
+              },
+              {
+                "field_name": "expected_page_location",
+                "field_type": "url",
+                "value": "/gemini/home"
+              }
+            ],
+            "expected_error": "Loading indicator not displayed during AI processing"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "observe_loading_indicator",
+                "field_type": "assertion",
+                "value": "Loading indicator is visible"
+              },
+              {
+                "field_name": "observe_generation_start",
+                "field_type": "assertion",
+                "value": "AI response generation begins"
+              },
+              {
+                "field_name": "observe_response_completion",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_page_location",
+                "field_type": "url",
+                "value": "/gemini/home"
+              }
+            ],
+            "expected_error": "AI response generation failed to complete"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-017",
+    "scenario_id": "M01_BS_017",
+    "scenario_title": "Maintain Conversation State After Refresh",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "verify_conversation_history",
+        "field_type": "assertion",
+        "value": "Previous chat messages are visible"
+      },
+      {
+        "field_name": "verify_input_field",
+        "field_type": "assertion",
+        "value": "Chat input field is available and functional"
+      },
+      {
+        "field_name": "verify_page_url",
+        "field_type": "url",
+        "value": "/gemini"
+      },
+      {
+        "field_name": "verify_conversation_container",
+        "field_type": "assertion",
+        "value": "conversation-container"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Conversation state not preserved after refresh",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "verify_conversation_history",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "verify_input_field",
+                "field_type": "assertion",
+                "value": "Chat input field is available and functional"
+              },
+              {
+                "field_name": "verify_page_url",
+                "field_type": "url",
+                "value": "/gemini"
+              },
+              {
+                "field_name": "verify_conversation_container",
+                "field_type": "assertion",
+                "value": "conversation-container"
+              }
+            ],
+            "expected_error": "Conversation history not found after page refresh"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "verify_conversation_history",
+                "field_type": "assertion",
+                "value": "Previous chat messages are visible"
+              },
+              {
+                "field_name": "verify_input_field",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "verify_page_url",
+                "field_type": "url",
+                "value": "/gemini"
+              },
+              {
+                "field_name": "verify_conversation_container",
+                "field_type": "assertion",
+                "value": "conversation-container"
+              }
+            ],
+            "expected_error": "Chat interface not properly restored after refresh"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "verify_conversation_history",
+                "field_type": "assertion",
+                "value": "Previous chat messages are visible"
+              },
+              {
+                "field_name": "verify_input_field",
+                "field_type": "assertion",
+                "value": "Chat input field is available and functional"
+              },
+              {
+                "field_name": "verify_page_url",
+                "field_type": "url",
+                "value": "/error"
+              },
+              {
+                "field_name": "verify_conversation_container",
+                "field_type": "assertion",
+                "value": "conversation-container"
+              }
+            ],
+            "expected_error": "Page redirected to error after refresh"
+          }
+        ]
+      }
+    ]
+  }
+]

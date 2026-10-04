@@ -1,0 +1,32 @@
+# test_test_creation_only.yaml — test_creation category, standalone
+#
+# Step 1: testdata          — scenarios → 8-10 test variant types per scenario
+# Step 2: semantic_map      — scenarios + dom_elements → scenario_element_map.json (1 LLM call)
+# Step 3: script_generation — scenario_element_map + test_data → TypeScript .spec.ts files
+#
+# Assumes comprehension/discovery has already run for this project (dom_elements.json and
+# business_scenarios.json already exist on disk) — run test_comprehension_only first if not.
+
+steps:
+  - name: testdata
+    description: "Business scenarios → 8-10 test variant types (empty, XSS, SQL, boundary, unicode…)"
+    # Inputs:   comprehension/business_scenarios.json
+    #           comprehension/dom_elements.json
+    #           comprehension/interaction_catalog.json (optional)
+    # Outputs:  test_creation/test_data/test_data.json
+    #           test_creation/test_data/test_data.md
+
+  - name: semantic_map
+    description: "Map each scenario to its 3-7 relevant DOM elements — 1 LLM call total"
+    # Inputs:   comprehension/business_scenarios.json
+    #           comprehension/dom_elements.json
+    # Outputs:  test_creation/scenario_element_map.json
+
+  - name: script_generation
+    description: "Generate TypeScript .spec.ts files — one per scenario, with rich assertions"
+    depends_on: [testdata, semantic_map]
+    # Inputs:   test_creation/scenario_element_map.json
+    #           comprehension/business_scenarios.json
+    #           test_creation/test_data/test_data.json
+    # Outputs:  test_creation/test_scripts/test_BS-*.spec.ts
+    #           test_creation/test_suite.json

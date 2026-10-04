@@ -1,0 +1,14 @@
+project:
+  name: AmazonTest
+  application_name: Alter Domus
+  url: https://www.amazon.in/deals?ref_=nav_cs_gb
+  browser: chromium
+  headless: false
+  interactive_scan: true
+
+input:
+  # Directory OR single file path — ComprehensionAgent handles both
+  brd_dir: application_assets/projects/AmazonTest/inputs/
+
+test_execution:
+  suite: AmazonTest

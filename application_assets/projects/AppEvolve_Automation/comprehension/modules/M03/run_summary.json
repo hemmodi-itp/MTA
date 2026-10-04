@@ -1,0 +1,11 @@
+{
+  "status": "failed",
+  "intents_path": "",
+  "dom_status": "failed",
+  "error": "timed out after 60s",
+  "comprehension_status": "failed",
+  "comprehension_error": "timed out after 60s",
+  "mode": "both",
+  "module": "discovery",
+  "module_id": "M03"
+}

@@ -1,0 +1,20 @@
+project:
+  name: alterDomusInvest
+  application_name: Alterdomus Investor Management
+  url: https://alterdomus.com/services/investor-management/
+  browser: chromium
+  headless: true
+  interactive_scan: false
+
+modules:
+  - id: M01
+    name: InvestorManagement
+    url: https://alterdomus.com/services/investor-management/
+
+test_generation:
+  max_negative_cases: 2
+  max_boundary_cases: 2
+  max_data_iterations: 2
+
+test_execution:
+  suite: alterDomusInvest

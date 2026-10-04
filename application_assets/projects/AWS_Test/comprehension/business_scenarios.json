@@ -1,0 +1,1568 @@
+{
+  "project": "AWS_Test",
+  "total_scenarios": 46,
+  "scenarios": [
+    {
+      "scenario_id": "M01_BS_001",
+      "title": "Navigate using navigation bar to fetch page information",
+      "business_objective": "Enable users to quickly access page information through direct navigation",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS homepage",
+        "Navigation bar is visible and accessible"
+      ],
+      "steps": [
+        "User clicks on navigation bar element",
+        "System fetches information about the selected page",
+        "System displays the requested page information"
+      ],
+      "expected_result": "User receives direct access to the requested page information through the navigation bar",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.8,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "d465bf3c7b49b041714f29733aea58a0f12048bec411e3e39a8db474c15e3e1c"
+    },
+    {
+      "scenario_id": "M01_BS_002",
+      "title": "Browse new AWS items in What's New section",
+      "business_objective": "Keep users informed about latest AWS offerings and updates",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the AWS homepage",
+        "What's New section is displayed",
+        "New AWS items are available"
+      ],
+      "steps": [
+        "User navigates to What's New section",
+        "User browses through the displayed new items",
+        "User clicks on a specific new item to view details"
+      ],
+      "expected_result": "User can view and access all new items available on AWS through the What's New section",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "f42f04ff715f43f99a02b9d097f51560a41d5e88b9c1dabc7d342806ca2ff34a"
+    },
+    {
+      "scenario_id": "M01_BS_003",
+      "title": "View client images through image carousel",
+      "business_objective": "Showcase AWS client relationships and build credibility through visual representation",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS homepage",
+        "Image carousel is loaded with client images",
+        "Client images are available for display"
+      ],
+      "steps": [
+        "User views the image carousel on the homepage",
+        "User navigates through carousel images using navigation controls",
+        "User views images of specific AWS clients"
+      ],
+      "expected_result": "User can view and navigate through images displaying specific AWS clients in the carousel",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.82,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "843556ee5f4f2f5b1d1be1fef4232791c5c08a0b26274ad5c4461506cca3bb23"
+    },
+    {
+      "scenario_id": "M01_BS_004",
+      "title": "Browse customer success stories through story cards",
+      "business_objective": "Demonstrate AWS value through customer testimonials and success cases",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the AWS homepage",
+        "Customer Story Cards section is visible",
+        "Customer stories and cards are loaded"
+      ],
+      "steps": [
+        "User scrolls to Customer Story Cards section",
+        "User browses through available customer story cards",
+        "User clicks on a specific customer story card to read details"
+      ],
+      "expected_result": "User can access and read customer stories through the interactive story cards interface",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "d077fd760e6d363c7ac0916c17d4c2b336f5c24dc233559053dacdebe31ed16d"
+    },
+    {
+      "scenario_id": "M01_BS_005",
+      "title": "Return to top of page using back to top functionality",
+      "business_objective": "Improve user navigation experience by providing quick access to page header",
+      "actor": "Guest user",
+      "preconditions": [
+        "User has scrolled down on the AWS homepage",
+        "Back to top button is visible",
+        "User is at a lower position on the page"
+      ],
+      "steps": [
+        "User scrolls down to the bottom of the page",
+        "User locates the back to top button",
+        "User clicks on the back to top button"
+      ],
+      "expected_result": "User is immediately taken to the top of the page",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "5. User Workflows",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "c2130e333d4316c8b5c671f2880728fb46f41110e9b258ec24092c678730d719"
+    },
+    {
+      "scenario_id": "M01_BS_006",
+      "title": "Navigate through Products menu to find specific AWS services",
+      "business_objective": "Enable users to efficiently discover and access specific AWS products through organized navigation",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS homepage",
+        "Navigation bar is visible and functional",
+        "Products menu contains Amazon Quick service"
+      ],
+      "steps": [
+        "Click on products in the navigation bar",
+        "Review the opened pop-up menu with available products",
+        "Locate the card with Amazon Quick service",
+        "Click on Amazon Quick to access the service"
+      ],
+      "expected_result": "User is redirected to the Amazon Quick service page or section",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "1f744b14833354457b0e29fae7d4f3d496f7f725f3af97c7e84509b01838968a"
+    },
+    {
+      "scenario_id": "M01_BS_007",
+      "title": "Browse homepage content as authenticated user",
+      "business_objective": "Provide personalized homepage experience for authenticated users with full access to all homepage features",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User has valid login credentials",
+        "User is successfully logged into the AWS platform",
+        "Homepage is fully loaded with all sections"
+      ],
+      "steps": [
+        "Access the homepage navigation bar",
+        "Browse through the 'What's New' section to review latest AWS updates",
+        "View client images in the image carousel",
+        "Read customer success stories in the story cards section"
+      ],
+      "expected_result": "Logged in user can access and interact with all homepage sections and features",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "2b5736559118dea7f8b84ed49418d6c5c699f33d4dae6986894b8d76b6a6c9b1"
+    },
+    {
+      "scenario_id": "M01_BS_008",
+      "title": "Browse homepage content as guest user",
+      "business_objective": "Enable non-authenticated users to access and explore AWS homepage content to understand available services and information",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is not logged in to AWS",
+        "AWS homepage is accessible"
+      ],
+      "steps": [
+        "Navigate to AWS homepage",
+        "Browse through available sections including What's New, Image Carousel, and Customer Story Cards",
+        "Use navigation bar to access different page information",
+        "View content without authentication requirements"
+      ],
+      "expected_result": "Guest user can successfully view and browse all public homepage content without requiring login credentials",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "Page / Feature Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "Page / Feature Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "8ab674cd7d143f7ca319526a665c6f6c80375e9b866f0579662618d967dab3b8"
+    },
+    {
+      "scenario_id": "M01_BS_009",
+      "title": "Access comprehensive AWS product information from homepage",
+      "business_objective": "Enable users to discover and learn about AWS products and services through the homepage",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS homepage",
+        "AWS products information is available"
+      ],
+      "steps": [
+        "Browse through the homepage sections",
+        "Review available AWS product information",
+        "Access detailed product descriptions and features"
+      ],
+      "expected_result": "User successfully obtains information about AWS products available on the platform",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "7588af3cc98a7aca9609831eb5e798ebdb7cc3d1442d5ec9afc63137ef377e88"
+    },
+    {
+      "scenario_id": "M01_BS_010",
+      "title": "Explore AWS service updates through What's New section",
+      "business_objective": "Keep users informed about latest AWS features and service updates",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is authenticated and on the homepage",
+        "What's New section contains current AWS updates"
+      ],
+      "steps": [
+        "Navigate to the What's New section",
+        "Browse through the list of new AWS items",
+        "Select specific new features for detailed information"
+      ],
+      "expected_result": "User is informed about the latest AWS services and features available",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "6964b98f66578960c8ebd718b14937610db3f67adcded1baa963100b6f4653c3"
+    },
+    {
+      "scenario_id": "M01_BS_011",
+      "title": "Navigate to Amazon QuickSight through Products menu",
+      "business_objective": "Enable users to discover and access specific AWS services efficiently",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS homepage",
+        "Products menu is accessible",
+        "Amazon QuickSight is listed in the products"
+      ],
+      "steps": [
+        "Click on the Products menu item",
+        "Search for Amazon QuickSight in the product listing",
+        "Select Amazon QuickSight from the available options"
+      ],
+      "expected_result": "User successfully navigates to Amazon QuickSight service page",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_homePage.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.8,
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "content_hash": "9c98d9823dc4f419945cdec1dd3837f9aafb2c68e5840f2902016dba40ec6444"
+    },
+    {
+      "scenario_id": "M02_BS_001",
+      "title": "User navigates Aurora page using navigation bar",
+      "business_objective": "Enable users to quickly access page information through direct navigation",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the Aurora page",
+        "Navigation bar is visible and functional"
+      ],
+      "steps": [
+        "User views the navigation bar on the Aurora page",
+        "User clicks on navigation elements to fetch page information directly"
+      ],
+      "expected_result": "User successfully retrieves information about the page through the navigation bar",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "cf66bbcd059707098755f97bd50253da99f93a99269f630a6bc82150af4b5a2a"
+    },
+    {
+      "scenario_id": "M02_BS_002",
+      "title": "User reads Aurora introduction information",
+      "business_objective": "Provide users with comprehensive understanding of what Aurora is",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the Aurora page",
+        "What is Aurora section is visible on the page"
+      ],
+      "steps": [
+        "User scrolls to the 'What is Aurora' section",
+        "User reads the description about Aurora"
+      ],
+      "expected_result": "User gains understanding of Aurora through the descriptive content",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "c4b79c9a6b4754bfe91c91c9b7418eb67fd37567fbcd3409ed1b893efaf38a44"
+    },
+    {
+      "scenario_id": "M02_BS_003",
+      "title": "User explores Aurora benefits information",
+      "business_objective": "Educate users about the advantages and value proposition of Aurora",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the Aurora page",
+        "Benefits of Aurora section is available on the page"
+      ],
+      "steps": [
+        "User navigates to the 'Benefits of Aurora' section",
+        "User reviews the listed benefits of Aurora"
+      ],
+      "expected_result": "User understands the key benefits and advantages of using Aurora",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "88da4efea0b4ca0a2169334ccf4e0b0fd7e9e6592e2fdf36f9f248faf157afb3"
+    },
+    {
+      "scenario_id": "M02_BS_004",
+      "title": "User views customer success stories",
+      "business_objective": "Provide social proof and real-world examples of Aurora success through customer testimonials",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the Aurora page",
+        "Customer Story Cards section is displayed on the page"
+      ],
+      "steps": [
+        "User scrolls to the Customer Story Cards section",
+        "User browses through the customer stories",
+        "User clicks on individual story cards to read detailed testimonials"
+      ],
+      "expected_result": "User views customer success stories and testimonials about Aurora",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "b1dfee578b4cb5d3b97401409ad73bef5202d2b2071e4a4466908388d9e4f4c2"
+    },
+    {
+      "scenario_id": "M02_BS_005",
+      "title": "User follows Get Started with Aurora workflow",
+      "business_objective": "Guide users to Aurora resources and documentation for implementation",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the Aurora page",
+        "Get Started with Aurora button is visible and functional"
+      ],
+      "steps": [
+        "User clicks on 'Get Started with Aurora'",
+        "System redirects user to https://aws.amazon.com/rds/aurora/resources/",
+        "User scrolls down to find the search field",
+        "User searches for 'User Guide'",
+        "User clicks on the User Guide card"
+      ],
+      "expected_result": "User successfully navigates to Aurora User Guide through the guided workflow",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "2776c313af3a3f7972908d33b030b76c9cbfc4e95e5786ff663b904eead36f55"
+    },
+    {
+      "scenario_id": "M02_BS_006",
+      "title": "User explores Aurora pricing information",
+      "business_objective": "Provide detailed pricing information and feature costs to help users make informed decisions",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the Aurora page",
+        "Pricing section is accessible"
+      ],
+      "steps": [
+        "User clicks on Pricing",
+        "User scrolls down to find pricing information",
+        "User locates the 'Additional features and costs' section",
+        "User clicks the + sign to expand all 16 sections",
+        "User reviews the expanded pricing details",
+        "User clicks the - sign to collapse all 16 sections"
+      ],
+      "expected_result": "User successfully views and manages the display of detailed Aurora pricing information",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "5d047dd9efbfe0e266c9da5b3a0890f43e527f46223dc2debacc6e9b142d0fae"
+    },
+    {
+      "scenario_id": "M02_BS_007",
+      "title": "Guest user explores Aurora product features",
+      "business_objective": "Allow potential customers to discover and explore AWS Aurora features without requiring authentication",
+      "actor": "Guest user",
+      "preconditions": [
+        "User has access to the Aurora product page",
+        "User is not logged into any AWS account"
+      ],
+      "steps": [
+        "Navigate to the Aurora product page",
+        "Browse through the product showcase sections",
+        "Review Aurora feature descriptions and capabilities",
+        "Explore available product information"
+      ],
+      "expected_result": "Guest user successfully views and explores Aurora features through the product showcase",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "744e7e1fa06bfacbd08f1904035cd3b835aad7b93a3793921ed5dce78ed3228d"
+    },
+    {
+      "scenario_id": "M02_BS_008",
+      "title": "Logged in user accesses Aurora product information",
+      "business_objective": "Provide authenticated users with comprehensive Aurora product information and features",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User has valid login credentials",
+        "User is successfully logged into the system",
+        "Aurora product page is accessible"
+      ],
+      "steps": [
+        "Access the Aurora product page while logged in",
+        "Use navigation bar to explore different page sections",
+        "Review Aurora description and benefits sections",
+        "Browse customer story cards"
+      ],
+      "expected_result": "Logged in user successfully accesses all Aurora product information sections with full navigation capabilities",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "30c52c948c08026413d63fbce962c2de13776fcd305c3a909e89d78fde8816ad"
+    },
+    {
+      "scenario_id": "M02_BS_009",
+      "title": "User executes automated workflows successfully",
+      "business_objective": "Ensure all defined user workflows function correctly through automated execution",
+      "actor": "Logged In User",
+      "preconditions": [
+        "All automated workflows are configured and available",
+        "User has access to Aurora page functionalities",
+        "System automation capabilities are enabled"
+      ],
+      "steps": [
+        "Initiate execution of the Get Started with Aurora workflow",
+        "Verify successful completion of first workflow",
+        "Execute the Pricing exploration workflow",
+        "Confirm successful completion of second workflow"
+      ],
+      "expected_result": "Both automated workflows execute successfully without errors",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "d7fed64602f586cfcc678601a246ffd2715ec4f90d30add62838f2f7d8a8d318"
+    },
+    {
+      "scenario_id": "M02_BS_010",
+      "title": "System executes all automated test cases",
+      "business_objective": "Validate system functionality through comprehensive automated testing",
+      "actor": "Guest user",
+      "preconditions": [
+        "All five test cases are configured and available",
+        "Automated testing framework is operational",
+        "Aurora page components are accessible"
+      ],
+      "steps": [
+        "Execute first automated test case",
+        "Execute second automated test case",
+        "Execute third automated test case",
+        "Execute fourth automated test case",
+        "Execute fifth automated test case",
+        "Verify all test results"
+      ],
+      "expected_result": "All five automated test cases execute successfully and pass validation criteria",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_Aurora.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Amazon Aurora",
+      "content_hash": "5bd0a3ae37285c786bdc3976bbd99ad5451c2cb284b4480b3bf7ca217b1220f5"
+    },
+    {
+      "scenario_id": "M03_BS_007",
+      "title": "Browse AWS Aurora pricing page with navigation to different pricing models",
+      "business_objective": "Allow users to view AWS Aurora pricing information and navigate between different pricing models",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS Aurora pricing page",
+        "Page has loaded completely with navigation bar visible"
+      ],
+      "steps": [
+        "View the AWS Aurora pricing product showcase",
+        "Locate the navigation bar for pricing models",
+        "Navigate to different pricing models using the navigation bar",
+        "Verify pricing information is displayed for each model"
+      ],
+      "expected_result": "User can successfully view AWS Aurora pricing and navigate between different pricing models using the navigation bar",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_Pricing.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Amazon Pricing",
+      "content_hash": "4f2b46b36c20f23344fe6988a1741022d312a47c02192892c9405c5e4d23a496"
+    },
+    {
+      "scenario_id": "M03_BS_008",
+      "title": "Access Understand Pricing section to learn how to get started",
+      "business_objective": "Provide users with guidance on how to get started with AWS pricing",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS pricing page",
+        "Understand Pricing section is visible on the page"
+      ],
+      "steps": [
+        "Navigate to the Understand Pricing section",
+        "Review the how to get started information",
+        "Verify all getting started guidance is clearly displayed"
+      ],
+      "expected_result": "User can access and understand the getting started information in the Understand Pricing section",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_Pricing.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Amazon Pricing",
+      "content_hash": "74ccd9bd26660767bed3b27a78454710a5eb52c4b57804033ae30b442f4af862"
+    },
+    {
+      "scenario_id": "M03_BS_009",
+      "title": "Review payment options in How to Pay section",
+      "business_objective": "Enable users to understand available payment methods for AWS services",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the AWS pricing page",
+        "How to Pay section is accessible on the page"
+      ],
+      "steps": [
+        "Navigate to the How to Pay section",
+        "Review the different modes of payment available",
+        "Verify all payment options are clearly listed and described"
+      ],
+      "expected_result": "User can view and understand all available payment methods in the How to Pay section",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_Pricing.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Amazon Pricing",
+      "content_hash": "b135e68a46550e65940fad95978155adec1542a99da8a3ad469347245fc5b9cb"
+    },
+    {
+      "scenario_id": "M03_BS_010",
+      "title": "Browse pricing information for multiple AWS products",
+      "business_objective": "Allow users to compare pricing across different AWS services including firewall, EC2, Glue job, and IoT",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS pricing page",
+        "Product pricing sections are loaded and visible"
+      ],
+      "steps": [
+        "Navigate to the firewall pricing section",
+        "Review EC2 pricing information",
+        "Check Glue job pricing details",
+        "Browse IoT service pricing",
+        "View pricing for at least 6 additional AWS products from the available options"
+      ],
+      "expected_result": "User can successfully view pricing information for firewall, EC2, Glue job, IoT, and at least 10 AWS products total",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_Pricing.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Amazon Pricing",
+      "content_hash": "f2018016022a1b87dfc22ee7c12765a4835d396db6d9aef187015b0083a13930"
+    },
+    {
+      "scenario_id": "M03_BS_011",
+      "title": "Get started with AWS services for free",
+      "business_objective": "Enable users to access AWS free tier offerings through dedicated link",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS pricing page",
+        "Get Started for Free button is visible and clickable"
+      ],
+      "steps": [
+        "Locate the Get Started for Free button",
+        "Click on the Get Started for Free button",
+        "Verify redirection to https://aws.amazon.com/pricing/?nc2=h_pr_hub in a new tab",
+        "Confirm the original page remains open in the previous tab"
+      ],
+      "expected_result": "User is redirected to the AWS pricing hub in a new tab while maintaining access to the original page",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_Pricing.md",
+          "page_number": null,
+          "section": "5. User Workflows",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Amazon Pricing",
+      "content_hash": "fb4b0d1312e95fc78614c4cfff0f23793781b295c1225f090b30e2102708e0d7"
+    },
+    {
+      "scenario_id": "M03_BS_012",
+      "title": "Request customized pricing quote from AWS sales",
+      "business_objective": "Enable users to contact AWS sales team for personalized pricing information",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the AWS pricing page",
+        "Request a Pricing quote button is visible and clickable"
+      ],
+      "steps": [
+        "Locate the Request a Pricing quote button",
+        "Click on the Request a Pricing quote button",
+        "Verify redirection to https://aws.amazon.com/contact-us/sales-support-pricing/?ch=cta&cta=contact-sales in the same tab",
+        "Confirm the page loads successfully with contact form"
+      ],
+      "expected_result": "User is redirected to the AWS sales contact page in the same tab and can access the pricing quote request form",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_Pricing.md",
+          "page_number": null,
+          "section": "5. User Workflows",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Amazon Pricing",
+      "content_hash": "400ad42706ed254d63786d3941fa08a545530ebb683b22941de02dfc4612f6ed"
+    },
+    {
+      "scenario_id": "M04_BS_001",
+      "title": "Navigate between different Partner sections using navigation bar",
+      "business_objective": "Enable users to easily move between different Partner-related sections and pages",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS Partners page",
+        "Navigation bar with Partner headers is visible"
+      ],
+      "steps": [
+        "User views the navigation bar with different Partner Navigation headers",
+        "User clicks on a different Partner Navigation header",
+        "System migrates user to the selected Partner section"
+      ],
+      "expected_result": "User is successfully navigated to the selected Partner section with appropriate content displayed",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "b5686fe45b261cc95bc3a0498ce3afd9ed44c5006cf0e07e30a0b8232b60d8ca"
+    },
+    {
+      "scenario_id": "M04_BS_002",
+      "title": "View AWS Partner Network getting started information",
+      "business_objective": "Provide clear guidance to potential partners on how to begin their AWS partnership journey",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS Partners page",
+        "AWS Partner Network section is available"
+      ],
+      "steps": [
+        "User navigates to the AWS Partner Network section",
+        "User views the getting started information",
+        "User reads through the provided guidance and steps"
+      ],
+      "expected_result": "User understands how to get started as an AWS Partner with clear next steps displayed",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "5e354fe1f511e70ec941bcf11355d03f2e0cb358c4c3efa0298db7c150d633aa"
+    },
+    {
+      "scenario_id": "M04_BS_003",
+      "title": "Explore AWS Partner benefits and expansion opportunities",
+      "business_objective": "Educate potential partners about the value proposition and growth opportunities of becoming an AWS Partner",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS Partners page",
+        "Why become AWS Partner section is visible"
+      ],
+      "steps": [
+        "User scrolls to the 'Why become AWS Partner' section",
+        "User reviews the different benefits displayed",
+        "User examines partner expansion opportunities",
+        "User considers the value proposition presented"
+      ],
+      "expected_result": "User has comprehensive understanding of AWS Partner benefits and expansion potential",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "97fe6dea6119074a3fb3ed6b5b3b7fa65e0fde0bc0f00a396603bca152c0be8e"
+    },
+    {
+      "scenario_id": "M04_BS_004",
+      "title": "Browse latest updates in What's New section",
+      "business_objective": "Keep partners and potential partners informed about recent AWS Partner program updates and announcements",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User is on the AWS Partners page",
+        "What's New section with cards is displayed"
+      ],
+      "steps": [
+        "User locates the 'What's New' section",
+        "User browses through the displayed cards",
+        "User clicks on cards of interest to view more details",
+        "User reads the latest updates and announcements"
+      ],
+      "expected_result": "User is informed about the latest AWS Partner program updates and can access detailed information",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "4535ec267a06b5d24c7a12640fb233ef814ef016c3a6370bad3205e5927e0280"
+    },
+    {
+      "scenario_id": "M04_BS_005",
+      "title": "Discover AWS Partner success stories and innovations",
+      "business_objective": "Showcase real-world examples of partner success to inspire and demonstrate the value of AWS partnerships",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on the AWS Partners page",
+        "Partner Success with AWS section is available"
+      ],
+      "steps": [
+        "User navigates to the 'Partner Success with AWS' section",
+        "User browses through success stories from AWS Partners worldwide",
+        "User reads about customer innovations driven by partners",
+        "User explores different partner use cases and achievements"
+      ],
+      "expected_result": "User gains insights into how AWS Partners drive innovation and achieve success with their customers",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "8fd2a552bca7e443d8b4ddb141f4fdeeec59a7a828b8c8978071ebf948eec081"
+    },
+    {
+      "scenario_id": "M04_BS_006",
+      "title": "Complete automated workflow execution for partner onboarding",
+      "business_objective": "Ensure both partner workflows are fully automated and function correctly for seamless partner experience",
+      "actor": "Logged In User",
+      "preconditions": [
+        "User has valid login credentials",
+        "AWS Partner page is accessible",
+        "Automated workflow system is operational"
+      ],
+      "steps": [
+        "Execute 'get Started for Free' workflow automatically",
+        "Verify workflow completes without errors",
+        "Execute 'User looks for Amazon Quick in Products' workflow automatically",
+        "Verify second workflow completes without errors",
+        "Validate both workflows have successfully processed all steps"
+      ],
+      "expected_result": "Both partner workflows are executed automatically and complete successfully with all steps verified",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "b86ddc7324ba7300af58091cdf6e89fab4209627b9f3accfb165b9ac748d8a2c"
+    },
+    {
+      "scenario_id": "M04_BS_007",
+      "title": "Execute comprehensive automated test suite for partner functionality",
+      "business_objective": "Validate all partner page features through automated testing to ensure quality and reliability",
+      "actor": "Guest user",
+      "preconditions": [
+        "AWS Partner page is loaded and accessible",
+        "All five test cases are defined and ready for execution",
+        "Test automation framework is operational"
+      ],
+      "steps": [
+        "Execute first automated test case",
+        "Execute second automated test case",
+        "Execute third automated test case",
+        "Execute fourth automated test case",
+        "Execute fifth automated test case",
+        "Verify all test cases completed successfully"
+      ],
+      "expected_result": "All five automated test cases execute successfully and pass validation criteria",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "8404c62dd064e59e7440ebfb9ae494373851f46604dbead1ccb300b0c432e99d"
+    },
+    {
+      "scenario_id": "M04_BS_008",
+      "title": "Guest user initiates partner registration process",
+      "business_objective": "Allow prospective partners to begin AWS partnership enrollment without requiring prior authentication",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on AWS Partner page",
+        "User is not logged in",
+        "Partner registration functionality is available"
+      ],
+      "steps": [
+        "Click on 'Become an AWS Partner' button",
+        "Verify page redirects to same page and scrolls to partner section",
+        "Click on 'sign in to aws console' link",
+        "Confirm redirection to login page at https://signin.aws.amazon.com/signin"
+      ],
+      "expected_result": "Guest user is successfully guided through partner registration flow and redirected to AWS login page",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.8,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "5ef2bf800c4f5e6d020de5b706225b2024f9ac60a192627d77c30a6fe1bb4975"
+    },
+    {
+      "scenario_id": "M04_BS_009",
+      "title": "Navigate partner collaboration workflow",
+      "business_objective": "Enable users to explore existing partner collaboration options and return to partnership opportunities",
+      "actor": "Guest user",
+      "preconditions": [
+        "User is on AWS Partner page",
+        "Partner collaboration links are functional"
+      ],
+      "steps": [
+        "Click on 'Work with an AWS Partner' option",
+        "Verify redirection to https://aws.amazon.com/partners/work-with-partners/ in same tab",
+        "Click on 'Become and AWS Partner' link",
+        "Confirm user is taken back to the original AWS Partner page"
+      ],
+      "expected_result": "User successfully navigates partner collaboration workflow and returns to main partner page",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_04_Partners.md",
+          "page_number": null,
+          "section": "2. Page / Feature Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.8,
+      "module_id": "M04",
+      "module_name": "Amazon Partners",
+      "content_hash": "2f8a60166d6eedf164548190c65092d03edb1b4356c3e81e44747bb53e970e7d"
+    },
+    {
+      "scenario_id": "SC-001",
+      "title": "Save Changes",
+      "business_objective": "Allow user to save changes on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Enter element in the input field",
+        "Enter allow crosscontext behavioral ads in the input field",
+        "Enter opt out of crosscontext behavioral ads in the input field",
+        "Enter im looking for in the input field",
+        "Enter search in the input field",
+        "Click the save preferences"
+      ],
+      "expected_result": "save_preferences_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-002",
+      "title": "User Login",
+      "business_objective": "Allow user to user login on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the sign in to console"
+      ],
+      "expected_result": "sign_in_to_console_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-003",
+      "title": "Create Account",
+      "business_objective": "Allow user to create account on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the create account"
+      ],
+      "expected_result": "create_account_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-004",
+      "title": "User Registration",
+      "business_objective": "Allow user to user registration on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the event reinvent 2026 build whats next join us nov 30 to dec 4 in las vegas save 1200 with early bird pricing ends august 25 register today"
+      ],
+      "expected_result": "event_reinvent_2026_build_whats_next_join_us_nov_30_to_dec_4_in_las_vegas_save_1200_with_early_bird_pricing_ends_august_25_register_today_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-005",
+      "title": "Search Products",
+      "business_objective": "Allow user to search products on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the industrial siemens mobility turns 175 years of data into searchable insights with aws ai view the story"
+      ],
+      "expected_result": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-006",
+      "title": "User Sign In",
+      "business_objective": "Allow user to user sign in on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the government solutions designed to help government agencies modernize meet mandates reduce costs and deliver mission outcomes view industry"
+      ],
+      "expected_result": "government_solutions_designed_to_help_government_agencies_modernize_meet_mandates_reduce_costs_and_deliver_mission_outcomes_view_industry_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-007",
+      "title": "Add Item",
+      "business_objective": "Allow user to add item on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the telecommunications accelerate innovation scale with confidence and add agility with cloudbased telecom solutions view industry"
+      ],
+      "expected_result": "telecommunications_accelerate_innovation_scale_with_confidence_and_add_agility_with_cloudbased_telecom_solutions_view_industry_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-008",
+      "title": "Create Account",
+      "business_objective": "Allow user to create account on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the create an aws account"
+      ],
+      "expected_result": "create_an_aws_account_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-009",
+      "title": "Browse AWS_Test",
+      "business_objective": "Allow user to navigate the AWS_Test interface",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the filter all",
+        "Click the back to top",
+        "Click the contact us",
+        "Click the agentic ai data leaders use agentic ai to lead industries see how pga tour autodesk and bmw are building data foundations for agentic ai with an open architecture on aws explore how they innovate",
+        "Click the view more stories",
+        "Click the advertising  marketing pinterest drives visual discovery for 600 million monthly users building on amazon ec2 and s3 view the story",
+        "Click the automotive toyota reduces call handling times by 20 with amazon connect customer view the story",
+        "Click the financial services intuit unifies support for 100m customers with amazon connect customer view the story",
+        "Click the retail adidas drives enterprisewide transformation adidas accelerates application deployment 40x using aws for sap streamlining business operations and resource planning view the story",
+        "Click the retail tapestry amplifies store associate voices worldwide tapestry implements aws aipowered feedback analysis enabling datadriven decisions through enhanced associate insights view the story",
+        "Click the financial services develop innovative and secure solutions across banking capital markets insurance and payments view industry",
+        "Click the healthcare and life sciences accelerate innovation and improve patient care with healthcare data management and security view industry",
+        "Click the advertising and marketing turn data into customerwinning campaigns view industry",
+        "Click the manufacturing optimize production and speed timetomarket view industry",
+        "Click the media and entertainment transform media  entertainment with the most purposebuilt capabilities and partner solutions of any cloud view industry",
+        "Click the games enable game development for every genre and platform from aaa titles to indie studios view industry",
+        "Click the aws support overview"
+      ],
+      "expected_result": "User reaches the intended section",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-010",
+      "title": "Interact with AWS_Test",
+      "business_objective": "Allow user to interact with elements on AWS_Test",
+      "actor": "User",
+      "preconditions": [
+        "AWS_Test page is loaded"
+      ],
+      "steps": [
+        "Click the accept",
+        "Click the decline",
+        "Click the customize",
+        "Click the cancel",
+        "Click the element",
+        "Click the english",
+        "Click the support",
+        "Click the my account",
+        "Click the discover aws",
+        "Click the products",
+        "Click the solutions",
+        "Click the pricing",
+        "Click the resources",
+        "Click the show 8 more",
+        "Click the north america",
+        "Click the south america",
+        "Click the europe",
+        "Click the middle east",
+        "Click the africa",
+        "Click the asia pacific",
+        "Click the australia and new zealand",
+        "Click the geographic regions 9",
+        "Click the aws govcloud useast",
+        "Click the aws govcloud uswest",
+        "Click the canada central",
+        "Click the canada west calgary",
+        "Click the mexico central",
+        "Click the us west northern california",
+        "Click the us east northern virginia",
+        "Click the us east ohio",
+        "Click the us west oregon",
+        "Click the edge locations 31",
+        "Click the yes",
+        "Click the no",
+        "Click the hi i can connect you with an aws representative or answer questions you have on aws",
+        "Click the 1",
+        "Click the aws cookie notice",
+        "Click the cookie notice",
+        "Click the here",
+        "Click the aws privacy notice",
+        "Click the skip to main content",
+        "Click the aws marketplace",
+        "Click the reinvent",
+        "Click the start free with aws",
+        "Click the artificial intelligence ai find your ai path with aws startups from the first idea to scaled product discover ai tools credits and expert guidance matched to your startup stage explore ai for startups",
+        "Click the explore aws for your industry",
+        "Click the what is aws",
+        "Click the what is cloud computing",
+        "Click the what is agentic ai",
+        "Click the cloud computing concepts hub",
+        "Click the aws cloud security",
+        "Click the whats new",
+        "Click the blogs",
+        "Click the press releases",
+        "Click the getting started",
+        "Click the training",
+        "Click the aws trust center",
+        "Click the aws solutions library",
+        "Click the architecture center",
+        "Click the product and technical faqs",
+        "Click the analyst reports",
+        "Click the aws partners",
+        "Click the builder center",
+        "Click the sdks  tools",
+        "Click the net on aws",
+        "Click the python on aws",
+        "Click the java on aws",
+        "Click the php on aws",
+        "Click the javascript on aws",
+        "Click the file a support ticket",
+        "Click the aws repost",
+        "Click the knowledge center",
+        "Click the aws accessibility",
+        "Click the legal",
+        "Click the event code of conduct",
+        "Click the event terms  conditions",
+        "Click the privacy",
+        "Click the site terms",
+        "Click the cookie preferences",
+        "Click the retail"
+      ],
+      "expected_result": "Interaction completes as expected",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    }
+  ],
+  "modules": [
+    "M01",
+    "M02",
+    "M03",
+    "M04"
+  ]
+}

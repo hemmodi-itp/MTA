@@ -1,0 +1,4736 @@
+{
+  "input_loc_0001": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-performance",
+    "description": "",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "M01"
+  },
+  "input_loc_0002": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-functional",
+    "description": "",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "M01"
+  },
+  "input_loc_0003": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-advertising",
+    "description": "",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "M01"
+  },
+  "input_loc_0004": {
+    "type": "label",
+    "locator": "Allow cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "M01"
+  },
+  "input_loc_0005": {
+    "type": "label",
+    "locator": "Opt out of cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0005",
+    "_module_id": "M01"
+  },
+  "input_loc_0006": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0006",
+    "_module_id": "M01"
+  },
+  "input_loc_0007": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0007",
+    "_module_id": "M01"
+  },
+  "input_loc_0008": {
+    "type": "css",
+    "locator": "div>div>div>div>h1>div:nth-of-type(2)>span>div>div>span>input",
+    "description": "",
+    "_source_locator_id": "LOC-0008",
+    "_module_id": "M01"
+  },
+  "input_loc_0009": {
+    "type": "placeholder",
+    "locator": "Search",
+    "description": "",
+    "_source_locator_id": "LOC-0009",
+    "_module_id": "M01"
+  },
+  "accept": {
+    "type": "role",
+    "locator": "button",
+    "name": "Accept",
+    "description": "Accept",
+    "_source_locator_id": "LOC-0010",
+    "_module_id": "M01"
+  },
+  "decline": {
+    "type": "role",
+    "locator": "button",
+    "name": "Decline",
+    "description": "Decline",
+    "_source_locator_id": "LOC-0011",
+    "_module_id": "M01"
+  },
+  "customize": {
+    "type": "role",
+    "locator": "button",
+    "name": "Customize",
+    "description": "Customize",
+    "_source_locator_id": "LOC-0012",
+    "_module_id": "M01"
+  },
+  "cancel": {
+    "type": "role",
+    "locator": "button",
+    "name": "Cancel",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0013",
+    "_module_id": "M01"
+  },
+  "save_preferences": {
+    "type": "role",
+    "locator": "button",
+    "name": "Save preferences",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0014",
+    "_module_id": "M01"
+  },
+  "cancel_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Cancel",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0015",
+    "_module_id": "M01"
+  },
+  "save_preferences_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Save preferences",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M01"
+  },
+  "button_loc_0017": {
+    "type": "testid",
+    "locator": "global-nav-mobile-menu-button",
+    "description": "",
+    "_source_locator_id": "LOC-0017",
+    "_module_id": "M01"
+  },
+  "button_loc_0018": {
+    "type": "testid",
+    "locator": "nav-search-toggle",
+    "description": "",
+    "_source_locator_id": "LOC-0018",
+    "_module_id": "M01"
+  },
+  "button_loc_0019": {
+    "type": "css",
+    "locator": "nav>div>ul>li>div>div>div>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0019",
+    "_module_id": "M01"
+  },
+  "filter_all": {
+    "type": "role",
+    "locator": "button",
+    "name": "Filter: All",
+    "description": "Filter: All",
+    "_source_locator_id": "LOC-0020",
+    "_module_id": "M01"
+  },
+  "button_loc_0021": {
+    "type": "css",
+    "locator": "nav>div>ul>li:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0021",
+    "_module_id": "M01"
+  },
+  "english": {
+    "type": "role",
+    "locator": "button",
+    "name": "English",
+    "description": "English",
+    "_source_locator_id": "LOC-0022",
+    "_module_id": "M01"
+  },
+  "support": {
+    "type": "role",
+    "locator": "button",
+    "name": "Support",
+    "description": "Support",
+    "_source_locator_id": "LOC-0023",
+    "_module_id": "M01"
+  },
+  "my_account": {
+    "type": "role",
+    "locator": "button",
+    "name": "My account",
+    "description": "My account",
+    "_source_locator_id": "LOC-0024",
+    "_module_id": "M01"
+  },
+  "button_loc_0025": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div>div>div>div:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0025",
+    "_module_id": "M01"
+  },
+  "discover_aws": {
+    "type": "role",
+    "locator": "button",
+    "name": "Discover AWS",
+    "description": "Discover AWS",
+    "_source_locator_id": "LOC-0026",
+    "_module_id": "M01"
+  },
+  "navigate_products": {
+    "type": "role",
+    "locator": "button",
+    "name": "Products",
+    "description": "Products",
+    "_source_locator_id": "LOC-0027",
+    "_module_id": "M01"
+  },
+  "solutions": {
+    "type": "role",
+    "locator": "button",
+    "name": "Solutions",
+    "description": "Solutions",
+    "_source_locator_id": "LOC-0028",
+    "_module_id": "M01"
+  },
+  "pricing": {
+    "type": "role",
+    "locator": "button",
+    "name": "Pricing",
+    "description": "Pricing",
+    "_source_locator_id": "LOC-0029",
+    "_module_id": "M01"
+  },
+  "resources": {
+    "type": "role",
+    "locator": "button",
+    "name": "Resources",
+    "description": "Resources",
+    "_source_locator_id": "LOC-0030",
+    "_module_id": "M01"
+  },
+  "button_loc_0031": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0031",
+    "_module_id": "M01"
+  },
+  "button_loc_0032": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>div>div>div>span>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0032",
+    "_module_id": "M01"
+  },
+  "button_loc_0033": {
+    "type": "testid",
+    "locator": "feedback-button",
+    "description": "",
+    "_source_locator_id": "LOC-0033",
+    "_module_id": "M01"
+  },
+  "button_loc_0034": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0034",
+    "_module_id": "M01"
+  },
+  "button_loc_0035": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0035",
+    "_module_id": "M01"
+  },
+  "show_8_more": {
+    "type": "role",
+    "locator": "button",
+    "name": "Show 8 more",
+    "description": "Show 8 more",
+    "_source_locator_id": "LOC-0036",
+    "_module_id": "M01"
+  },
+  "north_america": {
+    "type": "role",
+    "locator": "tab",
+    "name": "North America",
+    "description": "North America",
+    "_source_locator_id": "LOC-0037",
+    "_module_id": "M01"
+  },
+  "south_america": {
+    "type": "role",
+    "locator": "tab",
+    "name": "South America",
+    "description": "South America",
+    "_source_locator_id": "LOC-0038",
+    "_module_id": "M01"
+  },
+  "europe": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Europe",
+    "description": "Europe",
+    "_source_locator_id": "LOC-0039",
+    "_module_id": "M01"
+  },
+  "middle_east": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Middle East",
+    "description": "Middle East",
+    "_source_locator_id": "LOC-0040",
+    "_module_id": "M01"
+  },
+  "africa": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Africa",
+    "description": "Africa",
+    "_source_locator_id": "LOC-0041",
+    "_module_id": "M01"
+  },
+  "asia_pacific": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Asia Pacific",
+    "description": "Asia Pacific",
+    "_source_locator_id": "LOC-0042",
+    "_module_id": "M01"
+  },
+  "australia_and_new_zealand": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Australia and New Zealand",
+    "description": "Australia and New Zealand",
+    "_source_locator_id": "LOC-0043",
+    "_module_id": "M01"
+  },
+  "button_loc_0044": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0044",
+    "_module_id": "M01"
+  },
+  "button_loc_0045": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0045",
+    "_module_id": "M01"
+  },
+  "button_loc_0046": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(3)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0046",
+    "_module_id": "M01"
+  },
+  "button_loc_0047": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(4)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0047",
+    "_module_id": "M01"
+  },
+  "button_loc_0048": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(5)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0048",
+    "_module_id": "M01"
+  },
+  "button_loc_0049": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(6)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0049",
+    "_module_id": "M01"
+  },
+  "button_loc_0050": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(7)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0050",
+    "_module_id": "M01"
+  },
+  "button_loc_0051": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(8)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0051",
+    "_module_id": "M01"
+  },
+  "button_loc_0052": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(9)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0052",
+    "_module_id": "M01"
+  },
+  "button_loc_0053": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(10)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0053",
+    "_module_id": "M01"
+  },
+  "button_loc_0054": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(11)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0054",
+    "_module_id": "M01"
+  },
+  "button_loc_0055": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(12)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0055",
+    "_module_id": "M01"
+  },
+  "button_loc_0056": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(13)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0056",
+    "_module_id": "M01"
+  },
+  "button_loc_0057": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(14)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0057",
+    "_module_id": "M01"
+  },
+  "button_loc_0058": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(15)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0058",
+    "_module_id": "M01"
+  },
+  "button_loc_0059": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(16)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0059",
+    "_module_id": "M01"
+  },
+  "button_loc_0060": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(17)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0060",
+    "_module_id": "M01"
+  },
+  "button_loc_0061": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(18)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0181",
+    "_module_id": "M01"
+  },
+  "button_loc_0062": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(19)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0182",
+    "_module_id": "M01"
+  },
+  "button_loc_0063": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(20)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0183",
+    "_module_id": "M01"
+  },
+  "button_loc_0064": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(21)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0184",
+    "_module_id": "M01"
+  },
+  "button_loc_0065": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(22)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0185",
+    "_module_id": "M01"
+  },
+  "button_loc_0066": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(23)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0186",
+    "_module_id": "M01"
+  },
+  "button_loc_0067": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(24)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0187",
+    "_module_id": "M01"
+  },
+  "button_loc_0068": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(25)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0188",
+    "_module_id": "M01"
+  },
+  "button_loc_0069": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(26)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0189",
+    "_module_id": "M01"
+  },
+  "button_loc_0070": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(27)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0190",
+    "_module_id": "M01"
+  },
+  "button_loc_0071": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(28)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0191",
+    "_module_id": "M01"
+  },
+  "button_loc_0072": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(29)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0192",
+    "_module_id": "M01"
+  },
+  "button_loc_0073": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(30)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0193",
+    "_module_id": "M01"
+  },
+  "button_loc_0074": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(31)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0194",
+    "_module_id": "M01"
+  },
+  "button_loc_0075": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(32)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0195",
+    "_module_id": "M01"
+  },
+  "button_loc_0076": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(33)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0196",
+    "_module_id": "M01"
+  },
+  "button_loc_0077": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(34)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0197",
+    "_module_id": "M01"
+  },
+  "button_loc_0078": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(35)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0198",
+    "_module_id": "M01"
+  },
+  "button_loc_0079": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(36)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0199",
+    "_module_id": "M01"
+  },
+  "button_loc_0080": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(37)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0200",
+    "_module_id": "M01"
+  },
+  "button_loc_0081": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(38)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0201",
+    "_module_id": "M01"
+  },
+  "button_loc_0082": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(39)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0202",
+    "_module_id": "M01"
+  },
+  "button_loc_0083": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(40)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0203",
+    "_module_id": "M01"
+  },
+  "button_loc_0084": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(41)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0204",
+    "_module_id": "M01"
+  },
+  "geographic_regions_9": {
+    "type": "role",
+    "locator": "button",
+    "description": "Geographic Regions\n9",
+    "_source_locator_id": "LOC-0205",
+    "_module_id": "M01",
+    "name": "Geographic Regions\n9"
+  },
+  "aws_govcloud_us_east": {
+    "type": "role",
+    "locator": "button",
+    "description": "AWS GovCloud (US-East)",
+    "_source_locator_id": "LOC-0206",
+    "_module_id": "M01",
+    "name": "AWS GovCloud (US-East)"
+  },
+  "aws_govcloud_us_west": {
+    "type": "role",
+    "locator": "button",
+    "description": "AWS GovCloud (US-West)",
+    "_source_locator_id": "LOC-0207",
+    "_module_id": "M01",
+    "name": "AWS GovCloud (US-West)"
+  },
+  "canada_central": {
+    "type": "role",
+    "locator": "button",
+    "description": "Canada (Central)",
+    "_source_locator_id": "LOC-0208",
+    "_module_id": "M01",
+    "name": "Canada (Central)"
+  },
+  "canada_west_calgary": {
+    "type": "role",
+    "locator": "button",
+    "description": "Canada West (Calgary)",
+    "_source_locator_id": "LOC-0209",
+    "_module_id": "M01",
+    "name": "Canada West (Calgary)"
+  },
+  "mexico_central": {
+    "type": "role",
+    "locator": "button",
+    "description": "Mexico (Central)",
+    "_source_locator_id": "LOC-0210",
+    "_module_id": "M01",
+    "name": "Mexico (Central)"
+  },
+  "us_west_northern_california": {
+    "type": "role",
+    "locator": "button",
+    "description": "US West (Northern California)",
+    "_source_locator_id": "LOC-0211",
+    "_module_id": "M01",
+    "name": "US West (Northern California)"
+  },
+  "us_east_northern_virginia": {
+    "type": "role",
+    "locator": "button",
+    "description": "US East (Northern Virginia)",
+    "_source_locator_id": "LOC-0212",
+    "_module_id": "M01",
+    "name": "US East (Northern Virginia)"
+  },
+  "us_east_ohio": {
+    "type": "role",
+    "locator": "button",
+    "description": "US East (Ohio)",
+    "_source_locator_id": "LOC-0213",
+    "_module_id": "M01",
+    "name": "US East (Ohio)"
+  },
+  "us_west_oregon": {
+    "type": "role",
+    "locator": "button",
+    "description": "US West (Oregon)",
+    "_source_locator_id": "LOC-0214",
+    "_module_id": "M01",
+    "name": "US West (Oregon)"
+  },
+  "edge_locations_31": {
+    "type": "role",
+    "locator": "button",
+    "description": "Edge Locations\n31",
+    "_source_locator_id": "LOC-0215",
+    "_module_id": "M01",
+    "name": "Edge Locations\n31"
+  },
+  "yes": {
+    "type": "role",
+    "locator": "button",
+    "description": "Yes",
+    "_source_locator_id": "LOC-0216",
+    "_module_id": "M01",
+    "name": "Yes"
+  },
+  "no": {
+    "type": "role",
+    "locator": "button",
+    "description": "No",
+    "_source_locator_id": "LOC-0217",
+    "_module_id": "M01",
+    "name": "No"
+  },
+  "english_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "English",
+    "_source_locator_id": "LOC-0218",
+    "_module_id": "M01",
+    "name": "English"
+  },
+  "back_to_top": {
+    "type": "role",
+    "locator": "button",
+    "description": "Back to top",
+    "_source_locator_id": "LOC-0219",
+    "_module_id": "M01",
+    "name": "Back to top"
+  },
+  "hi_i_can_connect_you_with_an_aws_representative": {
+    "type": "role",
+    "locator": "button",
+    "description": "Hi, I can connect you with an AWS representative or answer questions you have on AWS.",
+    "_source_locator_id": "LOC-0220",
+    "_module_id": "M01",
+    "name": "Hi, I can connect you with an AWS representative or answer questions you have on AWS."
+  },
+  "button_loc_0101": {
+    "type": "role",
+    "locator": "button",
+    "description": "",
+    "_source_locator_id": "LOC-0221",
+    "_module_id": "M01",
+    "name": "Close notification"
+  },
+  "1": {
+    "type": "role",
+    "locator": "button",
+    "description": "1",
+    "_source_locator_id": "LOC-0222",
+    "_module_id": "M01",
+    "name": "1"
+  },
+  "aws_cookie_notice": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Cookie Notice",
+    "_source_locator_id": "LOC-0223",
+    "_module_id": "M01",
+    "name": "AWS Cookie Notice"
+  },
+  "cookie_notice": {
+    "type": "role",
+    "locator": "link",
+    "description": "Cookie Notice",
+    "_source_locator_id": "LOC-0224",
+    "_module_id": "M01",
+    "name": "Cookie Notice"
+  },
+  "here": {
+    "type": "role",
+    "locator": "link",
+    "description": "here",
+    "_source_locator_id": "LOC-0225",
+    "_module_id": "M01",
+    "name": "here"
+  },
+  "aws_privacy_notice": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Privacy Notice",
+    "_source_locator_id": "LOC-0226",
+    "_module_id": "M01",
+    "name": "AWS Privacy Notice"
+  },
+  "skip_to_main_content": {
+    "type": "role",
+    "locator": "link",
+    "description": "Skip to main content",
+    "_source_locator_id": "LOC-0227",
+    "_module_id": "M01",
+    "name": "Skip to main content"
+  },
+  "a_loc_0108": {
+    "type": "testid",
+    "locator": "mobile-nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0228",
+    "_module_id": "M01"
+  },
+  "contact_us": {
+    "type": "role",
+    "locator": "link",
+    "name": "Contact us",
+    "description": "Contact us",
+    "_source_locator_id": "LOC-0109",
+    "_module_id": "M01"
+  },
+  "aws_marketplace": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Marketplace",
+    "_source_locator_id": "LOC-0230",
+    "_module_id": "M01",
+    "name": "AWS Marketplace"
+  },
+  "a_loc_0111": {
+    "type": "testid",
+    "locator": "nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0231",
+    "_module_id": "M01"
+  },
+  "re_invent": {
+    "type": "role",
+    "locator": "link",
+    "description": "re:Invent",
+    "_source_locator_id": "LOC-0232",
+    "_module_id": "M01",
+    "name": "re:Invent"
+  },
+  "sign_in_to_console": {
+    "type": "role",
+    "locator": "link",
+    "description": "Sign in to console",
+    "_source_locator_id": "LOC-0233",
+    "_module_id": "M01",
+    "name": "Sign in to console"
+  },
+  "create_account": {
+    "type": "role",
+    "locator": "button",
+    "description": "Create account",
+    "_source_locator_id": "LOC-0234",
+    "_module_id": "M01",
+    "name": "Create account"
+  },
+  "start_free_with_aws": {
+    "type": "role",
+    "locator": "button",
+    "description": "Start free with AWS",
+    "_source_locator_id": "LOC-0235",
+    "_module_id": "M01",
+    "name": "Start free with AWS"
+  },
+  "event_re_invent_2026_build_what_s_next_join_us": {
+    "type": "role",
+    "locator": "link",
+    "description": "Event\nre:Invent 2026: Build what's next\nJoin us Nov. 30 to Dec. 4 in Las Vegas. Save $1,200 with early bird pricing. Ends August 25.\nRegister today",
+    "_source_locator_id": "LOC-0236",
+    "_module_id": "M01",
+    "name": "Event\nre:Invent 2026: Build what's next\nJoin us Nov. 30 to Dec. 4 in Las Vegas. Save $1,200 with early bird pricing. Ends August 25.\nRegister today"
+  },
+  "agentic_ai_data_leaders_use_agentic_ai_to_lead": {
+    "type": "role",
+    "locator": "link",
+    "description": "Agentic AI\nData leaders use agentic AI to lead industries\nSee how PGA Tour, Autodesk, and BMW are building data foundations for agentic AI with an open architecture on AWS.\nExplore how they innovate",
+    "_source_locator_id": "LOC-0237",
+    "_module_id": "M01",
+    "name": "Agentic AI\nData leaders use agentic AI to lead industries\nSee how PGA Tour, Autodesk, and BMW are building data foundations for agentic AI with an open architecture on AWS.\nExplore how they innovate"
+  },
+  "navigate_products_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Artificial Intelligence (AI)\nFind Your AI Path with AWS Startups\nFrom the first idea to scaled product. Discover AI tools, credits and expert guidance matched to your startup stage.\nExplore AI for Startups",
+    "_source_locator_id": "LOC-0238",
+    "_module_id": "M01",
+    "name": "Artificial Intelligence (AI)\nFind Your AI Path with AWS Startups\nFrom the first idea to scaled product. Discover AI tools, credits and expert guidance matched to your startup stage.\nExplore AI for Startups"
+  },
+  "view_more_stories": {
+    "type": "role",
+    "locator": "link",
+    "description": "View more stories",
+    "_source_locator_id": "LOC-0239",
+    "_module_id": "M01",
+    "name": "View more stories"
+  },
+  "advertising_marketing_pinterest_drives_visual": {
+    "type": "role",
+    "locator": "link",
+    "name": "Advertising & Marketing\nPinterest drives visual discovery for 600 million monthly users building on Amazon EC2 and S3\nView the story",
+    "description": "Advertising & Marketing\nPinterest drives visual discovery for 600 million monthly users building on Amazon EC2 and S3\nView the story",
+    "_source_locator_id": "LOC-0120",
+    "_module_id": "M01"
+  },
+  "automotive_toyota_reduces_call_handling_times_by": {
+    "type": "role",
+    "locator": "link",
+    "name": "Automotive\nToyota reduces call handling times by 20% with Amazon Connect Customer\nView the story",
+    "description": "Automotive\nToyota reduces call handling times by 20% with Amazon Connect Customer\nView the story",
+    "_source_locator_id": "LOC-0121",
+    "_module_id": "M01"
+  },
+  "search": {
+    "type": "role",
+    "locator": "link",
+    "description": "Industrial\nSiemens Mobility turns 175 years of data into searchable insights with AWS AI\nView the story",
+    "_source_locator_id": "LOC-0240",
+    "_module_id": "M01",
+    "name": "Industrial\nSiemens Mobility turns 175 years of data into searchable insights with AWS AI\nView the story"
+  },
+  "a_loc_0123": {
+    "type": "css",
+    "locator": "div:nth-of-type(2)>div:nth-of-type(4)>div>a",
+    "description": "",
+    "_source_locator_id": "LOC-0243",
+    "_module_id": "M01"
+  },
+  "financial_services_intuit_unifies_support_for": {
+    "type": "role",
+    "locator": "link",
+    "name": "Financial Services\nIntuit unifies support for 100M+ customers with Amazon Connect Customer\nView the story",
+    "description": "Financial Services\nIntuit unifies support for 100M+ customers with Amazon Connect Customer\nView the story",
+    "_source_locator_id": "LOC-0124",
+    "_module_id": "M01"
+  },
+  "retail_adidas_drives_enterprise_wide": {
+    "type": "role",
+    "locator": "link",
+    "description": "Retail\nAdidas drives enterprise-wide transformation\nAdidas accelerates application deployment 40x using AWS for SAP, streamlining business operations and resource planning.\nView the story",
+    "_source_locator_id": "LOC-0245",
+    "_module_id": "M01",
+    "name": "Retail\nAdidas drives enterprise-wide transformation\nAdidas accelerates application deployment 40x using AWS for SAP, streamlining business operations and resource planning.\nView the story"
+  },
+  "retail_tapestry_amplifies_store_associate_voices": {
+    "type": "role",
+    "locator": "link",
+    "description": "Retail\nTapestry amplifies store associate voices worldwide\nTapestry implements AWS AI-powered feedback analysis, enabling data-driven decisions through enhanced associate insights.\nView the story",
+    "_source_locator_id": "LOC-0246",
+    "_module_id": "M01",
+    "name": "Retail\nTapestry amplifies store associate voices worldwide\nTapestry implements AWS AI-powered feedback analysis, enabling data-driven decisions through enhanced associate insights.\nView the story"
+  },
+  "explore_aws_for_your_industry": {
+    "type": "role",
+    "locator": "link",
+    "description": "Explore AWS for your industry",
+    "_source_locator_id": "LOC-0247",
+    "_module_id": "M01",
+    "name": "Explore AWS for your industry"
+  },
+  "financial_services_develop_innovative_and_secure": {
+    "type": "role",
+    "locator": "link",
+    "description": "Financial services\nDevelop innovative and secure solutions across banking, capital markets, insurance, and payments\nView industry",
+    "_source_locator_id": "LOC-0248",
+    "_module_id": "M01",
+    "name": "Financial services\nDevelop innovative and secure solutions across banking, capital markets, insurance, and payments\nView industry"
+  },
+  "healthcare_and_life_sciences_accelerate": {
+    "type": "role",
+    "locator": "link",
+    "description": "Healthcare and Life Sciences\nAccelerate innovation and improve patient care with healthcare data management and security\nView industry",
+    "_source_locator_id": "LOC-0249",
+    "_module_id": "M01",
+    "name": "Healthcare and Life Sciences\nAccelerate innovation and improve patient care with healthcare data management and security\nView industry"
+  },
+  "government_solutions_designed_to_help_government": {
+    "type": "role",
+    "locator": "link",
+    "description": "Government\nSolutions designed to help government agencies modernize, meet mandates, reduce costs, and deliver mission outcomes\nView industry",
+    "_source_locator_id": "LOC-0250",
+    "_module_id": "M01",
+    "name": "Government\nSolutions designed to help government agencies modernize, meet mandates, reduce costs, and deliver mission outcomes\nView industry"
+  },
+  "telecommunications_accelerate_innovation_scale": {
+    "type": "role",
+    "locator": "link",
+    "description": "Telecommunications\nAccelerate innovation, scale with confidence, and add agility with cloud-based telecom solutions\nView industry",
+    "_source_locator_id": "LOC-0251",
+    "_module_id": "M01",
+    "name": "Telecommunications\nAccelerate innovation, scale with confidence, and add agility with cloud-based telecom solutions\nView industry"
+  },
+  "advertising_and_marketing_turn_data_into_customer": {
+    "type": "role",
+    "locator": "link",
+    "description": "Advertising and Marketing\nTurn data into customer-winning campaigns\nView industry",
+    "_source_locator_id": "LOC-0252",
+    "_module_id": "M01",
+    "name": "Advertising and Marketing\nTurn data into customer-winning campaigns\nView industry"
+  },
+  "navigate_products_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Manufacturing\nOptimize production and speed time-to-market\nView industry",
+    "_source_locator_id": "LOC-0253",
+    "_module_id": "M01",
+    "name": "Manufacturing\nOptimize production and speed time-to-market\nView industry"
+  },
+  "media_and_entertainment_transform_media": {
+    "type": "role",
+    "locator": "link",
+    "description": "Media and Entertainment\nTransform media & entertainment with the most purpose-built capabilities and partner solutions of any cloud\nView industry",
+    "_source_locator_id": "LOC-0254",
+    "_module_id": "M01",
+    "name": "Media and Entertainment\nTransform media & entertainment with the most purpose-built capabilities and partner solutions of any cloud\nView industry"
+  },
+  "games_enable_game_development_for_every_genre_and": {
+    "type": "role",
+    "locator": "link",
+    "description": "Games\nEnable game development for every genre and platform, from AAA titles to indie studios\nView industry",
+    "_source_locator_id": "LOC-0255",
+    "_module_id": "M01",
+    "name": "Games\nEnable game development for every genre and platform, from AAA titles to indie studios\nView industry"
+  },
+  "create_an_aws_account": {
+    "type": "role",
+    "locator": "button",
+    "description": "Create an AWS account",
+    "_source_locator_id": "LOC-0256",
+    "_module_id": "M01",
+    "name": "Create an AWS account"
+  },
+  "what_is_aws": {
+    "type": "role",
+    "locator": "link",
+    "description": "What Is AWS?",
+    "_source_locator_id": "LOC-0257",
+    "_module_id": "M01",
+    "name": "What Is AWS?"
+  },
+  "what_is_cloud_computing": {
+    "type": "role",
+    "locator": "link",
+    "description": "What Is Cloud Computing?",
+    "_source_locator_id": "LOC-0258",
+    "_module_id": "M01",
+    "name": "What Is Cloud Computing?"
+  },
+  "what_is_agentic_ai": {
+    "type": "role",
+    "locator": "link",
+    "description": "What Is Agentic AI?",
+    "_source_locator_id": "LOC-0259",
+    "_module_id": "M01",
+    "name": "What Is Agentic AI?"
+  },
+  "cloud_computing_concepts_hub": {
+    "type": "role",
+    "locator": "link",
+    "description": "Cloud Computing Concepts Hub",
+    "_source_locator_id": "LOC-0260",
+    "_module_id": "M01",
+    "name": "Cloud Computing Concepts Hub"
+  },
+  "aws_cloud_security": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Cloud Security",
+    "_source_locator_id": "LOC-0261",
+    "_module_id": "M01",
+    "name": "AWS Cloud Security"
+  },
+  "what_s_new": {
+    "type": "role",
+    "locator": "link",
+    "description": "What's New",
+    "_source_locator_id": "LOC-0262",
+    "_module_id": "M01",
+    "name": "What's New"
+  },
+  "blogs": {
+    "type": "role",
+    "locator": "link",
+    "description": "Blogs",
+    "_source_locator_id": "LOC-0263",
+    "_module_id": "M01",
+    "name": "Blogs"
+  },
+  "press_releases": {
+    "type": "role",
+    "locator": "link",
+    "description": "Press Releases",
+    "_source_locator_id": "LOC-0264",
+    "_module_id": "M01",
+    "name": "Press Releases"
+  },
+  "getting_started": {
+    "type": "role",
+    "locator": "link",
+    "description": "Getting Started",
+    "_source_locator_id": "LOC-0265",
+    "_module_id": "M01",
+    "name": "Getting Started"
+  },
+  "training": {
+    "type": "role",
+    "locator": "link",
+    "description": "Training",
+    "_source_locator_id": "LOC-0266",
+    "_module_id": "M01",
+    "name": "Training"
+  },
+  "aws_trust_center": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Trust Center",
+    "_source_locator_id": "LOC-0267",
+    "_module_id": "M01",
+    "name": "AWS Trust Center"
+  },
+  "aws_solutions_library": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Solutions Library",
+    "_source_locator_id": "LOC-0268",
+    "_module_id": "M01",
+    "name": "AWS Solutions Library"
+  },
+  "architecture_center": {
+    "type": "role",
+    "locator": "link",
+    "description": "Architecture Center",
+    "_source_locator_id": "LOC-0269",
+    "_module_id": "M01",
+    "name": "Architecture Center"
+  },
+  "navigate_products_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Product and Technical FAQs",
+    "_source_locator_id": "LOC-0270",
+    "_module_id": "M01",
+    "name": "Product and Technical FAQs"
+  },
+  "analyst_reports": {
+    "type": "role",
+    "locator": "link",
+    "description": "Analyst Reports",
+    "_source_locator_id": "LOC-0271",
+    "_module_id": "M01",
+    "name": "Analyst Reports"
+  },
+  "aws_partners": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Partners",
+    "_source_locator_id": "LOC-0272",
+    "_module_id": "M01",
+    "name": "AWS Partners"
+  },
+  "builder_center": {
+    "type": "role",
+    "locator": "link",
+    "description": "Builder Center",
+    "_source_locator_id": "LOC-0273",
+    "_module_id": "M01",
+    "name": "Builder Center"
+  },
+  "sdks_tools": {
+    "type": "role",
+    "locator": "button",
+    "description": "SDKs & Tools",
+    "_source_locator_id": "LOC-0154",
+    "_module_id": "M01",
+    "name": "Previous slide"
+  },
+  "net_on_aws": {
+    "type": "role",
+    "locator": "button",
+    "description": ".NET on AWS",
+    "_source_locator_id": "LOC-0155",
+    "_module_id": "M01",
+    "name": "Next slide"
+  },
+  "python_on_aws": {
+    "type": "role",
+    "locator": "button",
+    "description": "Python on AWS",
+    "_source_locator_id": "LOC-0156",
+    "_module_id": "M01",
+    "name": "Show 8 more"
+  },
+  "java_on_aws": {
+    "type": "role",
+    "locator": "tab",
+    "description": "Java on AWS",
+    "_source_locator_id": "LOC-0157",
+    "_module_id": "M01",
+    "name": "North America"
+  },
+  "php_on_aws": {
+    "type": "role",
+    "locator": "tab",
+    "description": "PHP on AWS",
+    "_source_locator_id": "LOC-0158",
+    "_module_id": "M01",
+    "name": "South America"
+  },
+  "javascript_on_aws": {
+    "type": "role",
+    "locator": "tab",
+    "description": "JavaScript on AWS",
+    "_source_locator_id": "LOC-0159",
+    "_module_id": "M01",
+    "name": "Europe"
+  },
+  "contact_us_2": {
+    "type": "role",
+    "locator": "tab",
+    "description": "Contact Us",
+    "_source_locator_id": "LOC-0160",
+    "_module_id": "M01",
+    "name": "Middle East"
+  },
+  "file_a_support_ticket": {
+    "type": "role",
+    "locator": "tab",
+    "description": "File a Support Ticket",
+    "_source_locator_id": "LOC-0161",
+    "_module_id": "M01",
+    "name": "Africa"
+  },
+  "aws_re_post": {
+    "type": "role",
+    "locator": "tab",
+    "description": "AWS re:Post",
+    "_source_locator_id": "LOC-0162",
+    "_module_id": "M01",
+    "name": "Asia Pacific"
+  },
+  "knowledge_center": {
+    "type": "role",
+    "locator": "tab",
+    "description": "Knowledge Center",
+    "_source_locator_id": "LOC-0163",
+    "_module_id": "M01",
+    "name": "Australia and New Zealand"
+  },
+  "aws_support_overview": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div>div>button",
+    "description": "AWS Support Overview",
+    "_source_locator_id": "LOC-0164",
+    "_module_id": "M01"
+  },
+  "aws_accessibility": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(2)>div>button",
+    "description": "AWS Accessibility",
+    "_source_locator_id": "LOC-0165",
+    "_module_id": "M01"
+  },
+  "legal": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(3)>div>button",
+    "description": "Legal",
+    "_source_locator_id": "LOC-0166",
+    "_module_id": "M01"
+  },
+  "event_code_of_conduct": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(4)>div>button",
+    "description": "Event Code of Conduct",
+    "_source_locator_id": "LOC-0167",
+    "_module_id": "M01"
+  },
+  "event_terms_conditions": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(5)>div>button",
+    "description": "Event Terms & Conditions",
+    "_source_locator_id": "LOC-0168",
+    "_module_id": "M01"
+  },
+  "a_loc_0169": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(6)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0169",
+    "_module_id": "M01"
+  },
+  "a_loc_0170": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(7)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0170",
+    "_module_id": "M01"
+  },
+  "a_loc_0171": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(8)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0171",
+    "_module_id": "M01"
+  },
+  "a_loc_0172": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(9)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0172",
+    "_module_id": "M01"
+  },
+  "a_loc_0173": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(10)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0173",
+    "_module_id": "M01"
+  },
+  "a_loc_0174": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(11)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0174",
+    "_module_id": "M01"
+  },
+  "a_loc_0175": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(12)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0175",
+    "_module_id": "M01"
+  },
+  "a_loc_0176": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(13)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0176",
+    "_module_id": "M01"
+  },
+  "privacy": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(14)>div>button",
+    "description": "Privacy",
+    "_source_locator_id": "LOC-0177",
+    "_module_id": "M01"
+  },
+  "site_terms": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(15)>div>button",
+    "description": "Site terms",
+    "_source_locator_id": "LOC-0178",
+    "_module_id": "M01"
+  },
+  "cookie_preferences": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(16)>div>button",
+    "description": "Cookie Preferences",
+    "_source_locator_id": "LOC-0179",
+    "_module_id": "M01"
+  },
+  "retail": {
+    "type": "css",
+    "locator": "div>div>div:nth-of-type(6)>div>div>div>div>div>div>div>div:nth-of-type(3)>div>div:nth-of-type(2)>div:nth-of-type(17)>div>button",
+    "description": "retail",
+    "_source_locator_id": "LOC-0180",
+    "_module_id": "M01"
+  },
+  "input_loc_0001_2": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-performance",
+    "description": "",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "M02"
+  },
+  "input_loc_0002_2": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-functional",
+    "description": "",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "M02"
+  },
+  "input_loc_0003_2": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-advertising",
+    "description": "",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "M02"
+  },
+  "input_loc_0004_2": {
+    "type": "label",
+    "locator": "Allow cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "M02"
+  },
+  "input_loc_0005_2": {
+    "type": "label",
+    "locator": "Opt out of cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0005",
+    "_module_id": "M02"
+  },
+  "input_loc_0006_2": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0006",
+    "_module_id": "M02"
+  },
+  "input_loc_0007_2": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0007",
+    "_module_id": "M02"
+  },
+  "input_loc_0008_2": {
+    "type": "testid",
+    "locator": "toolbar-item-q-smart-highlight",
+    "description": "",
+    "_source_locator_id": "LOC-0008",
+    "_module_id": "M02"
+  },
+  "accept_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Accept",
+    "description": "Accept",
+    "_source_locator_id": "LOC-0009",
+    "_module_id": "M02"
+  },
+  "decline_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Decline",
+    "description": "Decline",
+    "_source_locator_id": "LOC-0010",
+    "_module_id": "M02"
+  },
+  "customize_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Customize",
+    "description": "Customize",
+    "_source_locator_id": "LOC-0011",
+    "_module_id": "M02"
+  },
+  "cancel_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Cancel",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0012",
+    "_module_id": "M02"
+  },
+  "save_preferences_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Save preferences",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0013",
+    "_module_id": "M02"
+  },
+  "cancel_4": {
+    "type": "role",
+    "locator": "button",
+    "name": "Cancel",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0014",
+    "_module_id": "M02"
+  },
+  "save_preferences_4": {
+    "type": "role",
+    "locator": "button",
+    "name": "Save preferences",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0015",
+    "_module_id": "M02"
+  },
+  "button_loc_0016": {
+    "type": "testid",
+    "locator": "global-nav-mobile-menu-button",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M02"
+  },
+  "button_loc_0017_2": {
+    "type": "testid",
+    "locator": "nav-search-toggle",
+    "description": "",
+    "_source_locator_id": "LOC-0017",
+    "_module_id": "M02"
+  },
+  "button_loc_0018_2": {
+    "type": "css",
+    "locator": "nav>div>ul>li>div>div>div>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0018",
+    "_module_id": "M02"
+  },
+  "filter_all_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Filter: All",
+    "description": "Filter: All",
+    "_source_locator_id": "LOC-0019",
+    "_module_id": "M02"
+  },
+  "button_loc_0020": {
+    "type": "css",
+    "locator": "nav>div>ul>li:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0020",
+    "_module_id": "M02"
+  },
+  "english_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "English",
+    "description": "English",
+    "_source_locator_id": "LOC-0021",
+    "_module_id": "M02"
+  },
+  "support_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Support",
+    "description": "Support",
+    "_source_locator_id": "LOC-0022",
+    "_module_id": "M02"
+  },
+  "my_account_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "My account",
+    "description": "My account",
+    "_source_locator_id": "LOC-0023",
+    "_module_id": "M02"
+  },
+  "button_loc_0024": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div>div>div>div:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0024",
+    "_module_id": "M02"
+  },
+  "discover_aws_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Discover AWS",
+    "description": "Discover AWS",
+    "_source_locator_id": "LOC-0025",
+    "_module_id": "M02"
+  },
+  "navigate_products_5": {
+    "type": "role",
+    "locator": "button",
+    "name": "Products",
+    "description": "Products",
+    "_source_locator_id": "LOC-0026",
+    "_module_id": "M02"
+  },
+  "solutions_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Solutions",
+    "description": "Solutions",
+    "_source_locator_id": "LOC-0027",
+    "_module_id": "M02"
+  },
+  "pricing_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Pricing",
+    "description": "Pricing",
+    "_source_locator_id": "LOC-0028",
+    "_module_id": "M02"
+  },
+  "resources_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Resources",
+    "description": "Resources",
+    "_source_locator_id": "LOC-0029",
+    "_module_id": "M02"
+  },
+  "button_loc_0030": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0030",
+    "_module_id": "M02"
+  },
+  "button_loc_0031_2": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>div>div>div>span>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0031",
+    "_module_id": "M02"
+  },
+  "button_loc_0032_2": {
+    "type": "testid",
+    "locator": "feedback-button",
+    "description": "",
+    "_source_locator_id": "LOC-0032",
+    "_module_id": "M02"
+  },
+  "button_loc_0033_2": {
+    "type": "css",
+    "locator": "div>div>div>div:nth-of-type(3)>div>div>div>div>div>div>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0033",
+    "_module_id": "M02"
+  },
+  "play": {
+    "type": "role",
+    "locator": "button",
+    "name": "Play",
+    "description": "Play",
+    "_source_locator_id": "LOC-0034",
+    "_module_id": "M02"
+  },
+  "skip_backward": {
+    "type": "role",
+    "locator": "button",
+    "name": "Skip Backward",
+    "description": "Skip Backward",
+    "_source_locator_id": "LOC-0035",
+    "_module_id": "M02"
+  },
+  "skip_forward": {
+    "type": "role",
+    "locator": "button",
+    "name": "Skip Forward",
+    "description": "Skip Forward",
+    "_source_locator_id": "LOC-0036",
+    "_module_id": "M02"
+  },
+  "mute": {
+    "type": "role",
+    "locator": "button",
+    "name": "Mute",
+    "description": "Mute",
+    "_source_locator_id": "LOC-0037",
+    "_module_id": "M02"
+  },
+  "seek_to_live_currently_behind_livelive": {
+    "type": "role",
+    "locator": "button",
+    "name": "Seek to live, currently behind liveLIVE",
+    "description": "Seek to live, currently behind liveLIVE",
+    "_source_locator_id": "LOC-0038",
+    "_module_id": "M02"
+  },
+  "playback_rate": {
+    "type": "role",
+    "locator": "button",
+    "name": "Playback Rate",
+    "description": "Playback Rate",
+    "_source_locator_id": "LOC-0039",
+    "_module_id": "M02"
+  },
+  "chapters": {
+    "type": "role",
+    "locator": "button",
+    "name": "Chapters",
+    "description": "Chapters",
+    "_source_locator_id": "LOC-0040",
+    "_module_id": "M02"
+  },
+  "descriptions": {
+    "type": "role",
+    "locator": "button",
+    "name": "Descriptions",
+    "description": "Descriptions",
+    "_source_locator_id": "LOC-0041",
+    "_module_id": "M02"
+  },
+  "captions": {
+    "type": "role",
+    "locator": "button",
+    "name": "Captions",
+    "description": "Captions",
+    "_source_locator_id": "LOC-0042",
+    "_module_id": "M02"
+  },
+  "audio_track": {
+    "type": "role",
+    "locator": "button",
+    "name": "Audio Track",
+    "description": "Audio Track",
+    "_source_locator_id": "LOC-0043",
+    "_module_id": "M02"
+  },
+  "picture_in_picture": {
+    "type": "role",
+    "locator": "button",
+    "name": "Picture-in-Picture",
+    "description": "Picture-in-Picture",
+    "_source_locator_id": "LOC-0044",
+    "_module_id": "M02"
+  },
+  "fullscreen": {
+    "type": "role",
+    "locator": "button",
+    "name": "Fullscreen",
+    "description": "Fullscreen",
+    "_source_locator_id": "LOC-0045",
+    "_module_id": "M02"
+  },
+  "reset": {
+    "type": "role",
+    "locator": "button",
+    "name": "Reset",
+    "description": "Reset",
+    "_source_locator_id": "LOC-0046",
+    "_module_id": "M02"
+  },
+  "done": {
+    "type": "role",
+    "locator": "button",
+    "name": "Done",
+    "description": "Done",
+    "_source_locator_id": "LOC-0047",
+    "_module_id": "M02"
+  },
+  "close_modal_dialog": {
+    "type": "role",
+    "locator": "button",
+    "name": "Close Modal Dialog",
+    "description": "Close Modal Dialog",
+    "_source_locator_id": "LOC-0048",
+    "_module_id": "M02"
+  },
+  "button_loc_0049_2": {
+    "type": "css",
+    "locator": "div>div>div>div>div>div>div>div>div>div>div>div>div>div>div>div>div>div>div:nth-of-type(4)>button",
+    "description": "",
+    "_source_locator_id": "LOC-0049",
+    "_module_id": "M02"
+  },
+  "button_loc_0050_2": {
+    "type": "css",
+    "locator": "div>div>div>div>div>div>div>div>div>div>div>div>div:nth-of-type(2)>div>div>div>div>div>div:nth-of-type(4)>button",
+    "description": "",
+    "_source_locator_id": "LOC-0050",
+    "_module_id": "M02"
+  },
+  "modernize_enterprise_applications": {
+    "type": "role",
+    "locator": "button",
+    "name": "Modernize enterprise applications",
+    "description": "Modernize enterprise applications",
+    "_source_locator_id": "LOC-0051",
+    "_module_id": "M02"
+  },
+  "build_saas_applications": {
+    "type": "role",
+    "locator": "button",
+    "name": "Build SaaS applications",
+    "description": "Build SaaS applications",
+    "_source_locator_id": "LOC-0052",
+    "_module_id": "M02"
+  },
+  "deploy_globally_distributed_applications": {
+    "type": "role",
+    "locator": "button",
+    "name": "Deploy globally distributed applications",
+    "description": "Deploy globally distributed applications",
+    "_source_locator_id": "LOC-0053",
+    "_module_id": "M02"
+  },
+  "go_serverless": {
+    "type": "role",
+    "locator": "button",
+    "name": "Go serverless",
+    "description": "Go serverless",
+    "_source_locator_id": "LOC-0054",
+    "_module_id": "M02"
+  },
+  "english_4": {
+    "type": "role",
+    "locator": "button",
+    "name": "English",
+    "description": "English",
+    "_source_locator_id": "LOC-0055",
+    "_module_id": "M02"
+  },
+  "back_to_top_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Back to top",
+    "description": "Back to top",
+    "_source_locator_id": "LOC-0056",
+    "_module_id": "M02"
+  },
+  "navigate_products_6": {
+    "type": "role",
+    "locator": "button",
+    "name": "I can connect you with an AWS sales representative if you like to learn more about our products and services.",
+    "description": "I can connect you with an AWS sales representative if you like to learn more about our products and services.",
+    "_source_locator_id": "LOC-0057",
+    "_module_id": "M02"
+  },
+  "button_loc_0058_2": {
+    "type": "testid",
+    "locator": "notification-bubble-close-icon",
+    "description": "",
+    "_source_locator_id": "LOC-0058",
+    "_module_id": "M02"
+  },
+  "need_more_info_highlight_any_text_to_get_an": {
+    "type": "role",
+    "locator": "button",
+    "name": "Need more info? Highlight any text to get an explanation generated with AWS generative AI.",
+    "description": "Need more info? Highlight any text to get an explanation generated with AWS generative AI.",
+    "_source_locator_id": "LOC-0059",
+    "_module_id": "M02"
+  },
+  "button_loc_0060_2": {
+    "type": "testid",
+    "locator": "notification-bubble-close-icon",
+    "description": "",
+    "_source_locator_id": "LOC-0060",
+    "_module_id": "M02"
+  },
+  "2": {
+    "type": "role",
+    "locator": "button",
+    "name": "2",
+    "description": "2",
+    "_source_locator_id": "LOC-0061",
+    "_module_id": "M02"
+  },
+  "whiteblackredgreenblueyellowmagentacyan": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "WhiteBlackRedGreenBlueYellowMagentaCyan",
+    "description": "WhiteBlackRedGreenBlueYellowMagentaCyan",
+    "_source_locator_id": "LOC-0062",
+    "_module_id": "M02"
+  },
+  "opaquesemi_transparent": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "OpaqueSemi-Transparent",
+    "description": "OpaqueSemi-Transparent",
+    "_source_locator_id": "LOC-0063",
+    "_module_id": "M02"
+  },
+  "blackwhiteredgreenblueyellowmagentacyan": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "BlackWhiteRedGreenBlueYellowMagentaCyan",
+    "description": "BlackWhiteRedGreenBlueYellowMagentaCyan",
+    "_source_locator_id": "LOC-0064",
+    "_module_id": "M02"
+  },
+  "opaquesemi_transparenttransparent": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "OpaqueSemi-TransparentTransparent",
+    "description": "OpaqueSemi-TransparentTransparent",
+    "_source_locator_id": "LOC-0065",
+    "_module_id": "M02"
+  },
+  "blackwhiteredgreenblueyellowmagentacyan_2": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "BlackWhiteRedGreenBlueYellowMagentaCyan",
+    "description": "BlackWhiteRedGreenBlueYellowMagentaCyan",
+    "_source_locator_id": "LOC-0066",
+    "_module_id": "M02"
+  },
+  "transparentsemi_transparentopaque": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "TransparentSemi-TransparentOpaque",
+    "description": "TransparentSemi-TransparentOpaque",
+    "_source_locator_id": "LOC-0067",
+    "_module_id": "M02"
+  },
+  "50_75_100_125_150_175_200_300_400": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "50%75%100%125%150%175%200%300%400%",
+    "description": "50%75%100%125%150%175%200%300%400%",
+    "_source_locator_id": "LOC-0068",
+    "_module_id": "M02"
+  },
+  "noneraiseddepresseduniformdrop_shadow": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "NoneRaisedDepressedUniformDrop shadow",
+    "description": "NoneRaisedDepressedUniformDrop shadow",
+    "_source_locator_id": "LOC-0069",
+    "_module_id": "M02"
+  },
+  "proportional_sans_serifmonospace_sans": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "Proportional Sans-SerifMonospace Sans-SerifProportional SerifMonospace SerifCasualScriptSmall Caps",
+    "description": "Proportional Sans-SerifMonospace Sans-SerifProportional SerifMonospace SerifCasualScriptSmall Caps",
+    "_source_locator_id": "LOC-0070",
+    "_module_id": "M02"
+  },
+  "aws_cookie_notice_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Cookie Notice",
+    "description": "AWS Cookie Notice",
+    "_source_locator_id": "LOC-0071",
+    "_module_id": "M02"
+  },
+  "cookie_notice_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Cookie Notice",
+    "description": "Cookie Notice",
+    "_source_locator_id": "LOC-0072",
+    "_module_id": "M02"
+  },
+  "here_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "here",
+    "description": "here",
+    "_source_locator_id": "LOC-0073",
+    "_module_id": "M02"
+  },
+  "aws_privacy_notice_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Privacy Notice",
+    "description": "AWS Privacy Notice",
+    "_source_locator_id": "LOC-0074",
+    "_module_id": "M02"
+  },
+  "skip_to_main_content_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Skip to main content",
+    "description": "Skip to main content",
+    "_source_locator_id": "LOC-0075",
+    "_module_id": "M02"
+  },
+  "a_loc_0076": {
+    "type": "testid",
+    "locator": "mobile-nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0076",
+    "_module_id": "M02"
+  },
+  "contact_us_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Contact us",
+    "description": "Contact us",
+    "_source_locator_id": "LOC-0077",
+    "_module_id": "M02"
+  },
+  "aws_marketplace_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Marketplace",
+    "description": "AWS Marketplace",
+    "_source_locator_id": "LOC-0078",
+    "_module_id": "M02"
+  },
+  "a_loc_0079": {
+    "type": "testid",
+    "locator": "nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0079",
+    "_module_id": "M02"
+  },
+  "re_invent_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "re:Invent",
+    "description": "re:Invent",
+    "_source_locator_id": "LOC-0080",
+    "_module_id": "M02"
+  },
+  "sign_in_to_console_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Sign in to console",
+    "description": "Sign in to console",
+    "_source_locator_id": "LOC-0081",
+    "_module_id": "M02"
+  },
+  "create_account_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Create account",
+    "description": "Create account",
+    "_source_locator_id": "LOC-0082",
+    "_module_id": "M02"
+  },
+  "overview": {
+    "type": "role",
+    "locator": "link",
+    "name": "Overview",
+    "description": "Overview",
+    "_source_locator_id": "LOC-0083",
+    "_module_id": "M02"
+  },
+  "features": {
+    "type": "role",
+    "locator": "link",
+    "name": "Features",
+    "description": "Features",
+    "_source_locator_id": "LOC-0084",
+    "_module_id": "M02"
+  },
+  "pricing_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Pricing",
+    "description": "Pricing",
+    "_source_locator_id": "LOC-0085",
+    "_module_id": "M02"
+  },
+  "resources_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Resources",
+    "description": "Resources",
+    "_source_locator_id": "LOC-0086",
+    "_module_id": "M02"
+  },
+  "faqs": {
+    "type": "role",
+    "locator": "link",
+    "name": "FAQs",
+    "description": "FAQs",
+    "_source_locator_id": "LOC-0087",
+    "_module_id": "M02"
+  },
+  "customers": {
+    "type": "role",
+    "locator": "link",
+    "name": "Customers",
+    "description": "Customers",
+    "_source_locator_id": "LOC-0088",
+    "_module_id": "M02"
+  },
+  "migrate_with_aws_dms": {
+    "type": "role",
+    "locator": "link",
+    "name": "Migrate with AWS DMS",
+    "description": "Migrate with AWS DMS",
+    "_source_locator_id": "LOC-0089",
+    "_module_id": "M02"
+  },
+  "databases": {
+    "type": "role",
+    "locator": "link",
+    "name": "Databases",
+    "description": "Databases",
+    "_source_locator_id": "LOC-0090",
+    "_module_id": "M02"
+  },
+  "amazon_rds": {
+    "type": "role",
+    "locator": "link",
+    "name": "Amazon RDS",
+    "description": "Amazon RDS",
+    "_source_locator_id": "LOC-0091",
+    "_module_id": "M02"
+  },
+  "get_started_with_aurora": {
+    "type": "role",
+    "locator": "button",
+    "name": "Get started with Aurora",
+    "description": "Get started with Aurora",
+    "_source_locator_id": "LOC-0092",
+    "_module_id": "M02"
+  },
+  "connect_with_an_aurora_specialist": {
+    "type": "role",
+    "locator": "button",
+    "name": "Connect with an Aurora specialist",
+    "description": "Connect with an Aurora specialist",
+    "_source_locator_id": "LOC-0093",
+    "_module_id": "M02"
+  },
+  "high_performance_power_internet_scale": {
+    "type": "role",
+    "locator": "link",
+    "name": "High performance\n\nPower internet-scale applications with 6x the throughput of PostgreSQL and MySQL, and the fastest distributed SQL reads and writes with Aurora DSQL.\n\nLearn more",
+    "description": "High performance\n\nPower internet-scale applications with 6x the throughput of PostgreSQL and MySQL, and the fastest distributed SQL reads and writes with Aurora DSQL.\n\nLearn more",
+    "_source_locator_id": "LOC-0094",
+    "_module_id": "M02"
+  },
+  "high_availability_designed_for_up_to_99_99_single": {
+    "type": "role",
+    "locator": "link",
+    "name": "High availability\n\nDesigned for up to 99.99% single-Region and 99.999% multi-Region availability with fault-tolerant distributed storage to ensure continuous data access and durability for your applications.\n\nLearn more",
+    "description": "High availability\n\nDesigned for up to 99.99% single-Region and 99.999% multi-Region availability with fault-tolerant distributed storage to ensure continuous data access and durability for your applications.\n\nLearn more",
+    "_source_locator_id": "LOC-0095",
+    "_module_id": "M02"
+  },
+  "scale_and_build_with_ease_automatically_scale_to": {
+    "type": "role",
+    "locator": "link",
+    "name": "Scale and build with ease\n\nAutomatically scale to the demands of any workload, removing bottlenecks while maintaining performance.\n\nLearn more",
+    "description": "Scale and build with ease\n\nAutomatically scale to the demands of any workload, removing bottlenecks while maintaining performance.\n\nLearn more",
+    "_source_locator_id": "LOC-0096",
+    "_module_id": "M02"
+  },
+  "navigate_products_7": {
+    "type": "role",
+    "locator": "link",
+    "name": "Cost-effective\n\nImprove productivity and lower total cost of ownership with a fully managed database including innovations like serverless so you can focus on building applications that delight your users.\n\nLearn more",
+    "description": "Cost-effective\n\nImprove productivity and lower total cost of ownership with a fully managed database including innovations like serverless so you can focus on building applications that delight your users.\n\nLearn more",
+    "_source_locator_id": "LOC-0097",
+    "_module_id": "M02"
+  },
+  "easy_to_migrate_easily_migrate_mysql_or": {
+    "type": "role",
+    "locator": "link",
+    "name": "Easy to migrate\n\nEasily migrate MySQL or PostgreSQL databases to and from Aurora using standard tools, or run legacy SQL Server applications with Babelfish for Aurora PostgreSQL with minimal code change.\n\nLearn more",
+    "description": "Easy to migrate\n\nEasily migrate MySQL or PostgreSQL databases to and from Aurora using standard tools, or run legacy SQL Server applications with Babelfish for Aurora PostgreSQL with minimal code change.\n\nLearn more",
+    "_source_locator_id": "LOC-0098",
+    "_module_id": "M02"
+  },
+  "learn_how_to_get_started": {
+    "type": "role",
+    "locator": "link",
+    "name": "Learn how to get started",
+    "description": "Learn how to get started",
+    "_source_locator_id": "LOC-0099",
+    "_module_id": "M02"
+  },
+  "learn_how_to_get_started_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Learn how to get started",
+    "description": "Learn how to get started",
+    "_source_locator_id": "LOC-0100",
+    "_module_id": "M02"
+  },
+  "see_more_customer_stories": {
+    "type": "role",
+    "locator": "link",
+    "name": "See more customer stories",
+    "description": "See more customer stories",
+    "_source_locator_id": "LOC-0101",
+    "_module_id": "M02"
+  },
+  "bmw_increased_scalability_and_reduced_costs_with": {
+    "type": "role",
+    "locator": "link",
+    "name": "BMW increased scalability and reduced costs with Aurora Serverless\nRead the case study",
+    "description": "BMW increased scalability and reduced costs with Aurora Serverless\nRead the case study",
+    "_source_locator_id": "LOC-0102",
+    "_module_id": "M02"
+  },
+  "samsung_migrated_1_1_billion_users_from_oracle_to": {
+    "type": "role",
+    "locator": "link",
+    "name": "Samsung migrated 1.1 billion users from Oracle to Aurora with AWS Database Migration Service\nRead the case study",
+    "description": "Samsung migrated 1.1 billion users from Oracle to Aurora with AWS Database Migration Service\nRead the case study",
+    "_source_locator_id": "LOC-0103",
+    "_module_id": "M02"
+  },
+  "coinbase_launches_an_ultra_low_latency": {
+    "type": "role",
+    "locator": "link",
+    "name": "Coinbase Launches an Ultra-Low-Latency Cryptocurrency Exchange on AWS\nRead the case study",
+    "description": "Coinbase Launches an Ultra-Low-Latency Cryptocurrency Exchange on AWS\nRead the case study",
+    "_source_locator_id": "LOC-0104",
+    "_module_id": "M02"
+  },
+  "draftkings_scales_its_financial_ledger_with": {
+    "type": "role",
+    "locator": "link",
+    "name": "DraftKings Scales Its Financial Ledger with Amazon Aurora\nRead the case study",
+    "description": "DraftKings Scales Its Financial Ledger with Amazon Aurora\nRead the case study",
+    "_source_locator_id": "LOC-0105",
+    "_module_id": "M02"
+  },
+  "resources_learn_with_hands_on_training_get": {
+    "type": "role",
+    "locator": "link",
+    "name": "Resources\nLearn with hands-on training\nGet started with Aurora",
+    "description": "Resources\nLearn with hands-on training\nGet started with Aurora",
+    "_source_locator_id": "LOC-0106",
+    "_module_id": "M02"
+  },
+  "documentation_dive_deep_on_aurora_read_the": {
+    "type": "role",
+    "locator": "link",
+    "name": "Documentation\nDive deep on Aurora\nRead the documentation",
+    "description": "Documentation\nDive deep on Aurora\nRead the documentation",
+    "_source_locator_id": "LOC-0107",
+    "_module_id": "M02"
+  },
+  "free_tier_sign_up_for_a_free_account_try_for_free": {
+    "type": "role",
+    "locator": "link",
+    "name": "Free tier\nSign up for a free account\nTry for free",
+    "description": "Free tier\nSign up for a free account\nTry for free",
+    "_source_locator_id": "LOC-0108",
+    "_module_id": "M02"
+  },
+  "console_start_building_in_the_console_sign_in": {
+    "type": "role",
+    "locator": "link",
+    "name": "Console\nStart building in the console\nSign in",
+    "description": "Console\nStart building in the console\nSign in",
+    "_source_locator_id": "LOC-0109",
+    "_module_id": "M02"
+  },
+  "create_an_aws_account_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Create an AWS account",
+    "description": "Create an AWS account",
+    "_source_locator_id": "LOC-0110",
+    "_module_id": "M02"
+  },
+  "what_is_aws_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "What Is AWS?",
+    "description": "What Is AWS?",
+    "_source_locator_id": "LOC-0111",
+    "_module_id": "M02"
+  },
+  "what_is_cloud_computing_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "What Is Cloud Computing?",
+    "description": "What Is Cloud Computing?",
+    "_source_locator_id": "LOC-0112",
+    "_module_id": "M02"
+  },
+  "what_is_agentic_ai_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "What Is Agentic AI?",
+    "description": "What Is Agentic AI?",
+    "_source_locator_id": "LOC-0113",
+    "_module_id": "M02"
+  },
+  "cloud_computing_concepts_hub_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Cloud Computing Concepts Hub",
+    "description": "Cloud Computing Concepts Hub",
+    "_source_locator_id": "LOC-0114",
+    "_module_id": "M02"
+  },
+  "aws_cloud_security_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Cloud Security",
+    "description": "AWS Cloud Security",
+    "_source_locator_id": "LOC-0115",
+    "_module_id": "M02"
+  },
+  "what_s_new_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "What's New",
+    "description": "What's New",
+    "_source_locator_id": "LOC-0116",
+    "_module_id": "M02"
+  },
+  "blogs_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Blogs",
+    "description": "Blogs",
+    "_source_locator_id": "LOC-0117",
+    "_module_id": "M02"
+  },
+  "press_releases_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Press Releases",
+    "description": "Press Releases",
+    "_source_locator_id": "LOC-0118",
+    "_module_id": "M02"
+  },
+  "getting_started_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Getting Started",
+    "description": "Getting Started",
+    "_source_locator_id": "LOC-0119",
+    "_module_id": "M02"
+  },
+  "training_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Training",
+    "description": "Training",
+    "_source_locator_id": "LOC-0120",
+    "_module_id": "M02"
+  },
+  "aws_trust_center_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Trust Center",
+    "description": "AWS Trust Center",
+    "_source_locator_id": "LOC-0121",
+    "_module_id": "M02"
+  },
+  "aws_solutions_library_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Solutions Library",
+    "description": "AWS Solutions Library",
+    "_source_locator_id": "LOC-0122",
+    "_module_id": "M02"
+  },
+  "architecture_center_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Architecture Center",
+    "description": "Architecture Center",
+    "_source_locator_id": "LOC-0123",
+    "_module_id": "M02"
+  },
+  "navigate_products_8": {
+    "type": "role",
+    "locator": "link",
+    "name": "Product and Technical FAQs",
+    "description": "Product and Technical FAQs",
+    "_source_locator_id": "LOC-0124",
+    "_module_id": "M02"
+  },
+  "analyst_reports_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Analyst Reports",
+    "description": "Analyst Reports",
+    "_source_locator_id": "LOC-0125",
+    "_module_id": "M02"
+  },
+  "aws_partners_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Partners",
+    "description": "AWS Partners",
+    "_source_locator_id": "LOC-0126",
+    "_module_id": "M02"
+  },
+  "builder_center_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Builder Center",
+    "description": "Builder Center",
+    "_source_locator_id": "LOC-0127",
+    "_module_id": "M02"
+  },
+  "sdks_tools_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "SDKs & Tools",
+    "_source_locator_id": "LOC-0274",
+    "_module_id": "M01",
+    "name": "SDKs & Tools"
+  },
+  "net_on_aws_2": {
+    "type": "role",
+    "locator": "link",
+    "description": ".NET on AWS",
+    "_source_locator_id": "LOC-0275",
+    "_module_id": "M01",
+    "name": ".NET on AWS"
+  },
+  "python_on_aws_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Python on AWS",
+    "_source_locator_id": "LOC-0276",
+    "_module_id": "M01",
+    "name": "Python on AWS"
+  },
+  "java_on_aws_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Java on AWS",
+    "_source_locator_id": "LOC-0277",
+    "_module_id": "M01",
+    "name": "Java on AWS"
+  },
+  "php_on_aws_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "PHP on AWS",
+    "_source_locator_id": "LOC-0278",
+    "_module_id": "M01",
+    "name": "PHP on AWS"
+  },
+  "javascript_on_aws_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "JavaScript on AWS",
+    "_source_locator_id": "LOC-0279",
+    "_module_id": "M01",
+    "name": "JavaScript on AWS"
+  },
+  "contact_us_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Contact Us",
+    "_source_locator_id": "LOC-0229",
+    "_module_id": "M01",
+    "name": "Contact Us"
+  },
+  "file_a_support_ticket_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "File a Support Ticket",
+    "_source_locator_id": "LOC-0280",
+    "_module_id": "M01",
+    "name": "File a Support Ticket"
+  },
+  "aws_re_post_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "AWS re:Post",
+    "_source_locator_id": "LOC-0136",
+    "_module_id": "M04",
+    "name": "Support"
+  },
+  "knowledge_center_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Knowledge Center",
+    "_source_locator_id": "LOC-0137",
+    "_module_id": "M04",
+    "name": "My account"
+  },
+  "aws_support_overview_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Support Overview",
+    "_source_locator_id": "LOC-0138",
+    "_module_id": "M02",
+    "name": "AWS Support Overview"
+  },
+  "aws_accessibility_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Accessibility",
+    "_source_locator_id": "LOC-0139",
+    "_module_id": "M02",
+    "name": "AWS Accessibility"
+  },
+  "legal_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Legal",
+    "_source_locator_id": "LOC-0140",
+    "_module_id": "M02",
+    "name": "Legal"
+  },
+  "event_code_of_conduct_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Event Code of Conduct",
+    "_source_locator_id": "LOC-0141",
+    "_module_id": "M02",
+    "name": "Event Code of Conduct"
+  },
+  "event_terms_conditions_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Event Terms & Conditions",
+    "_source_locator_id": "LOC-0142",
+    "_module_id": "M02",
+    "name": "Event Terms & Conditions"
+  },
+  "a_loc_0143": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a",
+    "description": "",
+    "_source_locator_id": "LOC-0143",
+    "_module_id": "M02"
+  },
+  "a_loc_0144": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0144",
+    "_module_id": "M02"
+  },
+  "a_loc_0145": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(3)",
+    "description": "",
+    "_source_locator_id": "LOC-0145",
+    "_module_id": "M02"
+  },
+  "a_loc_0146": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(4)",
+    "description": "",
+    "_source_locator_id": "LOC-0146",
+    "_module_id": "M02"
+  },
+  "a_loc_0147": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(5)",
+    "description": "",
+    "_source_locator_id": "LOC-0147",
+    "_module_id": "M02"
+  },
+  "a_loc_0148": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(6)",
+    "description": "",
+    "_source_locator_id": "LOC-0148",
+    "_module_id": "M02"
+  },
+  "a_loc_0149": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(7)",
+    "description": "",
+    "_source_locator_id": "LOC-0149",
+    "_module_id": "M02"
+  },
+  "a_loc_0150": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(8)",
+    "description": "",
+    "_source_locator_id": "LOC-0150",
+    "_module_id": "M02"
+  },
+  "privacy_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Privacy",
+    "_source_locator_id": "LOC-0151",
+    "_module_id": "M02",
+    "name": "Privacy"
+  },
+  "site_terms_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Site terms",
+    "_source_locator_id": "LOC-0152",
+    "_module_id": "M02",
+    "name": "Site terms"
+  },
+  "cookie_preferences_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Cookie Preferences",
+    "_source_locator_id": "LOC-0153",
+    "_module_id": "M02",
+    "name": "Cookie Preferences"
+  },
+  "input_loc_0001_3": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-performance",
+    "description": "",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "M03"
+  },
+  "input_loc_0002_3": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-functional",
+    "description": "",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "M03"
+  },
+  "input_loc_0003_3": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-advertising",
+    "description": "",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "M03"
+  },
+  "input_loc_0004_3": {
+    "type": "label",
+    "locator": "Allow cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "M03"
+  },
+  "input_loc_0005_3": {
+    "type": "label",
+    "locator": "Opt out of cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0005",
+    "_module_id": "M03"
+  },
+  "input_loc_0006_3": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0006",
+    "_module_id": "M03"
+  },
+  "input_loc_0007_3": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0007",
+    "_module_id": "M03"
+  },
+  "input_loc_0008_3": {
+    "type": "placeholder",
+    "locator": "Search AWS products & services",
+    "description": "",
+    "_source_locator_id": "LOC-0008",
+    "_module_id": "M03"
+  },
+  "input_loc_0009_2": {
+    "type": "testid",
+    "locator": "toolbar-item-q-smart-highlight",
+    "description": "",
+    "_source_locator_id": "LOC-0009",
+    "_module_id": "M03"
+  },
+  "accept_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Accept",
+    "description": "Accept",
+    "_source_locator_id": "LOC-0010",
+    "_module_id": "M03"
+  },
+  "decline_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Decline",
+    "description": "Decline",
+    "_source_locator_id": "LOC-0011",
+    "_module_id": "M03"
+  },
+  "customize_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Customize",
+    "description": "Customize",
+    "_source_locator_id": "LOC-0012",
+    "_module_id": "M03"
+  },
+  "cancel_5": {
+    "type": "role",
+    "locator": "button",
+    "name": "Cancel",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0013",
+    "_module_id": "M03"
+  },
+  "save_preferences_5": {
+    "type": "role",
+    "locator": "button",
+    "name": "Save preferences",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0014",
+    "_module_id": "M03"
+  },
+  "cancel_6": {
+    "type": "role",
+    "locator": "button",
+    "name": "Cancel",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0015",
+    "_module_id": "M03"
+  },
+  "save_preferences_6": {
+    "type": "role",
+    "locator": "button",
+    "name": "Save preferences",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M03"
+  },
+  "button_loc_0017_3": {
+    "type": "testid",
+    "locator": "global-nav-mobile-menu-button",
+    "description": "",
+    "_source_locator_id": "LOC-0017",
+    "_module_id": "M03"
+  },
+  "button_loc_0018_3": {
+    "type": "testid",
+    "locator": "nav-search-toggle",
+    "description": "",
+    "_source_locator_id": "LOC-0018",
+    "_module_id": "M03"
+  },
+  "button_loc_0019_2": {
+    "type": "css",
+    "locator": "nav>div>ul>li>div>div>div>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0019",
+    "_module_id": "M03"
+  },
+  "filter_all_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Filter: All",
+    "description": "Filter: All",
+    "_source_locator_id": "LOC-0020",
+    "_module_id": "M03"
+  },
+  "button_loc_0021_2": {
+    "type": "css",
+    "locator": "nav>div>ul>li:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0021",
+    "_module_id": "M03"
+  },
+  "english_5": {
+    "type": "role",
+    "locator": "button",
+    "name": "English",
+    "description": "English",
+    "_source_locator_id": "LOC-0022",
+    "_module_id": "M03"
+  },
+  "support_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Support",
+    "description": "Support",
+    "_source_locator_id": "LOC-0023",
+    "_module_id": "M03"
+  },
+  "my_account_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "My account",
+    "description": "My account",
+    "_source_locator_id": "LOC-0024",
+    "_module_id": "M03"
+  },
+  "button_loc_0025_2": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div>div>div>div:nth-of-type(2)>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0025",
+    "_module_id": "M03"
+  },
+  "discover_aws_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Discover AWS",
+    "description": "Discover AWS",
+    "_source_locator_id": "LOC-0026",
+    "_module_id": "M03"
+  },
+  "navigate_products_9": {
+    "type": "role",
+    "locator": "button",
+    "name": "Products",
+    "description": "Products",
+    "_source_locator_id": "LOC-0027",
+    "_module_id": "M03"
+  },
+  "solutions_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Solutions",
+    "description": "Solutions",
+    "_source_locator_id": "LOC-0028",
+    "_module_id": "M03"
+  },
+  "pricing_4": {
+    "type": "role",
+    "locator": "button",
+    "name": "Pricing",
+    "description": "Pricing",
+    "_source_locator_id": "LOC-0029",
+    "_module_id": "M03"
+  },
+  "resources_4": {
+    "type": "role",
+    "locator": "button",
+    "name": "Resources",
+    "description": "Resources",
+    "_source_locator_id": "LOC-0030",
+    "_module_id": "M03"
+  },
+  "button_loc_0031_3": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0031",
+    "_module_id": "M03"
+  },
+  "button_loc_0032_3": {
+    "type": "css",
+    "locator": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>div>div>div>span>div>button",
+    "description": "",
+    "_source_locator_id": "LOC-0032",
+    "_module_id": "M03"
+  },
+  "button_loc_0033_3": {
+    "type": "testid",
+    "locator": "feedback-button",
+    "description": "",
+    "_source_locator_id": "LOC-0033",
+    "_module_id": "M03"
+  },
+  "pay_as_you_go": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Pay-as-you-go",
+    "description": "Pay-as-you-go",
+    "_source_locator_id": "LOC-0034",
+    "_module_id": "M03"
+  },
+  "flat_rate": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Flat rate",
+    "description": "Flat rate",
+    "_source_locator_id": "LOC-0035",
+    "_module_id": "M03"
+  },
+  "save_when_you_commit": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Save when you commit",
+    "description": "Save when you commit",
+    "_source_locator_id": "LOC-0036",
+    "_module_id": "M03"
+  },
+  "pay_less_by_using_more": {
+    "type": "role",
+    "locator": "tab",
+    "name": "Pay less by using more",
+    "description": "Pay less by using more",
+    "_source_locator_id": "LOC-0037",
+    "_module_id": "M03"
+  },
+  "filter": {
+    "type": "role",
+    "locator": "button",
+    "name": "Filter",
+    "description": "Filter",
+    "_source_locator_id": "LOC-0038",
+    "_module_id": "M03"
+  },
+  "show_8_more_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Show 8 more",
+    "description": "Show 8 more",
+    "_source_locator_id": "LOC-0039",
+    "_module_id": "M03"
+  },
+  "english_6": {
+    "type": "role",
+    "locator": "button",
+    "name": "English",
+    "description": "English",
+    "_source_locator_id": "LOC-0040",
+    "_module_id": "M03"
+  },
+  "back_to_top_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Back to top",
+    "description": "Back to top",
+    "_source_locator_id": "LOC-0041",
+    "_module_id": "M03"
+  },
+  "hi_i_can_connect_you_with_an_aws_representative_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Hi, I can connect you with an AWS representative or answer questions you have on AWS.",
+    "description": "Hi, I can connect you with an AWS representative or answer questions you have on AWS.",
+    "_source_locator_id": "LOC-0042",
+    "_module_id": "M03"
+  },
+  "button_loc_0043": {
+    "type": "testid",
+    "locator": "notification-bubble-close-icon",
+    "description": "",
+    "_source_locator_id": "LOC-0043",
+    "_module_id": "M03"
+  },
+  "need_more_info_highlight_any_text_to_get_an_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Need more info? Highlight any text to get an explanation generated with AWS generative AI.",
+    "description": "Need more info? Highlight any text to get an explanation generated with AWS generative AI.",
+    "_source_locator_id": "LOC-0044",
+    "_module_id": "M03"
+  },
+  "button_loc_0045_2": {
+    "type": "testid",
+    "locator": "notification-bubble-close-icon",
+    "description": "",
+    "_source_locator_id": "LOC-0045",
+    "_module_id": "M03"
+  },
+  "2_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "2",
+    "description": "2",
+    "_source_locator_id": "LOC-0046",
+    "_module_id": "M03"
+  },
+  "aws_cookie_notice_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Cookie Notice",
+    "description": "AWS Cookie Notice",
+    "_source_locator_id": "LOC-0047",
+    "_module_id": "M03"
+  },
+  "cookie_notice_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Cookie Notice",
+    "description": "Cookie Notice",
+    "_source_locator_id": "LOC-0048",
+    "_module_id": "M03"
+  },
+  "here_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "here",
+    "description": "here",
+    "_source_locator_id": "LOC-0049",
+    "_module_id": "M03"
+  },
+  "aws_privacy_notice_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Privacy Notice",
+    "description": "AWS Privacy Notice",
+    "_source_locator_id": "LOC-0050",
+    "_module_id": "M03"
+  },
+  "skip_to_main_content_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Skip to main content",
+    "description": "Skip to main content",
+    "_source_locator_id": "LOC-0051",
+    "_module_id": "M03"
+  },
+  "a_loc_0052": {
+    "type": "testid",
+    "locator": "mobile-nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0052",
+    "_module_id": "M03"
+  },
+  "contact_us_5": {
+    "type": "role",
+    "locator": "link",
+    "description": "Contact us",
+    "_source_locator_id": "LOC-0229",
+    "_module_id": "M01",
+    "name": "Contact us"
+  },
+  "aws_marketplace_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Marketplace",
+    "description": "AWS Marketplace",
+    "_source_locator_id": "LOC-0054",
+    "_module_id": "M03"
+  },
+  "a_loc_0055": {
+    "type": "testid",
+    "locator": "nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0055",
+    "_module_id": "M03"
+  },
+  "re_invent_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "re:Invent",
+    "description": "re:Invent",
+    "_source_locator_id": "LOC-0056",
+    "_module_id": "M03"
+  },
+  "sign_in_to_console_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Sign in to console",
+    "description": "Sign in to console",
+    "_source_locator_id": "LOC-0057",
+    "_module_id": "M03"
+  },
+  "create_account_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Create account",
+    "description": "Create account",
+    "_source_locator_id": "LOC-0058",
+    "_module_id": "M03"
+  },
+  "overview_2": {
+    "type": "role",
+    "locator": "link",
+    "name": "Overview",
+    "description": "Overview",
+    "_source_locator_id": "LOC-0059",
+    "_module_id": "M03"
+  },
+  "free_tier": {
+    "type": "role",
+    "locator": "link",
+    "name": "Free Tier",
+    "description": "Free Tier",
+    "_source_locator_id": "LOC-0060",
+    "_module_id": "M03"
+  },
+  "cost_optimization": {
+    "type": "role",
+    "locator": "link",
+    "name": "Cost Optimization",
+    "description": "Cost Optimization",
+    "_source_locator_id": "LOC-0061",
+    "_module_id": "M03"
+  },
+  "resources_5": {
+    "type": "role",
+    "locator": "link",
+    "name": "Resources",
+    "description": "Resources",
+    "_source_locator_id": "LOC-0062",
+    "_module_id": "M03"
+  },
+  "home": {
+    "type": "role",
+    "locator": "link",
+    "name": "Home",
+    "description": "Home",
+    "_source_locator_id": "LOC-0063",
+    "_module_id": "M03"
+  },
+  "get_started_for_free": {
+    "type": "role",
+    "locator": "button",
+    "name": "Get started for free",
+    "description": "Get started for free",
+    "_source_locator_id": "LOC-0064",
+    "_module_id": "M03"
+  },
+  "request_a_pricing_quote": {
+    "type": "role",
+    "locator": "button",
+    "name": "Request a pricing quote",
+    "description": "Request a pricing quote",
+    "_source_locator_id": "LOC-0065",
+    "_module_id": "M03"
+  },
+  "aws_pricing_calculator": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Pricing Calculator",
+    "description": "AWS Pricing Calculator",
+    "_source_locator_id": "LOC-0066",
+    "_module_id": "M03"
+  },
+  "learn_more_about_flat_rate_pricing": {
+    "type": "role",
+    "locator": "link",
+    "name": "Learn more about flat-rate pricing",
+    "description": "Learn more about flat-rate pricing",
+    "_source_locator_id": "LOC-0067",
+    "_module_id": "M03"
+  },
+  "learn_more_about_savings_plans_here": {
+    "type": "role",
+    "locator": "link",
+    "name": "Learn more about Savings Plans here",
+    "description": "Learn more about Savings Plans here",
+    "_source_locator_id": "LOC-0068",
+    "_module_id": "M03"
+  },
+  "learn_more_about_tiered_pricing": {
+    "type": "role",
+    "locator": "link",
+    "name": "Learn more about tiered pricing",
+    "description": "Learn more about tiered pricing",
+    "_source_locator_id": "LOC-0069",
+    "_module_id": "M03"
+  },
+  "a_loc_0070": {
+    "type": "css",
+    "locator": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0070",
+    "_module_id": "M03"
+  },
+  "a_loc_0071": {
+    "type": "css",
+    "locator": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(3)",
+    "description": "",
+    "_source_locator_id": "LOC-0071",
+    "_module_id": "M03"
+  },
+  "a_loc_0072": {
+    "type": "css",
+    "locator": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(4)",
+    "description": "",
+    "_source_locator_id": "LOC-0072",
+    "_module_id": "M03"
+  },
+  "a_loc_0073": {
+    "type": "css",
+    "locator": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(5)",
+    "description": "",
+    "_source_locator_id": "LOC-0073",
+    "_module_id": "M03"
+  },
+  "aws_private_pricing_program_amazon_com": {
+    "type": "role",
+    "locator": "link",
+    "name": "aws-private-pricing-program@amazon.com",
+    "description": "aws-private-pricing-program@amazon.com",
+    "_source_locator_id": "LOC-0074",
+    "_module_id": "M03"
+  },
+  "2020_11_19_aws_network_firewall_deploy_network": {
+    "type": "role",
+    "locator": "link",
+    "name": "2020-11-19\nAWS Network Firewall\nDeploy network security across your Amazon VPCs with just a few clicks\nLearn more",
+    "description": "2020-11-19\nAWS Network Firewall\nDeploy network security across your Amazon VPCs with just a few clicks\nLearn more",
+    "_source_locator_id": "LOC-0075",
+    "_module_id": "M03"
+  },
+  "2013_03_26_aws_cloudhsm_hardware_based_key": {
+    "type": "role",
+    "locator": "link",
+    "name": "2013-03-26\nAWS CloudHSM\nHardware-based key storage for regulatory compliance\nLearn more",
+    "description": "2013-03-26\nAWS CloudHSM\nHardware-based key storage for regulatory compliance\nLearn more",
+    "_source_locator_id": "LOC-0076",
+    "_module_id": "M03"
+  },
+  "2014_07_10_amazon_cognito_identity_management_for": {
+    "type": "role",
+    "locator": "link",
+    "name": "2014-07-10\nAmazon Cognito\nIdentity management for your apps\nLearn more",
+    "description": "2014-07-10\nAmazon Cognito\nIdentity management for your apps\nLearn more",
+    "_source_locator_id": "LOC-0077",
+    "_module_id": "M03"
+  },
+  "2021_11_29_amazon_inspector_automated_and": {
+    "type": "role",
+    "locator": "link",
+    "name": "2021-11-29\nAmazon Inspector\nAutomated and continual vulnerability management for Amazon EC2 and Amazon ECR\nLearn more",
+    "description": "2021-11-29\nAmazon Inspector\nAutomated and continual vulnerability management for Amazon EC2 and Amazon ECR\nLearn more",
+    "_source_locator_id": "LOC-0078",
+    "_module_id": "M03"
+  },
+  "navigate_products_10": {
+    "type": "role",
+    "locator": "link",
+    "name": "2015-07-09\nAWS Service Catalog\nCreate and use standardized products\nLearn more",
+    "description": "2015-07-09\nAWS Service Catalog\nCreate and use standardized products\nLearn more",
+    "_source_locator_id": "LOC-0079",
+    "_module_id": "M03"
+  },
+  "2019_12_03_amazon_detective_investigate_potential": {
+    "type": "role",
+    "locator": "link",
+    "name": "2019-12-03\nAmazon Detective\nInvestigate potential security issues\nLearn more",
+    "description": "2019-12-03\nAmazon Detective\nInvestigate potential security issues\nLearn more",
+    "_source_locator_id": "LOC-0080",
+    "_module_id": "M03"
+  },
+  "2021_04_08_amazon_nimble_studio_accelerate": {
+    "type": "role",
+    "locator": "link",
+    "name": "2021-04-08\nAmazon Nimble Studio\nAccelerate content creation in the cloud\nLearn more",
+    "description": "2021-04-08\nAmazon Nimble Studio\nAccelerate content creation in the cloud\nLearn more",
+    "_source_locator_id": "LOC-0081",
+    "_module_id": "M03"
+  },
+  "2017_06_07_aws_iot_greengrass_local_compute": {
+    "type": "role",
+    "locator": "link",
+    "name": "2017-06-07\nAWS IoT Greengrass\nLocal compute, messaging, and sync for devices\nLearn more",
+    "description": "2017-06-07\nAWS IoT Greengrass\nLocal compute, messaging, and sync for devices\nLearn more",
+    "_source_locator_id": "LOC-0082",
+    "_module_id": "M03"
+  },
+  "start_using_the_aws_pricing_calculator": {
+    "type": "role",
+    "locator": "link",
+    "name": "Start using the AWS Pricing Calculator",
+    "description": "Start using the AWS Pricing Calculator",
+    "_source_locator_id": "LOC-0083",
+    "_module_id": "M03"
+  },
+  "create_an_aws_account_3": {
+    "type": "role",
+    "locator": "button",
+    "name": "Create an AWS account",
+    "description": "Create an AWS account",
+    "_source_locator_id": "LOC-0084",
+    "_module_id": "M03"
+  },
+  "what_is_aws_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "What Is AWS?",
+    "description": "What Is AWS?",
+    "_source_locator_id": "LOC-0085",
+    "_module_id": "M03"
+  },
+  "what_is_cloud_computing_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "What Is Cloud Computing?",
+    "description": "What Is Cloud Computing?",
+    "_source_locator_id": "LOC-0086",
+    "_module_id": "M03"
+  },
+  "what_is_agentic_ai_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "What Is Agentic AI?",
+    "description": "What Is Agentic AI?",
+    "_source_locator_id": "LOC-0087",
+    "_module_id": "M03"
+  },
+  "cloud_computing_concepts_hub_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Cloud Computing Concepts Hub",
+    "description": "Cloud Computing Concepts Hub",
+    "_source_locator_id": "LOC-0088",
+    "_module_id": "M03"
+  },
+  "aws_cloud_security_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Cloud Security",
+    "description": "AWS Cloud Security",
+    "_source_locator_id": "LOC-0089",
+    "_module_id": "M03"
+  },
+  "what_s_new_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "What's New",
+    "description": "What's New",
+    "_source_locator_id": "LOC-0090",
+    "_module_id": "M03"
+  },
+  "blogs_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Blogs",
+    "description": "Blogs",
+    "_source_locator_id": "LOC-0091",
+    "_module_id": "M03"
+  },
+  "press_releases_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Press Releases",
+    "description": "Press Releases",
+    "_source_locator_id": "LOC-0092",
+    "_module_id": "M03"
+  },
+  "getting_started_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Getting Started",
+    "description": "Getting Started",
+    "_source_locator_id": "LOC-0093",
+    "_module_id": "M03"
+  },
+  "training_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Training",
+    "description": "Training",
+    "_source_locator_id": "LOC-0094",
+    "_module_id": "M03"
+  },
+  "aws_trust_center_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Trust Center",
+    "description": "AWS Trust Center",
+    "_source_locator_id": "LOC-0095",
+    "_module_id": "M03"
+  },
+  "aws_solutions_library_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Solutions Library",
+    "description": "AWS Solutions Library",
+    "_source_locator_id": "LOC-0096",
+    "_module_id": "M03"
+  },
+  "architecture_center_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Architecture Center",
+    "description": "Architecture Center",
+    "_source_locator_id": "LOC-0097",
+    "_module_id": "M03"
+  },
+  "navigate_products_11": {
+    "type": "role",
+    "locator": "link",
+    "name": "Product and Technical FAQs",
+    "description": "Product and Technical FAQs",
+    "_source_locator_id": "LOC-0098",
+    "_module_id": "M03"
+  },
+  "analyst_reports_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Analyst Reports",
+    "description": "Analyst Reports",
+    "_source_locator_id": "LOC-0099",
+    "_module_id": "M03"
+  },
+  "aws_partners_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "AWS Partners",
+    "description": "AWS Partners",
+    "_source_locator_id": "LOC-0100",
+    "_module_id": "M03"
+  },
+  "builder_center_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Builder Center",
+    "description": "Builder Center",
+    "_source_locator_id": "LOC-0101",
+    "_module_id": "M03"
+  },
+  "sdks_tools_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "SDKs & Tools",
+    "description": "SDKs & Tools",
+    "_source_locator_id": "LOC-0102",
+    "_module_id": "M03"
+  },
+  "net_on_aws_3": {
+    "type": "role",
+    "locator": "link",
+    "name": ".NET on AWS",
+    "description": ".NET on AWS",
+    "_source_locator_id": "LOC-0103",
+    "_module_id": "M03"
+  },
+  "python_on_aws_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Python on AWS",
+    "description": "Python on AWS",
+    "_source_locator_id": "LOC-0104",
+    "_module_id": "M03"
+  },
+  "java_on_aws_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Java on AWS",
+    "description": "Java on AWS",
+    "_source_locator_id": "LOC-0105",
+    "_module_id": "M03"
+  },
+  "php_on_aws_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "PHP on AWS",
+    "description": "PHP on AWS",
+    "_source_locator_id": "LOC-0106",
+    "_module_id": "M03"
+  },
+  "javascript_on_aws_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "JavaScript on AWS",
+    "description": "JavaScript on AWS",
+    "_source_locator_id": "LOC-0107",
+    "_module_id": "M03"
+  },
+  "contact_us_6": {
+    "type": "role",
+    "locator": "link",
+    "name": "Contact Us",
+    "description": "Contact Us",
+    "_source_locator_id": "LOC-0108",
+    "_module_id": "M03"
+  },
+  "file_a_support_ticket_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "File a Support Ticket",
+    "description": "File a Support Ticket",
+    "_source_locator_id": "LOC-0109",
+    "_module_id": "M03"
+  },
+  "aws_re_post_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS re:Post",
+    "_source_locator_id": "LOC-0281",
+    "_module_id": "M01",
+    "name": "AWS re:Post"
+  },
+  "knowledge_center_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Knowledge Center",
+    "_source_locator_id": "LOC-0282",
+    "_module_id": "M01",
+    "name": "Knowledge Center"
+  },
+  "aws_support_overview_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Support Overview",
+    "_source_locator_id": "LOC-0283",
+    "_module_id": "M01",
+    "name": "AWS Support Overview"
+  },
+  "aws_accessibility_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Accessibility",
+    "_source_locator_id": "LOC-0284",
+    "_module_id": "M01",
+    "name": "AWS Accessibility"
+  },
+  "legal_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Legal",
+    "_source_locator_id": "LOC-0285",
+    "_module_id": "M01",
+    "name": "Legal"
+  },
+  "event_code_of_conduct_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Event Code of Conduct",
+    "_source_locator_id": "LOC-0286",
+    "_module_id": "M01",
+    "name": "Event Code of Conduct"
+  },
+  "event_terms_conditions_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Event Terms & Conditions",
+    "_source_locator_id": "LOC-0287",
+    "_module_id": "M01",
+    "name": "Event Terms & Conditions"
+  },
+  "a_loc_0117": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0288",
+    "_module_id": "M01",
+    "name": "X"
+  },
+  "a_loc_0118": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0289",
+    "_module_id": "M01",
+    "name": "Facebook"
+  },
+  "a_loc_0119": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0290",
+    "_module_id": "M01",
+    "name": "Linkedin"
+  },
+  "a_loc_0120": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0291",
+    "_module_id": "M01",
+    "name": "Instagram"
+  },
+  "a_loc_0121": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0292",
+    "_module_id": "M01",
+    "name": "Twitch"
+  },
+  "a_loc_0122": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0293",
+    "_module_id": "M01",
+    "name": "Youtube"
+  },
+  "a_loc_0123_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0294",
+    "_module_id": "M01",
+    "name": "Podcasts"
+  },
+  "a_loc_0124": {
+    "type": "role",
+    "locator": "link",
+    "description": "",
+    "_source_locator_id": "LOC-0295",
+    "_module_id": "M01",
+    "name": "Email"
+  },
+  "privacy_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Privacy",
+    "_source_locator_id": "LOC-0296",
+    "_module_id": "M01",
+    "name": "Privacy"
+  },
+  "site_terms_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Site terms",
+    "_source_locator_id": "LOC-0297",
+    "_module_id": "M01",
+    "name": "Site terms"
+  },
+  "cookie_preferences_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Cookie Preferences",
+    "_source_locator_id": "LOC-0298",
+    "_module_id": "M01",
+    "name": "Cookie Preferences"
+  },
+  "input_loc_0001_4": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-performance",
+    "description": "",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "M04"
+  },
+  "input_loc_0002_4": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-functional",
+    "description": "",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "M04"
+  },
+  "input_loc_0003_4": {
+    "type": "css",
+    "locator": "#awsccc-u-cb-advertising",
+    "description": "",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "M04"
+  },
+  "input_loc_0004_4": {
+    "type": "label",
+    "locator": "Opt out of cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "M04"
+  },
+  "input_loc_0004_5": {
+    "type": "label",
+    "locator": "Opt out of cross-context behavioral ads",
+    "description": "",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "M04"
+  },
+  "input_loc_0005_4": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0005",
+    "_module_id": "M04"
+  },
+  "input_loc_0006_4": {
+    "type": "placeholder",
+    "locator": "I'm looking for...",
+    "description": "",
+    "_source_locator_id": "LOC-0006",
+    "_module_id": "M04"
+  },
+  "input_loc_0007_4": {
+    "type": "testid",
+    "locator": "toolbar-item-q-smart-highlight",
+    "description": "",
+    "_source_locator_id": "LOC-0007",
+    "_module_id": "M04"
+  },
+  "accept_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Accept",
+    "_source_locator_id": "LOC-0008",
+    "_module_id": "M04",
+    "name": "Accept"
+  },
+  "decline_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Decline",
+    "_source_locator_id": "LOC-0009",
+    "_module_id": "M04",
+    "name": "Decline"
+  },
+  "customize_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Customize",
+    "_source_locator_id": "LOC-0010",
+    "_module_id": "M04",
+    "name": "Customize"
+  },
+  "cancel_7": {
+    "type": "role",
+    "locator": "button",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0011",
+    "_module_id": "M04",
+    "name": "Cancel"
+  },
+  "save_preferences_7": {
+    "type": "role",
+    "locator": "button",
+    "name": "Save preferences",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0012",
+    "_module_id": "M04"
+  },
+  "cancel_8": {
+    "type": "role",
+    "locator": "button",
+    "description": "Cancel",
+    "_source_locator_id": "LOC-0013",
+    "_module_id": "M03",
+    "name": "Cancel"
+  },
+  "save_preferences_8": {
+    "type": "role",
+    "locator": "button",
+    "description": "Save preferences",
+    "_source_locator_id": "LOC-0012",
+    "_module_id": "M04",
+    "name": "Save preferences"
+  },
+  "button_loc_0014": {
+    "type": "testid",
+    "locator": "global-nav-mobile-menu-button",
+    "description": "",
+    "_source_locator_id": "LOC-0014",
+    "_module_id": "M04"
+  },
+  "button_loc_0015": {
+    "type": "testid",
+    "locator": "nav-search-toggle",
+    "description": "",
+    "_source_locator_id": "LOC-0015",
+    "_module_id": "M04"
+  },
+  "button_loc_0016_2": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "filter_all_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Filter: All",
+    "_source_locator_id": "LOC-0017",
+    "_module_id": "M04",
+    "name": "Filter: All"
+  },
+  "button_loc_0016_3": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "english_7": {
+    "type": "role",
+    "locator": "button",
+    "description": "English",
+    "_source_locator_id": "LOC-0018",
+    "_module_id": "M04",
+    "name": "English"
+  },
+  "support_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Support",
+    "_source_locator_id": "LOC-0019",
+    "_module_id": "M04",
+    "name": "Support"
+  },
+  "my_account_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "My account",
+    "_source_locator_id": "LOC-0020",
+    "_module_id": "M04",
+    "name": "My account"
+  },
+  "button_loc_0016_4": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "discover_aws_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Discover AWS",
+    "_source_locator_id": "LOC-0021",
+    "_module_id": "M04",
+    "name": "Discover AWS"
+  },
+  "navigate_products_12": {
+    "type": "role",
+    "locator": "button",
+    "description": "Products",
+    "_source_locator_id": "LOC-0022",
+    "_module_id": "M04",
+    "name": "Products"
+  },
+  "solutions_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Solutions",
+    "_source_locator_id": "LOC-0023",
+    "_module_id": "M04",
+    "name": "Solutions"
+  },
+  "pricing_5": {
+    "type": "role",
+    "locator": "button",
+    "description": "Pricing",
+    "_source_locator_id": "LOC-0024",
+    "_module_id": "M04",
+    "name": "Pricing"
+  },
+  "resources_6": {
+    "type": "role",
+    "locator": "button",
+    "description": "Resources",
+    "_source_locator_id": "LOC-0025",
+    "_module_id": "M04",
+    "name": "Resources"
+  },
+  "button_loc_0016_5": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "button_loc_0016_6": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "button_loc_0026": {
+    "type": "testid",
+    "locator": "feedback-button",
+    "description": "",
+    "_source_locator_id": "LOC-0026",
+    "_module_id": "M04"
+  },
+  "button_loc_0016_7": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "play_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Play",
+    "_source_locator_id": "LOC-0027",
+    "_module_id": "M04",
+    "name": "Play"
+  },
+  "skip_backward_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Skip Backward",
+    "_source_locator_id": "LOC-0028",
+    "_module_id": "M04",
+    "name": "Skip Backward"
+  },
+  "skip_forward_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Skip Forward",
+    "_source_locator_id": "LOC-0029",
+    "_module_id": "M04",
+    "name": "Skip Forward"
+  },
+  "mute_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Mute",
+    "_source_locator_id": "LOC-0030",
+    "_module_id": "M04",
+    "name": "Mute"
+  },
+  "seek_to_live_currently_behind_livelive_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Seek to live, currently behind liveLIVE",
+    "_source_locator_id": "LOC-0031",
+    "_module_id": "M04",
+    "name": "Seek to live, currently behind liveLIVE"
+  },
+  "playback_rate_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Playback Rate",
+    "_source_locator_id": "LOC-0032",
+    "_module_id": "M04",
+    "name": "Playback Rate"
+  },
+  "chapters_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Chapters",
+    "_source_locator_id": "LOC-0033",
+    "_module_id": "M04",
+    "name": "Chapters"
+  },
+  "descriptions_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Descriptions",
+    "_source_locator_id": "LOC-0034",
+    "_module_id": "M04",
+    "name": "Descriptions"
+  },
+  "captions_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Captions",
+    "_source_locator_id": "LOC-0035",
+    "_module_id": "M04",
+    "name": "Captions"
+  },
+  "audio_track_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Audio Track",
+    "_source_locator_id": "LOC-0036",
+    "_module_id": "M04",
+    "name": "Audio Track"
+  },
+  "picture_in_picture_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Picture-in-Picture",
+    "_source_locator_id": "LOC-0037",
+    "_module_id": "M04",
+    "name": "Picture-in-Picture"
+  },
+  "fullscreen_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Fullscreen",
+    "_source_locator_id": "LOC-0038",
+    "_module_id": "M04",
+    "name": "Fullscreen"
+  },
+  "reset_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Reset",
+    "_source_locator_id": "LOC-0039",
+    "_module_id": "M04",
+    "name": "Reset"
+  },
+  "done_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Done",
+    "_source_locator_id": "LOC-0040",
+    "_module_id": "M04",
+    "name": "Done"
+  },
+  "close_modal_dialog_2": {
+    "type": "role",
+    "locator": "button",
+    "description": "Close Modal Dialog",
+    "_source_locator_id": "LOC-0041",
+    "_module_id": "M04",
+    "name": "Close Modal Dialog"
+  },
+  "innovate": {
+    "type": "role",
+    "locator": "button",
+    "description": "Innovate",
+    "_source_locator_id": "LOC-0042",
+    "_module_id": "M04",
+    "name": "Innovate"
+  },
+  "reach_millions_of_aws_customers": {
+    "type": "role",
+    "locator": "button",
+    "description": "Reach millions of AWS customers",
+    "_source_locator_id": "LOC-0043",
+    "_module_id": "M04",
+    "name": "Reach millions of AWS customers"
+  },
+  "drive_profitable_growth": {
+    "type": "role",
+    "locator": "button",
+    "description": "Drive profitable growth",
+    "_source_locator_id": "LOC-0044",
+    "_module_id": "M04",
+    "name": "Drive profitable growth"
+  },
+  "button_loc_0016_8": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "button_loc_0016_9": {
+    "type": "css",
+    "locator": "div>section>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>button:nth-of-type(2)",
+    "description": "",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M04"
+  },
+  "english_8": {
+    "type": "role",
+    "locator": "button",
+    "description": "English",
+    "_source_locator_id": "LOC-0045",
+    "_module_id": "M04",
+    "name": "English"
+  },
+  "back_to_top_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Back to top",
+    "_source_locator_id": "LOC-0046",
+    "_module_id": "M04",
+    "name": "Back to top"
+  },
+  "hi_i_can_connect_you_with_an_aws_representative_3": {
+    "type": "role",
+    "locator": "button",
+    "description": "Hi, I can connect you with an AWS representative or answer questions you have on AWS.",
+    "_source_locator_id": "LOC-0047",
+    "_module_id": "M04",
+    "name": "Hi, I can connect you with an AWS representative or answer questions you have on AWS."
+  },
+  "button_loc_0048_2": {
+    "type": "testid",
+    "locator": "notification-bubble-close-icon",
+    "description": "",
+    "_source_locator_id": "LOC-0048",
+    "_module_id": "M04"
+  },
+  "need_more_info_highlight_any_text_to_get_an_3": {
+    "type": "role",
+    "locator": "button",
+    "description": "Need more info? Highlight any text to get an explanation generated with AWS generative AI.",
+    "_source_locator_id": "LOC-0049",
+    "_module_id": "M04",
+    "name": "Need more info? Highlight any text to get an explanation generated with AWS generative AI."
+  },
+  "button_loc_0048_3": {
+    "type": "testid",
+    "locator": "notification-bubble-close-icon",
+    "description": "",
+    "_source_locator_id": "LOC-0048",
+    "_module_id": "M04"
+  },
+  "2_3": {
+    "type": "role",
+    "locator": "button",
+    "description": "2",
+    "_source_locator_id": "LOC-0050",
+    "_module_id": "M04",
+    "name": "2"
+  },
+  "whiteblackredgreenblueyellowmagentacyan_2": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "WhiteBlackRedGreenBlueYellowMagentaCyan",
+    "_source_locator_id": "LOC-0051",
+    "_module_id": "M04",
+    "name": "WhiteBlackRedGreenBlueYellowMagentaCyan"
+  },
+  "opaquesemi_transparent_2": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "OpaqueSemi-Transparent",
+    "_source_locator_id": "LOC-0052",
+    "_module_id": "M04",
+    "name": "OpaqueSemi-Transparent"
+  },
+  "blackwhiteredgreenblueyellowmagentacyan_3": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "BlackWhiteRedGreenBlueYellowMagentaCyan",
+    "_source_locator_id": "LOC-0053",
+    "_module_id": "M04",
+    "name": "BlackWhiteRedGreenBlueYellowMagentaCyan"
+  },
+  "opaquesemi_transparenttransparent_2": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "OpaqueSemi-TransparentTransparent",
+    "_source_locator_id": "LOC-0054",
+    "_module_id": "M04",
+    "name": "OpaqueSemi-TransparentTransparent"
+  },
+  "blackwhiteredgreenblueyellowmagentacyan_4": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "BlackWhiteRedGreenBlueYellowMagentaCyan",
+    "_source_locator_id": "LOC-0055",
+    "_module_id": "M04",
+    "name": "BlackWhiteRedGreenBlueYellowMagentaCyan"
+  },
+  "transparentsemi_transparentopaque_2": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "TransparentSemi-TransparentOpaque",
+    "_source_locator_id": "LOC-0056",
+    "_module_id": "M04",
+    "name": "TransparentSemi-TransparentOpaque"
+  },
+  "50_75_100_125_150_175_200_300_400_2": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "50%75%100%125%150%175%200%300%400%",
+    "_source_locator_id": "LOC-0057",
+    "_module_id": "M04",
+    "name": "50%75%100%125%150%175%200%300%400%"
+  },
+  "noneraiseddepresseduniformdrop_shadow_2": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "NoneRaisedDepressedUniformDrop shadow",
+    "_source_locator_id": "LOC-0058",
+    "_module_id": "M04",
+    "name": "NoneRaisedDepressedUniformDrop shadow"
+  },
+  "proportional_sans_serifmonospace_sans_2": {
+    "type": "role",
+    "locator": "combobox",
+    "description": "Proportional Sans-SerifMonospace Sans-SerifProportional SerifMonospace SerifCasualScriptSmall Caps",
+    "_source_locator_id": "LOC-0059",
+    "_module_id": "M04",
+    "name": "Proportional Sans-SerifMonospace Sans-SerifProportional SerifMonospace SerifCasualScriptSmall Caps"
+  },
+  "aws_cookie_notice_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Cookie Notice",
+    "_source_locator_id": "LOC-0060",
+    "_module_id": "M04",
+    "name": "AWS Cookie Notice"
+  },
+  "cookie_notice_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Cookie Notice",
+    "_source_locator_id": "LOC-0061",
+    "_module_id": "M04",
+    "name": "Cookie Notice"
+  },
+  "here_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "here",
+    "_source_locator_id": "LOC-0062",
+    "_module_id": "M04",
+    "name": "here"
+  },
+  "aws_privacy_notice_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Privacy Notice",
+    "_source_locator_id": "LOC-0063",
+    "_module_id": "M04",
+    "name": "AWS Privacy Notice"
+  },
+  "skip_to_main_content_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Skip to main content",
+    "_source_locator_id": "LOC-0064",
+    "_module_id": "M04",
+    "name": "Skip to main content"
+  },
+  "a_loc_0065": {
+    "type": "testid",
+    "locator": "mobile-nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0065",
+    "_module_id": "M04"
+  },
+  "contact_us_7": {
+    "type": "role",
+    "locator": "link",
+    "description": "Contact Us",
+    "_source_locator_id": "LOC-0066",
+    "_module_id": "M04",
+    "name": "Contact Us"
+  },
+  "aws_marketplace_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Marketplace",
+    "_source_locator_id": "LOC-0067",
+    "_module_id": "M04",
+    "name": "AWS Marketplace"
+  },
+  "a_loc_0068": {
+    "type": "testid",
+    "locator": "nav-item-logo-link",
+    "description": "",
+    "_source_locator_id": "LOC-0068",
+    "_module_id": "M04"
+  },
+  "re_invent_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "re:Invent",
+    "_source_locator_id": "LOC-0069",
+    "_module_id": "M04",
+    "name": "re:Invent"
+  },
+  "sign_in_to_console_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Sign in to console",
+    "_source_locator_id": "LOC-0070",
+    "_module_id": "M04",
+    "name": "Sign in to console"
+  },
+  "create_account_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Create account",
+    "_source_locator_id": "LOC-0071",
+    "_module_id": "M04",
+    "name": "Create account"
+  },
+  "overview_3": {
+    "type": "role",
+    "locator": "link",
+    "description": "Overview",
+    "_source_locator_id": "LOC-0072",
+    "_module_id": "M04",
+    "name": "Overview"
+  },
+  "partner_programs": {
+    "type": "role",
+    "locator": "link",
+    "description": "Partner Programs",
+    "_source_locator_id": "LOC-0073",
+    "_module_id": "M04",
+    "name": "Partner Programs"
+  },
+  "sell_in_aws_marketplace": {
+    "type": "role",
+    "locator": "link",
+    "name": "Sell in AWS Marketplace",
+    "description": "Sell in AWS Marketplace",
+    "_source_locator_id": "LOC-0074",
+    "_module_id": "M04"
+  },
+  "resources_7": {
+    "type": "role",
+    "locator": "link",
+    "description": "Resources",
+    "_source_locator_id": "LOC-0075",
+    "_module_id": "M04",
+    "name": "Resources"
+  },
+  "success_stories": {
+    "type": "role",
+    "locator": "link",
+    "description": "Success Stories",
+    "_source_locator_id": "LOC-0076",
+    "_module_id": "M04",
+    "name": "Success Stories"
+  },
+  "aws": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS",
+    "_source_locator_id": "LOC-0077",
+    "_module_id": "M04",
+    "name": "AWS"
+  },
+  "become_an_aws_partner": {
+    "type": "role",
+    "locator": "button",
+    "description": "Become an AWS Partner",
+    "_source_locator_id": "LOC-0078",
+    "_module_id": "M04",
+    "name": "Become an AWS Partner"
+  },
+  "work_with_an_aws_partner": {
+    "type": "role",
+    "locator": "button",
+    "description": "Work with an AWS Partner",
+    "_source_locator_id": "LOC-0079",
+    "_module_id": "M04",
+    "name": "Work with an AWS Partner"
+  },
+  "a_loc_0080": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(8)",
+    "description": "",
+    "_source_locator_id": "LOC-0080",
+    "_module_id": "M04"
+  },
+  "a_loc_0080_2": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(8)",
+    "description": "",
+    "_source_locator_id": "LOC-0080",
+    "_module_id": "M04"
+  },
+  "aws_partner_central": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Partner Central",
+    "_source_locator_id": "LOC-0081",
+    "_module_id": "M04",
+    "name": "AWS Partner Central"
+  },
+  "sign_in_to_the_aws_console": {
+    "type": "role",
+    "locator": "link",
+    "description": "Sign in to the AWS console",
+    "_source_locator_id": "LOC-0082",
+    "_module_id": "M04",
+    "name": "Sign in to the AWS console"
+  },
+  "partner_paths": {
+    "type": "role",
+    "locator": "link",
+    "description": "Partner Paths",
+    "_source_locator_id": "LOC-0083",
+    "_module_id": "M04",
+    "name": "Partner Paths"
+  },
+  "explore_partner_programs": {
+    "type": "role",
+    "locator": "link",
+    "description": "Explore Partner Programs",
+    "_source_locator_id": "LOC-0084",
+    "_module_id": "M04",
+    "name": "Explore Partner Programs"
+  },
+  "co_sell_with_aws": {
+    "type": "role",
+    "locator": "link",
+    "description": "co-sell with AWS",
+    "_source_locator_id": "LOC-0085",
+    "_module_id": "M04",
+    "name": "co-sell with AWS"
+  },
+  "sell_in_aws_marketplace_2": {
+    "type": "role",
+    "locator": "link",
+    "description": "Sell in AWS Marketplace",
+    "_source_locator_id": "LOC-0074",
+    "_module_id": "M04",
+    "name": "Sell in AWS Marketplace"
+  },
+  "blog_learn_about_the_aws_partner_experience": {
+    "type": "role",
+    "locator": "link",
+    "description": "Blog\nLearn about the AWS Partner Experience Transformation and what's ahead\nRead the latest blog",
+    "_source_locator_id": "LOC-0086",
+    "_module_id": "M04",
+    "name": "Blog\nLearn about the AWS Partner Experience Transformation and what's ahead\nRead the latest blog"
+  },
+  "what_s_new_posts_read_about_the_latest": {
+    "type": "role",
+    "locator": "link",
+    "description": "What's New Posts\nRead about the latest innovations in AWS Marketplace and AWS Partner Central\nSee what's new",
+    "_source_locator_id": "LOC-0087",
+    "_module_id": "M04",
+    "name": "What's New Posts\nRead about the latest innovations in AWS Marketplace and AWS Partner Central\nSee what's new"
+  },
+  "partnercasts_hear_from_aws_partner_teams_on_the": {
+    "type": "role",
+    "locator": "link",
+    "description": "PartnerCasts\nHear from AWS Partner Teams on the latest enhancements to the partner experience\nExplore webinars",
+    "_source_locator_id": "LOC-0088",
+    "_module_id": "M04",
+    "name": "PartnerCasts\nHear from AWS Partner Teams on the latest enhancements to the partner experience\nExplore webinars"
+  },
+  "explore_all_success_stories": {
+    "type": "role",
+    "locator": "link",
+    "description": "Explore all success stories",
+    "_source_locator_id": "LOC-0089",
+    "_module_id": "M04",
+    "name": "Explore all success stories"
+  },
+  "l_quipe_launches_19_olympic_podcasts_in_under_30": {
+    "type": "role",
+    "locator": "link",
+    "description": "L'\u00c9quipe launches 19 Olympic podcasts in under 30 days with Devoteam's AI solution on AWS \nLearn more",
+    "_source_locator_id": "LOC-0090",
+    "_module_id": "M04",
+    "name": "L'\u00c9quipe launches 19 Olympic podcasts in under 30 days with Devoteam's AI solution on AWS \nLearn more"
+  },
+  "the_network_achieves_85_model_accuracy_in": {
+    "type": "role",
+    "locator": "link",
+    "description": "The Network achieves 85% model accuracy in fighting human trafficking with Slalom\u2019s machine learning solution on AWS\nLearn more",
+    "_source_locator_id": "LOC-0091",
+    "_module_id": "M04",
+    "name": "The Network achieves 85% model accuracy in fighting human trafficking with Slalom\u2019s machine learning solution on AWS\nLearn more"
+  },
+  "bcg_generates_65_of_regional_sales_pipeline_with": {
+    "type": "role",
+    "locator": "link",
+    "description": "BCG generates 65% of regional sales pipeline with AI-powered sales engine built on AWS \nLearn more",
+    "_source_locator_id": "LOC-0092",
+    "_module_id": "M04",
+    "name": "BCG generates 65% of regional sales pipeline with AI-powered sales engine built on AWS \nLearn more"
+  },
+  "a_loc_0080_3": {
+    "type": "css",
+    "locator": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(8)",
+    "description": "",
+    "_source_locator_id": "LOC-0080",
+    "_module_id": "M04"
+  },
+  "state_of_idaho_consolidates_75_systems_into": {
+    "type": "role",
+    "locator": "link",
+    "description": "State of Idaho consolidates 75 systems into single cloud ERP solution with AWS Partners Deloitte and Infor \nLearn more",
+    "_source_locator_id": "LOC-0093",
+    "_module_id": "M04",
+    "name": "State of Idaho consolidates 75 systems into single cloud ERP solution with AWS Partners Deloitte and Infor \nLearn more"
+  },
+  "see_all_resources": {
+    "type": "role",
+    "locator": "link",
+    "description": "See all resources",
+    "_source_locator_id": "LOC-0094",
+    "_module_id": "M04",
+    "name": "See all resources"
+  },
+  "events_attend_webinars_virtual_workshops_and_in": {
+    "type": "role",
+    "locator": "link",
+    "description": "Events\nAttend webinars, virtual workshops, and in-person events\nExplore AWS Partner events",
+    "_source_locator_id": "LOC-0095",
+    "_module_id": "M04",
+    "name": "Events\nAttend webinars, virtual workshops, and in-person events\nExplore AWS Partner events"
+  },
+  "video_aws_partner_network_youtube_channel_get_the": {
+    "type": "role",
+    "locator": "link",
+    "description": "Video\nAWS Partner Network YouTube Channel\nGet the latest updates",
+    "_source_locator_id": "LOC-0096",
+    "_module_id": "M04",
+    "name": "Video\nAWS Partner Network YouTube Channel\nGet the latest updates"
+  },
+  "blog_apn_blog_see_all_posts": {
+    "type": "role",
+    "locator": "link",
+    "description": "Blog\nAPN Blog\nSee all posts",
+    "_source_locator_id": "LOC-0097",
+    "_module_id": "M04",
+    "name": "Blog\nAPN Blog\nSee all posts"
+  },
+  "live_and_on_demand_partner_webinars_watch_webinars": {
+    "type": "role",
+    "locator": "link",
+    "description": "Live and on-demand\nPartner Webinars\nWatch webinars",
+    "_source_locator_id": "LOC-0098",
+    "_module_id": "M04",
+    "name": "Live and on-demand\nPartner Webinars\nWatch webinars"
+  },
+  "social_apn_linkedin_stay_connected": {
+    "type": "role",
+    "locator": "link",
+    "description": "Social\nAPN LinkedIn\nStay connected",
+    "_source_locator_id": "LOC-0099",
+    "_module_id": "M04",
+    "name": "Social\nAPN LinkedIn\nStay connected"
+  },
+  "social_apn_twitter_get_the_latest_updates": {
+    "type": "role",
+    "locator": "link",
+    "description": "Social\nAPN Twitter\nGet the latest updates",
+    "_source_locator_id": "LOC-0100",
+    "_module_id": "M04",
+    "name": "Social\nAPN Twitter\nGet the latest updates"
+  },
+  "create_an_aws_account_4": {
+    "type": "role",
+    "locator": "button",
+    "description": "Create an AWS account",
+    "_source_locator_id": "LOC-0101",
+    "_module_id": "M04",
+    "name": "Create an AWS account"
+  },
+  "what_is_aws_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "What Is AWS?",
+    "_source_locator_id": "LOC-0102",
+    "_module_id": "M04",
+    "name": "What Is AWS?"
+  },
+  "what_is_cloud_computing_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "What Is Cloud Computing?",
+    "_source_locator_id": "LOC-0103",
+    "_module_id": "M04",
+    "name": "What Is Cloud Computing?"
+  },
+  "what_is_agentic_ai_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "What Is Agentic AI?",
+    "_source_locator_id": "LOC-0104",
+    "_module_id": "M04",
+    "name": "What Is Agentic AI?"
+  },
+  "cloud_computing_concepts_hub_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Cloud Computing Concepts Hub",
+    "_source_locator_id": "LOC-0105",
+    "_module_id": "M04",
+    "name": "Cloud Computing Concepts Hub"
+  },
+  "aws_cloud_security_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Cloud Security",
+    "_source_locator_id": "LOC-0106",
+    "_module_id": "M04",
+    "name": "AWS Cloud Security"
+  },
+  "what_s_new_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "What's New",
+    "_source_locator_id": "LOC-0107",
+    "_module_id": "M04",
+    "name": "What's New"
+  },
+  "blogs_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Blogs",
+    "_source_locator_id": "LOC-0108",
+    "_module_id": "M04",
+    "name": "Blogs"
+  },
+  "press_releases_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Press Releases",
+    "_source_locator_id": "LOC-0109",
+    "_module_id": "M04",
+    "name": "Press Releases"
+  },
+  "getting_started_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Getting Started",
+    "_source_locator_id": "LOC-0110",
+    "_module_id": "M04",
+    "name": "Getting Started"
+  },
+  "training_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Training",
+    "_source_locator_id": "LOC-0111",
+    "_module_id": "M04",
+    "name": "Training"
+  },
+  "aws_trust_center_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Trust Center",
+    "_source_locator_id": "LOC-0112",
+    "_module_id": "M04",
+    "name": "AWS Trust Center"
+  },
+  "aws_solutions_library_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Solutions Library",
+    "_source_locator_id": "LOC-0113",
+    "_module_id": "M04",
+    "name": "AWS Solutions Library"
+  },
+  "architecture_center_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Architecture Center",
+    "_source_locator_id": "LOC-0114",
+    "_module_id": "M04",
+    "name": "Architecture Center"
+  },
+  "navigate_products_13": {
+    "type": "role",
+    "locator": "link",
+    "description": "Product and Technical FAQs",
+    "_source_locator_id": "LOC-0115",
+    "_module_id": "M04",
+    "name": "Product and Technical FAQs"
+  },
+  "analyst_reports_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Analyst Reports",
+    "_source_locator_id": "LOC-0116",
+    "_module_id": "M04",
+    "name": "Analyst Reports"
+  },
+  "aws_partners_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Partners",
+    "_source_locator_id": "LOC-0117",
+    "_module_id": "M04",
+    "name": "AWS Partners"
+  },
+  "builder_center_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Builder Center",
+    "_source_locator_id": "LOC-0118",
+    "_module_id": "M04",
+    "name": "Builder Center"
+  },
+  "sdks_tools_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "SDKs & Tools",
+    "_source_locator_id": "LOC-0119",
+    "_module_id": "M04",
+    "name": "SDKs & Tools"
+  },
+  "net_on_aws_4": {
+    "type": "role",
+    "locator": "link",
+    "description": ".NET on AWS",
+    "_source_locator_id": "LOC-0120",
+    "_module_id": "M04",
+    "name": ".NET on AWS"
+  },
+  "python_on_aws_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Python on AWS",
+    "_source_locator_id": "LOC-0121",
+    "_module_id": "M04",
+    "name": "Python on AWS"
+  },
+  "java_on_aws_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Java on AWS",
+    "_source_locator_id": "LOC-0122",
+    "_module_id": "M04",
+    "name": "Java on AWS"
+  },
+  "php_on_aws_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "PHP on AWS",
+    "_source_locator_id": "LOC-0123",
+    "_module_id": "M04",
+    "name": "PHP on AWS"
+  },
+  "javascript_on_aws_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "JavaScript on AWS",
+    "_source_locator_id": "LOC-0124",
+    "_module_id": "M04",
+    "name": "JavaScript on AWS"
+  },
+  "file_a_support_ticket_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "File a Support Ticket",
+    "_source_locator_id": "LOC-0125",
+    "_module_id": "M04",
+    "name": "File a Support Ticket"
+  },
+  "aws_re_post_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS re:Post",
+    "_source_locator_id": "LOC-0126",
+    "_module_id": "M04",
+    "name": "AWS re:Post"
+  },
+  "knowledge_center_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Knowledge Center",
+    "_source_locator_id": "LOC-0127",
+    "_module_id": "M04",
+    "name": "Knowledge Center"
+  },
+  "aws_support_overview_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Support Overview",
+    "_source_locator_id": "LOC-0128",
+    "_module_id": "M04",
+    "name": "AWS Support Overview"
+  },
+  "aws_accessibility_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "AWS Accessibility",
+    "_source_locator_id": "LOC-0129",
+    "_module_id": "M04",
+    "name": "AWS Accessibility"
+  },
+  "legal_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Legal",
+    "_source_locator_id": "LOC-0130",
+    "_module_id": "M04",
+    "name": "Legal"
+  },
+  "event_code_of_conduct_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Event Code of Conduct",
+    "_source_locator_id": "LOC-0131",
+    "_module_id": "M04",
+    "name": "Event Code of Conduct"
+  },
+  "event_terms_conditions_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Event Terms & Conditions",
+    "_source_locator_id": "LOC-0132",
+    "_module_id": "M04",
+    "name": "Event Terms & Conditions"
+  },
+  "privacy_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Privacy",
+    "_source_locator_id": "LOC-0133",
+    "_module_id": "M04",
+    "name": "Privacy"
+  },
+  "site_terms_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Site terms",
+    "_source_locator_id": "LOC-0134",
+    "_module_id": "M04",
+    "name": "Site terms"
+  },
+  "cookie_preferences_4": {
+    "type": "role",
+    "locator": "link",
+    "description": "Cookie Preferences",
+    "_source_locator_id": "LOC-0135",
+    "_module_id": "M04",
+    "name": "Cookie Preferences"
+  },
+  "automotive_how_audi_uses_ai_to_connect_over_50": {
+    "type": "role",
+    "locator": "link",
+    "name": "Automotive\nHow Audi uses AI to connect over 50 manufacturing plants worldwide\nView the story",
+    "description": "Automotive\nHow Audi uses AI to connect over 50 manufacturing plants worldwide\nView the story",
+    "_source_locator_id": "LOC-0241",
+    "_module_id": "M01"
+  },
+  "travel_hospitality_how_booking_com_personalizes": {
+    "type": "role",
+    "locator": "link",
+    "name": "Travel & Hospitality\nHow Booking.com personalizes every trip, processing up to 250k requests per second on AWS\nView the story",
+    "description": "Travel & Hospitality\nHow Booking.com personalizes every trip, processing up to 250k requests per second on AWS\nView the story",
+    "_source_locator_id": "LOC-0242",
+    "_module_id": "M01"
+  },
+  "travel_hospitality_how_tui_uses_amazon_connect_to": {
+    "type": "role",
+    "locator": "link",
+    "name": "Travel & Hospitality\nHow TUI uses Amazon Connect to consolidate more than 85 customer service applications\nView the story",
+    "description": "Travel & Hospitality\nHow TUI uses Amazon Connect to consolidate more than 85 customer service applications\nView the story",
+    "_source_locator_id": "LOC-0244",
+    "_module_id": "M01"
+  },
+  "retail_2": {
+    "type": "role",
+    "locator": "combobox",
+    "name": "retail",
+    "description": "retail",
+    "_source_locator_id": "LOC-0299",
+    "_module_id": "M01"
+  }
+}

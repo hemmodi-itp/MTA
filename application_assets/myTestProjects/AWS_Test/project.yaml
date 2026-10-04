@@ -1,0 +1,46 @@
+project:
+  name: AWS_Test                  # matches folder name under application_assets/projects/
+  application_name:  AWS_Test    # human-readable app name (used in reports and LLM prompts)
+  browser: chromium                       # chromium | firefox | webkit
+  headless: false                         # false = visible browser; true = background (CI)
+  interactive_scan: false                 # false = automated headless/headed crawl (no user input needed)
+                                          # true  = user-guided session — you navigate, scanner records
+                                          #         (start with: python main.py --project YourProjectName --record)
+
+input: # path of inputs
+  brd_dir: application_assets\myTestProjects\AWS_Test\inputs
+
+#   python main.py --project AWS_Test
+
+
+auth: # Only If Login needed
+  enabled: false
+  strategy: storageState                  # storageState = reuse saved session across runs
+                                          # live_login   = re-authenticate on every pipeline run
+  storage_state_path: application_assets/myTestProjects\AWS_Test\inputs .auth/auth.json
+
+
+modules:
+
+  - id: M01
+    name: HomePage           # e.g. Login, Dashboard, Search, Checkout
+    url: https://aws.amazon.com/       # URL discovery scans and every generated spec in this module navigates to
+    brd_file: module_01_homePage.md     # BRD file inside inputs/ for this module
+
+#   python main.py --project AWS_Test --module M01    
+
+  - id: M02
+    name: Module Two Name
+    url: https://aws.amazon.com/ 
+    brd_file: module_02_name.md
+    
+
+test_generation:
+  max_negative_cases: 1     # 0 disables negative-case generation entirely
+  max_boundary_cases: 1     # 0 disables boundary-case generation entirely
+  max_data_iterations: 3    # alternate value sets tried within each negative/boundary test
+
+test_execution:
+  suite: AWS_Test
+
+

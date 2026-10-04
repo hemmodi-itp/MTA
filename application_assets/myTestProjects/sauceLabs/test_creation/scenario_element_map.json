@@ -1,0 +1,237 @@
+{
+  "BS-001": {
+    "scenario_title": "Display Complete Inventory Page Layout",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Open Menu' })",
+        "relevance": "hamburger menu button — verified in step 2"
+      },
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('link', { name: '4' })",
+        "relevance": "shopping cart icon with badge — verified in step 2"
+      },
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('combobox', { name: 'Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)' })",
+        "relevance": "product sort dropdown — verified in step 3"
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Add to cart' })",
+        "relevance": "product inventory list representation — verified in step 4"
+      },
+      {
+        "locator_id": "LOC-0027",
+        "playwright_expr": "page.getByRole('link', { name: 'Twitter' })",
+        "relevance": "footer social media link — verified in step 5"
+      }
+    ]
+  },
+  "BS-002": {
+    "scenario_title": "Verify All Six Inventory Products Display",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0016",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Backpack' })",
+        "relevance": "product name link — part of product card verification"
+      },
+      {
+        "locator_id": "LOC-0017",
+        "playwright_expr": "page.getByTestId('item-0-img-link')",
+        "relevance": "product image link — part of product card verification"
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Add to cart' })",
+        "relevance": "Add to Cart button — part of product card verification"
+      }
+    ]
+  },
+  "BS-003": {
+    "scenario_title": "Add Single Product to Shopping Cart",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Add to cart' })",
+        "relevance": "Add to Cart button — clicked in step 1"
+      },
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('link', { name: '4' })",
+        "relevance": "cart badge — verified to increment in step 3"
+      }
+    ]
+  },
+  "BS-004": {
+    "scenario_title": "Remove Product from Shopping Cart",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Add to cart' })",
+        "relevance": "Remove button (same locator when state changes) — clicked in step 1"
+      },
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('link', { name: '4' })",
+        "relevance": "cart badge — verified to decrease in step 3"
+      }
+    ]
+  },
+  "BS-005": {
+    "scenario_title": "Sort Products by Name Alphabetically",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('combobox', { name: 'Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)' })",
+        "relevance": "product sort dropdown — clicked and option selected in steps 1-2"
+      },
+      {
+        "locator_id": "LOC-0016",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Backpack' })",
+        "relevance": "product name — used to verify alphabetical ordering in step 3"
+      },
+      {
+        "locator_id": "LOC-0018",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Bike Light' })",
+        "relevance": "product name — used to verify alphabetical ordering in step 3"
+      }
+    ]
+  },
+  "BS-006": {
+    "scenario_title": "Sort Products by Name Reverse Alphabetically",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('combobox', { name: 'Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)' })",
+        "relevance": "product sort dropdown — clicked and option selected in steps 1-2"
+      },
+      {
+        "locator_id": "LOC-0026",
+        "playwright_expr": "page.getByRole('link', { name: 'Test.allTheThings() T-Shirt (Red)' })",
+        "relevance": "product name — used to verify reverse alphabetical ordering in step 3"
+      },
+      {
+        "locator_id": "LOC-0016",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Backpack' })",
+        "relevance": "product name — used to verify reverse alphabetical ordering in step 3"
+      }
+    ]
+  },
+  "BS-007": {
+    "scenario_title": "Sort Products by Price Low to High",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('combobox', { name: 'Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)' })",
+        "relevance": "product sort dropdown — clicked and option selected in steps 1-2"
+      },
+      {
+        "locator_id": "LOC-0016",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Backpack' })",
+        "relevance": "product element — used to verify price ordering in step 3"
+      },
+      {
+        "locator_id": "LOC-0018",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Bike Light' })",
+        "relevance": "product element — used to verify price ordering in step 3"
+      }
+    ]
+  },
+  "BS-008": {
+    "scenario_title": "Sort Products by Price High to Low",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('combobox', { name: 'Name (A to Z)\nName (Z to A)\nPrice (low to high)\nPrice (high to low)' })",
+        "relevance": "product sort dropdown — clicked and option selected in steps 1-2"
+      },
+      {
+        "locator_id": "LOC-0022",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Fleece Jacket' })",
+        "relevance": "product element — used to verify price ordering in step 3"
+      },
+      {
+        "locator_id": "LOC-0018",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Bike Light' })",
+        "relevance": "product element — used to verify price ordering in step 3"
+      }
+    ]
+  },
+  "BS-009": {
+    "scenario_title": "Navigate to Product Details Page",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0017",
+        "playwright_expr": "page.getByTestId('item-0-img-link')",
+        "relevance": "product image link — clicked in step 1"
+      },
+      {
+        "locator_id": "LOC-0016",
+        "playwright_expr": "page.getByRole('link', { name: 'Sauce Labs Backpack' })",
+        "relevance": "product title link — alternative click target in step 1"
+      }
+    ]
+  },
+  "BS-010": {
+    "scenario_title": "Access Shopping Cart Page",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('link', { name: '4' })",
+        "relevance": "shopping cart icon — clicked in step 1"
+      }
+    ]
+  },
+  "BS-011": {
+    "scenario_title": "Open Navigation Menu",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Open Menu' })",
+        "relevance": "hamburger menu icon — clicked in step 1"
+      },
+      {
+        "locator_id": "LOC-0010",
+        "playwright_expr": "page.getByRole('link', { name: 'All Items' })",
+        "relevance": "sidebar navigation option — verified in step 2"
+      },
+      {
+        "locator_id": "LOC-0011",
+        "playwright_expr": "page.getByRole('link', { name: 'About' })",
+        "relevance": "sidebar navigation option — verified in step 2"
+      }
+    ]
+  },
+  "BS-012": {
+    "scenario_title": "Logout and Return to Login Page",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Open Menu' })",
+        "relevance": "hamburger menu icon — clicked in step 1"
+      },
+      {
+        "locator_id": "LOC-0012",
+        "playwright_expr": "page.getByRole('link', { name: 'Logout' })",
+        "relevance": "logout option — clicked in step 2"
+      }
+    ]
+  },
+  "BS-013": {
+    "scenario_title": "Maintain Cart Contents After Page Refresh",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('link', { name: '4' })",
+        "relevance": "cart badge — verified to maintain count after refresh"
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Add to cart' })",
+        "relevance": "cart button states — verified to maintain after refresh"
+      }
+    ]
+  }
+}

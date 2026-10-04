@@ -1,0 +1,394 @@
+{
+  "M01_BS_001": {
+    "tests": [
+      {
+        "name": "positive — Gemini Home page displays all required UI components",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/gemini/home"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "open_sidebar",
+            "message": "Sidebar should be displayed on the Home page"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "microphone",
+            "message": "Microphone button should be displayed on the Home page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "prompt_textbox",
+      "model_selector"
+    ]
+  },
+  "M01_BS_002": {
+    "tests": [
+      {
+        "name": "positive — enter text into prompt interface displays the text",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          }
+        ]
+      },
+      {
+        "name": "negative — empty prompt input shows validation error",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "prompt_textbox",
+      "error_message"
+    ]
+  },
+  "M01_BS_006": {
+    "tests": [
+      {
+        "name": "positive — clicking model dropdown displays available AI models list",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "flash",
+            "message": "Model selector should be visible on the page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "model_selector_dropdown",
+      "model_dropdown_list",
+      "model_dropdown_options"
+    ]
+  },
+  "M01_BS_007": {
+    "tests": [
+      {
+        "name": "positive — switching AI model from dropdown activates the selected model",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "selectDropdownByText",
+            "locator_key": "flash",
+            "value": "GPT-4"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "flash",
+            "message": "Selected AI model should be visible and active after selection"
+          }
+        ]
+      },
+      {
+        "name": "negative — selecting invalid model shows appropriate error",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "selectDropdownByText",
+            "locator_key": "flash",
+            "value": ""
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "flash",
+            "value": "Please select a valid AI model",
+            "message": "Error message should appear when no model is selected"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "AI model dropdown selector - need locator for the dropdown containing available AI models",
+      "Active model indicator - need locator to verify which model is currently active",
+      "Error message container - need locator for displaying model selection errors"
+    ]
+  },
+  "M01_BS_008": {
+    "tests": [
+      {
+        "name": "positive — clicking upgrade button displays subscription options",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "subscriptions_opens_in_a_new_window"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/upgrade",
+            "message": "URL should contain upgrade path after clicking upgrade button"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "upgrade_dialog_heading - locator for upgrade dialog title to verify 'Upgrade Your Plan' text appears",
+      "subscription_content - locator for subscription page content to verify 'Choose a subscription plan' text appears"
+    ]
+  },
+  "M01_BS_009": {
+    "tests": [
+      {
+        "name": "positive — sidebar toggle button collapses and expands the sidebar",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "open_sidebar"
+          },
+          {
+            "action": "verifyHidden",
+            "locator_key": "open_sidebar",
+            "message": "Sidebar should be collapsed after clicking toggle button"
+          },
+          {
+            "action": "click",
+            "locator_key": "open_sidebar"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "open_sidebar",
+            "message": "Sidebar should be expanded after clicking toggle button again"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "sidebar_toggle_button - The actual toggle button control to collapse/expand the sidebar",
+      "sidebar_container - The sidebar element to verify its collapsed/expanded state"
+    ]
+  },
+  "M01_BS_010": {
+    "tests": [
+      {
+        "name": "positive — clicking New Chat creates a new conversation with empty prompt textbox",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "new_chat"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "gemini.google.com",
+            "message": "User should remain on the Gemini platform after creating new chat"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "new_chat",
+            "message": "New chat functionality should be available in the new conversation"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "prompt_textbox - needed to verify the prompt input field is empty after creating new conversation",
+      "conversation_indicator - needed to verify a new conversation was actually created"
+    ]
+  },
+  "M01_BS_011": {
+    "tests": [
+      {
+        "name": "positive — clicking a previous conversation in sidebar opens and displays the conversation",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/conversation/",
+            "message": "URL should contain conversation path after selecting a previous conversation"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "sidebar_conversation_item",
+      "conversation_content",
+      "conversation_title"
+    ]
+  },
+  "M01_BS_012": {
+    "tests": [
+      {
+        "name": "positive — clicking settings icon opens the settings panel",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "settings"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "settings",
+            "message": "Settings panel should be visible after clicking the settings icon"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "settings_panel - A locator for the actual settings panel container that opens after clicking the settings icon",
+      "configuration_options - A locator for the configuration options within the settings panel to verify the panel content"
+    ]
+  },
+  "M01_BS_013": {
+    "tests": [
+      {
+        "name": "positive — clicking search icon displays search interface",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "search_icon",
+      "search_interface",
+      "search_input_field"
+    ]
+  },
+  "M01_BS_014": {
+    "tests": [
+      {
+        "name": "positive — keyboard navigation through all interactive controls using Tab key",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Page should remain stable during keyboard navigation"
+          }
+        ]
+      },
+      {
+        "name": "negative — insufficient interactive elements found for keyboard navigation",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "pressKey",
+            "value": "Tab"
+          },
+          {
+            "action": "verifyNoPageErrors",
+            "message": "Page should handle minimal keyboard navigation without errors"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "focusable_elements - Need locators for interactive elements that should receive focus during Tab navigation",
+      "focus_indicator - Need locator to verify visible focus outline on currently focused element"
+    ]
+  },
+  "M01_BS_015": {
+    "tests": [
+      {
+        "name": "positive — clicking microphone button displays voice input interface",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "microphone",
+            "message": "Microphone button should be visible on the Gemini home page"
+          },
+          {
+            "action": "click",
+            "locator_key": "microphone"
+          },
+          {
+            "action": "waitForTimeout",
+            "value": 1000
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "microphone_interface - element that displays the voice input interface after clicking microphone button",
+      "permission_dialog - browser permission dialog for microphone access"
+    ]
+  }
+}

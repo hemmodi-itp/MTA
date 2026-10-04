@@ -1,0 +1,756 @@
+{
+  "project": "sauceLabs",
+  "total_scenarios": 21,
+  "scenarios": [
+    {
+      "scenario_id": "M01_BS_001",
+      "title": "Access SauceLabs Login Page URL",
+      "business_objective": "Ensure unauthenticated visitors can access the official SauceLabs login page at the specified URL.",
+      "actor": "Guest / unauthenticated visitor",
+      "preconditions": [
+        "Web browser is available and connected to the internet."
+      ],
+      "steps": [
+        "Navigate to https://www.saucedemo.com/."
+      ],
+      "expected_result": "The SauceLabs login page is loaded successfully, displaying the username input, password input, and signin button.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "7490be029a9a8be3af739fa7f15525ebc25d61442233e7134dce9df55ecb4b90"
+    },
+    {
+      "scenario_id": "M01_BS_002",
+      "title": "User Login Validation",
+      "business_objective": "Authenticate a standard user into the SauceLabs portal using valid credentials.",
+      "actor": "standard_user",
+      "preconditions": [
+        "User is on the login page at https://www.saucedemo.com/."
+      ],
+      "steps": [
+        "Enter the username in the username input field.",
+        "Enter the password in the password input field.",
+        "Click the signin button."
+      ],
+      "expected_result": "The user is successfully authenticated and redirected into the SauceLabs application.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "3fb509740566c22a07af5725e6fefec2e328dfc950c5c6eb1ccd518c36da8a93"
+    },
+    {
+      "scenario_id": "M01_BS_003",
+      "title": "Login Form Missing Required Fields Validation",
+      "business_objective": "Ensure the login form validates required credentials prior to submission and displays inline error messages when mandatory inputs are omitted.",
+      "actor": "Guest / unauthenticated visitor",
+      "preconditions": [
+        "The web browser is open and navigated to https://www.saucedemo.com/."
+      ],
+      "steps": [
+        "Navigate to the login page URL https://www.saucedemo.com/.",
+        "Leave the username and password fields blank.",
+        "Click the signin button."
+      ],
+      "expected_result": "Form submission is prevented, and inline error messages appear next to the relevant required input fields.",
+      "business_rules": [
+        "BR-01",
+        "BR-02"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.92,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "125173c8d88f9ce8403431288c13e71a0536322613879faff61d02c6b82a209d"
+    },
+    {
+      "scenario_id": "M01_BS_004",
+      "title": "Inline Error Message Display Placement Validation",
+      "business_objective": "Verify that form validation error messages are displayed inline next to the corresponding input fields when login validation fails.",
+      "actor": "Guest / unauthenticated visitor",
+      "preconditions": [
+        "The user is on the SauceLabs login page at https://www.saucedemo.com/."
+      ],
+      "steps": [
+        "Navigate to https://www.saucedemo.com/.",
+        "Leave one or both required input fields (username/password) blank.",
+        "Click the signin button to trigger validation.",
+        "Verify the position and formatting of the displayed error messages."
+      ],
+      "expected_result": "Validation error messages appear inline directly adjacent to the relevant invalid or missing field.",
+      "business_rules": [
+        "BR-01",
+        "BR-02"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "de60d09a0bc3179817134906de5c8e98619d8e74d4b6eaf539238e129a2d6a35"
+    },
+    {
+      "scenario_id": "M01_BS_005",
+      "title": "Standard User Login and Confirmation Redirection",
+      "business_objective": "Ensure standard_user can successfully authenticate using the login form and is automatically redirected to the confirmation page.",
+      "actor": "standard_user",
+      "preconditions": [
+        "The login page at https://www.saucedemo.com/ is accessible.",
+        "The user possesses valid credentials for standard_user."
+      ],
+      "steps": [
+        "Navigate to https://www.saucedemo.com/.",
+        "Enter standard_user into the username field.",
+        "Enter the correct password into the password field.",
+        "Click the signin button."
+      ],
+      "expected_result": "The standard_user is successfully authenticated and the application redirects the user to /confirmation.",
+      "business_rules": [
+        "BR-03"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_01_login.md",
+          "page_number": null,
+          "section": "2. Page / Feature Structure",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "6aa04ed8f8061aa24cfbc93a93e660f6fe79171593666159a177f6d242819170"
+    },
+    {
+      "scenario_id": "M02_BS_001",
+      "title": "View Inventory Page and Verify Product List",
+      "business_objective": "Ensure authenticated users can view the full product catalog and page elements.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is logged in with valid credentials."
+      ],
+      "steps": [
+        "1. Complete login process with valid credentials.",
+        "2. Navigate to the Inventory page.",
+        "3. Observe the product list, header elements, shopping cart icon, and sort dropdown."
+      ],
+      "expected_result": "The Inventory page loads successfully displaying six products, each showing an image, title, description, price, and 'Add to Cart' button.",
+      "business_rules": [
+        "BR-01",
+        "BR-02"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-001: View Inventory Page Successfully",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-002: Verify All Inventory Items are Displayed",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "e288ec5d39233bda55f7d09c425bc3c0b45d944d8963758ca4db0c01f2dccc10"
+    },
+    {
+      "scenario_id": "M02_BS_002",
+      "title": "Add Single Item to Shopping Cart",
+      "business_objective": "Allow users to select an item from the inventory and add it to their cart.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Locate a product on the Inventory page.",
+        "2. Click the 'Add to Cart' button for the selected product."
+      ],
+      "expected_result": "The product's button text changes to 'Remove', and the shopping cart badge count increments by one.",
+      "business_rules": [
+        "BR-03",
+        "BR-04",
+        "BR-05"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-003: Add Single Item to Cart",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "3682b025fb48fc31332479eec4fb6b9a7867e77a2d767ecd602ce07de706d39c"
+    },
+    {
+      "scenario_id": "M02_BS_003",
+      "title": "Remove Item from Cart via Inventory Page",
+      "business_objective": "Allow users to deselect an item directly from the Inventory page.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and has at least one item added to the cart."
+      ],
+      "steps": [
+        "1. Locate an item previously added to the cart displaying a 'Remove' button.",
+        "2. Click the 'Remove' button."
+      ],
+      "expected_result": "The item is removed from the cart, the button reverts to 'Add to Cart', and the shopping cart badge count decreases by one.",
+      "business_rules": [
+        "BR-03",
+        "BR-04"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-004: Remove Item from Cart",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "6c5387515b29a1cf3d93dfd81b0629537cc24e5a752df9a0be853bfc62b1de09"
+    },
+    {
+      "scenario_id": "M02_BS_004",
+      "title": "Add Multiple Products to Shopping Cart",
+      "business_objective": "Enable users to select multiple distinct items and see accurate cart count updates.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click 'Add to Cart' on the first product.",
+        "2. Click 'Add to Cart' on a second distinct product.",
+        "3. Click 'Add to Cart' on a third distinct product."
+      ],
+      "expected_result": "All selected products show 'Remove' buttons and the cart badge accurately reflects the total unique count of selected items (3).",
+      "business_rules": [
+        "BR-04",
+        "BR-05"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-005: Add Multiple Products",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "f9a6426771873412a73b1f9ea2c058d895f6ee5ab2494e7315818792961d0966"
+    },
+    {
+      "scenario_id": "M02_BS_005",
+      "title": "Sort Products Alphabetically from A to Z",
+      "business_objective": "Allow users to organize the product list alphabetically by name.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click the product sort dropdown menu.",
+        "2. Select 'Name (A to Z)' option."
+      ],
+      "expected_result": "Products immediately rearrange in alphabetical order by name from A to Z.",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-006: Sort Products by Name (A-Z)",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "4a7ce18592fa292f44e7a38c83aa1ff37a3f20457c0121e1b32a4cb1ece531d6"
+    },
+    {
+      "scenario_id": "M02_BS_006",
+      "title": "Sort Products Alphabetically from Z to A",
+      "business_objective": "Allow users to organize the product list in reverse alphabetical order.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click the product sort dropdown menu.",
+        "2. Select 'Name (Z to A)' option."
+      ],
+      "expected_result": "Products immediately rearrange in reverse alphabetical order by name from Z to A.",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-007: Sort Products by Name (Z-A)",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "d8a05a52fd71df24bb2a352143ed3947ba3ff7a429d93ce1996f1928024bec99"
+    },
+    {
+      "scenario_id": "M02_BS_007",
+      "title": "Sort Products by Price Ascending (Low to High)",
+      "business_objective": "Allow users to organize products starting from the lowest price.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click the product sort dropdown menu.",
+        "2. Select 'Price (low to high)' option."
+      ],
+      "expected_result": "Products sort by ascending price, displaying the lowest priced item first.",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-008: Sort Products by Price (Low to High)",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "59f0eb31bd8563ae677577f8e82bb5e3e5a7d7a2e37182ed33d3e20f9550d968"
+    },
+    {
+      "scenario_id": "M02_BS_008",
+      "title": "Sort Products by Price Descending (High to Low)",
+      "business_objective": "Allow users to organize products starting from the highest price.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click the product sort dropdown menu.",
+        "2. Select 'Price (high to low)' option."
+      ],
+      "expected_result": "Products sort by descending price, displaying the highest priced item first.",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-009: Sort Products by Price (High to Low)",
+          "requirement_id": "REQ-009",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "b1066c6da3c7880e1fd62f2875a2b17e90f8fd09994527390bc50b01e609b319"
+    },
+    {
+      "scenario_id": "M02_BS_009",
+      "title": "Navigate to Product Details Page",
+      "business_objective": "Enable users to view detailed information for a specific product.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click on a product title or product image in the inventory list."
+      ],
+      "expected_result": "The user is navigated to the corresponding Product Details page.",
+      "business_rules": [
+        "BR-07"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-010: Navigate to Product Details",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "c363a9a74420ed1d0e4bb270b23ca77ab0a691eb2f1afe9dc97c288d656e7499"
+    },
+    {
+      "scenario_id": "M02_BS_010",
+      "title": "Open Shopping Cart Page from Inventory",
+      "business_objective": "Allow users to view items currently in their cart.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page with items in cart."
+      ],
+      "steps": [
+        "1. Click the shopping cart icon in the top header."
+      ],
+      "expected_result": "The Shopping Cart page opens with previously added products retained.",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-011: Open Shopping Cart",
+          "requirement_id": "REQ-011",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "2a64a4683b63dccaf9ac5880a935969cf06ebc875a61cd04ec73c46f8d03cea6"
+    },
+    {
+      "scenario_id": "M02_BS_011",
+      "title": "Open Sidebar Navigation Menu",
+      "business_objective": "Provide access to application navigation options via sidebar menu.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click the hamburger menu icon at the top left of the page."
+      ],
+      "expected_result": "The sidebar menu opens, rendering navigation options accessible.",
+      "business_rules": [
+        "BR-10"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-012: Open Hamburger Menu",
+          "requirement_id": "REQ-012",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "3845ceab0eec888913c11603652cc6de6c24264b508decbe71990e2007a0367a"
+    },
+    {
+      "scenario_id": "M02_BS_012",
+      "title": "User Logout via Sidebar Menu",
+      "business_objective": "Allow users to terminate their active session securely.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and on the Inventory page."
+      ],
+      "steps": [
+        "1. Click the menu icon to open the sidebar menu.",
+        "2. Click the 'Logout' menu option."
+      ],
+      "expected_result": "The user session is terminated and the user is redirected to the Login page.",
+      "business_rules": [
+        "BR-09"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-013: Logout Successfully",
+          "requirement_id": "REQ-013",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "421c3bbc1253c76569e05122a6ca4cf47a2670444f2cefe430016a905b8fbc99"
+    },
+    {
+      "scenario_id": "M02_BS_013",
+      "title": "Verify Cart Badge Persistence Across UI Interactions",
+      "business_objective": "Ensure active cart items and badge counts are preserved during sorting or menu toggling.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and has items added to the cart."
+      ],
+      "steps": [
+        "1. Add one or more products to the cart on the Inventory page.",
+        "2. Change product sorting order using the sort dropdown.",
+        "3. Open and close the hamburger sidebar menu."
+      ],
+      "expected_result": "The shopping cart badge retains its accurate count and added items remain selected without being cleared or modified.",
+      "business_rules": [
+        "BR-04",
+        "BR-06",
+        "BR-10"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-014: Verify Cart Badge Persistence",
+          "requirement_id": "REQ-014",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "7d9e0812379d2ef65c36048b1256531cd8cd21c19c6bef1b19ab23a7fa999714"
+    },
+    {
+      "scenario_id": "M02_BS_014",
+      "title": "Refresh Inventory Page and Preserve Session State",
+      "business_objective": "Ensure page refreshes do not lose active session data or cart selections.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and has added products to the cart on the Inventory page."
+      ],
+      "steps": [
+        "1. Refresh the web browser on the Inventory page."
+      ],
+      "expected_result": "The Inventory page reloads successfully, maintaining session state and preserving active cart selections and badge count.",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "SC-M02-015: Refresh Inventory Page",
+          "requirement_id": "REQ-015",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "50f979b8ed24ed23e3eb4605b696ff44ecaa59eeba4fa4042d18bb7c3eb46bbd"
+    },
+    {
+      "scenario_id": "M02_BS_015",
+      "title": "Enforce Non-Duplicate Product Selection in Shopping Cart",
+      "business_objective": "Ensure that users cannot add duplicate instances of the same product to the shopping cart, enforcing unique product selection and state management.",
+      "actor": "Primary User",
+      "preconditions": [
+        "User is authenticated and currently viewing the Inventory page."
+      ],
+      "steps": [
+        "Click 'Add to Cart' for a selected product in the inventory list.",
+        "Observe the product action button and the shopping cart badge count.",
+        "Verify that the button state transitions to 'Remove' and no additional 'Add to Cart' action is available for that product."
+      ],
+      "expected_result": "The product button changes to 'Remove', preventing duplicate additions of the same product, and the cart badge count reflects exactly 1 unique product.",
+      "business_rules": [
+        "BR-03",
+        "BR-05"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "4. Business Scenarios",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "4. Business Scenarios",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "f884f8ddda0a599a417402b2e2aed478ea1693cf2a825fea0ae966c3f9ea9347"
+    },
+    {
+      "scenario_id": "M02_BS_016",
+      "title": "Restrict Access to Inventory Page for Unauthenticated Users",
+      "business_objective": "Ensure system security by preventing unauthenticated access to the product inventory page.",
+      "actor": "Automated Test Agent",
+      "preconditions": [
+        "The browser session is unauthenticated and lacks a valid session state."
+      ],
+      "steps": [
+        "Attempt to navigate directly to the Inventory page URL."
+      ],
+      "expected_result": "Access is denied and the user is redirected to the Login page in accordance with authentication security rules.",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_inventory.md",
+          "page_number": null,
+          "section": "4. Business Scenarios",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Inventory / Products",
+      "content_hash": "662986f378875e80738666665e4a0d5f1a730844dbc93c7982df87e23c9bc06c"
+    }
+  ],
+  "modules": [
+    "M01",
+    "M02"
+  ]
+}

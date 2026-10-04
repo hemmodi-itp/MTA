@@ -1,0 +1,13 @@
+# test_comprehension_only.yaml — comprehension category, standalone
+#
+# Step 1: discovery — DOM scan + BRD comprehension → dom_elements.json + business_scenarios.json
+#
+# Use this workflow to ingest a BRD / re-scan the DOM without generating or running any tests.
+# Downstream workflows (test_test_creation_only, full_workflow) read the artifacts this produces.
+
+steps:
+  - name: discovery
+    description: "DOM scan + BRD comprehension → dom_elements.json + business_scenarios.json"
+    # Outputs:  comprehension/dom_elements.json
+    #           comprehension/business_scenarios.json
+    #           comprehension/interaction_catalog.json

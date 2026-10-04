@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "intents_path": "application_assets\\projects\\Blog_Writing_Agent\\test_creation\\intents.yaml",
+  "dom_status": "success",
+  "dom_intents_count": 5,
+  "dom_intents_path": "application_assets\\projects\\Blog_Writing_Agent\\test_comprehension\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\Blog_Writing_Agent\\test_comprehension\\dom_elements.json",
+  "comprehension_status": "success",
+  "scenarios_count": 5,
+  "business_scenarios_path": "application_assets\\projects\\Blog_Writing_Agent\\test_comprehension\\business_scenarios.json",
+  "comprehension_source": "ui_scanner",
+  "mode": "url_only",
+  "module": "discovery"
+}

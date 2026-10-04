@@ -1,0 +1,968 @@
+{
+  "url": "https://aws.amazon.com/partners/",
+  "project": "AWS_Test",
+  "page_name": "AWS_Test",
+  "intent_count": 120,
+  "intents": [
+    {
+      "intent_id": "DOM_INT_001",
+      "intent_name": "enter_element",
+      "action": "fill",
+      "locator_id": "LOC-0001",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_003",
+      "intent_name": "enter_opt_out_of_crosscontext_behavioral_ads",
+      "action": "fill",
+      "locator_id": "LOC-0004",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_004",
+      "intent_name": "enter_im_looking_for",
+      "action": "fill",
+      "locator_id": "LOC-0005",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_006",
+      "intent_name": "click_accept",
+      "action": "click",
+      "locator_id": "LOC-0008",
+      "value": null,
+      "expected_result": "accept_opened"
+    },
+    {
+      "intent_id": "DOM_INT_007",
+      "intent_name": "click_decline",
+      "action": "click",
+      "locator_id": "LOC-0009",
+      "value": null,
+      "expected_result": "decline_opened"
+    },
+    {
+      "intent_id": "DOM_INT_008",
+      "intent_name": "click_customize",
+      "action": "click",
+      "locator_id": "LOC-0010",
+      "value": null,
+      "expected_result": "customize_opened"
+    },
+    {
+      "intent_id": "DOM_INT_009",
+      "intent_name": "click_cancel",
+      "action": "click",
+      "locator_id": "LOC-0011",
+      "value": null,
+      "expected_result": "cancel_opened"
+    },
+    {
+      "intent_id": "DOM_INT_010",
+      "intent_name": "click_save_preferences",
+      "action": "click",
+      "locator_id": "LOC-0012",
+      "value": null,
+      "expected_result": "save_preferences_opened"
+    },
+    {
+      "intent_id": "DOM_INT_011",
+      "intent_name": "click_element",
+      "action": "click",
+      "locator_id": "LOC-0014",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_012",
+      "intent_name": "click_filter_all",
+      "action": "click",
+      "locator_id": "LOC-0017",
+      "value": null,
+      "expected_result": "filter_all_opened"
+    },
+    {
+      "intent_id": "DOM_INT_013",
+      "intent_name": "click_english",
+      "action": "click",
+      "locator_id": "LOC-0018",
+      "value": null,
+      "expected_result": "english_opened"
+    },
+    {
+      "intent_id": "DOM_INT_014",
+      "intent_name": "click_support",
+      "action": "click",
+      "locator_id": "LOC-0019",
+      "value": null,
+      "expected_result": "support_opened"
+    },
+    {
+      "intent_id": "DOM_INT_015",
+      "intent_name": "click_my_account",
+      "action": "click",
+      "locator_id": "LOC-0020",
+      "value": null,
+      "expected_result": "my_account_opened"
+    },
+    {
+      "intent_id": "DOM_INT_016",
+      "intent_name": "click_discover_aws",
+      "action": "click",
+      "locator_id": "LOC-0021",
+      "value": null,
+      "expected_result": "discover_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_017",
+      "intent_name": "click_products",
+      "action": "click",
+      "locator_id": "LOC-0022",
+      "value": null,
+      "expected_result": "products_opened"
+    },
+    {
+      "intent_id": "DOM_INT_018",
+      "intent_name": "click_solutions",
+      "action": "click",
+      "locator_id": "LOC-0023",
+      "value": null,
+      "expected_result": "solutions_opened"
+    },
+    {
+      "intent_id": "DOM_INT_019",
+      "intent_name": "click_pricing",
+      "action": "click",
+      "locator_id": "LOC-0024",
+      "value": null,
+      "expected_result": "pricing_opened"
+    },
+    {
+      "intent_id": "DOM_INT_020",
+      "intent_name": "click_resources",
+      "action": "click",
+      "locator_id": "LOC-0025",
+      "value": null,
+      "expected_result": "resources_opened"
+    },
+    {
+      "intent_id": "DOM_INT_111",
+      "intent_name": "click_play",
+      "action": "click",
+      "locator_id": "LOC-0027",
+      "value": null,
+      "expected_result": "play_opened"
+    },
+    {
+      "intent_id": "DOM_INT_112",
+      "intent_name": "click_skip_backward",
+      "action": "click",
+      "locator_id": "LOC-0028",
+      "value": null,
+      "expected_result": "skip_backward_opened"
+    },
+    {
+      "intent_id": "DOM_INT_113",
+      "intent_name": "click_skip_forward",
+      "action": "click",
+      "locator_id": "LOC-0029",
+      "value": null,
+      "expected_result": "skip_forward_opened"
+    },
+    {
+      "intent_id": "DOM_INT_114",
+      "intent_name": "click_mute",
+      "action": "click",
+      "locator_id": "LOC-0030",
+      "value": null,
+      "expected_result": "mute_opened"
+    },
+    {
+      "intent_id": "DOM_INT_115",
+      "intent_name": "click_seek_to_live_currently_behind_livelive",
+      "action": "click",
+      "locator_id": "LOC-0031",
+      "value": null,
+      "expected_result": "seek_to_live_currently_behind_livelive_opened"
+    },
+    {
+      "intent_id": "DOM_INT_116",
+      "intent_name": "click_playback_rate",
+      "action": "click",
+      "locator_id": "LOC-0032",
+      "value": null,
+      "expected_result": "playback_rate_opened"
+    },
+    {
+      "intent_id": "DOM_INT_117",
+      "intent_name": "click_chapters",
+      "action": "click",
+      "locator_id": "LOC-0033",
+      "value": null,
+      "expected_result": "chapters_opened"
+    },
+    {
+      "intent_id": "DOM_INT_118",
+      "intent_name": "click_descriptions",
+      "action": "click",
+      "locator_id": "LOC-0034",
+      "value": null,
+      "expected_result": "descriptions_opened"
+    },
+    {
+      "intent_id": "DOM_INT_119",
+      "intent_name": "click_captions",
+      "action": "click",
+      "locator_id": "LOC-0035",
+      "value": null,
+      "expected_result": "captions_opened"
+    },
+    {
+      "intent_id": "DOM_INT_120",
+      "intent_name": "click_audio_track",
+      "action": "click",
+      "locator_id": "LOC-0036",
+      "value": null,
+      "expected_result": "audio_track_opened"
+    },
+    {
+      "intent_id": "DOM_INT_121",
+      "intent_name": "click_pictureinpicture",
+      "action": "click",
+      "locator_id": "LOC-0037",
+      "value": null,
+      "expected_result": "pictureinpicture_opened"
+    },
+    {
+      "intent_id": "DOM_INT_122",
+      "intent_name": "click_fullscreen",
+      "action": "click",
+      "locator_id": "LOC-0038",
+      "value": null,
+      "expected_result": "fullscreen_opened"
+    },
+    {
+      "intent_id": "DOM_INT_123",
+      "intent_name": "click_reset",
+      "action": "click",
+      "locator_id": "LOC-0039",
+      "value": null,
+      "expected_result": "reset_opened"
+    },
+    {
+      "intent_id": "DOM_INT_124",
+      "intent_name": "click_done",
+      "action": "click",
+      "locator_id": "LOC-0040",
+      "value": null,
+      "expected_result": "done_opened"
+    },
+    {
+      "intent_id": "DOM_INT_125",
+      "intent_name": "click_close_modal_dialog",
+      "action": "click",
+      "locator_id": "LOC-0041",
+      "value": null,
+      "expected_result": "close_modal_dialog_opened"
+    },
+    {
+      "intent_id": "DOM_INT_190",
+      "intent_name": "click_innovate",
+      "action": "click",
+      "locator_id": "LOC-0042",
+      "value": null,
+      "expected_result": "innovate_opened"
+    },
+    {
+      "intent_id": "DOM_INT_191",
+      "intent_name": "click_reach_millions_of_aws_customers",
+      "action": "click",
+      "locator_id": "LOC-0043",
+      "value": null,
+      "expected_result": "reach_millions_of_aws_customers_opened"
+    },
+    {
+      "intent_id": "DOM_INT_192",
+      "intent_name": "click_drive_profitable_growth",
+      "action": "click",
+      "locator_id": "LOC-0044",
+      "value": null,
+      "expected_result": "drive_profitable_growth_opened"
+    },
+    {
+      "intent_id": "DOM_INT_042",
+      "intent_name": "click_back_to_top",
+      "action": "click",
+      "locator_id": "LOC-0046",
+      "value": null,
+      "expected_result": "back_to_top_opened"
+    },
+    {
+      "intent_id": "DOM_INT_043",
+      "intent_name": "click_hi_i_can_connect_you_with_an_aws_representative_or_answer_questions_you_have_on_aws",
+      "action": "click",
+      "locator_id": "LOC-0047",
+      "value": null,
+      "expected_result": "hi_i_can_connect_you_with_an_aws_representative_or_answer_questions_you_have_on_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_131",
+      "intent_name": "click_need_more_info_highlight_any_text_to_get_an_explanation_generated_with_aws_generative_ai",
+      "action": "click",
+      "locator_id": "LOC-0049",
+      "value": null,
+      "expected_result": "need_more_info_highlight_any_text_to_get_an_explanation_generated_with_aws_generative_ai_opened"
+    },
+    {
+      "intent_id": "DOM_INT_132",
+      "intent_name": "click_2",
+      "action": "click",
+      "locator_id": "LOC-0050",
+      "value": null,
+      "expected_result": "2_opened"
+    },
+    {
+      "intent_id": "DOM_INT_133",
+      "intent_name": "select_whiteblackredgreenblueyellowmagentacyan",
+      "action": "select",
+      "locator_id": "LOC-0051",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_134",
+      "intent_name": "select_opaquesemitransparent",
+      "action": "select",
+      "locator_id": "LOC-0052",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_135",
+      "intent_name": "select_blackwhiteredgreenblueyellowmagentacyan",
+      "action": "select",
+      "locator_id": "LOC-0053",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_136",
+      "intent_name": "select_opaquesemitransparenttransparent",
+      "action": "select",
+      "locator_id": "LOC-0054",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_137",
+      "intent_name": "select_transparentsemitransparentopaque",
+      "action": "select",
+      "locator_id": "LOC-0056",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_138",
+      "intent_name": "select_5075100125150175200300400",
+      "action": "select",
+      "locator_id": "LOC-0057",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_139",
+      "intent_name": "select_noneraiseddepresseduniformdrop_shadow",
+      "action": "select",
+      "locator_id": "LOC-0058",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_140",
+      "intent_name": "select_proportional_sansserifmonospace_sansserifproportional_serifmonospace_serifcasualscriptsmall_caps",
+      "action": "select",
+      "locator_id": "LOC-0059",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_045",
+      "intent_name": "click_aws_cookie_notice",
+      "action": "click",
+      "locator_id": "LOC-0060",
+      "value": null,
+      "expected_result": "aws_cookie_notice_opened"
+    },
+    {
+      "intent_id": "DOM_INT_046",
+      "intent_name": "click_cookie_notice",
+      "action": "click",
+      "locator_id": "LOC-0061",
+      "value": null,
+      "expected_result": "cookie_notice_opened"
+    },
+    {
+      "intent_id": "DOM_INT_047",
+      "intent_name": "click_here",
+      "action": "click",
+      "locator_id": "LOC-0062",
+      "value": null,
+      "expected_result": "here_opened"
+    },
+    {
+      "intent_id": "DOM_INT_048",
+      "intent_name": "click_aws_privacy_notice",
+      "action": "click",
+      "locator_id": "LOC-0063",
+      "value": null,
+      "expected_result": "aws_privacy_notice_opened"
+    },
+    {
+      "intent_id": "DOM_INT_049",
+      "intent_name": "click_skip_to_main_content",
+      "action": "click",
+      "locator_id": "LOC-0064",
+      "value": null,
+      "expected_result": "skip_to_main_content_opened"
+    },
+    {
+      "intent_id": "DOM_INT_050",
+      "intent_name": "click_contact_us",
+      "action": "click",
+      "locator_id": "LOC-0066",
+      "value": null,
+      "expected_result": "contact_us_opened"
+    },
+    {
+      "intent_id": "DOM_INT_051",
+      "intent_name": "click_aws_marketplace",
+      "action": "click",
+      "locator_id": "LOC-0067",
+      "value": null,
+      "expected_result": "aws_marketplace_opened"
+    },
+    {
+      "intent_id": "DOM_INT_052",
+      "intent_name": "click_reinvent",
+      "action": "click",
+      "locator_id": "LOC-0069",
+      "value": null,
+      "expected_result": "reinvent_opened"
+    },
+    {
+      "intent_id": "DOM_INT_053",
+      "intent_name": "click_sign_in_to_console",
+      "action": "click",
+      "locator_id": "LOC-0070",
+      "value": null,
+      "expected_result": "sign_in_to_console_opened"
+    },
+    {
+      "intent_id": "DOM_INT_054",
+      "intent_name": "click_create_account",
+      "action": "click",
+      "locator_id": "LOC-0071",
+      "value": null,
+      "expected_result": "create_account_opened"
+    },
+    {
+      "intent_id": "DOM_INT_141",
+      "intent_name": "click_overview",
+      "action": "click",
+      "locator_id": "LOC-0072",
+      "value": null,
+      "expected_result": "overview_opened"
+    },
+    {
+      "intent_id": "DOM_INT_193",
+      "intent_name": "click_partner_programs",
+      "action": "click",
+      "locator_id": "LOC-0073",
+      "value": null,
+      "expected_result": "partner_programs_opened"
+    },
+    {
+      "intent_id": "DOM_INT_194",
+      "intent_name": "click_sell_in_aws_marketplace",
+      "action": "click",
+      "locator_id": "LOC-0074",
+      "value": null,
+      "expected_result": "sell_in_aws_marketplace_opened"
+    },
+    {
+      "intent_id": "DOM_INT_195",
+      "intent_name": "click_success_stories",
+      "action": "click",
+      "locator_id": "LOC-0076",
+      "value": null,
+      "expected_result": "success_stories_opened"
+    },
+    {
+      "intent_id": "DOM_INT_196",
+      "intent_name": "click_aws",
+      "action": "click",
+      "locator_id": "LOC-0077",
+      "value": null,
+      "expected_result": "aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_197",
+      "intent_name": "click_become_an_aws_partner",
+      "action": "click",
+      "locator_id": "LOC-0078",
+      "value": null,
+      "expected_result": "become_an_aws_partner_opened"
+    },
+    {
+      "intent_id": "DOM_INT_198",
+      "intent_name": "click_work_with_an_aws_partner",
+      "action": "click",
+      "locator_id": "LOC-0079",
+      "value": null,
+      "expected_result": "work_with_an_aws_partner_opened"
+    },
+    {
+      "intent_id": "DOM_INT_199",
+      "intent_name": "click_aws_partner_central",
+      "action": "click",
+      "locator_id": "LOC-0081",
+      "value": null,
+      "expected_result": "aws_partner_central_opened"
+    },
+    {
+      "intent_id": "DOM_INT_200",
+      "intent_name": "click_sign_in_to_the_aws_console",
+      "action": "click",
+      "locator_id": "LOC-0082",
+      "value": null,
+      "expected_result": "sign_in_to_the_aws_console_opened"
+    },
+    {
+      "intent_id": "DOM_INT_201",
+      "intent_name": "click_partner_paths",
+      "action": "click",
+      "locator_id": "LOC-0083",
+      "value": null,
+      "expected_result": "partner_paths_opened"
+    },
+    {
+      "intent_id": "DOM_INT_202",
+      "intent_name": "click_explore_partner_programs",
+      "action": "click",
+      "locator_id": "LOC-0084",
+      "value": null,
+      "expected_result": "explore_partner_programs_opened"
+    },
+    {
+      "intent_id": "DOM_INT_203",
+      "intent_name": "click_cosell_with_aws",
+      "action": "click",
+      "locator_id": "LOC-0085",
+      "value": null,
+      "expected_result": "cosell_with_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_204",
+      "intent_name": "click_blog_learn_about_the_aws_partner_experience_transformation_and_whats_ahead_read_the_latest_blog",
+      "action": "click",
+      "locator_id": "LOC-0086",
+      "value": null,
+      "expected_result": "blog_learn_about_the_aws_partner_experience_transformation_and_whats_ahead_read_the_latest_blog_opened"
+    },
+    {
+      "intent_id": "DOM_INT_205",
+      "intent_name": "click_whats_new_posts_read_about_the_latest_innovations_in_aws_marketplace_and_aws_partner_central_see_whats_new",
+      "action": "click",
+      "locator_id": "LOC-0087",
+      "value": null,
+      "expected_result": "whats_new_posts_read_about_the_latest_innovations_in_aws_marketplace_and_aws_partner_central_see_whats_new_opened"
+    },
+    {
+      "intent_id": "DOM_INT_206",
+      "intent_name": "click_partnercasts_hear_from_aws_partner_teams_on_the_latest_enhancements_to_the_partner_experience_explore_webinars",
+      "action": "click",
+      "locator_id": "LOC-0088",
+      "value": null,
+      "expected_result": "partnercasts_hear_from_aws_partner_teams_on_the_latest_enhancements_to_the_partner_experience_explore_webinars_opened"
+    },
+    {
+      "intent_id": "DOM_INT_207",
+      "intent_name": "click_explore_all_success_stories",
+      "action": "click",
+      "locator_id": "LOC-0089",
+      "value": null,
+      "expected_result": "explore_all_success_stories_opened"
+    },
+    {
+      "intent_id": "DOM_INT_208",
+      "intent_name": "click_lquipe_launches_19_olympic_podcasts_in_under_30_days_with_devoteams_ai_solution_on_aws_learn_more",
+      "action": "click",
+      "locator_id": "LOC-0090",
+      "value": null,
+      "expected_result": "lquipe_launches_19_olympic_podcasts_in_under_30_days_with_devoteams_ai_solution_on_aws_learn_more_opened"
+    },
+    {
+      "intent_id": "DOM_INT_209",
+      "intent_name": "click_the_network_achieves_85_model_accuracy_in_fighting_human_trafficking_with_slaloms_machine_learning_solution_on_aws_learn_more",
+      "action": "click",
+      "locator_id": "LOC-0091",
+      "value": null,
+      "expected_result": "the_network_achieves_85_model_accuracy_in_fighting_human_trafficking_with_slaloms_machine_learning_solution_on_aws_learn_more_opened"
+    },
+    {
+      "intent_id": "DOM_INT_210",
+      "intent_name": "click_bcg_generates_65_of_regional_sales_pipeline_with_aipowered_sales_engine_built_on_aws_learn_more",
+      "action": "click",
+      "locator_id": "LOC-0092",
+      "value": null,
+      "expected_result": "bcg_generates_65_of_regional_sales_pipeline_with_aipowered_sales_engine_built_on_aws_learn_more_opened"
+    },
+    {
+      "intent_id": "DOM_INT_211",
+      "intent_name": "click_state_of_idaho_consolidates_75_systems_into_single_cloud_erp_solution_with_aws_partners_deloitte_and_infor_learn_more",
+      "action": "click",
+      "locator_id": "LOC-0093",
+      "value": null,
+      "expected_result": "state_of_idaho_consolidates_75_systems_into_single_cloud_erp_solution_with_aws_partners_deloitte_and_infor_learn_more_opened"
+    },
+    {
+      "intent_id": "DOM_INT_212",
+      "intent_name": "click_see_all_resources",
+      "action": "click",
+      "locator_id": "LOC-0094",
+      "value": null,
+      "expected_result": "see_all_resources_opened"
+    },
+    {
+      "intent_id": "DOM_INT_213",
+      "intent_name": "click_events_attend_webinars_virtual_workshops_and_inperson_events_explore_aws_partner_events",
+      "action": "click",
+      "locator_id": "LOC-0095",
+      "value": null,
+      "expected_result": "events_attend_webinars_virtual_workshops_and_inperson_events_explore_aws_partner_events_opened"
+    },
+    {
+      "intent_id": "DOM_INT_214",
+      "intent_name": "click_video_aws_partner_network_youtube_channel_get_the_latest_updates",
+      "action": "click",
+      "locator_id": "LOC-0096",
+      "value": null,
+      "expected_result": "video_aws_partner_network_youtube_channel_get_the_latest_updates_opened"
+    },
+    {
+      "intent_id": "DOM_INT_215",
+      "intent_name": "click_blog_apn_blog_see_all_posts",
+      "action": "click",
+      "locator_id": "LOC-0097",
+      "value": null,
+      "expected_result": "blog_apn_blog_see_all_posts_opened"
+    },
+    {
+      "intent_id": "DOM_INT_216",
+      "intent_name": "click_live_and_ondemand_partner_webinars_watch_webinars",
+      "action": "click",
+      "locator_id": "LOC-0098",
+      "value": null,
+      "expected_result": "live_and_ondemand_partner_webinars_watch_webinars_opened"
+    },
+    {
+      "intent_id": "DOM_INT_217",
+      "intent_name": "click_social_apn_linkedin_stay_connected",
+      "action": "click",
+      "locator_id": "LOC-0099",
+      "value": null,
+      "expected_result": "social_apn_linkedin_stay_connected_opened"
+    },
+    {
+      "intent_id": "DOM_INT_218",
+      "intent_name": "click_social_apn_twitter_get_the_latest_updates",
+      "action": "click",
+      "locator_id": "LOC-0100",
+      "value": null,
+      "expected_result": "social_apn_twitter_get_the_latest_updates_opened"
+    },
+    {
+      "intent_id": "DOM_INT_075",
+      "intent_name": "click_create_an_aws_account",
+      "action": "click",
+      "locator_id": "LOC-0101",
+      "value": null,
+      "expected_result": "create_an_aws_account_opened"
+    },
+    {
+      "intent_id": "DOM_INT_076",
+      "intent_name": "click_what_is_aws",
+      "action": "click",
+      "locator_id": "LOC-0102",
+      "value": null,
+      "expected_result": "what_is_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_077",
+      "intent_name": "click_what_is_cloud_computing",
+      "action": "click",
+      "locator_id": "LOC-0103",
+      "value": null,
+      "expected_result": "what_is_cloud_computing_opened"
+    },
+    {
+      "intent_id": "DOM_INT_078",
+      "intent_name": "click_what_is_agentic_ai",
+      "action": "click",
+      "locator_id": "LOC-0104",
+      "value": null,
+      "expected_result": "what_is_agentic_ai_opened"
+    },
+    {
+      "intent_id": "DOM_INT_079",
+      "intent_name": "click_cloud_computing_concepts_hub",
+      "action": "click",
+      "locator_id": "LOC-0105",
+      "value": null,
+      "expected_result": "cloud_computing_concepts_hub_opened"
+    },
+    {
+      "intent_id": "DOM_INT_080",
+      "intent_name": "click_aws_cloud_security",
+      "action": "click",
+      "locator_id": "LOC-0106",
+      "value": null,
+      "expected_result": "aws_cloud_security_opened"
+    },
+    {
+      "intent_id": "DOM_INT_081",
+      "intent_name": "click_whats_new",
+      "action": "click",
+      "locator_id": "LOC-0107",
+      "value": null,
+      "expected_result": "whats_new_opened"
+    },
+    {
+      "intent_id": "DOM_INT_082",
+      "intent_name": "click_blogs",
+      "action": "click",
+      "locator_id": "LOC-0108",
+      "value": null,
+      "expected_result": "blogs_opened"
+    },
+    {
+      "intent_id": "DOM_INT_083",
+      "intent_name": "click_press_releases",
+      "action": "click",
+      "locator_id": "LOC-0109",
+      "value": null,
+      "expected_result": "press_releases_opened"
+    },
+    {
+      "intent_id": "DOM_INT_084",
+      "intent_name": "click_getting_started",
+      "action": "click",
+      "locator_id": "LOC-0110",
+      "value": null,
+      "expected_result": "getting_started_opened"
+    },
+    {
+      "intent_id": "DOM_INT_085",
+      "intent_name": "click_training",
+      "action": "click",
+      "locator_id": "LOC-0111",
+      "value": null,
+      "expected_result": "training_opened"
+    },
+    {
+      "intent_id": "DOM_INT_086",
+      "intent_name": "click_aws_trust_center",
+      "action": "click",
+      "locator_id": "LOC-0112",
+      "value": null,
+      "expected_result": "aws_trust_center_opened"
+    },
+    {
+      "intent_id": "DOM_INT_087",
+      "intent_name": "click_aws_solutions_library",
+      "action": "click",
+      "locator_id": "LOC-0113",
+      "value": null,
+      "expected_result": "aws_solutions_library_opened"
+    },
+    {
+      "intent_id": "DOM_INT_088",
+      "intent_name": "click_architecture_center",
+      "action": "click",
+      "locator_id": "LOC-0114",
+      "value": null,
+      "expected_result": "architecture_center_opened"
+    },
+    {
+      "intent_id": "DOM_INT_089",
+      "intent_name": "click_product_and_technical_faqs",
+      "action": "click",
+      "locator_id": "LOC-0115",
+      "value": null,
+      "expected_result": "product_and_technical_faqs_opened"
+    },
+    {
+      "intent_id": "DOM_INT_090",
+      "intent_name": "click_analyst_reports",
+      "action": "click",
+      "locator_id": "LOC-0116",
+      "value": null,
+      "expected_result": "analyst_reports_opened"
+    },
+    {
+      "intent_id": "DOM_INT_091",
+      "intent_name": "click_aws_partners",
+      "action": "click",
+      "locator_id": "LOC-0117",
+      "value": null,
+      "expected_result": "aws_partners_opened"
+    },
+    {
+      "intent_id": "DOM_INT_092",
+      "intent_name": "click_builder_center",
+      "action": "click",
+      "locator_id": "LOC-0118",
+      "value": null,
+      "expected_result": "builder_center_opened"
+    },
+    {
+      "intent_id": "DOM_INT_093",
+      "intent_name": "click_sdks__tools",
+      "action": "click",
+      "locator_id": "LOC-0119",
+      "value": null,
+      "expected_result": "sdks__tools_opened"
+    },
+    {
+      "intent_id": "DOM_INT_094",
+      "intent_name": "click_net_on_aws",
+      "action": "click",
+      "locator_id": "LOC-0120",
+      "value": null,
+      "expected_result": "net_on_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_095",
+      "intent_name": "click_python_on_aws",
+      "action": "click",
+      "locator_id": "LOC-0121",
+      "value": null,
+      "expected_result": "python_on_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_096",
+      "intent_name": "click_java_on_aws",
+      "action": "click",
+      "locator_id": "LOC-0122",
+      "value": null,
+      "expected_result": "java_on_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_097",
+      "intent_name": "click_php_on_aws",
+      "action": "click",
+      "locator_id": "LOC-0123",
+      "value": null,
+      "expected_result": "php_on_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_098",
+      "intent_name": "click_javascript_on_aws",
+      "action": "click",
+      "locator_id": "LOC-0124",
+      "value": null,
+      "expected_result": "javascript_on_aws_opened"
+    },
+    {
+      "intent_id": "DOM_INT_099",
+      "intent_name": "click_file_a_support_ticket",
+      "action": "click",
+      "locator_id": "LOC-0125",
+      "value": null,
+      "expected_result": "file_a_support_ticket_opened"
+    },
+    {
+      "intent_id": "DOM_INT_100",
+      "intent_name": "click_aws_repost",
+      "action": "click",
+      "locator_id": "LOC-0126",
+      "value": null,
+      "expected_result": "aws_repost_opened"
+    },
+    {
+      "intent_id": "DOM_INT_101",
+      "intent_name": "click_knowledge_center",
+      "action": "click",
+      "locator_id": "LOC-0127",
+      "value": null,
+      "expected_result": "knowledge_center_opened"
+    },
+    {
+      "intent_id": "DOM_INT_102",
+      "intent_name": "click_aws_support_overview",
+      "action": "click",
+      "locator_id": "LOC-0128",
+      "value": null,
+      "expected_result": "aws_support_overview_opened"
+    },
+    {
+      "intent_id": "DOM_INT_103",
+      "intent_name": "click_aws_accessibility",
+      "action": "click",
+      "locator_id": "LOC-0129",
+      "value": null,
+      "expected_result": "aws_accessibility_opened"
+    },
+    {
+      "intent_id": "DOM_INT_104",
+      "intent_name": "click_legal",
+      "action": "click",
+      "locator_id": "LOC-0130",
+      "value": null,
+      "expected_result": "legal_opened"
+    },
+    {
+      "intent_id": "DOM_INT_105",
+      "intent_name": "click_event_code_of_conduct",
+      "action": "click",
+      "locator_id": "LOC-0131",
+      "value": null,
+      "expected_result": "event_code_of_conduct_opened"
+    },
+    {
+      "intent_id": "DOM_INT_106",
+      "intent_name": "click_event_terms__conditions",
+      "action": "click",
+      "locator_id": "LOC-0132",
+      "value": null,
+      "expected_result": "event_terms__conditions_opened"
+    },
+    {
+      "intent_id": "DOM_INT_107",
+      "intent_name": "click_privacy",
+      "action": "click",
+      "locator_id": "LOC-0133",
+      "value": null,
+      "expected_result": "privacy_opened"
+    },
+    {
+      "intent_id": "DOM_INT_108",
+      "intent_name": "click_site_terms",
+      "action": "click",
+      "locator_id": "LOC-0134",
+      "value": null,
+      "expected_result": "site_terms_opened"
+    },
+    {
+      "intent_id": "DOM_INT_109",
+      "intent_name": "click_cookie_preferences",
+      "action": "click",
+      "locator_id": "LOC-0135",
+      "value": null,
+      "expected_result": "cookie_preferences_opened"
+    }
+  ]
+}

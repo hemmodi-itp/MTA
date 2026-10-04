@@ -1,0 +1,95 @@
+agents:
+
+  orchestrator:
+    enabled: true
+
+  discovery:
+    enabled: true   # runs comprehension and/or DOM scan based on available inputs
+
+  comprehension:
+    enabled: false  # superseded by discovery; keep true only for standalone runs
+
+  artifact_generator_intents:
+    enabled: true
+
+  testdata:
+    enabled: true
+
+  artifact_generator_testcases:
+    enabled: true
+
+  locator:
+    enabled: true   # gap-filler: skips automatically if all intents are already grounded
+
+  script_generation:
+    enabled: true
+
+  execution:
+    enabled: true
+
+  healing:
+    enabled: true
+
+  dedup:
+    enabled: true   # semantic dedup runs inside orchestrator after artifact_generator_testcases
+
+  reporting:
+    enabled: true
+
+  bdd:
+    enabled: false
+
+  # ── Agent-evaluation pipeline (workflows/agent_evaluation.yaml) ──
+  repo_fetch:
+    enabled: true
+
+  repo_analysis:
+    enabled: true
+
+  brd_builder:
+    enabled: true
+
+  agent_test_generation:
+    enabled: true
+
+  live_agent_execution:
+    enabled: true   # auto-skips in brd_only mode
+
+  repo_intelligence:
+    enabled: true
+
+  runtime_discovery:
+    enabled: true   # skipped automatically when brd_only / no live URL
+
+  app_classification:
+    enabled: true   # code-only when the live app is not visible
+
+  action_generation:
+    enabled: true   # skipped when brd_only; blocked (with reason) when the app needs a test account
+
+  playwright_executor:
+    enabled: true   # skipped when there is no ready action plan
+
+  evidence_collection:
+    enabled: true   # skipped when brd_only / nothing planned
+
+  output_validation:
+    enabled: true   # skipped when there is no runtime evidence
+
+  pass_fail:
+    enabled: true   # skipped when nothing was validated
+
+  requirement_traceability:
+    enabled: true
+
+  repository_review:
+    enabled: true
+
+  brd_compliance:
+    enabled: true   # needs traced requirements
+
+  final_report:
+    enabled: true   # needs a compliance score
+
+  compliance_scoring:
+    enabled: true

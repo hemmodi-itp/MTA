@@ -1,0 +1,176 @@
+# full_workflow.yaml — 7-step TypeScript Playwright pipeline
+#
+# Step 1: discovery         — DOM scan + BRD comprehension → dom_elements.json + business_scenarios.json
+# Step 2: testdata          — scenarios → 8-10 test variant types per scenario
+# Step 3: semantic_map      — scenarios + dom_elements → scenario_element_map.json (1 LLM call)
+# Step 4: script_generation — scenario_element_map + test_data → TypeScript .spec.ts files
+# Step 5: ui_execution      — npx playwright test → Playwright JSON + HTML reports
+# Step 6: healing           — Playwright JSON → block-level .spec.ts patching + blast radius
+# Step 7: reporting         — Playwright JSON + test_suite.json → HTML + JSON reports
+#
+# File paths below are relative to application_assets/projects/{project}/ unless noted.
+# Every path is taken directly from the agent that reads/writes it (agents/<category>/<agent>/agent.py) —
+# not aspirational. Where a file is read but nothing in this codebase currently produces it, that's
+# called out explicitly rather than implied.
+#
+# ── Cross-cutting files (read/written across MULTIPLE steps, not owned by any one) ──
+#
+#   project_state.json          (project root) — the cumulative source of truth: scenarios, test_cases,
+#                                run_history, gaps, new_additions. Loaded once by OrchestratorAgent at the
+#                                start of every run (tools/state/project_state_manager.py::load), updated
+#                                after EVERY step via merge_discovery / merge_test_cases / merge_run_results,
+#                                checkpointed immediately after discovery (survives a killed run), and
+#                                saved again at the very end of the run (psm.save). TestDataAgent reads it
+#                                (via ProjectArtifactContext.load) to skip scenarios that already have test
+#                                data.
+#   artifact_registry.json      (project root) — per-module ID counters + content-signature map
+#                                (tools/state/artifact_registry.py) so re-running discovery/testdata/
+#                                script_generation never reassigns/collides an existing scenario, DOM
+#                                intent, or test-data ID. Written by discovery (comprehension), testdata,
+#                                and script_generation whenever a namespaced ID (M0x_BS_00x / DOM_INT_00x /
+#                                TD_00x) is assigned.
+#   human_review_queue.json     (project root) — appended by script_generation whenever a plan reports a
+#                                missing action/locator (flag_missing_capability) or a locator_map.json
+#                                merge finds drift (record_locator_drift); appended by ANY agent's Python
+#                                fallback tier via tools/state/review_queue.py::flag_for_human_review.
+#                                Never read back by the pipeline — a human-facing queue only.
+#   test_creation/test_catalog.csv
+#   test_creation/test_catalog.md
+#                                Human-readable scenario→spec lookup table, fully recomputed (never
+#                                appended) from business_scenarios.json + test_suite.json on every write.
+#                                Written by script_generation (tools/test_creation/script_generation/
+#                                tools.py::update_catalog, right after specs are generated) and again by
+#                                reporting (tools/catalog/catalog_manager.py, right after it stamps real
+#                                last_result/last_run values onto test_suite.json — the one place in the
+#                                pipeline guaranteed to see actual execution results).
+#   test_creation/test_suite.json
+#                                The living spec registry — one entry per scenario (spec_id, file,
+#                                status, tier_used, generation_mode, last_result, last_run, healed_at).
+#                                Created/upserted by script_generation, status flipped to "healed" by
+#                                healing, and last_result/last_run stamped by reporting
+#                                (catalog_manager.stamp_execution_results).
+
+steps:
+  - name: discovery
+    description: "DOM scan + BRD comprehension → dom_elements.json + business_scenarios.json"
+    # Inputs:
+    #   project.yaml                          (url, brd_dir, modules[], auth — read via the request
+    #                                          the orchestrator builds from project.yaml)
+    #   <brd_dir>/*.md or *.docx               (the BRD file(s), when brd_dir is set)
+    #   comprehension/.../.dom_scan_checkpoint.json   (internal — resumes a killed/timed-out scan)
+    #   comprehension/.../interactive/session.json    (interactive-scan mode only — recorded by
+    #                                          `python main.py --record`, never launched inline here)
+    # Outputs (mode-dependent — see agent.md's BOTH/URL_ONLY/BRD_ONLY table for exactly which
+    # combination a given run produces; "mandatory" ones block the whole workflow if missing):
+    #   test_creation/intents.yaml             (mandatory when a URL is present — project-wide,
+    #                                          module-tagged aggregate merged in, never wholesale
+    #                                          overwritten)
+    #   comprehension/business_scenarios.json  (mandatory)
+    #   comprehension/business_scenarios.md    (mandatory)
+    #   comprehension/.../dom_elements.json    (when a URL is present; module-scoped path)
+    #   comprehension/.../dom_intents.json     (when a URL is present; module-scoped path)
+    #   comprehension/.../synthetic_brd.md     (URL-only LLM path only — not written on the
+    #                                          rule-based fallback)
+    #   comprehension/.../run_summary.json     (always — summary of what actually ran)
+    #   comprehension/.../interactive/user_flows.json   (interactive-scan projects only)
+
+  - name: testdata
+    description: "Business scenarios → 8-10 test variant types (empty, XSS, SQL, boundary, unicode…)"
+    depends_on: [discovery]
+    # Inputs:
+    #   comprehension/business_scenarios.json
+    #   comprehension/interaction_catalog.json   (optional field-name hints — NOT currently written
+    #                                            by any agent in this codebase; safe no-op if absent)
+    #   test_creation/intents.yaml               (legacy fallback for field-name hints, only used
+    #                                            when interaction_catalog.json is absent)
+    #   project_state.json                       (via ProjectArtifactContext — skips scenarios that
+    #                                            already have test data, incremental runs only)
+    # Outputs:
+    #   test_creation/test_data/test_data.json
+    #   test_creation/test_data/test_data.md
+
+  - name: semantic_map
+    description: "Map each scenario to its 3-7 relevant DOM elements — 1 LLM call total"
+    depends_on: [discovery]
+    # Inputs:
+    #   comprehension/business_scenarios.json
+    #   comprehension/.../dom_elements.json      (module-scoped)
+    #   comprehension/.../dom_intents.json       (module-scoped — enriches relevant_elements with
+    #                                            cluster/confidence/action; graceful no-op if absent)
+    #   comprehension/.../interactive/user_flows.json   (optional — boosts flow-linked clusters)
+    #   test_creation/intents.yaml               (backlink target, see Outputs)
+    # Outputs:
+    #   test_creation/scenario_element_map.json
+    #   test_creation/intents.yaml               (updated in place — backlinks matched intents'
+    #                                            source_scenarios; not a fresh file)
+
+  - name: script_generation
+    description: "Generate TypeScript .spec.ts files — one per scenario, with rich assertions"
+    depends_on: [testdata, semantic_map]
+    # Inputs:
+    #   comprehension/business_scenarios.json
+    #   test_creation/scenario_element_map.json
+    #   test_creation/test_data/test_data.json
+    #   comprehension/dom_elements.json          (bootstraps/merges the project-wide locator map)
+    #   test_creation/locator_map.json           (existing — merged, never wholesale overwritten)
+    #   test_creation/flows.json                 (optional, user-authored named flows — not
+    #                                            generated by any agent)
+    #   test_creation/test_suite.json            (existing — used to skip already-generated specs)
+    #   project.yaml                             (modules[] for per-module URL/setup-step overrides)
+    # Outputs:
+    #   test_creation/locator_map.json           (bootstrapped/merged once per project per run)
+    #   test_creation/pages.ts                   (every module's Page class + PAGE_REGISTRY)
+    #   test_creation/flows.generated.ts         (rebuilt from flows.json every run, if present)
+    #   test_creation/test_plans.json            (validated JSON plan per scenario, tier 0/1 only)
+    #   test_creation/test_scripts/{module_id}/test_{id}_{snake_title}.spec.ts  (one per scenario)
+    #   test_creation/test_suite.json            (upserted after every spec; gains generation_mode)
+    #   test_creation/test_catalog.csv / .md     (refreshed via update_catalog, non-fatal on failure)
+    #   human_review_queue.json                  (project root — missing action/locator or
+    #                                            locator_map drift flagged here, never guessed)
+    #   artifact_registry.json                   (project root — namespaced spec/locator IDs)
+
+  - name: ui_execution
+    description: "Run npx playwright test — headless chromium, JSON + HTML reporters"
+    depends_on: [script_generation]
+    # Inputs:
+    #   test_creation/test_scripts/**/*.spec.ts
+    #   project.yaml                             (BASE_URL resolution, auth/storageState)
+    #   test_execution/reports/index.json        (read-modify-write — prepends this run's entry)
+    # Outputs:
+    #   test_execution/reports/json/{ts}_results.json
+    #   test_execution/reports/html/{ts}/        (Playwright HTML report + traces)
+    #   test_execution/reports/index.json        (updated, newest-first)
+
+  - name: healing
+    description: "Heal failing test() blocks — root cause + blast radius + block-level patch"
+    depends_on: [ui_execution]
+    # Inputs:
+    #   test_execution/reports/json/{ts}_results.json   (latest — _find_latest_report)
+    #   comprehension/dom_elements.json
+    #   test_creation/test_scripts/**/*.spec.ts
+    #   test_creation/test_suite.json            (generation_mode per spec — routes locator repairs)
+    #   test_creation/test_data/test_data.json
+    #   test_creation/locator_map.json
+    #   project.yaml                             (per-module URLs)
+    # Outputs:
+    #   test_creation/test_scripts/**/*.spec.ts  (patched in place — the ONLY tool that writes a spec)
+    #   test_creation/locator_map.json           (patched in place, when the repair is a locator fix)
+    #   test_creation/test_suite.json            (status → "healed", healed_at timestamp per spec)
+    #   test_execution/reports/json/*.json       (re-invokes ui_execution per verify round — each
+    #                                            round produces its own fresh Playwright JSON report)
+
+  - name: reporting
+    description: "Aggregate Playwright results + test_suite.json → HTML + JSON reports"
+    always_run: true
+    depends_on: [healing]
+    # Inputs:
+    #   state.outputs / state.execution_trace    (in-memory — every prior step's result this run)
+    #   comprehension/business_scenarios.json    (catalog rebuild)
+    #   test_creation/test_suite.json            (catalog rebuild + result stamping)
+    # Outputs:
+    #   test_execution/reports/html/{ts}_{project}.html
+    #   test_execution/reports/json/{ts}_{project}.json
+    #   test_execution/reports/failures/{ts}_{project}.log
+    #   test_execution/reports/index.json        (updated, newest-first)
+    #   test_creation/test_suite.json            (last_result/last_run stamped per spec)
+    #   test_creation/test_catalog.csv / .md     (refreshed with real pass/fail, not just "generated")

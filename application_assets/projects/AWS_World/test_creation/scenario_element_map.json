@@ -1,0 +1,277 @@
+{
+  "M01_BS_001": {
+    "scenario_title": "Navigate to page information using navigation bar",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0025",
+        "playwright_expr": "page.getByRole('button', { name: 'Discover AWS' })",
+        "relevance": "main navigation item for accessing AWS information",
+        "intent_id": "DOM_INT_022",
+        "action": "click",
+        "expected_result": "discover_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0026",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "navigation item for product information",
+        "intent_id": "DOM_INT_023",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0027",
+        "playwright_expr": "page.getByRole('button', { name: 'Solutions' })",
+        "relevance": "navigation item for solutions information",
+        "intent_id": "DOM_INT_024",
+        "action": "click",
+        "expected_result": "solutions_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0029",
+        "playwright_expr": "page.getByRole('button', { name: 'Resources' })",
+        "relevance": "navigation item for resource information",
+        "intent_id": "DOM_INT_026",
+        "action": "click",
+        "expected_result": "resources_opened",
+        "cluster": "resources",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0017",
+        "playwright_expr": "page.getByRole('button', { name: 'Open navigation menu' })",
+        "relevance": "mobile navigation menu trigger",
+        "intent_id": "DOM_INT_014",
+        "action": "click",
+        "expected_result": "open_navigation_menu_opened",
+        "cluster": "aws",
+        "confidence": 0.6
+      }
+    ]
+  },
+  "M01_BS_002": {
+    "scenario_title": "Browse new AWS items in What's New section",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0140",
+        "playwright_expr": "page.getByRole('link', { name: 'What\\'s New' })",
+        "relevance": "direct link to What's New section",
+        "intent_id": "DOM_INT_091",
+        "action": "click",
+        "expected_result": "whats_new_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0114",
+        "playwright_expr": "page.getByRole('link', { name: 'Event\nre:Invent 2026: Build what\\'s next\nJoin us Nov. 30 to Dec. 4 in Las Vegas. Save $1,200 with early bird pricing. Ends August 25.\nRegister today' })",
+        "relevance": "featured new AWS event item",
+        "intent_id": "DOM_INT_066",
+        "action": "click",
+        "expected_result": "event_reinvent_2026_build_whats_next_join_us_nov_30_to_dec_4_in_las_vegas_save_1200_with_early_bird_pricing_ends_august_25_register_today_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0115",
+        "playwright_expr": "page.getByRole('link', { name: 'Agentic AI\nData leaders use agentic AI to lead industries\nSee how PGA Tour, Autodesk, and BMW are building data foundations for agentic AI with an open architecture on AWS.\nExplore how they innovate' })",
+        "relevance": "featured new agentic AI offering",
+        "intent_id": "DOM_INT_067",
+        "action": "click",
+        "expected_result": "agentic_ai_data_leaders_use_agentic_ai_to_lead_industries_see_how_pga_tour_autodesk_and_bmw_are_building_data_foundations_for_agentic_ai_with_an_open_architecture_on_aws_explore_how_they_innovate_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0116",
+        "playwright_expr": "page.getByRole('link', { name: 'Artificial Intelligence (AI)\nFind Your AI Path with AWS Startups\nFrom the first idea to scaled product. Discover AI tools, credits and expert guidance matched to your startup stage.\nExplore AI for Startups' })",
+        "relevance": "featured new AI startup offering",
+        "intent_id": "DOM_INT_068",
+        "action": "click",
+        "expected_result": "artificial_intelligence_ai_find_your_ai_path_with_aws_startups_from_the_first_idea_to_scaled_product_discover_ai_tools_credits_and_expert_guidance_matched_to_your_startup_stage_explore_ai_for_startups_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "M01_BS_003": {
+    "scenario_title": "View client showcase through image carousel",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0032",
+        "playwright_expr": "page.getByRole('button', { name: 'Previous slide' })",
+        "relevance": "carousel navigation control for browsing client images",
+        "intent_id": "DOM_INT_028",
+        "action": "click",
+        "expected_result": "previous_slide_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0033",
+        "playwright_expr": "page.getByRole('button', { name: 'Next slide' })",
+        "relevance": "carousel navigation control for browsing client images",
+        "intent_id": "DOM_INT_029",
+        "action": "click",
+        "expected_result": "next_slide_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0118",
+        "playwright_expr": "page.getByRole('link', { name: 'Industrial\nSiemens Mobility turns 175 years of data into searchable insights with AWS AI\nView the story' })",
+        "relevance": "clickable client showcase image for Siemens",
+        "intent_id": "DOM_INT_070",
+        "action": "click",
+        "expected_result": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0119",
+        "playwright_expr": "page.getByRole('link', { name: 'Automotive\nHow Audi uses AI to connect over 50 manufacturing plants worldwide\nView the story' })",
+        "relevance": "clickable client showcase image for Audi",
+        "intent_id": "DOM_INT_071",
+        "action": "click",
+        "expected_result": "automotive_how_audi_uses_ai_to_connect_over_50_manufacturing_plants_worldwide_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0120",
+        "playwright_expr": "page.getByRole('link', { name: 'Travel & Hospitality\nHow Booking.com personalizes every trip, processing up to 250k requests per second on AWS\nView the story' })",
+        "relevance": "clickable client showcase image for Booking.com",
+        "intent_id": "DOM_INT_072",
+        "action": "click",
+        "expected_result": "travel__hospitality_how_bookingcom_personalizes_every_trip_processing_up_to_250k_requests_per_second_on_aws_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "M01_BS_004": {
+    "scenario_title": "Read customer success stories through story cards",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0118",
+        "playwright_expr": "page.getByRole('link', { name: 'Industrial\nSiemens Mobility turns 175 years of data into searchable insights with AWS AI\nView the story' })",
+        "relevance": "customer story card for Siemens Mobility",
+        "intent_id": "DOM_INT_070",
+        "action": "click",
+        "expected_result": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.63
+      },
+      {
+        "locator_id": "LOC-0119",
+        "playwright_expr": "page.getByRole('link', { name: 'Automotive\nHow Audi uses AI to connect over 50 manufacturing plants worldwide\nView the story' })",
+        "relevance": "customer story card for Audi",
+        "intent_id": "DOM_INT_071",
+        "action": "click",
+        "expected_result": "automotive_how_audi_uses_ai_to_connect_over_50_manufacturing_plants_worldwide_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.63
+      },
+      {
+        "locator_id": "LOC-0120",
+        "playwright_expr": "page.getByRole('link', { name: 'Travel & Hospitality\nHow Booking.com personalizes every trip, processing up to 250k requests per second on AWS\nView the story' })",
+        "relevance": "customer story card for Booking.com",
+        "intent_id": "DOM_INT_072",
+        "action": "click",
+        "expected_result": "travel__hospitality_how_bookingcom_personalizes_every_trip_processing_up_to_250k_requests_per_second_on_aws_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.63
+      },
+      {
+        "locator_id": "LOC-0123",
+        "playwright_expr": "page.getByRole('link', { name: 'Retail\nAdidas drives enterprise-wide transformation\nAdidas accelerates application deployment 40x using AWS for SAP, streamlining business operations and resource planning.\nView the story' })",
+        "relevance": "customer story card for Adidas",
+        "intent_id": "DOM_INT_074",
+        "action": "click",
+        "expected_result": "retail_adidas_drives_enterprisewide_transformation_adidas_accelerates_application_deployment_40x_using_aws_for_sap_streamlining_business_operations_and_resource_planning_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.63
+      },
+      {
+        "locator_id": "LOC-0124",
+        "playwright_expr": "page.getByRole('link', { name: 'Retail\nTapestry amplifies store associate voices worldwide\nTapestry implements AWS AI-powered feedback analysis, enabling data-driven decisions through enhanced associate insights.\nView the story' })",
+        "relevance": "customer story card for Tapestry",
+        "intent_id": "DOM_INT_075",
+        "action": "click",
+        "expected_result": "retail_tapestry_amplifies_store_associate_voices_worldwide_tapestry_implements_aws_aipowered_feedback_analysis_enabling_datadriven_decisions_through_enhanced_associate_insights_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0117",
+        "playwright_expr": "page.getByRole('link', { name: 'View more stories' })",
+        "relevance": "link to access additional customer stories",
+        "intent_id": "DOM_INT_069",
+        "action": "click",
+        "expected_result": "view_more_stories_opened",
+        "cluster": "aws",
+        "confidence": 0.63
+      }
+    ]
+  },
+  "M01_BS_005": {
+    "scenario_title": "Explore AWS products information from homepage",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0026",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "main navigation to AWS products section",
+        "intent_id": "DOM_INT_023",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0125",
+        "playwright_expr": "page.getByRole('link', { name: 'Explore AWS for your industry' })",
+        "relevance": "link to explore industry-specific AWS products",
+        "intent_id": "DOM_INT_076",
+        "action": "click",
+        "expected_result": "explore_aws_for_your_industry_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0126",
+        "playwright_expr": "page.getByRole('link', { name: 'Financial services\nDevelop innovative and secure solutions across banking, capital markets, insurance, and payments\nView industry' })",
+        "relevance": "financial services product information section",
+        "intent_id": "DOM_INT_077",
+        "action": "click",
+        "expected_result": "financial_services_develop_innovative_and_secure_solutions_across_banking_capital_markets_insurance_and_payments_view_industry_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0127",
+        "playwright_expr": "page.getByRole('link', { name: 'Healthcare and Life Sciences\nAccelerate innovation and improve patient care with healthcare data management and security\nView industry' })",
+        "relevance": "healthcare product information section",
+        "intent_id": "DOM_INT_078",
+        "action": "click",
+        "expected_result": "healthcare_and_life_sciences_accelerate_innovation_and_improve_patient_care_with_healthcare_data_management_and_security_view_industry_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0128",
+        "playwright_expr": "page.getByRole('link', { name: 'Government\nSolutions designed to help government agencies modernize, meet mandates, reduce costs, and deliver mission outcomes\nView industry' })",
+        "relevance": "government product information section",
+        "intent_id": "DOM_INT_079",
+        "action": "click",
+        "expected_result": "government_solutions_designed_to_help_government_agencies_modernize_meet_mandates_reduce_costs_and_deliver_mission_outcomes_view_industry_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      }
+    ]
+  }
+}

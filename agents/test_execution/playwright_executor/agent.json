@@ -1,0 +1,23 @@
+{
+  "name": "PlaywrightExecutorAgent",
+  "registry_key": "playwright_executor",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.playwright_executor.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Runs the Action Generation Engine's plans in real Chromium browsers (one shared login, fresh context per plan, up to 3 in parallel) and records per-step outcomes, screenshots, page text, chat replies, downloaded files, network calls and console errors as durable run artifacts; verdicts are left to Output Validation and Pass/Fail.",
+  "inputs": [
+    { "name": "action_plan", "type": "object", "required": true, "description": "ActionGenerationAgent output; ready plans are executed" },
+    { "name": "live_url", "type": "string", "required": true, "description": "Base URL of the deployed app; brd_only / empty skips" },
+    { "name": "live_credentials", "type": "object", "required": false, "description": "{username, password} for the single shared login; never persisted" },
+    { "name": "run_id", "type": "string", "required": false, "description": "Names the durable artifact folder" }
+  ],
+  "outputs": [
+    { "name": "execution_run", "type": "object", "description": "status, reason, login, duration_s, counts, results[{plan_id, test_id, test_code, criterion_code, status, failed_step, error, steps[], captures{screenshot, dom_text, dom_excerpt, reply, downloads[], response}, observations{network, console_errors, page_errors, http_errors}, expectations[]}]" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

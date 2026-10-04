@@ -1,0 +1,1828 @@
+[
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "BS-001",
+    "scenario_title": "View Complete Inventory Page Layout",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-006",
+    "scenario_id": "BS-002",
+    "scenario_title": "Display All Six Inventory Products",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-007",
+    "scenario_id": "BS-003",
+    "scenario_title": "Add Single Product to Shopping Cart",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-008",
+    "scenario_id": "BS-004",
+    "scenario_title": "Remove Product from Shopping Cart",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-009",
+    "scenario_id": "BS-005",
+    "scenario_title": "Sort Products Alphabetically A to Z",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-010",
+    "scenario_id": "BS-006",
+    "scenario_title": "Sort Products Alphabetically Z to A",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Name (Z to A)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "empty",
+        "description": "No sort option selected",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a sort option"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "whitespace",
+        "description": "Sort option contains only whitespace",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "   "
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-003",
+        "variant_type": "special_chars",
+        "description": "XSS injection attempt in sort selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "<script>alert('xss')</script>"
+              }
+            ],
+            "expected_error": "Invalid sort option format"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-004",
+        "variant_type": "sql_injection",
+        "description": "SQL injection attempt in sort selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "' OR '1'='1"
+              }
+            ],
+            "expected_error": "Invalid sort option value"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-005",
+        "variant_type": "wrong_format",
+        "description": "Invalid sort option not in dropdown list",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "Random Order XYZ"
+              }
+            ],
+            "expected_error": "Selected sort option is not available"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-006",
+        "variant_type": "too_long",
+        "description": "Sort option value exceeds maximum length",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "expected_error": "Sort option value too long"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-007",
+        "variant_type": "at_boundary",
+        "description": "Sort option at maximum character boundary",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "expected_error": "Sort option not recognized"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-008",
+        "variant_type": "url_input",
+        "description": "URL input in sort selection field",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "https://evil.com/redirect"
+              }
+            ],
+            "expected_error": "Invalid sort option format"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-009",
+        "variant_type": "unicode",
+        "description": "Unicode characters in sort selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "Name (🔥 to 🎉)"
+              }
+            ],
+            "expected_error": "Sort option contains invalid characters"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-010",
+        "variant_type": "random",
+        "description": "Unexpected random value in sort selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "12345!@#$%"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-011",
+    "scenario_id": "BS-007",
+    "scenario_title": "Sort Products by Price Low to High",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-012",
+    "scenario_id": "BS-008",
+    "scenario_title": "Sort Products by Price High to Low",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Price (high to low)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "empty",
+        "description": "No sort option selected",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a sort option"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "special_chars",
+        "description": "XSS injection attempt in sort selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "<script>alert('xss')</script>"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-003",
+        "variant_type": "sql_injection",
+        "description": "SQL injection attempt in sort selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "' OR '1'='1"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-004",
+        "variant_type": "wrong_format",
+        "description": "Invalid sort option not in dropdown",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "Invalid Sort Option"
+              }
+            ],
+            "expected_error": "Selected sort option is not available"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-005",
+        "variant_type": "url_input",
+        "description": "URL injection in sort selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "https://evil.com/redirect"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-013",
+    "scenario_id": "BS-009",
+    "scenario_title": "Navigate to Product Details Page",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-014",
+    "scenario_id": "BS-010",
+    "scenario_title": "Access Shopping Cart Page",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-015",
+    "scenario_id": "BS-011",
+    "scenario_title": "Open Navigation Menu",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-016",
+    "scenario_id": "BS-012",
+    "scenario_title": "Logout from Application",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-017",
+    "scenario_id": "BS-013",
+    "scenario_title": "Verify Cart Persistence During Interface Interactions",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-018",
+    "scenario_id": "BS-014",
+    "scenario_title": "Maintain Cart State After Page Refresh",
+    "actor": "Primary User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-015",
+    "scenario_id": "M01_BS_001",
+    "scenario_title": "Access SauceLabs Login Page URL",
+    "actor": "Guest / unauthenticated visitor",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_url",
+        "field_type": "url",
+        "value": "https://www.saucedemo.com/"
+      },
+      {
+        "field_name": "assert_username_input",
+        "field_type": "assertion",
+        "value": "Username"
+      },
+      {
+        "field_name": "assert_password_input",
+        "field_type": "assertion",
+        "value": "Password"
+      },
+      {
+        "field_name": "assert_login_button",
+        "field_type": "assertion",
+        "value": "Login"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Target URL is unreachable or returns page error preventing login form rendering",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_url",
+                "field_type": "url",
+                "value": "https://www.saucedemo.com/invalid-page"
+              },
+              {
+                "field_name": "assert_username_input",
+                "field_type": "assertion",
+                "value": "Username"
+              },
+              {
+                "field_name": "assert_password_input",
+                "field_type": "assertion",
+                "value": "Password"
+              },
+              {
+                "field_name": "assert_login_button",
+                "field_type": "assertion",
+                "value": "Login"
+              }
+            ],
+            "expected_error": "404 Page Not Found - Login form elements fail to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-016",
+    "scenario_id": "M01_BS_002",
+    "scenario_title": "User Login Validation",
+    "actor": "standard_user",
+    "positive_dataset": [
+      {
+        "field_name": "fill_username",
+        "field_type": "text",
+        "value": "standard_user"
+      },
+      {
+        "field_name": "fill_password",
+        "field_type": "password",
+        "value": "secret_sauce"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Missing credentials or invalid username and password combinations",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "standard_user"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": ""
+              }
+            ],
+            "expected_error": "Epic sadface: Password is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "invalid_user"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "wrong_password"
+              }
+            ],
+            "expected_error": "Epic sadface: Username and password do not match any user in this service"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Username field length exceeding maximum limits",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "user_exceeding_255_characters_limit_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username and password do not match any user in this service"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-017",
+    "scenario_id": "M02_BS_001",
+    "scenario_title": "View Inventory Page and Verify Product List",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_inventory_url",
+        "field_type": "url",
+        "value": "/inventory.html"
+      },
+      {
+        "field_name": "assert_page_header",
+        "field_type": "assertion",
+        "value": "Products"
+      },
+      {
+        "field_name": "assert_product_count",
+        "field_type": "count_min",
+        "value": "6"
+      },
+      {
+        "field_name": "assert_cart_icon",
+        "field_type": "assertion",
+        "value": "shopping_cart_link"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Page fails to load catalog elements or redirects to login page",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_inventory_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              },
+              {
+                "field_name": "assert_page_header",
+                "field_type": "assertion",
+                "value": "Products"
+              },
+              {
+                "field_name": "assert_product_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "assert_cart_icon",
+                "field_type": "assertion",
+                "value": "shopping_cart_link"
+              }
+            ],
+            "expected_error": "Expected at least 6 products, but found 0"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "navigate_inventory_url",
+                "field_type": "url",
+                "value": "/index.html"
+              },
+              {
+                "field_name": "assert_page_header",
+                "field_type": "assertion",
+                "value": "Products"
+              },
+              {
+                "field_name": "assert_product_count",
+                "field_type": "count_min",
+                "value": "6"
+              },
+              {
+                "field_name": "assert_cart_icon",
+                "field_type": "assertion",
+                "value": "shopping_cart_link"
+              }
+            ],
+            "expected_error": "Navigation target redirected to login page instead of inventory page"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-018",
+    "scenario_id": "M02_BS_002",
+    "scenario_title": "Add Single Item to Shopping Cart",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_product_item",
+        "field_type": "assertion",
+        "value": "Sauce Labs Backpack"
+      },
+      {
+        "field_name": "assert_button_text",
+        "field_type": "assertion",
+        "value": "Remove"
+      },
+      {
+        "field_name": "assert_cart_badge_count",
+        "field_type": "count_min",
+        "value": "1"
+      },
+      {
+        "field_name": "assert_page_url",
+        "field_type": "url",
+        "value": "/inventory.html"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Product failed to be added to cart and badge count did not increment",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_product_item",
+                "field_type": "assertion",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "assert_button_text",
+                "field_type": "assertion",
+                "value": "Add to cart"
+              },
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "assert_page_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Item state failed to update: button text remained 'Add to cart' and badge count did not increment"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-019",
+    "scenario_id": "M02_BS_003",
+    "scenario_title": "Remove Item from Cart via Inventory Page",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_product_item",
+        "field_type": "assertion",
+        "value": "Sauce Labs Backpack"
+      },
+      {
+        "field_name": "assert_button_text",
+        "field_type": "assertion",
+        "value": "Add to cart"
+      },
+      {
+        "field_name": "assert_cart_badge_count",
+        "field_type": "count_min",
+        "value": "0"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "/inventory.html"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Item removal action fails to update button label or decrement cart count",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_product_item",
+                "field_type": "assertion",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "assert_button_text",
+                "field_type": "assertion",
+                "value": "Remove"
+              },
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "count_min",
+                "value": "1"
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Button text failed to revert to 'Add to cart' and cart badge count was not decremented"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_product_item",
+                "field_type": "assertion",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "assert_button_text",
+                "field_type": "assertion",
+                "value": "Add to cart"
+              },
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "count_min",
+                "value": "1"
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Cart badge count remained unchanged after item removal"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-020",
+    "scenario_id": "M02_BS_004",
+    "scenario_title": "Add Multiple Products to Shopping Cart",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "assert_cart_badge_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "assert_button_state_text",
+        "field_type": "assertion",
+        "value": "Remove"
+      },
+      {
+        "field_name": "assert_inventory_page_url",
+        "field_type": "url",
+        "value": "/inventory.html"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Cart count or button state failed to update after adding multiple products",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "assert_button_state_text",
+                "field_type": "assertion",
+                "value": "Add to cart"
+              },
+              {
+                "field_name": "assert_inventory_page_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Cart badge count is missing or button state did not change to Remove"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "count_min",
+                "value": "1"
+              },
+              {
+                "field_name": "assert_button_state_text",
+                "field_type": "assertion",
+                "value": "Remove"
+              },
+              {
+                "field_name": "assert_inventory_page_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Cart badge count shows 1 instead of expected count 3"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-021",
+    "scenario_id": "M02_BS_005",
+    "scenario_title": "Sort Products Alphabetically from A to Z",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Name (A to Z)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid or unselected sort option",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a valid sort option"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "INVALID_SORT_VALUE"
+              }
+            ],
+            "expected_error": "Selected sort option is not supported"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-022",
+    "scenario_id": "M02_BS_006",
+    "scenario_title": "Sort Products Alphabetically from Z to A",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Name (Z to A)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid or unselected sort option",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a sort option"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "invalid_option"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-023",
+    "scenario_id": "M02_BS_007",
+    "scenario_title": "Sort Products by Price Ascending (Low to High)",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Price (low to high)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid or missing sort option selection",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a sort option"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "invalid_option"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-024",
+    "scenario_id": "M02_BS_008",
+    "scenario_title": "Sort Products by Price Descending (High to Low)",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Price (high to low)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid or unselected sort option",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a sort option"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "invalid_option"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-025",
+    "scenario_id": "M02_BS_009",
+    "scenario_title": "Navigate to Product Details Page",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "click_product_title",
+        "field_type": "navigation",
+        "value": "Sauce Labs Backpack"
+      },
+      {
+        "field_name": "assert_product_title",
+        "field_type": "assertion",
+        "value": "Sauce Labs Backpack"
+      },
+      {
+        "field_name": "assert_product_url",
+        "field_type": "url",
+        "value": "/inventory-item.html?id=4"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Product details page fails to render or target URL is invalid",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_product_title",
+                "field_type": "navigation",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "assert_product_title",
+                "field_type": "assertion",
+                "value": "Item Not Found"
+              },
+              {
+                "field_name": "assert_product_url",
+                "field_type": "url",
+                "value": "/404"
+              }
+            ],
+            "expected_error": "Product details failed to load for the selected item"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "click_product_title",
+                "field_type": "navigation",
+                "value": "Invalid Product"
+              },
+              {
+                "field_name": "assert_product_title",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "assert_product_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Navigation target product does not exist"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-026",
+    "scenario_id": "M02_BS_010",
+    "scenario_title": "Open Shopping Cart Page from Inventory",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "click_cart_icon",
+        "field_type": "navigation",
+        "value": "Shopping Cart Container"
+      },
+      {
+        "field_name": "assert_cart_url",
+        "field_type": "url",
+        "value": "https://www.saucedemo.com/cart.html"
+      },
+      {
+        "field_name": "assert_cart_heading",
+        "field_type": "assertion",
+        "value": "Your Cart"
+      },
+      {
+        "field_name": "assert_min_items_count",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Cart page opens but previously added items fail to render",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_cart_icon",
+                "field_type": "navigation",
+                "value": "Shopping Cart Container"
+              },
+              {
+                "field_name": "assert_cart_url",
+                "field_type": "url",
+                "value": "https://www.saucedemo.com/cart.html"
+              },
+              {
+                "field_name": "assert_cart_heading",
+                "field_type": "assertion",
+                "value": "Your Cart"
+              },
+              {
+                "field_name": "assert_min_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Cart page loaded but retained products were missing"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-027",
+    "scenario_id": "M02_BS_011",
+    "scenario_title": "Open Sidebar Navigation Menu",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "click_menu_button",
+        "field_type": "navigation",
+        "value": "hamburger_menu_icon"
+      },
+      {
+        "field_name": "assert_sidebar_visible",
+        "field_type": "assertion",
+        "value": "bm-menu-wrap"
+      },
+      {
+        "field_name": "assert_navigation_link",
+        "field_type": "assertion",
+        "value": "All Items"
+      },
+      {
+        "field_name": "assert_menu_items_count",
+        "field_type": "count_min",
+        "value": "4"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Sidebar navigation menu fails to render or open upon clicking menu icon",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_menu_button",
+                "field_type": "navigation",
+                "value": "hamburger_menu_icon"
+              },
+              {
+                "field_name": "assert_sidebar_visible",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "assert_navigation_link",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "assert_menu_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Sidebar navigation menu failed to open"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-028",
+    "scenario_id": "M02_BS_012",
+    "scenario_title": "User Logout via Sidebar Menu",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "https://www.saucedemo.com/"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Swag Labs"
+      },
+      {
+        "field_name": "expected_login_button",
+        "field_type": "assertion",
+        "value": "Login"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Session termination failure keeping user on inventory page",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "https://www.saucedemo.com/inventory.html"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": "Products"
+              },
+              {
+                "field_name": "expected_login_button",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "User session was not terminated and user was not redirected to login"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-029",
+    "scenario_id": "M02_BS_013",
+    "scenario_title": "Verify Cart Badge Persistence Across UI Interactions",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "select_product",
+        "field_type": "select",
+        "value": "Sauce Labs Backpack"
+      },
+      {
+        "field_name": "select_sort_option",
+        "field_type": "select",
+        "value": "Price (low to high)"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid or unselected sort option submitted",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_product",
+                "field_type": "select",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Please select a valid sort option"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "select_product",
+                "field_type": "select",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "select_sort_option",
+                "field_type": "select",
+                "value": "INVALID_SORT_KEY"
+              }
+            ],
+            "expected_error": "Invalid sort option selected"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-030",
+    "scenario_id": "M02_BS_014",
+    "scenario_title": "Refresh Inventory Page and Preserve Session State",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "assert_page_url",
+        "field_type": "url",
+        "value": "https://www.saucedemo.com/inventory.html"
+      },
+      {
+        "field_name": "assert_page_heading",
+        "field_type": "assertion",
+        "value": "Products"
+      },
+      {
+        "field_name": "assert_cart_badge_count",
+        "field_type": "assertion",
+        "value": "2"
+      },
+      {
+        "field_name": "assert_min_cart_items",
+        "field_type": "count_min",
+        "value": "2"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Session or cart state lost after browser refresh",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "assert_page_url",
+                "field_type": "url",
+                "value": "https://www.saucedemo.com/"
+              },
+              {
+                "field_name": "assert_page_heading",
+                "field_type": "assertion",
+                "value": "Login"
+              },
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "assert_min_cart_items",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Session lost after browser refresh; user redirected to login page"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "assert_page_url",
+                "field_type": "url",
+                "value": "https://www.saucedemo.com/inventory.html"
+              },
+              {
+                "field_name": "assert_page_heading",
+                "field_type": "assertion",
+                "value": "Products"
+              },
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "assertion",
+                "value": "0"
+              },
+              {
+                "field_name": "assert_min_cart_items",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Cart items and badge count were not preserved after browser refresh"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-031",
+    "scenario_id": "M01_BS_003",
+    "scenario_title": "Login Form Missing Required Fields Validation",
+    "actor": "Guest / unauthenticated visitor",
+    "positive_dataset": [
+      {
+        "field_name": "fill_username",
+        "field_type": "text",
+        "value": "standard_user"
+      },
+      {
+        "field_name": "fill_password",
+        "field_type": "password",
+        "value": "secret_sauce"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Missing required credentials on form submission",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": ""
+              }
+            ],
+            "expected_error": "Epic sadface: Username is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "standard_user"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": ""
+              }
+            ],
+            "expected_error": "Epic sadface: Password is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username is required"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Credentials exceeding standard length limit of 255 characters",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "user_255_limit_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username and password do not match any user in this service"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-032",
+    "scenario_id": "M02_BS_015",
+    "scenario_title": "Enforce Non-Duplicate Product Selection in Shopping Cart",
+    "actor": "Primary User",
+    "positive_dataset": [
+      {
+        "field_name": "assert_product_item",
+        "field_type": "assertion",
+        "value": "Sauce Labs Backpack"
+      },
+      {
+        "field_name": "assert_button_state",
+        "field_type": "assertion",
+        "value": "Remove"
+      },
+      {
+        "field_name": "assert_cart_badge_count",
+        "field_type": "assertion",
+        "value": "1"
+      },
+      {
+        "field_name": "assert_inventory_url",
+        "field_type": "url",
+        "value": "/inventory.html"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Button state fails to change to Remove or duplicate item increments cart badge count",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "assert_product_item",
+                "field_type": "assertion",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "assert_button_state",
+                "field_type": "assertion",
+                "value": "Add to cart"
+              },
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "assertion",
+                "value": "2"
+              },
+              {
+                "field_name": "assert_inventory_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Duplicate item allowed in shopping cart; button state remained 'Add to cart' and cart badge incremented to 2."
+          },
+          {
+            "fields": [
+              {
+                "field_name": "assert_product_item",
+                "field_type": "assertion",
+                "value": "Sauce Labs Backpack"
+              },
+              {
+                "field_name": "assert_button_state",
+                "field_type": "assertion",
+                "value": "Add to cart"
+              },
+              {
+                "field_name": "assert_cart_badge_count",
+                "field_type": "assertion",
+                "value": "1"
+              },
+              {
+                "field_name": "assert_inventory_url",
+                "field_type": "url",
+                "value": "/inventory.html"
+              }
+            ],
+            "expected_error": "Button state failed to transition to 'Remove' after adding product to cart."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-033",
+    "scenario_id": "M02_BS_016",
+    "scenario_title": "Restrict Access to Inventory Page for Unauthenticated Users",
+    "actor": "Automated Test Agent",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_target_url",
+        "field_type": "url",
+        "value": "https://www.saucedemo.com/inventory.html"
+      },
+      {
+        "field_name": "expected_redirect_url",
+        "field_type": "url",
+        "value": "https://www.saucedemo.com/"
+      },
+      {
+        "field_name": "expected_error_assertion",
+        "field_type": "assertion",
+        "value": "Epic sadface: You can only access 'inventory.html' when you are logged in."
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Unauthenticated user direct navigation is not blocked or fails to redirect to login",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_target_url",
+                "field_type": "url",
+                "value": "https://www.saucedemo.com/inventory.html"
+              },
+              {
+                "field_name": "expected_redirect_url",
+                "field_type": "url",
+                "value": "https://www.saucedemo.com/inventory.html"
+              },
+              {
+                "field_name": "expected_error_assertion",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "User was improperly permitted access to inventory page without authentication"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-034",
+    "scenario_id": "M01_BS_004",
+    "scenario_title": "Inline Error Message Display Placement Validation",
+    "actor": "Guest / unauthenticated visitor",
+    "positive_dataset": [
+      {
+        "field_name": "fill_username",
+        "field_type": "text",
+        "value": "standard_user"
+      },
+      {
+        "field_name": "fill_password",
+        "field_type": "password",
+        "value": "secret_sauce"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Missing required username or password fields",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": ""
+              }
+            ],
+            "expected_error": "Epic sadface: Username is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "standard_user"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": ""
+              }
+            ],
+            "expected_error": "Epic sadface: Password is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username is required"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Username field at 255-character maximum length limit",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "user_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username and password do not match any user in this service"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-035",
+    "scenario_id": "M01_BS_005",
+    "scenario_title": "Standard User Login and Confirmation Redirection",
+    "actor": "standard_user",
+    "positive_dataset": [
+      {
+        "field_name": "fill_username",
+        "field_type": "text",
+        "value": "standard_user"
+      },
+      {
+        "field_name": "fill_password",
+        "field_type": "password",
+        "value": "secret_sauce"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid or missing credentials provided during login",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "standard_user"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": ""
+              }
+            ],
+            "expected_error": "Epic sadface: Password is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "standard_user"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "invalid_password"
+              }
+            ],
+            "expected_error": "Epic sadface: Username and password do not match any user in this service"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Username field exceeding standard length limits",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_username",
+                "field_type": "text",
+                "value": "standard_user_abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl"
+              },
+              {
+                "field_name": "fill_password",
+                "field_type": "password",
+                "value": "secret_sauce"
+              }
+            ],
+            "expected_error": "Epic sadface: Username and password do not match any user in this service"
+          }
+        ]
+      }
+    ]
+  }
+]

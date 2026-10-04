@@ -1,0 +1,37 @@
+{
+  "project": "AppEvolve",
+  "total_scenarios": 3,
+  "modules": {
+    "dashboard": 1,
+    "navigation": 1,
+    "interaction": 1
+  },
+  "suites": [
+    {"suite_id": "smoke", "name": "Smoke Tests", "type": "smoke"},
+    {"suite_id": "regression", "name": "Regression Tests", "type": "regression"},
+    {"suite_id": "module_navigation", "name": "Navigation Module", "type": "module"}
+  ],
+  "specs": [
+    {
+      "spec_id": "SC-001",
+      "scenario_title": "Search Products",
+      "module": "dashboard",
+      "file": "test_creation/test_scripts/individual/test_SC-001_search_products.spec.ts",
+      "status": "pending"
+    },
+    {
+      "spec_id": "SC-002",
+      "scenario_title": "Browse AppEvolve (Selenium Projects Page)",
+      "module": "navigation",
+      "file": "test_creation/test_scripts/individual/test_SC-002_browse_appevolve.spec.ts",
+      "status": "pending"
+    },
+    {
+      "spec_id": "SC-003",
+      "scenario_title": "Interact with AppEvolve (Selenium Projects Page)",
+      "module": "interaction",
+      "file": "test_creation/test_scripts/individual/test_SC-003_interact_appevolve.spec.ts",
+      "status": "pending"
+    }
+  ]
+}

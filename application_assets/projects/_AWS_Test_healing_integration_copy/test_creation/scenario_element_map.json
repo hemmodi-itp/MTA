@@ -1,0 +1,342 @@
+{
+  "M01_BS_001": {
+    "scenario_title": "Navigate using navigation bar to fetch page information",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0025",
+        "playwright_expr": "page.getByRole('button', { name: 'Discover AWS' })",
+        "relevance": "primary navigation bar element for discovering AWS information"
+      },
+      {
+        "locator_id": "LOC-0026",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "navigation bar element for accessing product information"
+      },
+      {
+        "locator_id": "LOC-0027",
+        "playwright_expr": "page.getByRole('button', { name: 'Solutions' })",
+        "relevance": "navigation bar element for solutions page information"
+      },
+      {
+        "locator_id": "LOC-0028",
+        "playwright_expr": "page.getByRole('button', { name: 'Pricing' })",
+        "relevance": "navigation bar element for pricing page information"
+      },
+      {
+        "locator_id": "LOC-0029",
+        "playwright_expr": "page.getByRole('button', { name: 'Resources' })",
+        "relevance": "navigation bar element for resources page information"
+      }
+    ]
+  },
+  "M01_BS_002": {
+    "scenario_title": "Browse new AWS items in What's New section",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0116",
+        "playwright_expr": "page.getByRole('link', { name: 'What\\'s New' })",
+        "relevance": "link to navigate to What's New section"
+      }
+    ]
+  },
+  "M01_BS_003": {
+    "scenario_title": "View client images through image carousel",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0061",
+        "playwright_expr": "page.getByRole('button', { name: '2' })",
+        "relevance": "carousel navigation control for viewing different client images"
+      }
+    ]
+  },
+  "M01_BS_005": {
+    "scenario_title": "Return to top of page using back to top functionality",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByRole('button', { name: 'Back to top' })",
+        "relevance": "back to top button for returning to page header"
+      }
+    ]
+  },
+  "M02_BS_001": {
+    "scenario_title": "User navigates Aurora page using navigation bar",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0083",
+        "playwright_expr": "page.getByRole('link', { name: 'Overview' })",
+        "relevance": "navigation element for Aurora overview information"
+      },
+      {
+        "locator_id": "LOC-0084",
+        "playwright_expr": "page.getByRole('link', { name: 'Features' })",
+        "relevance": "navigation element for Aurora features information"
+      },
+      {
+        "locator_id": "LOC-0085",
+        "playwright_expr": "page.getByRole('link', { name: 'Pricing' })",
+        "relevance": "navigation element for Aurora pricing information"
+      },
+      {
+        "locator_id": "LOC-0086",
+        "playwright_expr": "page.getByRole('link', { name: 'Resources' })",
+        "relevance": "navigation element for Aurora resources information"
+      }
+    ]
+  },
+  "M02_BS_004": {
+    "scenario_title": "User views customer success stories",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0102",
+        "playwright_expr": "page.getByRole('link', { name: 'BMW increased scalability and reduced costs with Aurora Serverless\nRead the case study' })",
+        "relevance": "customer story card for BMW case study"
+      },
+      {
+        "locator_id": "LOC-0103",
+        "playwright_expr": "page.getByRole('link', { name: 'Samsung migrated 1.1 billion users from Oracle to Aurora with AWS Database Migration Service\nRead the case study' })",
+        "relevance": "customer story card for Samsung case study"
+      },
+      {
+        "locator_id": "LOC-0104",
+        "playwright_expr": "page.getByRole('link', { name: 'Coinbase Launches an Ultra-Low-Latency Cryptocurrency Exchange on AWS\nRead the case study' })",
+        "relevance": "customer story card for Coinbase case study"
+      },
+      {
+        "locator_id": "LOC-0105",
+        "playwright_expr": "page.getByRole('link', { name: 'DraftKings Scales Its Financial Ledger with Amazon Aurora\nRead the case study' })",
+        "relevance": "customer story card for DraftKings case study"
+      },
+      {
+        "locator_id": "LOC-0101",
+        "playwright_expr": "page.getByRole('link', { name: 'See more customer stories' })",
+        "relevance": "link to browse additional customer stories"
+      }
+    ]
+  },
+  "M02_BS_005": {
+    "scenario_title": "User follows Get Started with Aurora workflow",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0092",
+        "playwright_expr": "page.getByRole('button', { name: 'Get started with Aurora' })",
+        "relevance": "primary button to initiate Aurora getting started workflow"
+      },
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.getByPlaceholder('I\\'m looking for...')",
+        "relevance": "search field for finding User Guide on resources page"
+      }
+    ]
+  },
+  "M02_BS_006": {
+    "scenario_title": "User explores Aurora pricing information",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0085",
+        "playwright_expr": "page.getByRole('link', { name: 'Pricing' })",
+        "relevance": "link to navigate to Aurora pricing section"
+      }
+    ]
+  },
+  "SC-001": {
+    "scenario_title": "Save Changes",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.locator('#awsccc-u-cb-performance')",
+        "relevance": "input field for element entry"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.locator('#awsccc-u-cb-functional')",
+        "relevance": "input field for allow crosscontext behavioral ads"
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('#awsccc-u-cb-advertising')",
+        "relevance": "input field for opt out of crosscontext behavioral ads"
+      },
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.getByPlaceholder('I\\'m looking for...')",
+        "relevance": "search input field for 'im looking for' entry"
+      },
+      {
+        "locator_id": "LOC-0013",
+        "playwright_expr": "page.getByRole('button', { name: 'Save preferences' })",
+        "relevance": "save preferences button to complete the workflow"
+      }
+    ]
+  },
+  "SC-002": {
+    "scenario_title": "Use AWS_Test",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0062",
+        "playwright_expr": "page.getByRole('combobox', { name: 'WhiteBlackRedGreenBlueYellowMagentaCyan' })",
+        "relevance": "dropdown for color selection"
+      },
+      {
+        "locator_id": "LOC-0063",
+        "playwright_expr": "page.getByRole('combobox', { name: 'OpaqueSemi-Transparent' })",
+        "relevance": "dropdown for opacity selection"
+      },
+      {
+        "locator_id": "LOC-0067",
+        "playwright_expr": "page.getByRole('combobox', { name: 'TransparentSemi-TransparentOpaque' })",
+        "relevance": "dropdown for transparency selection"
+      },
+      {
+        "locator_id": "LOC-0068",
+        "playwright_expr": "page.getByRole('combobox', { name: '50%75%100%125%150%175%200%300%400%' })",
+        "relevance": "dropdown for percentage selection"
+      },
+      {
+        "locator_id": "LOC-0069",
+        "playwright_expr": "page.getByRole('combobox', { name: 'NoneRaisedDepressedUniformDrop shadow' })",
+        "relevance": "dropdown for shadow effect selection"
+      },
+      {
+        "locator_id": "LOC-0070",
+        "playwright_expr": "page.getByRole('combobox', { name: 'Proportional Sans-SerifMonospace Sans-SerifProportional SerifMonospace SerifCasualScriptSmall Caps' })",
+        "relevance": "dropdown for font family selection"
+      }
+    ]
+  },
+  "SC-003": {
+    "scenario_title": "Browse AWS_Test",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0019",
+        "playwright_expr": "page.getByRole('button', { name: 'Filter: All' })",
+        "relevance": "filter all button for browsing interface"
+      },
+      {
+        "locator_id": "LOC-0035",
+        "playwright_expr": "page.getByRole('button', { name: 'Skip Backward' })",
+        "relevance": "skip backward navigation control"
+      },
+      {
+        "locator_id": "LOC-0039",
+        "playwright_expr": "page.getByRole('button', { name: 'Playback Rate' })",
+        "relevance": "playback rate control button"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByRole('button', { name: 'Back to top' })",
+        "relevance": "back to top navigation button"
+      },
+      {
+        "locator_id": "LOC-0057",
+        "playwright_expr": "page.getByRole('button', { name: 'I can connect you with an AWS sales representative if you like to learn more about our products and services.' })",
+        "relevance": "AWS sales representative connection button"
+      }
+    ]
+  },
+  "SC-004": {
+    "scenario_title": "Interact with AWS_Test",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('button', { name: 'Accept' })",
+        "relevance": "accept button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0010",
+        "playwright_expr": "page.getByRole('button', { name: 'Decline' })",
+        "relevance": "decline button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0011",
+        "playwright_expr": "page.getByRole('button', { name: 'Customize' })",
+        "relevance": "customize button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0012",
+        "playwright_expr": "page.getByRole('button', { name: 'Cancel' })",
+        "relevance": "cancel button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0034",
+        "playwright_expr": "page.getByRole('button', { name: 'Play' })",
+        "relevance": "play button for media interaction"
+      },
+      {
+        "locator_id": "LOC-0048",
+        "playwright_expr": "page.getByRole('button', { name: 'Close Modal Dialog' })",
+        "relevance": "close modal dialog button"
+      },
+      {
+        "locator_id": "LOC-0045",
+        "playwright_expr": "page.getByRole('button', { name: 'Fullscreen' })",
+        "relevance": "fullscreen button for media interaction"
+      }
+    ]
+  },
+  "SC-008": {
+    "scenario_title": "Create Account",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0110",
+        "playwright_expr": "page.getByRole('button', { name: 'Create an AWS account' })",
+        "relevance": "create AWS account button to initiate account creation"
+      }
+    ]
+  },
+  "SC-009": {
+    "scenario_title": "Browse AWS_Test",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0019",
+        "playwright_expr": "page.getByRole('button', { name: 'Filter: All' })",
+        "relevance": "filter all button for browsing interface"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByRole('button', { name: 'Back to top' })",
+        "relevance": "back to top navigation button"
+      },
+      {
+        "locator_id": "LOC-0077",
+        "playwright_expr": "page.getByRole('link', { name: 'Contact us' })",
+        "relevance": "contact us link for navigation"
+      }
+    ]
+  },
+  "SC-010": {
+    "scenario_title": "Interact with AWS_Test",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('button', { name: 'Accept' })",
+        "relevance": "accept button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0010",
+        "playwright_expr": "page.getByRole('button', { name: 'Decline' })",
+        "relevance": "decline button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0011",
+        "playwright_expr": "page.getByRole('button', { name: 'Customize' })",
+        "relevance": "customize button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0012",
+        "playwright_expr": "page.getByRole('button', { name: 'Cancel' })",
+        "relevance": "cancel button for user interaction"
+      },
+      {
+        "locator_id": "LOC-0078",
+        "playwright_expr": "page.getByRole('link', { name: 'AWS Marketplace' })",
+        "relevance": "AWS Marketplace link for navigation"
+      },
+      {
+        "locator_id": "LOC-0110",
+        "playwright_expr": "page.getByRole('button', { name: 'Create an AWS account' })",
+        "relevance": "create AWS account button"
+      }
+    ]
+  }
+}

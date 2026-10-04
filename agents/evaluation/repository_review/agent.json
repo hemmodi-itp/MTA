@@ -1,0 +1,66 @@
+{
+  "name": "RepositoryReviewAgent",
+  "registry_key": "repository_review",
+  "category": "evaluation",
+  "module_path": "agents.evaluation.repository_review.agent",
+  "version": "2.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Deterministic scanner rules over every indexed language (secrets, real-auth detection, tests incl. JS/TS) plus one fenced, location-validated LLM design review; findings sorted by severity, unlocatable LLM findings kept as unverified without scorecard penalty; 0-100 scorecard per dimension.",
+  "inputs": [
+    {
+      "name": "repo_graph",
+      "type": "object",
+      "required": true,
+      "description": "Knowledge graph"
+    },
+    {
+      "name": "code_chunks",
+      "type": "array",
+      "required": true,
+      "description": "Code chunks"
+    },
+    {
+      "name": "repo_tree",
+      "type": "array",
+      "required": false,
+      "description": "Full file list (committed env files)"
+    },
+    {
+      "name": "repo_dir",
+      "type": "string",
+      "required": true,
+      "description": "Checkout used to validate finding locations"
+    },
+    {
+      "name": "repo_model",
+      "type": "object",
+      "required": false,
+      "description": "Routes, models and counts for the review summary"
+    },
+    {
+      "name": "agent_profile",
+      "type": "object",
+      "required": false,
+      "description": "observed_risks from RepoAnalysisAgent, given to the LLM review as hints to verify"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "findings",
+      "type": "array",
+      "description": "Findings sorted by severity with location, rationale, fix, source, confidence and verified (false = LLM finding that could not be located; not penalised)"
+    },
+    {
+      "name": "scorecard",
+      "type": "object",
+      "description": "Per-dimension 0-100 quality score"
+    }
+  ],
+  "dependencies": [],
+  "skills": [
+    "ai_app_review"
+  ],
+  "doc": "agent.md"
+}

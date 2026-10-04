@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "intents_path": "application_assets\\projects\\AppEvolve_Automation\\test_creation\\intents.yaml",
+  "dom_status": "success",
+  "dom_intents_count": 1,
+  "dom_intents_path": "application_assets\\projects\\AppEvolve_Automation\\comprehension\\modules\\M02\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\AppEvolve_Automation\\comprehension\\modules\\M02\\dom_elements.json",
+  "dom_pages_count": 1,
+  "comprehension_status": "success",
+  "comprehension_source": "dom_synthesized",
+  "scenarios_count": 49,
+  "business_scenarios_path": "application_assets\\projects\\AppEvolve_Automation\\comprehension\\business_scenarios.json",
+  "mode": "both",
+  "module": "discovery",
+  "module_id": "M02"
+}

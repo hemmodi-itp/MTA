@@ -1,0 +1,256 @@
+{
+  "M01_BS_001": {
+    "tests": [
+      {
+        "name": "positive — navigation bar items all reach their expected pages",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "discover_aws"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "aws",
+            "message": "Discover AWS link should navigate to an AWS-related page"
+          },
+          {
+            "action": "goBack"
+          },
+          {
+            "action": "click",
+            "locator_key": "navigate_products"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "products",
+            "message": "Products link should navigate to a products page"
+          },
+          {
+            "action": "goBack"
+          },
+          {
+            "action": "click",
+            "locator_key": "solutions"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "solutions",
+            "message": "Solutions link should navigate to a solutions page"
+          },
+          {
+            "action": "goBack"
+          },
+          {
+            "action": "click",
+            "locator_key": "resources"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "resources",
+            "message": "Resources link should navigate to a resources page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M01_BS_002": {
+    "tests": [
+      {
+        "name": "positive — browse and view AWS items in What's New section",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "what_s_new"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "whats-new",
+            "message": "Should navigate to What's New section"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "what_s_new",
+            "value": "What's New",
+            "message": "What's New section should be visible with proper heading"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "whats_new_section_heading - for verifying 'What's New with AWS' heading text",
+      "aws_items_list - for verifying minimum count of 5 AWS items",
+      "ec2_instance_update_item - for selecting the specific 'Amazon EC2 Instance Types Update' item",
+      "item_details_container - for verifying item details text 'Learn about the latest EC2 instance capabilities'"
+    ]
+  },
+  "M01_BS_003": {
+    "tests": [
+      {
+        "name": "positive — view client showcase through image carousel navigation",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "previous_slide"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "previous_slide",
+            "value": "Our Client Success Stories",
+            "message": "Carousel section should display the expected heading for client showcase"
+          },
+          {
+            "action": "click",
+            "locator_key": "next_slide"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "next_slide",
+            "message": "Next slide should be visible after clicking next navigation"
+          },
+          {
+            "action": "click",
+            "locator_key": "previous_slide"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "previous_slide",
+            "message": "Previous slide should be visible after clicking previous navigation"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "client-showcase-carousel section locator for viewing the carousel",
+      "client image elements for clicking to view details",
+      "client details container for verifying detailed information display"
+    ]
+  },
+  "M01_BS_004": {
+    "tests": [
+      {
+        "name": "positive — reading customer success stories through story cards succeeds",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "retail_adidas_drives_enterprise_wide"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "retail_adidas_drives_enterprise_wide",
+            "message": "Adidas customer story card should be visible in the Customer Story Cards section"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "retail_tapestry_amplifies_store_associate_voices",
+            "message": "Tapestry customer story card should be visible in the Customer Story Cards section"
+          },
+          {
+            "action": "click",
+            "locator_key": "retail_adidas_drives_enterprise_wide"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/customer-stories/",
+            "message": "User should be navigated to a customer story detail page"
+          },
+          {
+            "action": "goBack"
+          },
+          {
+            "action": "click",
+            "locator_key": "retail_tapestry_amplifies_store_associate_voices"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/customer-stories/",
+            "message": "User should be navigated to another customer story detail page"
+          },
+          {
+            "action": "goBack"
+          },
+          {
+            "action": "click",
+            "locator_key": "view_more_stories"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/customer-stories/",
+            "message": "View more stories link should navigate to additional customer stories"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M01_BS_005": {
+    "tests": [
+      {
+        "name": "positive — explore AWS products information from homepage",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "navigate_products"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "navigate_products",
+            "value": "Products",
+            "message": "Products section should be accessible from homepage"
+          },
+          {
+            "action": "click",
+            "locator_key": "explore_aws_for_your_industry"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "financial_services_develop_innovative_and_secure",
+            "message": "Financial services product information should be visible"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "healthcare_and_life_sciences_accelerate",
+            "message": "Healthcare and life sciences product information should be visible"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "government_solutions_designed_to_help_government",
+            "message": "Government solutions product information should be visible"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Products section heading locator for verifying 'AWS Products & Services'",
+      "Product categories section for verifying compute, storage, database categories",
+      "Amazon EC2 product detail link",
+      "Product description section for EC2 details",
+      "Product items container for count verification"
+    ]
+  }
+}

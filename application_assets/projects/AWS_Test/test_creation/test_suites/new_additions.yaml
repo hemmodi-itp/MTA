@@ -1,0 +1,97 @@
+suite: new_additions
+test_cases:
+- scenario: M01_BS_001
+  status: failing
+  suite: new_additions
+  test_case_id: M01_BS_001
+  test_case_name: Navigate using navigation bar to fetch page information
+- scenario: M01_BS_003
+  status: failing
+  suite: new_additions
+  test_case_id: M01_BS_003
+  test_case_name: View client images through image carousel
+- scenario: M01_BS_005
+  status: failing
+  suite: new_additions
+  test_case_id: M01_BS_005
+  test_case_name: Return to top of page using back to top functionality
+- scenario: SC-004
+  status: pending
+  suite: new_additions
+  test_case_id: SC-004
+  test_case_name: User Registration
+- scenario: SC-005
+  status: pending
+  suite: new_additions
+  test_case_id: SC-005
+  test_case_name: Search Products
+- scenario: SC-006
+  status: pending
+  suite: new_additions
+  test_case_id: SC-006
+  test_case_name: User Sign In
+- scenario: SC-007
+  status: pending
+  suite: new_additions
+  test_case_id: SC-007
+  test_case_name: Add Item
+- scenario: SC-008
+  status: pending
+  suite: new_additions
+  test_case_id: SC-008
+  test_case_name: Create Account
+- scenario: SC-009
+  status: pending
+  suite: new_additions
+  test_case_id: SC-009
+  test_case_name: Browse AWS_Test
+- scenario: SC-010
+  status: pending
+  suite: new_additions
+  test_case_id: SC-010
+  test_case_name: Interact with AWS_Test
+- scenario: SC-002
+  status: failing
+  suite: new_additions
+  test_case_id: SC-002
+  test_case_name: Browse AWS_Test
+- scenario: SC-003
+  status: failing
+  suite: new_additions
+  test_case_id: SC-003
+  test_case_name: Interact with AWS_Test
+- scenario: M02_BS_001
+  status: failing
+  suite: new_additions
+  test_case_id: M02_BS_001
+  test_case_name: User navigates Aurora page using navigation bar
+- scenario: M02_BS_004
+  status: failing
+  suite: new_additions
+  test_case_id: M02_BS_004
+  test_case_name: User views customer success stories
+- scenario: M02_BS_005
+  status: failing
+  suite: new_additions
+  test_case_id: M02_BS_005
+  test_case_name: User follows Get Started with Aurora workflow
+- scenario: M02_BS_008
+  status: failing
+  suite: new_additions
+  test_case_id: M02_BS_008
+  test_case_name: Logged in user accesses Aurora product information
+- scenario: SC-001
+  status: failing
+  suite: new_additions
+  test_case_id: SC-001
+  test_case_name: Save Changes
+- scenario: M01_BS_006
+  status: failing
+  suite: new_additions
+  test_case_id: M01_BS_006
+  test_case_name: Navigate through Products menu to find specific AWS services
+- scenario: M04_BS_001
+  status: failing
+  suite: new_additions
+  test_case_id: M04_BS_001
+  test_case_name: Navigate between different Partner sections using navigation bar

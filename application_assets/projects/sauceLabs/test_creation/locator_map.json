@@ -1,0 +1,23 @@
+{
+  "username": {
+    "type": "placeholder",
+    "locator": "Username",
+    "description": "Username",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "_default"
+  },
+  "password": {
+    "type": "placeholder",
+    "locator": "Password",
+    "description": "Password",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "_default"
+  },
+  "input_loc_0003": {
+    "type": "testid",
+    "locator": "login-button",
+    "description": "",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "_default"
+  }
+}

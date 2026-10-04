@@ -1,0 +1,70 @@
+{
+  "repo": "pujarachchh-intuitive/BRD_Agent",
+  "brd_path": "brdbrd.pdf",
+  "mode": "brd_only",
+  "labelled_by": "Claude (draft) - needs human review",
+  "labelled_against_commit": "fd37afc",
+  "notes": "Requirement-level labels. 'expected' is the verdict a careful human reviewer would give from the code; 'acceptable' lists verdicts that are defensible given static evidence only (no deployment). Evidence cites the files read while labelling.",
+  "requirements": [
+    {
+      "id": "BR-01", "keywords": ["form", "intake", "five", "deliverables", "single", "source"],
+      "expected": "implemented", "acceptable": ["implemented", "verified"],
+      "evidence": "frontend RequestForm -> POST /api/generate (webapp/server.py) -> service.generate_from_form builds document pipeline with 5 generators (brd_agent_suite/pipeline.py)"
+    },
+    {
+      "id": "BR-02", "keywords": ["auto", "generate", "enrich", "field"],
+      "expected": "implemented", "acceptable": ["implemented", "verified", "partial"],
+      "evidence": "auto_fields passed from the form to generate_from_form and into gap_filler_agent state; enrichment itself is LLM-driven"
+    },
+    {
+      "id": "BR-03", "keywords": ["not applicable", "omit", "exclude", "omission"],
+      "expected": "implemented", "acceptable": ["implemented", "verified", "partial"],
+      "evidence": "normalize_form forces excluded fields empty; NEVER_EXCLUDABLE_FIELDS backstop (webapp/service.py); section omission in documents relies on generator prompts"
+    },
+    {
+      "id": "BR-04", "keywords": ["custom", "additional", "sections"],
+      "expected": "implemented", "acceptable": ["implemented", "verified", "partial"],
+      "evidence": "additional_sections is a FORM_FIELDS list_obj passed through to requirements JSON; rendering into documents is prompt-driven"
+    },
+    {
+      "id": "BR-05", "keywords": ["docx", "export", "diagrams", "embedded"],
+      "expected": "implemented", "acceptable": ["implemented", "verified"],
+      "evidence": "POST /api/runs/{run_id}/export/{doc} -> service.export_docx runs pandoc on markdown that references architecture.png/flowchart.png uploaded via /diagrams"
+    },
+    {
+      "id": "BR-06", "keywords": ["revision", "revise", "change", "iterative", "non-destructive"],
+      "expected": "implemented", "acceptable": ["implemented", "verified"],
+      "evidence": "service.revise_run creates a new run id with parent_run_id and never overwrites the original run directory"
+    },
+    {
+      "id": "BR-07", "keywords": ["consistency", "cross-document", "check"],
+      "expected": "implemented", "acceptable": ["implemented", "verified"],
+      "evidence": "build_document_pipeline: SequentialAgent [first stage, ParallelAgent(5 generators), consistency_check_agent]"
+    },
+    {
+      "id": "BR-08", "keywords": ["side-by-side", "preview", "previews"],
+      "expected": "partial", "acceptable": ["partial", "implemented", "insufficient_evidence"],
+      "evidence": "ResultsView renders documents and Mermaid diagrams in tabs via DocumentRenderer; 'side-by-side' layout not evident - tabbed previews"
+    },
+    {
+      "id": "NFR-6.1", "keywords": ["90 seconds", "execution", "speed", "performance", "time"],
+      "expected": "partial", "acceptable": ["partial", "insufficient_evidence"],
+      "evidence": "Generators run in a ParallelAgent (design supports speed); a 90 s threshold cannot be proven without running it"
+    },
+    {
+      "id": "NFR-6.2", "keywords": ["api key", "env", "isolation", "exposed", "gemini"],
+      "expected": "implemented", "acceptable": ["implemented", "verified"],
+      "evidence": "load_dotenv in webapp/server.py; frontend only calls /api/* on the backend; no key in frontend code"
+    },
+    {
+      "id": "NFR-6.3", "keywords": ["retry", "failure", "error", "recovery", "failures"],
+      "expected": "partial", "acceptable": ["partial", "not_implemented"],
+      "evidence": "No retry logic anywhere (grep retry/backoff: none). Errors are logged (observability.log_model_error_call) and surfaced as HTTP 500 detail - reporting yes, retry no"
+    },
+    {
+      "id": "NFR-6.4", "keywords": ["offline", "vendored", "local", "assets"],
+      "expected": "implemented", "acceptable": ["implemented", "partial"],
+      "evidence": "marked and mermaid are npm dependencies bundled by Next.js (frontend/package.json, lib/mermaidSetup.ts); no CDN references found"
+    }
+  ]
+}

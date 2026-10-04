@@ -1,0 +1,18 @@
+{
+  "suite_id": "regression",
+  "name": "Regression Tests",
+  "description": "Full regression — all scenarios across all modules. Run before releases.",
+  "type": "regression",
+  "scope": "all_modules",
+
+  "scenarios": [],
+
+  "all_modules": true,
+  "modules": [],
+
+  "metadata": {
+    "owner": "QA Team",
+    "estimated_runtime_sec": 1800,
+    "notes": "all_modules: true means every spec listed in test_creation/test_suite.json runs. No scenario list needed."
+  }
+}

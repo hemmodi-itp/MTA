@@ -1,0 +1,64 @@
+{
+  "url": "http://localhost:5173/",
+  "project": "App_Compliance_with_docs",
+  "page_name": "App_Compliance_with_docs",
+  "intent_count": 7,
+  "intents": [
+    {
+      "intent_id": "DOM_INT_001",
+      "intent_name": "click_switch_to_dark_mode",
+      "action": "click",
+      "locator_id": "LOC-0001",
+      "value": null,
+      "expected_result": "switch_to_dark_mode_opened"
+    },
+    {
+      "intent_id": "DOM_INT_002",
+      "intent_name": "click_open_the_demo_project",
+      "action": "click",
+      "locator_id": "LOC-0002",
+      "value": null,
+      "expected_result": "open_the_demo_project_opened"
+    },
+    {
+      "intent_id": "DOM_INT_003",
+      "intent_name": "click_brd_compliance_criterionlevel",
+      "action": "click",
+      "locator_id": "LOC-0003",
+      "value": null,
+      "expected_result": "brd_compliance_criterionlevel_opened"
+    },
+    {
+      "intent_id": "DOM_INT_004",
+      "intent_name": "click_new_project",
+      "action": "click",
+      "locator_id": "LOC-0004",
+      "value": null,
+      "expected_result": "new_project_opened"
+    },
+    {
+      "intent_id": "DOM_INT_005",
+      "intent_name": "click_delete",
+      "action": "click",
+      "locator_id": "LOC-0005",
+      "value": null,
+      "expected_result": "delete_opened"
+    },
+    {
+      "intent_id": "DOM_INT_006",
+      "intent_name": "click_shopflow_demo",
+      "action": "click",
+      "locator_id": "LOC-0006",
+      "value": null,
+      "expected_result": "shopflow_demo_opened"
+    },
+    {
+      "intent_id": "DOM_INT_007",
+      "intent_name": "click_open",
+      "action": "click",
+      "locator_id": "LOC-0007",
+      "value": null,
+      "expected_result": "open_opened"
+    }
+  ]
+}

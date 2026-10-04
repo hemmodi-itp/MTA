@@ -1,0 +1,377 @@
+{
+  "BS-001": {
+    "scenario_title": "Dashboard page loads with proper navigation structure",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "search functionality in left navigation bar"
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('div>div>div>div>span>button')",
+        "relevance": "navigation menu button"
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.locator('div>div>div>div>button')",
+        "relevance": "clickable navigation item"
+      }
+    ]
+  },
+  "BS-002": {
+    "scenario_title": "Search functionality in left navigation bar",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "primary search input field in left navigation"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Search...')",
+        "relevance": "alternative search input field"
+      }
+    ]
+  },
+  "BS-004": {
+    "scenario_title": "Project listing navigation and interaction",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-190' })",
+        "relevance": "clickable project link in listing"
+      },
+      {
+        "locator_id": "LOC-0015",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-201' })",
+        "relevance": "clickable project link in listing"
+      },
+      {
+        "locator_id": "LOC-0016",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-197' })",
+        "relevance": "clickable project link in listing"
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-194' })",
+        "relevance": "clickable project link in listing"
+      }
+    ]
+  },
+  "M02_BS_002": {
+    "scenario_title": "Global navbar displays all required navigation elements",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('div>div>div>div>span>button')",
+        "relevance": "navigation menu toggle button"
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.locator('div>div>div:nth-of-type(2)>header>div>button:nth-of-type(2)')",
+        "relevance": "theme toggle control"
+      },
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.locator('div>div>div:nth-of-type(2)>header>div>div>button')",
+        "relevance": "language toggle control"
+      }
+    ]
+  },
+  "M03_BS_001": {
+    "scenario_title": "Navigate through left sidebar menu items",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('div>div>div>div>span>button')",
+        "relevance": "settings navigation button"
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.locator('div>div>div>div>button')",
+        "relevance": "help navigation button"
+      },
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.locator('div>div>div>div:nth-of-type(4)>div>div>div:nth-of-type(2)>button')",
+        "relevance": "dashboard navigation button"
+      },
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.locator('div>div>div:nth-of-type(2)>header>div>div>button')",
+        "relevance": "projects navigation button"
+      }
+    ]
+  },
+  "M03_BS_002": {
+    "scenario_title": "Search functionality in left navigation bar",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "search input field in left navigation"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Search...')",
+        "relevance": "alternative search input field"
+      }
+    ]
+  },
+  "M03_BS_004": {
+    "scenario_title": "Browse project listings with scrollable navigation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-190' })",
+        "relevance": "clickable project navigation link"
+      },
+      {
+        "locator_id": "LOC-0015",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-201' })",
+        "relevance": "clickable project navigation link"
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-194' })",
+        "relevance": "clickable project navigation link"
+      },
+      {
+        "locator_id": "LOC-0044",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-2' })",
+        "relevance": "clickable project navigation link"
+      }
+    ]
+  },
+  "M03_BS_009": {
+    "scenario_title": "Navigate through left sidebar menu items",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('div>div>div>div>span>button')",
+        "relevance": "settings menu item button"
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.locator('div>div>div>div>button')",
+        "relevance": "help menu item button"
+      },
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.locator('div>div>div>div:nth-of-type(4)>div>div>div:nth-of-type(2)>button')",
+        "relevance": "dashboard menu item button"
+      },
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.locator('div>div>div:nth-of-type(2)>header>div>div>button')",
+        "relevance": "projects menu item button"
+      }
+    ]
+  },
+  "M03_BS_010": {
+    "scenario_title": "Search functionality in left navigation bar",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "search input field for navigation items"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Search...')",
+        "relevance": "alternative search input field"
+      }
+    ]
+  },
+  "M03_BS_012": {
+    "scenario_title": "Navigate to new project via project links",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-190' })",
+        "relevance": "project link to navigate to project details"
+      },
+      {
+        "locator_id": "LOC-0015",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-201' })",
+        "relevance": "project link to navigate to project details"
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-194' })",
+        "relevance": "project link to navigate to project details"
+      }
+    ]
+  },
+  "M03_BS_014": {
+    "scenario_title": "Dashboard Navigation Menu Verification",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "search navigation item"
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('div>div>div>div>span>button')",
+        "relevance": "navigation menu item button"
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.locator('div>div>div>div>button')",
+        "relevance": "clickable navigation menu item"
+      },
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.locator('div>div>div>div:nth-of-type(4)>div>div>div:nth-of-type(2)>button')",
+        "relevance": "dashboard navigation item"
+      }
+    ]
+  },
+  "M03_BS_015": {
+    "scenario_title": "Navigation Search Functionality",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "search input field in left navigation"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Search...')",
+        "relevance": "alternative search input field"
+      }
+    ]
+  },
+  "M03_BS_017": {
+    "scenario_title": "Project Listing Navigation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-190' })",
+        "relevance": "project link in scrollable listing"
+      },
+      {
+        "locator_id": "LOC-0015",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-201' })",
+        "relevance": "project link in scrollable listing"
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-194' })",
+        "relevance": "project link in scrollable listing"
+      },
+      {
+        "locator_id": "LOC-0044",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-2' })",
+        "relevance": "project link in scrollable listing"
+      }
+    ]
+  },
+  "M03_BS_023": {
+    "scenario_title": "Complete navigation workflow validation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "search functionality in navigation workflow"
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('div>div>div>div>span>button')",
+        "relevance": "settings navigation in workflow"
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.locator('div>div>div>div>button')",
+        "relevance": "help navigation in workflow"
+      },
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.locator('div>div>div>div:nth-of-type(4)>div>div>div:nth-of-type(2)>button')",
+        "relevance": "dashboard navigation in workflow"
+      },
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.locator('div>div>div:nth-of-type(2)>header>div>div>button')",
+        "relevance": "projects navigation in workflow"
+      }
+    ]
+  },
+  "M03_BS_024": {
+    "scenario_title": "Settings navigation functionality verification",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.locator('div>div>div>div>span>button')",
+        "relevance": "settings menu item in left navigation"
+      }
+    ]
+  },
+  "M03_BS_025": {
+    "scenario_title": "Help navigation functionality verification",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.locator('div>div>div>div>button')",
+        "relevance": "help menu item in left navigation"
+      }
+    ]
+  },
+  "SC-001": {
+    "scenario_title": "Use AppEvolve",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "search input field for entering search terms"
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Search...')",
+        "relevance": "alternative search input field"
+      }
+    ]
+  },
+  "SC-002": {
+    "scenario_title": "Interact with AppEvolve",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.getByRole('button', { name: 'Tour' })",
+        "relevance": "tour button interaction"
+      },
+      {
+        "locator_id": "LOC-0010",
+        "playwright_expr": "page.getByRole('button', { name: 'Users3Total' })",
+        "relevance": "users total button interaction"
+      },
+      {
+        "locator_id": "LOC-0011",
+        "playwright_expr": "page.getByRole('button', { name: 'Clients2Total' })",
+        "relevance": "clients total button interaction"
+      },
+      {
+        "locator_id": "LOC-0012",
+        "playwright_expr": "page.getByRole('button', { name: 'Projects143Total' })",
+        "relevance": "projects total button interaction"
+      },
+      {
+        "locator_id": "LOC-0013",
+        "playwright_expr": "page.getByRole('button', { name: 'Profiles0Total' })",
+        "relevance": "profiles total button interaction"
+      },
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-190' })",
+        "relevance": "project button interaction"
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'proj-194' })",
+        "relevance": "project button interaction"
+      }
+    ]
+  }
+}

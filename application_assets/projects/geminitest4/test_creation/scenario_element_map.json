@@ -1,0 +1,142 @@
+{
+  "M01_BS_001": {
+    "scenario_title": "Access Gemini Home Page Interface",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.getByRole('button', { name: 'Microphone' })",
+        "relevance": "microphone button verification — used in step 4",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "microphone_opened",
+        "cluster": "microphone",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('button', { name: 'Flash' })",
+        "relevance": "model selector verification — used in step 3",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "flash_opened",
+        "cluster": "flash",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Open sidebar' })",
+        "relevance": "sidebar visibility verification — used in step 5",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": "open_sidebar_opened",
+        "cluster": "open",
+        "confidence": 0.6
+      }
+    ]
+  },
+  "M01_BS_006": {
+    "scenario_title": "Browse Available AI Models",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('button', { name: 'Flash' })",
+        "relevance": "model dropdown button — used in step 1",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "flash_opened",
+        "cluster": "flash",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_007": {
+    "scenario_title": "Switch AI Model",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('button', { name: 'Flash' })",
+        "relevance": "model selection interface — used in step 1",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "flash_opened",
+        "cluster": "flash",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_008": {
+    "scenario_title": "Access Upgrade Options",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0014",
+        "playwright_expr": "page.getByRole('link', { name: 'Subscriptions\nOpens in a new window' })",
+        "relevance": "upgrade/subscription access link — used in step 1",
+        "intent_id": "DOM_INT_012",
+        "action": "click",
+        "expected_result": "subscriptions_opens_in_a_new_window_opened",
+        "cluster": "new",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_009": {
+    "scenario_title": "Toggle Sidebar Visibility",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Open sidebar' })",
+        "relevance": "sidebar toggle control — used in steps 1 and 3",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": "open_sidebar_opened",
+        "cluster": "open",
+        "confidence": 0.6
+      }
+    ]
+  },
+  "M01_BS_010": {
+    "scenario_title": "Start New Conversation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0016",
+        "playwright_expr": "page.getByRole('link', { name: 'New chat' })",
+        "relevance": "new chat button — used in step 1",
+        "intent_id": "DOM_INT_014",
+        "action": "click",
+        "expected_result": "new_chat_opened",
+        "cluster": "new",
+        "confidence": 0.7
+      }
+    ]
+  },
+  "M01_BS_012": {
+    "scenario_title": "Access Settings",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.getByRole('button', { name: 'Settings' })",
+        "relevance": "settings icon button — used in step 1",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "settings_opened",
+        "cluster": "settings",
+        "confidence": 0.6
+      }
+    ]
+  },
+  "M01_BS_015": {
+    "scenario_title": "Access Voice Input",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.getByRole('button', { name: 'Microphone' })",
+        "relevance": "microphone button — used in step 1",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "microphone_opened",
+        "cluster": "microphone",
+        "confidence": 0.6
+      }
+    ]
+  }
+}

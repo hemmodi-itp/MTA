@@ -1,0 +1,167 @@
+{
+  "M01_BS_001": {
+    "scenario_title": "Navigate to Main Menu",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('button', { name: 'Main menu' })",
+        "relevance": "main menu button — primary element clicked to open central navigation menu",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "main_menu_opened",
+        "cluster": "menu",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByTestId('stBaseButton-headerNoPadding')",
+        "relevance": "header button — adjacent UI element in main navigation panel",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": null,
+        "cluster": "DOM_INT_001",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Deploy' })",
+        "relevance": "deploy button — secondary control visible in top navigation area",
+        "intent_id": "DOM_INT_003",
+        "action": "click",
+        "expected_result": "deploy_opened",
+        "cluster": "deploy",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_002": {
+    "scenario_title": "Deploy Blog Agent Service",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Deploy' })",
+        "relevance": "deploy button — primary interactive button clicked to initiate service deployment",
+        "intent_id": "DOM_INT_003",
+        "action": "click",
+        "expected_result": "deploy_opened",
+        "cluster": "deploy",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Stop' })",
+        "relevance": "stop button — active process controller paired with deploy workflow",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "stop_opened",
+        "cluster": "stop",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByTestId('stBaseButton-headerNoPadding')",
+        "relevance": "header button — interface toolbar button associated with app execution options",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": null,
+        "cluster": "DOM_INT_001",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_003": {
+    "scenario_title": "Stop Active Process",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Stop' })",
+        "relevance": "stop button — primary action button clicked to halt active process execution",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "stop_opened",
+        "cluster": "stop",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Deploy' })",
+        "relevance": "deploy button — process status toggle button on control panel",
+        "intent_id": "DOM_INT_003",
+        "action": "click",
+        "expected_result": "deploy_opened",
+        "cluster": "deploy",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByTestId('stBaseButton-headerNoPadding')",
+        "relevance": "header button — top bar control element associated with active execution state",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": null,
+        "cluster": "DOM_INT_001",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_004": {
+    "scenario_title": "Jump to Section Heading",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0008",
+        "playwright_expr": "page.getByRole('link', { name: 'Link to heading' })",
+        "relevance": "link to heading — target link clicked to scroll directly to section heading",
+        "intent_id": "DOM_INT_005",
+        "action": "click",
+        "expected_result": "link_to_heading_opened",
+        "cluster": "link",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.locator('div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr>td:nth-of-type(2)>a')",
+        "relevance": "table section link — related content heading link in document structure"
+      },
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.locator('div>div>div>div>section>div>div:nth-of-type(2)>div>div>div:nth-of-type(5)>div>details>div>div>div>div>div>div>table>tbody>tr:nth-of-type(2)>td:nth-of-type(2)>a')",
+        "relevance": "table section link — adjacent content navigation link within structured page details"
+      }
+    ]
+  },
+  "M01_BS_005": {
+    "scenario_title": "Interact with Generic UI Element",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByTestId('stBaseButton-headerNoPadding')",
+        "relevance": "generic header button — targeted interactive UI element clicked in step",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": null,
+        "cluster": "DOM_INT_001",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('button', { name: 'Main menu' })",
+        "relevance": "main menu button — secondary generic interactive element in same header component",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "main_menu_opened",
+        "cluster": "menu",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('button', { name: 'Deploy' })",
+        "relevance": "deploy button — associated action button within target UI container",
+        "intent_id": "DOM_INT_003",
+        "action": "click",
+        "expected_result": "deploy_opened",
+        "cluster": "deploy",
+        "confidence": 0.5
+      }
+    ]
+  }
+}

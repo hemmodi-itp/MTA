@@ -1,0 +1,14 @@
+{
+  "project": "AppEvolve",
+  "total_scenarios": 3,
+  "modules": {
+    "dashboard": 1,
+    "navigation": 1,
+    "interaction": 1
+  },
+  "module_files": {
+    "dashboard": "modules/module_dashboard/scenarios.json",
+    "navigation": "modules/module_navigation/scenarios.json",
+    "interaction": "modules/module_interaction/scenarios.json"
+  }
+}

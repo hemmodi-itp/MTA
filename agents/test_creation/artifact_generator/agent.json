@@ -1,0 +1,30 @@
+{
+  "name": "ArtifactGeneratorAgent",
+  "registry_key": "artifact_generator_intents",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.artifact_generator.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Bridges comprehension output to execution-ready YAML artifacts. Registered twice: 'artifact_generator_intents' (mode=intents: business_scenarios.json -> deduplicated, DOM-grounded intents.yaml) and 'artifact_generator_testcases' (mode=testcases: intents.yaml + test_data.json -> enriched intents, test_cases.yaml, test_suite.yaml). Not a step in any shipped workflow; kept for standalone/legacy runs.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": false, "description": "Project folder under application_assets/projects (falls back to message, then 'project')" },
+    { "name": "project_state", "type": "object", "required": false, "description": "Persistent project state — existing test cases used as a dedup hint" },
+    { "name": "module_filter", "type": "string", "required": false, "description": "Restrict DOM grounding to one module" },
+    { "name": "connector_mode", "type": "string", "required": false, "description": "Optional LLM connector override" }
+  ],
+  "outputs": [
+    { "name": "status", "type": "string", "description": "success | failed (skipped=true when every scenario is already covered)" },
+    { "name": "intents_generated", "type": "integer", "description": "intents mode — new intents written to intents.yaml" },
+    { "name": "intents_total", "type": "integer", "description": "intents mode — intents in intents.yaml after the merge" },
+    { "name": "dom_grounded", "type": "integer", "description": "intents mode — intents matched to a DOM locator" },
+    { "name": "test_cases_generated", "type": "integer", "description": "testcases mode — test cases produced by the LLM" },
+    { "name": "test_cases_valid", "type": "integer", "description": "testcases mode — test cases that passed validation" },
+    { "name": "validation_warnings", "type": "array", "description": "Validation messages for dropped/adjusted artifacts" },
+    { "name": "output", "type": "object", "description": "Paths of the written YAML artifacts" }
+  ],
+  "dependencies": [],
+  "skills": ["artifact_generator"],
+  "doc": "agent.md"
+}

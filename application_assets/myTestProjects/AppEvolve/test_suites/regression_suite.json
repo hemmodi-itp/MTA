@@ -1,0 +1,24 @@
+{
+  "suite_id": "regression",
+  "name": "Regression Tests",
+  "description": "Full regression: all scenarios across all modules",
+  "type": "regression",
+  "scope": "all_modules",
+  "scenarios": [
+    "SC-001",
+    "SC-002",
+    "SC-003"
+  ],
+  "all_modules": true,
+  "modules": [],
+  "execution": {
+    "headless": true,
+    "retries": 1,
+    "timeout": 60000,
+    "parallel": 4
+  },
+  "metadata": {
+    "owner": "QA Team",
+    "estimated_runtime_sec": 600
+  }
+}

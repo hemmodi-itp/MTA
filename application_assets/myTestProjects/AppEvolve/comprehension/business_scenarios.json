@@ -1,0 +1,79 @@
+{
+  "project": "AppEvolve",
+  "total_scenarios": 3,
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "title": "Search Products",
+      "business_objective": "Allow user to search products on AppEvolve (Selenium Projects Page)",
+      "actor": "User",
+      "preconditions": [
+        "AppEvolve (Selenium Projects Page) page is loaded"
+      ],
+      "steps": [
+        "Click the search k"
+      ],
+      "expected_result": "search_k_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null
+    },
+    {
+      "scenario_id": "SC-002",
+      "title": "Browse AppEvolve (Selenium Projects Page)",
+      "business_objective": "Allow user to navigate the AppEvolve (Selenium Projects Page) interface",
+      "actor": "User",
+      "preconditions": [
+        "AppEvolve (Selenium Projects Page) page is loaded"
+      ],
+      "steps": [
+        "Click the about",
+        "Click the about selenium"
+      ],
+      "expected_result": "User reaches the intended section",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null
+    },
+    {
+      "scenario_id": "SC-003",
+      "title": "Interact with AppEvolve (Selenium Projects Page)",
+      "business_objective": "Allow user to interact with elements on AppEvolve (Selenium Projects Page)",
+      "actor": "User",
+      "preconditions": [
+        "AppEvolve (Selenium Projects Page) page is loaded"
+      ],
+      "steps": [
+        "Click the element",
+        "Click the structure and governance",
+        "Click the events",
+        "Click the ecosystem",
+        "Click the history",
+        "Click the get involved",
+        "Click the sponsors",
+        "Click the sponsor us",
+        "Click the downloads",
+        "Click the documentation",
+        "Click the projects",
+        "Click the support",
+        "Click the blog",
+        "Click the english",
+        "Click the portugus brasileiro",
+        "Click the element",
+        "Click the visit conference website for more information",
+        "Click the w3c recommendation",
+        "Click the learn more"
+      ],
+      "expected_result": "Interaction completes as expected",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null
+    }
+  ]
+}

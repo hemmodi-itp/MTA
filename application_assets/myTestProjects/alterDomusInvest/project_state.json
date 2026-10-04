@@ -1,0 +1,201 @@
+{
+  "project": "alterDomusInvest",
+  "schema_version": "1.0",
+  "last_updated": "2026-06-18T10:44:36.948282+00:00",
+  "last_run_id": "b7f5f42d-d782-4674-b988-4f5bba767f62",
+  "discovery": {
+    "dom_fingerprint": "sha256:89e721ab38333da2d95d334813870f48fa225b7fe8f4f603b1c127f4ab4c12f4",
+    "brd_fingerprint": "sha256:90396b4170833056fe767140eeb5049f89bc06ba1094317d73ccf9de1b26c050",
+    "last_discovered": "2026-06-18T10:28:48.660125+00:00",
+    "cached_output": {
+      "status": "success",
+      "intents_path": "application_assets\\projects\\alterDomusInvest\\test_creation\\intents.yaml",
+      "dom_status": "success",
+      "dom_intents_count": 20,
+      "dom_intents_path": "application_assets\\projects\\alterDomusInvest\\comprehension\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\alterDomusInvest\\comprehension\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "INT-001",
+          "intent_name": "enter_search_here",
+          "action": "fill",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-002",
+          "intent_name": "enter_element",
+          "action": "fill",
+          "locator_id": "LOC-0002",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-003",
+          "intent_name": "enter_company",
+          "action": "fill",
+          "locator_id": "LOC-0005",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-004",
+          "intent_name": "enter_first",
+          "action": "fill",
+          "locator_id": "LOC-0006",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-005",
+          "intent_name": "enter_last",
+          "action": "fill",
+          "locator_id": "LOC-0007",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-006",
+          "intent_name": "enter_email",
+          "action": "fill",
+          "locator_id": "LOC-0009",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-007",
+          "intent_name": "enter_phone_number",
+          "action": "fill",
+          "locator_id": "LOC-0010",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-008",
+          "intent_name": "enter_city",
+          "action": "fill",
+          "locator_id": "LOC-0011",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-009",
+          "intent_name": "enter_input_104",
+          "action": "fill",
+          "locator_id": "LOC-0012",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-010",
+          "intent_name": "enter_less_than_250m",
+          "action": "fill",
+          "locator_id": "LOC-0013",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-011",
+          "intent_name": "enter_250m500m",
+          "action": "fill",
+          "locator_id": "LOC-0014",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-012",
+          "intent_name": "enter_500m1b",
+          "action": "fill",
+          "locator_id": "LOC-0015",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-013",
+          "intent_name": "enter_1b5b",
+          "action": "fill",
+          "locator_id": "LOC-0016",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-014",
+          "intent_name": "enter_more_than_5b",
+          "action": "fill",
+          "locator_id": "LOC-0017",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-015",
+          "intent_name": "enter_private_equity",
+          "action": "fill",
+          "locator_id": "LOC-0018",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-016",
+          "intent_name": "enter_venture_capital",
+          "action": "fill",
+          "locator_id": "LOC-0019",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-017",
+          "intent_name": "enter_private_credit",
+          "action": "fill",
+          "locator_id": "LOC-0020",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-018",
+          "intent_name": "enter_real_estate",
+          "action": "fill",
+          "locator_id": "LOC-0021",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-019",
+          "intent_name": "enter_infrastructure",
+          "action": "fill",
+          "locator_id": "LOC-0022",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-020",
+          "intent_name": "enter_other",
+          "action": "fill",
+          "locator_id": "LOC-0023",
+          "value": null,
+          "expected_result": null
+        }
+      ],
+      "comprehension_status": "success",
+      "scenarios_count": 12,
+      "business_scenarios_path": "application_assets\\projects\\alterDomusInvest\\comprehension\\business_scenarios.json",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 0,
+    "grounded_intents": 0,
+    "passing_tests": 0,
+    "failing_tests": 0
+  },
+  "business_scenarios": {},
+  "test_cases": {},
+  "new_additions": [],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": []
+}

@@ -1,0 +1,21 @@
+{
+  "suite_id": "smoke",
+  "name": "Smoke Tests",
+  "description": "Quick sanity check — 1 positive scenario per module. Run after every deployment.",
+  "type": "smoke",
+  "scope": "cross_module",
+
+  "scenarios": [
+    "M01_BS_001",
+    "M02_BS_001"
+  ],
+
+  "all_modules": false,
+  "modules": [],
+
+  "metadata": {
+    "owner": "QA Team",
+    "estimated_runtime_sec": 120,
+    "notes": "Add one happy-path scenario ID per module. Keep this suite fast — under 5 minutes."
+  }
+}

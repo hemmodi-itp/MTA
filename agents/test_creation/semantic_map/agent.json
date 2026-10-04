@@ -1,0 +1,26 @@
+{
+  "name": "SemanticMapAgent",
+  "registry_key": "semantic_map",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.semantic_map.agent",
+  "version": "1.1.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Single LLM call that maps each business scenario to its 3-7 relevant DOM elements, so ScriptGenerationAgent doesn't need the full element list on every call. Overwrites any LLM-hallucinated locator with the authoritative one from dom_elements.json.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Used to derive comprehension/test_creation paths" },
+    { "name": "connector_mode", "type": "string", "required": false, "description": "Optional LLM connector override" },
+    { "name": "comprehension/business_scenarios.json", "type": "file", "required": true, "description": "Scenarios to map — fails fast (MissingInputError) if absent" },
+    { "name": "comprehension/dom_elements.json", "type": "file", "required": true, "description": "Module-scoped (or flat) DOM element list the LLM picks 3-7 relevant elements from" },
+    { "name": "comprehension/modules/{module_id}/dom_intents.json", "type": "file", "required": false, "description": "Module-scoped intent list (action/locator_id/expected_result) used for functional clustering and confidence scoring; absent for BRD-only projects — enrichment is then a graceful no-op" },
+    { "name": "comprehension/modules/{module_id}/interactive/user_flows.json", "type": "file", "required": false, "description": "Recorded interactive-scan flows — a stronger ground-truth clustering signal than keyword overlap when interactive_scan:true" }
+  ],
+  "outputs": [
+    { "name": "scenario_element_map_path", "type": "string", "description": "test_creation/scenario_element_map.json — relevant_elements entries carry intent_id/action/expected_result/cluster/confidence when dom_intents.json was available" },
+    { "name": "test_creation/intents.yaml", "type": "file", "description": "Side effect: this module's intents get their source_scenarios backlinked (merge-write — other modules' entries untouched)" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

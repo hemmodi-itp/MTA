@@ -1,0 +1,99 @@
+{
+  "name": "RequirementTraceabilityAgent",
+  "registry_key": "requirement_traceability",
+  "category": "evaluation",
+  "module_path": "agents.evaluation.requirement_traceability.agent",
+  "version": "2.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Static, code-only traceability (runs in parallel with browser execution): per acceptance criterion, batched query expansion, hybrid code retrieval over the knowledge graph, verifier sample A (temp 0.2) plus sample B (temp 0.7, concurrent with A's follow-up retrieval, skipped when A is decisive), deterministic citation and wiring validation, and a coverage-aware absence protocol. LLM failures yield llm_unavailable (llm_failed), never silent insufficient evidence. Returns a static_trace that apply_runtime_evidence (tools.py) later re-decides with runtime results.",
+  "inputs": [
+    {
+      "name": "requirements",
+      "type": "array",
+      "required": true,
+      "description": "Requirements with acceptance criteria (and DB ids)"
+    },
+    {
+      "name": "repo_graph",
+      "type": "object",
+      "required": true,
+      "description": "Knowledge graph from RepoIntelligenceAgent"
+    },
+    {
+      "name": "code_chunks",
+      "type": "array",
+      "required": true,
+      "description": "Code chunks from RepoIntelligenceAgent"
+    },
+    {
+      "name": "repo_dir",
+      "type": "string",
+      "required": true,
+      "description": "Checkout used to validate citations"
+    },
+    {
+      "name": "repo_full_name",
+      "type": "string",
+      "required": false,
+      "description": "For GitHub citation links"
+    },
+    {
+      "name": "commit_sha",
+      "type": "string",
+      "required": false,
+      "description": "For GitHub citation links"
+    },
+    {
+      "name": "repo_model",
+      "type": "object",
+      "required": false,
+      "description": "repo_model['coverage'] from RepoIntelligenceAgent (absence protocol)"
+    },
+    {
+      "name": "repo_coverage",
+      "type": "object",
+      "required": false,
+      "description": "Fetch coverage from RepoFetchAgent (truncation blocks not_implemented)"
+    },
+    {
+      "name": "connector_mode",
+      "type": "string",
+      "required": false,
+      "description": "Optional LLM connector override"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "criterion_verdicts",
+      "type": "array",
+      "description": "Static verdict, strength, credit, agreement, rationale, llm_failed, samples per criterion"
+    },
+    {
+      "name": "evidence_items",
+      "type": "array",
+      "description": "Static/structural evidence rows with validated citations"
+    },
+    {
+      "name": "traced_requirements",
+      "type": "array",
+      "description": "Copies of the requirements with rolled-up verdict, score, legacy status and llm_unavailable count"
+    },
+    {
+      "name": "static_trace",
+      "type": "object",
+      "description": "JSON per-criterion verifier samples, evidence and negative search; input of tools.apply_runtime_evidence"
+    },
+    {
+      "name": "llm_failures",
+      "type": "integer",
+      "description": "Criteria not evaluated because the LLM verifier failed (verdict llm_unavailable); status is partial when > 0"
+    }
+  ],
+  "dependencies": [],
+  "skills": [
+    "evidence_verification"
+  ],
+  "doc": "agent.md"
+}

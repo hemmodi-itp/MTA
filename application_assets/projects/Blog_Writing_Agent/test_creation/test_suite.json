@@ -1,0 +1,84 @@
+{
+  "specs": [
+    {
+      "spec_id": "M01_BS_001",
+      "module_id": "M01",
+      "module_name": "Home",
+      "scenario_title": "Navigate to Main Menu",
+      "file": "M01/test_M01_BS_001_navigate_to_main_menu.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-09-23T13:08:40.576837+00:00",
+      "last_run": "2026-09-23",
+      "last_result": "passed"
+    },
+    {
+      "spec_id": "M01_BS_002",
+      "module_id": "M01",
+      "module_name": "Home",
+      "scenario_title": "Deploy Blog Agent Service",
+      "file": "M01/test_M01_BS_002_deploy_blog_agent_service.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-09-23T13:10:10.433201+00:00",
+      "last_run": "2026-09-23",
+      "last_result": "failed"
+    },
+    {
+      "spec_id": "M01_BS_003",
+      "module_id": "M01",
+      "module_name": "Home",
+      "scenario_title": "Stop Active Process",
+      "file": "M01/test_M01_BS_003_stop_active_process.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-09-23T13:11:29.448114+00:00",
+      "last_run": "2026-09-23",
+      "last_result": "failed"
+    },
+    {
+      "spec_id": "M01_BS_004",
+      "module_id": "M01",
+      "module_name": "Home",
+      "scenario_title": "Jump to Section Heading",
+      "file": "M01/test_M01_BS_004_jump_to_section_heading.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-09-23T13:12:38.039898+00:00",
+      "last_run": "2026-09-23",
+      "last_result": "failed"
+    },
+    {
+      "spec_id": "M01_BS_005",
+      "module_id": "M01",
+      "module_name": "Home",
+      "scenario_title": "Interact with Generic UI Element",
+      "file": "M01/test_M01_BS_005_interact_with_generic_ui_element.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-09-23T13:14:05.979441+00:00",
+      "last_run": "2026-09-23",
+      "last_result": "passed"
+    }
+  ],
+  "project": "Blog_Writing_Agent",
+  "updated_at": "2026-09-23T13:14:05.979441+00:00",
+  "total_scenarios": 5,
+  "new_additions": [
+    "M01/test_M01_BS_001_navigate_to_main_menu.spec.ts",
+    "M01/test_M01_BS_002_deploy_blog_agent_service.spec.ts",
+    "M01/test_M01_BS_003_stop_active_process.spec.ts",
+    "M01/test_M01_BS_004_jump_to_section_heading.spec.ts",
+    "M01/test_M01_BS_005_interact_with_generic_ui_element.spec.ts"
+  ]
+}

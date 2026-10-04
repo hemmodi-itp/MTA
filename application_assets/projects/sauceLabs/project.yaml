@@ -1,0 +1,39 @@
+project:
+  name: sauceLabs
+  application_name: Sauce Demo
+  url: https://www.saucedemo.com/   # top-level — enables DiscoveryAgent's DOM scan (BOTH mode)
+  browser: chromium
+  headless: true                  # true = background (no visible window needed for an automated run)
+  interactive_scan: false         # false = automated scan (saucedemo is simple, no navigation needed)
+
+input:
+  brd_dir: application_assets/projects/sauceLabs/inputs
+
+auth:
+  enabled: false                  # login is tested as a module scenario, not as pipeline auth
+  strategy: storageState
+  storage_state_path: application_assets/projects/sauceLabs/.auth/auth.json
+
+modules:
+  - id: M01
+    name: Login
+    url: https://www.saucedemo.com/
+    brd_file: module_01_login.md
+
+  - id: M02
+    name: Inventory / Products
+    url: https://www.saucedemo.com/inventory.html
+    brd_file: module_02_inventory.md
+    setup:
+      - goto: https://www.saucedemo.com/
+      - fill:
+          selector: "[data-test='username']"
+          value: standard_user
+      - fill:
+          selector: "[data-test='password']"
+          value: secret_sauce
+      - click: "[data-test='login-button']"
+      - wait: 2000
+
+test_execution:
+  suite: sauceLabs

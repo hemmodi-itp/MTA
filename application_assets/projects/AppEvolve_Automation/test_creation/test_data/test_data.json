@@ -1,0 +1,1175 @@
+[
+  {
+    "testdata_id": "TD-031",
+    "scenario_id": "M04_BS_001",
+    "scenario_title": "View Project Details",
+    "actor": "User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-032",
+    "scenario_id": "M04_BS_002",
+    "scenario_title": "Navigate Between Projects",
+    "actor": "User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-033",
+    "scenario_id": "M04_BS_003",
+    "scenario_title": "Create New Project Successfully",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "fill_project_name",
+        "field_type": "text",
+        "value": "E-Commerce Platform Redesign"
+      },
+      {
+        "field_name": "fill_project_description",
+        "field_type": "textarea",
+        "value": "Complete redesign of the customer-facing e-commerce platform to improve user experience and increase conversion rates. Includes mobile responsiveness, payment gateway integration, and performance optimization."
+      },
+      {
+        "field_name": "fill_project_owner",
+        "field_type": "text",
+        "value": "Sarah Johnson"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Missing required project information",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Complete redesign of the customer-facing e-commerce platform to improve user experience and increase conversion rates. Includes mobile responsiveness, payment gateway integration, and performance optimization."
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "text",
+                "value": "Sarah Johnson"
+              }
+            ],
+            "expected_error": "Project name is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "E-Commerce Platform Redesign"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Complete redesign of the customer-facing e-commerce platform to improve user experience and increase conversion rates. Includes mobile responsiveness, payment gateway integration, and performance optimization."
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "text",
+                "value": ""
+              }
+            ],
+            "expected_error": "Project owner is required"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Project name exceeds maximum length",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "This is an extremely long project name that exceeds the normal character limit for project names and should trigger a validation error because it contains way too many characters and goes beyond what would be considered a reasonable length"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Complete redesign of the customer-facing e-commerce platform to improve user experience and increase conversion rates. Includes mobile responsiveness, payment gateway integration, and performance optimization."
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "text",
+                "value": "Sarah Johnson"
+              }
+            ],
+            "expected_error": "Project name must be 255 characters or less"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-034",
+    "scenario_id": "M04_BS_004",
+    "scenario_title": "Open Add Project Dialog",
+    "actor": "User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-035",
+    "scenario_id": "M04_BS_005",
+    "scenario_title": "Create Project with Missing Required Fields",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "fill_project_name",
+        "field_type": "text",
+        "value": "Customer Portal Redesign"
+      },
+      {
+        "field_name": "fill_project_description",
+        "field_type": "textarea",
+        "value": "Modernize the customer-facing portal with improved UX, mobile responsiveness, and enhanced security features to increase user engagement and satisfaction."
+      },
+      {
+        "field_name": "select_project_owner",
+        "field_type": "select",
+        "value": "Sarah Johnson"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Required fields left empty",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Modernize the customer-facing portal with improved UX, mobile responsiveness, and enhanced security features to increase user engagement and satisfaction."
+              },
+              {
+                "field_name": "select_project_owner",
+                "field_type": "select",
+                "value": "Sarah Johnson"
+              }
+            ],
+            "expected_error": "Project Name is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "Customer Portal Redesign"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": ""
+              },
+              {
+                "field_name": "select_project_owner",
+                "field_type": "select",
+                "value": "Sarah Johnson"
+              }
+            ],
+            "expected_error": "Project Description is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "Customer Portal Redesign"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Modernize the customer-facing portal with improved UX, mobile responsiveness, and enhanced security features to increase user engagement and satisfaction."
+              },
+              {
+                "field_name": "select_project_owner",
+                "field_type": "select",
+                "value": ""
+              }
+            ],
+            "expected_error": "Project Owner is required"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Project name at maximum length limit",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "This is a very long project name that approaches the maximum character limit for project names in the system to test boundary conditions and ensure proper validation is working as expected for edge cases in data input"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Modernize the customer-facing portal with improved UX, mobile responsiveness, and enhanced security features to increase user engagement and satisfaction."
+              },
+              {
+                "field_name": "select_project_owner",
+                "field_type": "select",
+                "value": "Sarah Johnson"
+              }
+            ],
+            "expected_error": "Project Name must be 255 characters or less"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-036",
+    "scenario_id": "M04_BS_006",
+    "scenario_title": "Cancel Project Creation",
+    "actor": "User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-037",
+    "scenario_id": "M04_BS_007",
+    "scenario_title": "View Newly Created Project in Navigation",
+    "actor": "User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-038",
+    "scenario_id": "M04_BS_008",
+    "scenario_title": "Create Project with Duplicate Project Name",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "fill_project_name",
+        "field_type": "text",
+        "value": "ExistingProject"
+      },
+      {
+        "field_name": "fill_project_description",
+        "field_type": "textarea",
+        "value": "Test Description"
+      },
+      {
+        "field_name": "fill_project_owner",
+        "field_type": "text",
+        "value": "John Doe"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Duplicate project name validation",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "ExistingProject"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Test Description"
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "text",
+                "value": "John Doe"
+              }
+            ],
+            "expected_error": "A project with this name already exists. Please choose a different name."
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Project name at maximum length limit",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "ExistingProjectNameThatIsExactlyAtTheMaximumAllowedLengthForProjectNamesInTheSystemWhichShouldBeValidatedProperlyByTheApplicationToEnsureDataIntegrityAndUserExperienceRemainsOptimalThroughoutTheEntireProjectCreationWorkflowProcess"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Test Description"
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "text",
+                "value": "John Doe"
+              }
+            ],
+            "expected_error": "Project name must be 255 characters or less"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-039",
+    "scenario_id": "M04_BS_009",
+    "scenario_title": "Create Project with Invalid Project Owner",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "fill_project_name",
+        "field_type": "text",
+        "value": "TestProject"
+      },
+      {
+        "field_name": "fill_project_description",
+        "field_type": "textarea",
+        "value": "Test Description"
+      },
+      {
+        "field_name": "fill_project_owner",
+        "field_type": "email",
+        "value": "john.doe@company.com"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Invalid project owner email format or non-existent user",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "TestProject"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Test Description"
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "email",
+                "value": "InvalidUser@nonexistent.com"
+              }
+            ],
+            "expected_error": "Project owner does not exist in the system"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "TestProject"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Test Description"
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "email",
+                "value": "invalid-email-format"
+              }
+            ],
+            "expected_error": "Invalid email format for project owner"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Project owner email at maximum length limit",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "TestProject"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "Test Description"
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "email",
+                "value": "verylongusernamethatapproachesthemaximumlengthallowedforemailaddressesinthesystemwhichshouldbehandledproperlybythesystemvalidationandnotcauseanyunexpectedbehaviororerrorsintheapplicationflowduringprojectcreation@company.com"
+              }
+            ],
+            "expected_error": "Project owner email must be 255 characters or less"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-040",
+    "scenario_id": "M04_BS_010",
+    "scenario_title": "Create Project with Maximum Character Limits",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "fill_project_name",
+        "field_type": "text",
+        "value": "Customer Portal Redesign"
+      },
+      {
+        "field_name": "fill_project_description",
+        "field_type": "textarea",
+        "value": "A comprehensive redesign of our customer portal to improve user experience, streamline navigation, and integrate new self-service features for account management and support requests."
+      },
+      {
+        "field_name": "fill_project_owner",
+        "field_type": "text",
+        "value": "Sarah Johnson"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Required fields left empty",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": ""
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "text",
+                "value": ""
+              }
+            ],
+            "expected_error": "Project name, description, and owner are required"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Fields exceeding maximum character limits",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "fill_project_name",
+                "field_type": "text",
+                "value": "This is an extremely long project name that exceeds the maximum allowed character limit for project names in the system and should trigger a validation error when the user attempts to create the project with this overly verbose title that goes on and on without end"
+              },
+              {
+                "field_name": "fill_project_description",
+                "field_type": "textarea",
+                "value": "This is an extremely long project description that exceeds the maximum allowed character limit for project descriptions in the system. It contains way too much information and details that go beyond what should reasonably be allowed in a single description field, continuing with more unnecessary text to push it well over any reasonable character limit that a system would impose on such fields to ensure proper data management and user interface constraints are maintained throughout the application lifecycle and beyond what any reasonable user would actually need to describe their project in a concise and meaningful way."
+              },
+              {
+                "field_name": "fill_project_owner",
+                "field_type": "text",
+                "value": "Sarah Johnson"
+              }
+            ],
+            "expected_error": "Project name must be 255 characters or less and project description must be 500 characters or less"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-041",
+    "scenario_id": "M04_BS_011",
+    "scenario_title": "View Empty Project List",
+    "actor": "User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-012",
+    "scenario_id": "BS-001",
+    "scenario_title": "Dashboard page loads with proper navigation structure",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-013",
+    "scenario_id": "BS-002",
+    "scenario_title": "Search functionality in left navigation bar",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "enter_search_criteria",
+        "field_type": "text",
+        "value": "dashboard"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-014",
+    "scenario_id": "BS-003",
+    "scenario_title": "Project status charts display on dashboard",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-015",
+    "scenario_id": "BS-004",
+    "scenario_title": "Project listing navigation and interaction",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-016",
+    "scenario_id": "BS-005",
+    "scenario_title": "Responsive design validation across multiple viewports",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-017",
+    "scenario_id": "BS-006",
+    "scenario_title": "Error-free page load validation",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-018",
+    "scenario_id": "BS-007",
+    "scenario_title": "Dashboard sections and content validation",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-019",
+    "scenario_id": "M03_BS_001",
+    "scenario_title": "Navigate through left sidebar menu items",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-020",
+    "scenario_id": "M03_BS_002",
+    "scenario_title": "Search functionality in left navigation bar",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "fill_search_terms",
+        "field_type": "text",
+        "value": "project dashboard"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-021",
+    "scenario_id": "M03_BS_003",
+    "scenario_title": "View project status charts",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-022",
+    "scenario_id": "M03_BS_004",
+    "scenario_title": "Browse project listings with scrollable navigation",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-023",
+    "scenario_id": "M03_BS_005",
+    "scenario_title": "Responsive design validation across multiple viewports",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-024",
+    "scenario_id": "M03_BS_006",
+    "scenario_title": "Verify page title contains required elements",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-025",
+    "scenario_id": "M03_BS_007",
+    "scenario_title": "Validate error-free page load",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-026",
+    "scenario_id": "M03_BS_008",
+    "scenario_title": "Verify dashboard sections visibility and content",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-027",
+    "scenario_id": "M03_BS_009",
+    "scenario_title": "Navigate through left sidebar menu items",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-028",
+    "scenario_id": "M03_BS_010",
+    "scenario_title": "Search functionality in left navigation bar",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "enter_search_term",
+        "field_type": "text",
+        "value": "dashboard"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-029",
+    "scenario_id": "M03_BS_011",
+    "scenario_title": "View project status charts and listings",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-030",
+    "scenario_id": "M03_BS_012",
+    "scenario_title": "Navigate to new project via project links",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-031",
+    "scenario_id": "M03_BS_013",
+    "scenario_title": "Verify page responsive design and technical requirements",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-032",
+    "scenario_id": "M03_BS_014",
+    "scenario_title": "Dashboard Navigation Menu Verification",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-033",
+    "scenario_id": "M03_BS_015",
+    "scenario_title": "Navigation Search Functionality",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "enter_search_term",
+        "field_type": "text",
+        "value": "Projects"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-034",
+    "scenario_id": "M03_BS_016",
+    "scenario_title": "Project Status Charts Display",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-035",
+    "scenario_id": "M03_BS_017",
+    "scenario_title": "Project Listing Navigation",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-036",
+    "scenario_id": "M03_BS_018",
+    "scenario_title": "Responsive Design Verification",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-037",
+    "scenario_id": "M03_BS_019",
+    "scenario_title": "Page Title Validation",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-038",
+    "scenario_id": "M03_BS_020",
+    "scenario_title": "Error-Free Page Load Validation",
+    "actor": "Automated test agent",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-039",
+    "scenario_id": "M03_BS_021",
+    "scenario_title": "Dashboard Section Content Verification",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-040",
+    "scenario_id": "SC-001",
+    "scenario_title": "Use AppEvolve",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "enter_search",
+        "field_type": "text",
+        "value": "project management dashboard"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-041",
+    "scenario_id": "SC-002",
+    "scenario_title": "Interact with AppEvolve",
+    "actor": "User",
+    "positive_dataset": [],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-042",
+    "scenario_id": "M02_BS_001",
+    "scenario_title": "Selenium Projects landing page loads successfully with correct structure",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_target_url",
+        "field_type": "url",
+        "value": "/selenium-projects"
+      },
+      {
+        "field_name": "expected_http_status",
+        "field_type": "assertion",
+        "value": "200"
+      },
+      {
+        "field_name": "expected_title_selenium",
+        "field_type": "assertion",
+        "value": "Selenium"
+      },
+      {
+        "field_name": "expected_title_projects",
+        "field_type": "assertion",
+        "value": "Projects"
+      },
+      {
+        "field_name": "expected_console_errors",
+        "field_type": "count_min",
+        "value": "0"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-043",
+    "scenario_id": "M02_BS_002",
+    "scenario_title": "Global navbar displays all required navigation elements",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "expected_selenium_logo",
+        "field_type": "assertion",
+        "value": "Selenium"
+      },
+      {
+        "field_name": "expected_about_link",
+        "field_type": "assertion",
+        "value": "About"
+      },
+      {
+        "field_name": "expected_documentation_link",
+        "field_type": "assertion",
+        "value": "Documentation"
+      },
+      {
+        "field_name": "expected_downloads_link",
+        "field_type": "assertion",
+        "value": "Downloads"
+      },
+      {
+        "field_name": "expected_projects_link",
+        "field_type": "assertion",
+        "value": "Projects"
+      },
+      {
+        "field_name": "expected_blog_link",
+        "field_type": "assertion",
+        "value": "Blog"
+      },
+      {
+        "field_name": "expected_support_link",
+        "field_type": "assertion",
+        "value": "Support"
+      },
+      {
+        "field_name": "expected_language_toggle",
+        "field_type": "assertion",
+        "value": "language toggle"
+      },
+      {
+        "field_name": "expected_theme_toggle",
+        "field_type": "assertion",
+        "value": "theme toggle"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-044",
+    "scenario_id": "M02_BS_003",
+    "scenario_title": "Hero section displays project introduction content",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target",
+        "field_type": "navigation",
+        "value": "hero section"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Selenium Projects"
+      },
+      {
+        "field_name": "expected_intro_paragraph",
+        "field_type": "assertion",
+        "value": "Welcome to our comprehensive collection of Selenium automation projects. Explore real-world testing scenarios and learn best practices for web automation."
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-045",
+    "scenario_id": "M02_BS_004",
+    "scenario_title": "WebDriver project card displays complete information and actions",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "locate_webdriver_card",
+        "field_type": "assertion",
+        "value": "WebDriver"
+      },
+      {
+        "field_name": "verify_webdriver_logo",
+        "field_type": "assertion",
+        "value": "WebDriver logo image"
+      },
+      {
+        "field_name": "confirm_project_description",
+        "field_type": "assertion",
+        "value": "WebDriver is a remote control interface that enables introspection and control of user agents"
+      },
+      {
+        "field_name": "check_download_button",
+        "field_type": "assertion",
+        "value": "Download"
+      },
+      {
+        "field_name": "verify_read_more_link",
+        "field_type": "assertion",
+        "value": "Read more"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-046",
+    "scenario_id": "M02_BS_005",
+    "scenario_title": "IDE project card displays complete information with browser-specific actions",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "locate_ide_card",
+        "field_type": "navigation",
+        "value": "IDE project card section"
+      },
+      {
+        "field_name": "expected_ide_logo",
+        "field_type": "assertion",
+        "value": "Selenium IDE logo"
+      },
+      {
+        "field_name": "expected_description_text",
+        "field_type": "assertion",
+        "value": "Selenium IDE is a Chrome and Firefox plugin which records and plays back user interactions with the browser"
+      },
+      {
+        "field_name": "expected_download_button",
+        "field_type": "assertion",
+        "value": "Download"
+      },
+      {
+        "field_name": "expected_chrome_button",
+        "field_type": "assertion",
+        "value": "Add to Chrome"
+      },
+      {
+        "field_name": "expected_firefox_button",
+        "field_type": "assertion",
+        "value": "Add to Firefox"
+      },
+      {
+        "field_name": "expected_read_more_link",
+        "field_type": "assertion",
+        "value": "Read more"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-047",
+    "scenario_id": "M02_BS_006",
+    "scenario_title": "Grid project card displays complete information and actions",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "locate_grid_card",
+        "field_type": "navigation",
+        "value": "Grid project card"
+      },
+      {
+        "field_name": "verify_grid_logo",
+        "field_type": "assertion",
+        "value": "Grid logo image"
+      },
+      {
+        "field_name": "expected_description_text",
+        "field_type": "assertion",
+        "value": "Selenium Grid project description"
+      },
+      {
+        "field_name": "verify_download_button",
+        "field_type": "assertion",
+        "value": "Download"
+      },
+      {
+        "field_name": "verify_read_more_link",
+        "field_type": "assertion",
+        "value": "Read more"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-048",
+    "scenario_id": "M02_BS_007",
+    "scenario_title": "Footer contains complete legal and social information",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target",
+        "field_type": "navigation",
+        "value": "page footer"
+      },
+      {
+        "field_name": "expected_copyright",
+        "field_type": "assertion",
+        "value": "© 2024 Selenium Projects"
+      },
+      {
+        "field_name": "expected_github_link",
+        "field_type": "assertion",
+        "value": "https://github.com/selenium-projects"
+      },
+      {
+        "field_name": "expected_twitter_link",
+        "field_type": "assertion",
+        "value": "https://twitter.com/selenium_hq"
+      },
+      {
+        "field_name": "expected_linkedin_link",
+        "field_type": "assertion",
+        "value": "https://linkedin.com/company/selenium"
+      },
+      {
+        "field_name": "expected_slack_link",
+        "field_type": "assertion",
+        "value": "https://seleniumhq.slack.com"
+      },
+      {
+        "field_name": "expected_apache_license",
+        "field_type": "assertion",
+        "value": "Licensed under the Apache License 2.0"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-049",
+    "scenario_id": "M02_BS_008",
+    "scenario_title": "Page layout adapts correctly across different viewport sizes",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "resize_viewport_mobile",
+        "field_type": "assertion",
+        "value": "375"
+      },
+      {
+        "field_name": "resize_viewport_tablet",
+        "field_type": "assertion",
+        "value": "768"
+      },
+      {
+        "field_name": "resize_viewport_desktop",
+        "field_type": "assertion",
+        "value": "1280"
+      },
+      {
+        "field_name": "expected_layout_intact",
+        "field_type": "assertion",
+        "value": "Layout remains functional without horizontal overflow"
+      },
+      {
+        "field_name": "expected_sections_visible",
+        "field_type": "assertion",
+        "value": "All three project sections fully visible"
+      },
+      {
+        "field_name": "min_project_sections_count",
+        "field_type": "count_min",
+        "value": "3"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-050",
+    "scenario_id": "M03_BS_022",
+    "scenario_title": "Role and Permission tab interaction",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_tab",
+        "field_type": "navigation",
+        "value": "Role and Permission"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Role and Permission Management"
+      },
+      {
+        "field_name": "expected_content",
+        "field_type": "assertion",
+        "value": "User roles and permissions configuration"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/roles-permissions"
+      }
+    ],
+    "negative_variants": []
+  },
+  {
+    "testdata_id": "TD-051",
+    "scenario_id": "M03_BS_023",
+    "scenario_title": "Complete navigation workflow validation",
+    "actor": "Visitor (anonymous)",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_dashboard",
+        "field_type": "assertion",
+        "value": "Dashboard"
+      },
+      {
+        "field_name": "navigate_settings",
+        "field_type": "navigation",
+        "value": "Settings"
+      },
+      {
+        "field_name": "navigate_help",
+        "field_type": "navigation",
+        "value": "Help"
+      },
+      {
+        "field_name": "search_functionality",
+        "field_type": "assertion",
+        "value": "Search results displayed"
+      },
+      {
+        "field_name": "navigate_projects",
+        "field_type": "navigation",
+        "value": "Projects"
+      },
+      {
+        "field_name": "expected_projects_url",
+        "field_type": "url",
+        "value": "/projects"
+      },
+      {
+        "field_name": "navigate_role_permission",
+        "field_type": "navigation",
+        "value": "Role and Permission"
+      }
+    ],
+    "negative_variants": []
+  }
+]

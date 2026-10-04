@@ -1,0 +1,1064 @@
+{
+  "url": "https://gemini.google.com",
+  "project": "geminiTest4",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "button",
+      "display_text": "Open sidebar",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Open sidebar",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Open sidebar"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>div>chat-app-side-nav-menu-button>side-nav-sparkle-button>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/div[1]/chat-app-side-nav-menu-button[1]/side-nav-sparkle-button[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Open sidebar"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Open sidebar"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "button",
+      "display_text": "Listen",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Listen",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Listen"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>top-bar-actions>div>div:nth-of-type(3)>div:nth-of-type(2)>tts-control-v2>div>div>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/top-bar-actions[1]/div[1]/div[3]/div[2]/tts-control-v2[1]/div[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Listen"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Listen"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "button",
+      "display_text": "Sign in",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Sign in"
+        },
+        "get_by_text": {
+          "text": "Sign in"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>top-bar-actions>div>div:nth-of-type(3)>div:nth-of-type(2)>div>gem-button>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/top-bar-actions[1]/div[1]/div[3]/div[2]/div[1]/gem-button[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Sign in"
+        },
+        "score": 60,
+        "unique": false,
+        "match_count": 2
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Sign in"
+          },
+          "score": 60,
+          "unique": false,
+          "match_count": 2
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "button",
+      "display_text": "Sign in",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Sign in",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Sign in"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>side-navigation-v2>bard-sidenav-container>bard-sidenav>side-navigation-content>div>div>mat-action-list>sidenav-mavatar-footer>div>gem-icon-button>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav[1]/side-navigation-content[1]/div[1]/div[1]/mat-action-list[1]/sidenav-mavatar-footer[1]/div[1]/gem-icon-button[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Sign in"
+        },
+        "score": 60,
+        "unique": false,
+        "match_count": 2
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Sign in"
+          },
+          "score": 60,
+          "unique": false,
+          "match_count": 2
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0005",
+      "tag": "button",
+      "display_text": "Settings",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Settings",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Settings"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>side-navigation-v2>bard-sidenav-container>bard-sidenav>side-navigation-content>div>div>mat-action-list>sidenav-mavatar-footer>div>div>gem-icon-button>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav[1]/side-navigation-content[1]/div[1]/div[1]/mat-action-list[1]/sidenav-mavatar-footer[1]/div[1]/div[1]/gem-icon-button[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Settings"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Settings"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0006",
+      "tag": "button",
+      "display_text": "Upload & tools",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Upload & tools",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Upload & tools"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>chat-window>div>input-container>fieldset>input-area-v2>div>div>div:nth-of-type(2)>simplified-input-menu>div>span>gem-icon-button>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav-content[1]/div[2]/div[1]/div[1]/chat-window[1]/div[1]/input-container[1]/fieldset[1]/input-area-v2[1]/div[1]/div[1]/div[2]/simplified-input-menu[1]/div[1]/span[1]/gem-icon-button[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Upload & tools"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Upload & tools"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0007",
+      "tag": "button",
+      "display_text": "Flash",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Open mode picker, currently Flash",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Flash"
+        },
+        "get_by_text": {
+          "text": "Flash"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>chat-window>div>input-container>fieldset>input-area-v2>div>div>div:nth-of-type(3)>div>bard-mode-switcher>div>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav-content[1]/div[2]/div[1]/div[1]/chat-window[1]/div[1]/input-container[1]/fieldset[1]/input-area-v2[1]/div[1]/div[1]/div[3]/div[1]/bard-mode-switcher[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Flash"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Flash"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0008",
+      "tag": "button",
+      "display_text": "Microphone",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Microphone",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Microphone"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>chat-window>div>input-container>fieldset>input-area-v2>div>div>div:nth-of-type(3)>div:nth-of-type(2)>div>speech-dictation-mic-button>div>gem-icon-button>button",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav-content[1]/div[2]/div[1]/div[1]/chat-window[1]/div[1]/input-container[1]/fieldset[1]/input-area-v2[1]/div[1]/div[1]/div[3]/div[2]/div[1]/speech-dictation-mic-button[1]/div[1]/gem-icon-button[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Microphone"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Microphone"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0009",
+      "tag": "a",
+      "display_text": "Google apps",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Google apps",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Google apps"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Google apps"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Google apps"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0010",
+      "tag": "a",
+      "display_text": "Sign in",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Sign in",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Sign in"
+        },
+        "get_by_text": {
+          "text": "Sign in"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Sign in"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Sign in"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0011",
+      "tag": "a",
+      "display_text": "Gemini",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "New chat",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Gemini"
+        },
+        "get_by_text": {
+          "text": "Gemini"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>div>chat-app-side-nav-menu-button>side-nav-sparkle-button>a",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/div[1]/chat-app-side-nav-menu-button[1]/side-nav-sparkle-button[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Gemini"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Gemini"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0012",
+      "tag": "a",
+      "display_text": "About Gemini\nOpens in a new window",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "About Gemini\nOpens in a new window"
+        },
+        "get_by_text": {
+          "text": "About Gemini\nOpens in a new window"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>top-bar-actions>div>div:nth-of-type(3)>div:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/top-bar-actions[1]/div[1]/div[3]/div[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "About Gemini\nOpens in a new window"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "About Gemini\nOpens in a new window"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0013",
+      "tag": "a",
+      "display_text": "Get Gemini App\nOpens in a new window",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Get Gemini App\nOpens in a new window"
+        },
+        "get_by_text": {
+          "text": "Get Gemini App\nOpens in a new window"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>top-bar-actions>div>div:nth-of-type(3)>div:nth-of-type(2)>a:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/top-bar-actions[1]/div[1]/div[3]/div[2]/a[2]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Get Gemini App\nOpens in a new window"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Get Gemini App\nOpens in a new window"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0014",
+      "tag": "a",
+      "display_text": "Subscriptions\nOpens in a new window",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Subscriptions\nOpens in a new window"
+        },
+        "get_by_text": {
+          "text": "Subscriptions\nOpens in a new window"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>top-bar-actions>div>div:nth-of-type(3)>div:nth-of-type(2)>a:nth-of-type(3)",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/top-bar-actions[1]/div[1]/div[3]/div[2]/a[3]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Subscriptions\nOpens in a new window"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Subscriptions\nOpens in a new window"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0015",
+      "tag": "a",
+      "display_text": "For Business\nOpens in a new window",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "For Business\nOpens in a new window"
+        },
+        "get_by_text": {
+          "text": "For Business\nOpens in a new window"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>top-bar-actions>div>div:nth-of-type(3)>div:nth-of-type(2)>a:nth-of-type(4)",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/top-bar-actions[1]/div[1]/div[3]/div[2]/a[4]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "For Business\nOpens in a new window"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "For Business\nOpens in a new window"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0016",
+      "tag": "a",
+      "display_text": "New chat",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "New chat",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "New chat"
+        }
+      },
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>side-navigation-v2>bard-sidenav-container>bard-sidenav>side-navigation-content>div>div>div>mat-nav-list>gem-nav-list-item>div>gem-icon-button>a",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav[1]/side-navigation-content[1]/div[1]/div[1]/div[1]/mat-nav-list[1]/gem-nav-list-item[1]/div[1]/gem-icon-button[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "New chat"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "New chat"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": false
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0017",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "chat-app-orchestrator>chat-app>main>side-navigation-v2>bard-sidenav-container>bard-sidenav>side-navigation-content>div>div>infinite-scroller>div:nth-of-type(3)>sidenav-error-message>div>span>span>a",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav[1]/side-navigation-content[1]/div[1]/div[1]/infinite-scroller[1]/div[3]/sidenav-error-message[1]/div[1]/span[1]/span[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "chat-app-orchestrator>chat-app>main>side-navigation-v2>bard-sidenav-container>bard-sidenav>side-navigation-content>div>div>infinite-scroller>div:nth-of-type(3)>sidenav-error-message>div>span>span>a"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0018",
+      "tag": "a",
+      "display_text": "Google Terms\nOpens in a new window",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Google Terms\nOpens in a new window"
+        },
+        "get_by_text": {
+          "text": "Google Terms\nOpens in a new window"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>chat-window>div>input-container>hallucination-disclaimer>div>p>a",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav-content[1]/div[2]/div[1]/div[1]/chat-window[1]/div[1]/input-container[1]/hallucination-disclaimer[1]/div[1]/p[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Google Terms\nOpens in a new window"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Google Terms\nOpens in a new window"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0019",
+      "tag": "a",
+      "display_text": "Google Privacy Policy\nOpens in a new window",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Google Privacy Policy\nOpens in a new window"
+        },
+        "get_by_text": {
+          "text": "Google Privacy Policy\nOpens in a new window"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>chat-window>div>input-container>hallucination-disclaimer>div>p>a:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/chat-app-orchestrator[1]/chat-app[1]/main[1]/side-navigation-v2[1]/bard-sidenav-container[1]/bard-sidenav-content[1]/div[2]/div[1]/div[1]/chat-window[1]/div[1]/input-container[1]/hallucination-disclaimer[1]/div[1]/p[1]/a[2]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Google Privacy Policy\nOpens in a new window"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Google Privacy Policy\nOpens in a new window"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ]
+}

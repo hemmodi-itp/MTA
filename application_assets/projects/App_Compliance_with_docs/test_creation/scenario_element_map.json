@@ -1,0 +1,387 @@
+{
+  "GEN_BS_001": {
+    "scenario_title": "Toggle Application Theme using Dark Mode Switch",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Switch to dark mode' })",
+        "relevance": "primary dark mode toggle switch — used in step 1",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": "switch_to_dark_mode_opened",
+        "cluster": "dark",
+        "confidence": 0.8
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "adjacent header action — used to verify UI rendering post-theme toggle",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('link', { name: 'New project' })",
+        "relevance": "adjacent navigation element — checked for visual theme change",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "new_project_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "GEN_BS_002": {
+    "scenario_title": "Open Demo Project",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "primary trigger button — used in step 1 to open demo project",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.8
+      },
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.getByRole('link', { name: 'ShopFlow (demo)' })",
+        "relevance": "demo project selection link — target project loaded",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "shopflow_demo_opened",
+        "cluster": "demo",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "action link — used to confirm project view launch",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "GEN_BS_003": {
+    "scenario_title": "Access BRD Compliance Criterion Level View",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('link', { name: 'BRD Compliance\ncriterion-level' })",
+        "relevance": "primary navigation link — clicked to open criterion level view",
+        "intent_id": "DOM_INT_003",
+        "action": "click",
+        "expected_result": "brd_compliance_criterionlevel_opened",
+        "cluster": "criterionlevel",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "secondary action button — used to expand compliance details",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Switch to dark mode' })",
+        "relevance": "page header control — verified active on navigation",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": "switch_to_dark_mode_opened",
+        "cluster": "dark",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "GEN_BS_004": {
+    "scenario_title": "Create a New Project",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('link', { name: 'New project' })",
+        "relevance": "primary action link — used in step 1 to initiate creation workflow",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "new_project_opened",
+        "cluster": "demo",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "adjacent project management option — verified on dashboard",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.63
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "action link — used to open created project after workflow",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.63
+      }
+    ]
+  },
+  "M01_BS_001": {
+    "scenario_title": "Switch Application Theme to Dark Mode",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByRole('button', { name: 'Switch to dark mode' })",
+        "relevance": "primary switch button — clicked in step 1",
+        "intent_id": "DOM_INT_001",
+        "action": "click",
+        "expected_result": "switch_to_dark_mode_opened",
+        "cluster": "dark",
+        "confidence": 0.8
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "header control — checked for theme style application",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('link', { name: 'New project' })",
+        "relevance": "header link — checked for theme style application",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "new_project_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_002": {
+    "scenario_title": "Open Demo Project",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "primary action button — clicked in step 1",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.8
+      },
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.getByRole('link', { name: 'ShopFlow (demo)' })",
+        "relevance": "demo link — verified as loaded project context",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "shopflow_demo_opened",
+        "cluster": "demo",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "open action link — used to inspect loaded project",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "M01_BS_003": {
+    "scenario_title": "Access BRD Compliance Criterion Level View",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByRole('link', { name: 'BRD Compliance\ncriterion-level' })",
+        "relevance": "primary link — clicked in step 1 to navigate to view",
+        "intent_id": "DOM_INT_003",
+        "action": "click",
+        "expected_result": "brd_compliance_criterionlevel_opened",
+        "cluster": "criterionlevel",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "open link — used to select specific criterion item",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('link', { name: 'New project' })",
+        "relevance": "breadcrumb/nav element — verified presence on view load",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "new_project_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_004": {
+    "scenario_title": "Create New Project",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('link', { name: 'New project' })",
+        "relevance": "primary creation button — clicked in step 1",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "new_project_opened",
+        "cluster": "demo",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "contextual control — verified state before creating new project",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.63
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "open button — used to view new project after creation",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.63
+      }
+    ]
+  },
+  "M01_BS_005": {
+    "scenario_title": "Delete Item or Resource",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0005",
+        "playwright_expr": "page.getByRole('button', { name: 'Delete' })",
+        "relevance": "primary delete button — clicked in step 2",
+        "intent_id": "DOM_INT_005",
+        "action": "click",
+        "expected_result": "delete_opened",
+        "cluster": "delete",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "item selection link — clicked in step 1 to select item",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0004",
+        "playwright_expr": "page.getByRole('link', { name: 'New project' })",
+        "relevance": "page context link — used to return to project list post-deletion",
+        "intent_id": "DOM_INT_004",
+        "action": "click",
+        "expected_result": "new_project_opened",
+        "cluster": "demo",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_006": {
+    "scenario_title": "Access Shopflow Demo",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.getByRole('link', { name: 'ShopFlow (demo)' })",
+        "relevance": "primary demo option link — clicked in step 2",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "shopflow_demo_opened",
+        "cluster": "demo",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "demo entry button — clicked in step 1 to navigate to demo section",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.8
+      },
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "open action link — used to render Shopflow interface",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "M01_BS_007": {
+    "scenario_title": "Execute Open Action",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0007",
+        "playwright_expr": "page.getByRole('link', { name: 'Open' })",
+        "relevance": "primary open action button — clicked in step 2",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "open_opened",
+        "cluster": "demo",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByRole('button', { name: 'Open the demo project' })",
+        "relevance": "resource option — selected item target in step 1",
+        "intent_id": "DOM_INT_002",
+        "action": "click",
+        "expected_result": "open_the_demo_project_opened",
+        "cluster": "demo",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0006",
+        "playwright_expr": "page.getByRole('link', { name: 'ShopFlow (demo)' })",
+        "relevance": "resource option — alternate selected item target",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "shopflow_demo_opened",
+        "cluster": "demo",
+        "confidence": 0.54
+      }
+    ]
+  }
+}

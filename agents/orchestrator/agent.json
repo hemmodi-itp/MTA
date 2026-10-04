@@ -1,0 +1,47 @@
+{
+  "name": "OrchestratorAgent",
+  "registry_key": null,
+  "category": "orchestrator",
+  "module_path": "agents.orchestrator.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "none",
+  "llm_calls": true,
+  "description": "The workflow driver — constructed directly in main.py, not registered in AgentRegistry. Makes one LLM pre-flight call (a 'ping' health check) before any step, then loads the project manifest, runs each workflow step with fallback-tier dispatch (workflows/agent_registry.yaml), merges outputs into persistent project state, and builds the final report.",
+  "inputs": [
+    {
+      "name": "request",
+      "type": "object",
+      "required": true,
+      "description": "The request payload (project_name, workflow, module_filter, etc.)"
+    },
+    {
+      "name": "workflow",
+      "type": "object",
+      "required": true,
+      "description": "Loaded workflow definition (steps, always_run)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "object",
+      "description": "WorkflowState with outputs/errors/execution_trace per step"
+    },
+    {
+      "name": "final_report",
+      "type": "object",
+      "description": "Built via tools.orchestration.build_final_report"
+    },
+    {
+      "name": "project_state",
+      "type": "object",
+      "description": "Updated persistent project state"
+    }
+  ],
+  "dependencies": [
+    "SemanticDedupAgent"
+  ],
+  "skills": [],
+  "doc": "agent.md"
+}

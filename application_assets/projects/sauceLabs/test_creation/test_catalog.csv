@@ -1,0 +1,22 @@
+scenario_id,module_id,module_name,title,description,status,last_result,spec_file,last_run,generation_mode
+M01_BS_001,M01,Login,Access SauceLabs Login Page URL,Ensure unauthenticated visitors can access the official SauceLabs login page at the specified URL.,generated,failed,M01/test_M01_BS_001_access_saucelabs_login_page_url.spec.ts,2026-09-17,action_library
+M01_BS_002,M01,Login,User Login Validation,Authenticate a standard user into the SauceLabs portal using valid credentials.,generated,failed,M01/test_M01_BS_002_user_login_validation.spec.ts,2026-09-17,action_library
+M01_BS_003,M01,Login,Login Form Missing Required Fields Validation,Ensure the login form validates required credentials prior to submission and displays inline error messages when mandato…,generated,failed,M01/test_M01_BS_003_login_form_missing_required_fields_validation.spec.ts,2026-09-17,action_library
+M01_BS_004,M01,Login,Inline Error Message Display Placement Validation,Verify that form validation error messages are displayed inline next to the corresponding input fields when login valida…,no_test_yet,,,,
+M01_BS_005,M01,Login,Standard User Login and Confirmation Redirection,Ensure standard_user can successfully authenticate using the login form and is automatically redirected to the confirmat…,generated,failed,M01/test_M01_BS_005_standard_user_login_and_confirmation_redirection.spec.ts,2026-09-17,action_library
+M02_BS_001,M02,Inventory / Products,View Inventory Page and Verify Product List,Ensure authenticated users can view the full product catalog and page elements.,generated,failed,M02/test_M02_BS_001_view_inventory_page_and_verify_product_list.spec.ts,2026-09-17,action_library
+M02_BS_002,M02,Inventory / Products,Add Single Item to Shopping Cart,Allow users to select an item from the inventory and add it to their cart.,no_test_yet,,,,
+M02_BS_003,M02,Inventory / Products,Remove Item from Cart via Inventory Page,Allow users to deselect an item directly from the Inventory page.,generated,failed,M02/test_M02_BS_003_remove_item_from_cart_via_inventory_page.spec.ts,2026-09-17,action_library
+M02_BS_004,M02,Inventory / Products,Add Multiple Products to Shopping Cart,Enable users to select multiple distinct items and see accurate cart count updates.,no_test_yet,,,,
+M02_BS_005,M02,Inventory / Products,Sort Products Alphabetically from A to Z,Allow users to organize the product list alphabetically by name.,no_test_yet,,,,
+M02_BS_006,M02,Inventory / Products,Sort Products Alphabetically from Z to A,Allow users to organize the product list in reverse alphabetical order.,no_test_yet,,,,
+M02_BS_007,M02,Inventory / Products,Sort Products by Price Ascending (Low to High),Allow users to organize products starting from the lowest price.,no_test_yet,,,,
+M02_BS_008,M02,Inventory / Products,Sort Products by Price Descending (High to Low),Allow users to organize products starting from the highest price.,no_test_yet,,,,
+M02_BS_009,M02,Inventory / Products,Navigate to Product Details Page,Enable users to view detailed information for a specific product.,no_test_yet,,,,
+M02_BS_010,M02,Inventory / Products,Open Shopping Cart Page from Inventory,Allow users to view items currently in their cart.,no_test_yet,,,,
+M02_BS_011,M02,Inventory / Products,Open Sidebar Navigation Menu,Provide access to application navigation options via sidebar menu.,no_test_yet,,,,
+M02_BS_012,M02,Inventory / Products,User Logout via Sidebar Menu,Allow users to terminate their active session securely.,no_test_yet,,,,
+M02_BS_013,M02,Inventory / Products,Verify Cart Badge Persistence Across UI Interactions,Ensure active cart items and badge counts are preserved during sorting or menu toggling.,no_test_yet,,,,
+M02_BS_014,M02,Inventory / Products,Refresh Inventory Page and Preserve Session State,Ensure page refreshes do not lose active session data or cart selections.,generated,failed,M02/test_M02_BS_014_refresh_inventory_page_and_preserve_session_state.spec.ts,2026-09-17,action_library
+M02_BS_015,M02,Inventory / Products,Enforce Non-Duplicate Product Selection in Shopping Cart,"Ensure that users cannot add duplicate instances of the same product to the shopping cart, enforcing unique product sele…",no_test_yet,,,,
+M02_BS_016,M02,Inventory / Products,Restrict Access to Inventory Page for Unauthenticated Users,Ensure system security by preventing unauthenticated access to the product inventory page.,generated,failed,M02/test_M02_BS_016_restrict_access_to_inventory_page_for_unauthenticated_users.spec.ts,2026-09-17,action_library

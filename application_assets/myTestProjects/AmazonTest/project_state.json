@@ -1,0 +1,2237 @@
+{
+  "project": "AmazonTest",
+  "schema_version": "1.0",
+  "last_updated": "2026-06-25T11:07:00.244000+00:00",
+  "last_run_id": "a1296447-a222-4db7-8637-e2acd03f3aa8",
+  "discovery": {
+    "dom_fingerprint": "sha256:eed9438e0d3328c3c22e186152c277b5e6c387707d2aa1924041e89359fcf0f3",
+    "brd_fingerprint": "sha256:2afecc28f7ed733d08ddbe564c4d17fbba0c394e009c0d9081c9e10b253bdb8a",
+    "last_discovered": "2026-06-25T11:05:26.789751+00:00",
+    "cached_output": {
+      "status": "success",
+      "intents_path": "application_assets\\projects\\AmazonTest\\test_creation\\intents.yaml",
+      "dom_status": "success",
+      "dom_intents_count": 210,
+      "dom_intents_path": "application_assets\\projects\\AmazonTest\\comprehension\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\AmazonTest\\comprehension\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "INT-001",
+          "intent_name": "enter_dropdownselection",
+          "action": "fill",
+          "locator_id": "LOC-0001",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-002",
+          "intent_name": "enter_dropdownselectionubb",
+          "action": "fill",
+          "locator_id": "LOC-0002",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-003",
+          "intent_name": "enter_glowvalidationtoken",
+          "action": "fill",
+          "locator_id": "LOC-0003",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-004",
+          "intent_name": "enter_glowdestinationtype",
+          "action": "fill",
+          "locator_id": "LOC-0004",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-005",
+          "intent_name": "enter_search_amazonin",
+          "action": "fill",
+          "locator_id": "LOC-0005",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-006",
+          "intent_name": "click_showhide_shortcuts_shift__alt__z",
+          "action": "click",
+          "locator_id": "LOC-0006",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": "showhide_shortcuts_shift__alt__z_opened"
+        },
+        {
+          "intent_id": "INT-007",
+          "intent_name": "select_amazon_launchpad_all_categories",
+          "action": "select",
+          "locator_id": "LOC-0007",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-008",
+          "intent_name": "click_element",
+          "action": "click",
+          "locator_id": "LOC-0008",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-009",
+          "intent_name": "enter_dropdownselection_gp_new_releases",
+          "action": "fill",
+          "locator_id": "LOC-0009",
+          "page_id": "PAGE-002",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-010",
+          "intent_name": "enter_dropdownselection_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0010",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-011",
+          "intent_name": "enter_dropdownselectionubb_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0011",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-012",
+          "intent_name": "enter_glowvalidationtoken_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0012",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-013",
+          "intent_name": "enter_glowdestinationtype_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0013",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-014",
+          "intent_name": "enter_search_amazonin_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0014",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-015",
+          "intent_name": "enter_element",
+          "action": "fill",
+          "locator_id": "LOC-0015",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-016",
+          "intent_name": "enter_element_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0016",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-017",
+          "intent_name": "enter_0",
+          "action": "fill",
+          "locator_id": "LOC-0019",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-018",
+          "intent_name": "enter_anticsrftokena2z",
+          "action": "fill",
+          "locator_id": "LOC-0027",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-019",
+          "intent_name": "enter_items0basecustomervisiblepriceamount",
+          "action": "fill",
+          "locator_id": "LOC-0028",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-020",
+          "intent_name": "enter_items0basecustomervisiblepricecurrencycode",
+          "action": "fill",
+          "locator_id": "LOC-0029",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-021",
+          "intent_name": "enter_items0basecustomervisiblepricedisplaystring",
+          "action": "fill",
+          "locator_id": "LOC-0030",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-022",
+          "intent_name": "enter_items0baseasin",
+          "action": "fill",
+          "locator_id": "LOC-0031",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-023",
+          "intent_name": "enter_clientname",
+          "action": "fill",
+          "locator_id": "LOC-0032",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-024",
+          "intent_name": "enter_items0baseofferlistingid",
+          "action": "fill",
+          "locator_id": "LOC-0033",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-025",
+          "intent_name": "enter_pageloadtimestamputc",
+          "action": "fill",
+          "locator_id": "LOC-0034",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-026",
+          "intent_name": "enter_offerlistingid",
+          "action": "fill",
+          "locator_id": "LOC-0035",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-027",
+          "intent_name": "enter_sessionid",
+          "action": "fill",
+          "locator_id": "LOC-0036",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-028",
+          "intent_name": "enter_asin",
+          "action": "fill",
+          "locator_id": "LOC-0037",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-029",
+          "intent_name": "enter_ismerchantexclusive",
+          "action": "fill",
+          "locator_id": "LOC-0038",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-030",
+          "intent_name": "enter_merchantid",
+          "action": "fill",
+          "locator_id": "LOC-0039",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-031",
+          "intent_name": "enter_isaddon",
+          "action": "fill",
+          "locator_id": "LOC-0040",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-032",
+          "intent_name": "enter_nodeid",
+          "action": "fill",
+          "locator_id": "LOC-0041",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-033",
+          "intent_name": "enter_sellingcustomerid",
+          "action": "fill",
+          "locator_id": "LOC-0042",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-034",
+          "intent_name": "enter_qid",
+          "action": "fill",
+          "locator_id": "LOC-0043",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-035",
+          "intent_name": "enter_sr",
+          "action": "fill",
+          "locator_id": "LOC-0044",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-036",
+          "intent_name": "enter_storeid",
+          "action": "fill",
+          "locator_id": "LOC-0045",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-037",
+          "intent_name": "enter_tagactioncode",
+          "action": "fill",
+          "locator_id": "LOC-0046",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-038",
+          "intent_name": "enter_viewid",
+          "action": "fill",
+          "locator_id": "LOC-0047",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-039",
+          "intent_name": "enter_rebateid",
+          "action": "fill",
+          "locator_id": "LOC-0048",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-040",
+          "intent_name": "enter_ctadevicetype",
+          "action": "fill",
+          "locator_id": "LOC-0049",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-041",
+          "intent_name": "enter_ctapagetype",
+          "action": "fill",
+          "locator_id": "LOC-0050",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-042",
+          "intent_name": "enter_useprimehandler",
+          "action": "fill",
+          "locator_id": "LOC-0051",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-043",
+          "intent_name": "enter_smoketestenabled",
+          "action": "fill",
+          "locator_id": "LOC-0052",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-044",
+          "intent_name": "enter_rsid",
+          "action": "fill",
+          "locator_id": "LOC-0053",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-045",
+          "intent_name": "enter_sourcecustomerorglistid",
+          "action": "fill",
+          "locator_id": "LOC-0054",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-046",
+          "intent_name": "enter_sourcecustomerorglistitemid",
+          "action": "fill",
+          "locator_id": "LOC-0055",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-047",
+          "intent_name": "enter_wlpopcommand",
+          "action": "fill",
+          "locator_id": "LOC-0056",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-048",
+          "intent_name": "enter_items0basequantity",
+          "action": "fill",
+          "locator_id": "LOC-0060",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-049",
+          "intent_name": "enter_submitaddtocart",
+          "action": "fill",
+          "locator_id": "LOC-0064",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-050",
+          "intent_name": "enter_submitbuynow",
+          "action": "fill",
+          "locator_id": "LOC-0065",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-051",
+          "intent_name": "enter_referrer",
+          "action": "fill",
+          "locator_id": "LOC-0066",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-052",
+          "intent_name": "enter_isbuynow",
+          "action": "fill",
+          "locator_id": "LOC-0067",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-053",
+          "intent_name": "enter_iseligibilitylogicdisabled",
+          "action": "fill",
+          "locator_id": "LOC-0068",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-054",
+          "intent_name": "enter_ref_",
+          "action": "fill",
+          "locator_id": "LOC-0069",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-055",
+          "intent_name": "enter_add_gift_options_at_checkout",
+          "action": "fill",
+          "locator_id": "LOC-0070",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-056",
+          "intent_name": "enter_giftwrap",
+          "action": "fill",
+          "locator_id": "LOC-0071",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-057",
+          "intent_name": "enter_anticsrftokena2z_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0072",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-058",
+          "intent_name": "enter_aapicsrftoken",
+          "action": "fill",
+          "locator_id": "LOC-0078",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-059",
+          "intent_name": "enter_isstaterequired",
+          "action": "fill",
+          "locator_id": "LOC-0079",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-060",
+          "intent_name": "enter_isstorerequired",
+          "action": "fill",
+          "locator_id": "LOC-0080",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-061",
+          "intent_name": "enter_aapiendpoint",
+          "action": "fill",
+          "locator_id": "LOC-0081",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-062",
+          "intent_name": "enter_modalheader",
+          "action": "fill",
+          "locator_id": "LOC-0082",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-063",
+          "intent_name": "enter_productcategory",
+          "action": "fill",
+          "locator_id": "LOC-0083",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-064",
+          "intent_name": "enter_productimageurl",
+          "action": "fill",
+          "locator_id": "LOC-0084",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-065",
+          "intent_name": "enter_pricesymbol",
+          "action": "fill",
+          "locator_id": "LOC-0085",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-066",
+          "intent_name": "enter_pricevalue",
+          "action": "fill",
+          "locator_id": "LOC-0086",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-067",
+          "intent_name": "enter_producttitle",
+          "action": "fill",
+          "locator_id": "LOC-0087",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-068",
+          "intent_name": "enter_currencyofpreference",
+          "action": "fill",
+          "locator_id": "LOC-0088",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-069",
+          "intent_name": "enter_absoluteurlprefix",
+          "action": "fill",
+          "locator_id": "LOC-0089",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-070",
+          "intent_name": "enter_customerid",
+          "action": "fill",
+          "locator_id": "LOC-0090",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-071",
+          "intent_name": "enter_iscustomerloggedin",
+          "action": "fill",
+          "locator_id": "LOC-0091",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-072",
+          "intent_name": "enter_iscurrentglonlineonly",
+          "action": "fill",
+          "locator_id": "LOC-0092",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-073",
+          "intent_name": "enter_asin_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0093",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-074",
+          "intent_name": "enter_marketplaceid",
+          "action": "fill",
+          "locator_id": "LOC-0094",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-075",
+          "intent_name": "enter_countrycode",
+          "action": "fill",
+          "locator_id": "LOC-0095",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-076",
+          "intent_name": "enter_lowerpriceinfo",
+          "action": "fill",
+          "locator_id": "LOC-0096",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-077",
+          "intent_name": "enter_lowerpricewhere",
+          "action": "fill",
+          "locator_id": "LOC-0097",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-078",
+          "intent_name": "enter_labelpermalink",
+          "action": "fill",
+          "locator_id": "LOC-0098",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-079",
+          "intent_name": "enter_labelonline",
+          "action": "fill",
+          "locator_id": "LOC-0099",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-080",
+          "intent_name": "enter_labeloffline",
+          "action": "fill",
+          "locator_id": "LOC-0100",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-081",
+          "intent_name": "enter_lowerpricesignin",
+          "action": "fill",
+          "locator_id": "LOC-0101",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-082",
+          "intent_name": "enter_labelstorename",
+          "action": "fill",
+          "locator_id": "LOC-0102",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-083",
+          "intent_name": "enter_addresscity",
+          "action": "fill",
+          "locator_id": "LOC-0103",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-084",
+          "intent_name": "enter_addressstate",
+          "action": "fill",
+          "locator_id": "LOC-0104",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-085",
+          "intent_name": "enter_selectprovince",
+          "action": "fill",
+          "locator_id": "LOC-0105",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-086",
+          "intent_name": "enter_labeldateofprice",
+          "action": "fill",
+          "locator_id": "LOC-0106",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-087",
+          "intent_name": "enter_labelurl",
+          "action": "fill",
+          "locator_id": "LOC-0107",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-088",
+          "intent_name": "enter_labelprice",
+          "action": "fill",
+          "locator_id": "LOC-0108",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-089",
+          "intent_name": "enter_labelshipping",
+          "action": "fill",
+          "locator_id": "LOC-0109",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-090",
+          "intent_name": "enter_submitfeedback",
+          "action": "fill",
+          "locator_id": "LOC-0110",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-091",
+          "intent_name": "enter_errornotype",
+          "action": "fill",
+          "locator_id": "LOC-0111",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-092",
+          "intent_name": "enter_errorbadprice",
+          "action": "fill",
+          "locator_id": "LOC-0112",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-093",
+          "intent_name": "enter_errorbadpriceshipping",
+          "action": "fill",
+          "locator_id": "LOC-0113",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-094",
+          "intent_name": "enter_errorinvalidurl",
+          "action": "fill",
+          "locator_id": "LOC-0114",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-095",
+          "intent_name": "enter_errorsubmission",
+          "action": "fill",
+          "locator_id": "LOC-0115",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-096",
+          "intent_name": "enter_erroremptyfields",
+          "action": "fill",
+          "locator_id": "LOC-0116",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-097",
+          "intent_name": "enter_errormissingcity",
+          "action": "fill",
+          "locator_id": "LOC-0117",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-098",
+          "intent_name": "enter_thankfeedback",
+          "action": "fill",
+          "locator_id": "LOC-0118",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-099",
+          "intent_name": "enter_erroremptyurl",
+          "action": "fill",
+          "locator_id": "LOC-0119",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-100",
+          "intent_name": "enter_offlinestoreslist",
+          "action": "fill",
+          "locator_id": "LOC-0120",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-101",
+          "intent_name": "enter_stateslist",
+          "action": "fill",
+          "locator_id": "LOC-0121",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-102",
+          "intent_name": "enter_website_online",
+          "action": "fill",
+          "locator_id": "LOC-0122",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-103",
+          "intent_name": "enter_url_",
+          "action": "fill",
+          "locator_id": "LOC-0123",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-104",
+          "intent_name": "enter_price_incl_vat__",
+          "action": "fill",
+          "locator_id": "LOC-0124",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-105",
+          "intent_name": "enter_shipping_cost_",
+          "action": "fill",
+          "locator_id": "LOC-0125",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-106",
+          "intent_name": "enter_store_offline",
+          "action": "fill",
+          "locator_id": "LOC-0126",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-107",
+          "intent_name": "enter_towncity_",
+          "action": "fill",
+          "locator_id": "LOC-0127",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-108",
+          "intent_name": "enter_price_incl_vat___ajanta_waterproof_anti_skid_lightweight_",
+          "action": "fill",
+          "locator_id": "LOC-0128",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-109",
+          "intent_name": "enter_ue_back",
+          "action": "fill",
+          "locator_id": "LOC-0135",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-110",
+          "intent_name": "click_add_to_cart_shift__alt__k",
+          "action": "click",
+          "locator_id": "LOC-0137",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "add_to_cart_shift__alt__k_opened"
+        },
+        {
+          "intent_id": "INT-111",
+          "intent_name": "click_product_summary_shift__alt__d",
+          "action": "click",
+          "locator_id": "LOC-0138",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "product_summary_shift__alt__d_opened"
+        },
+        {
+          "intent_id": "INT-112",
+          "intent_name": "click_showhide_shortcuts_shift__alt__z_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "click",
+          "locator_id": "LOC-0139",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "showhide_shortcuts_shift__alt__z_opened"
+        },
+        {
+          "intent_id": "INT-113",
+          "intent_name": "click_element_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "click",
+          "locator_id": "LOC-0140",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-114",
+          "intent_name": "click_quality8",
+          "action": "click",
+          "locator_id": "LOC-0148",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "quality8_opened"
+        },
+        {
+          "intent_id": "INT-115",
+          "intent_name": "click_comfort7",
+          "action": "click",
+          "locator_id": "LOC-0149",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "comfort7_opened"
+        },
+        {
+          "intent_id": "INT-116",
+          "intent_name": "click_value_for_money5",
+          "action": "click",
+          "locator_id": "LOC-0150",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "value_for_money5_opened"
+        },
+        {
+          "intent_id": "INT-117",
+          "intent_name": "click_back_to_top",
+          "action": "click",
+          "locator_id": "LOC-0156",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "back_to_top_opened"
+        },
+        {
+          "intent_id": "INT-118",
+          "intent_name": "select_all_categories_alexa_skills_amazon_devices_amazon_fashion_amazon_fresh_amazon_fresh_meat_amazon_pharmacy_appliances_apps__games_audible_audiobooks_baby_beauty_books_car__motorbike_clothing__accessories_collectibles_computers__accessories_deals_electronics_furniture_garden__outdoors_gift_cards_grocery__gourmet_foods_health__personal_care_home__kitchen_industrial__scientific_jewellery_kindle_store_luggage__bags_luxury_beauty_movies__tv_shows_mp3_music_music_musical_instruments_office_products_pet_supplies_prime_video_shoes__handbags_software_sports_fitness__outdoors_subscribe__save_tools__home_improvement_toys__games_under_500_video_games_watches",
+          "action": "select",
+          "locator_id": "LOC-0157",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-119",
+          "intent_name": "select_element",
+          "action": "select",
+          "locator_id": "LOC-0158",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-120",
+          "intent_name": "select_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24_25_26_27_28_29_30",
+          "action": "select",
+          "locator_id": "LOC-0159",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-121",
+          "intent_name": "select_01_02_03_04_05_06_07_08_09_10_11_12",
+          "action": "select",
+          "locator_id": "LOC-0160",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-122",
+          "intent_name": "select_01_02_03_04_05_06_07_08_09_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24_25_26_27_28_29_30_31",
+          "action": "select",
+          "locator_id": "LOC-0161",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-123",
+          "intent_name": "select_onlineyear",
+          "action": "select",
+          "locator_id": "LOC-0162",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-124",
+          "intent_name": "select_enter_the_store_name_where_you_found_this_product",
+          "action": "select",
+          "locator_id": "LOC-0163",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-125",
+          "intent_name": "select_please_select_province",
+          "action": "select",
+          "locator_id": "LOC-0164",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-126",
+          "intent_name": "select_01_02_03_04_05_06_07_08_09_10_11_12_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "select",
+          "locator_id": "LOC-0165",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-127",
+          "intent_name": "select_01_02_03_04_05_06_07_08_09_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24_25_26_27_28_29_30_31_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "select",
+          "locator_id": "LOC-0166",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-128",
+          "intent_name": "select_offlineyear",
+          "action": "select",
+          "locator_id": "LOC-0167",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-129",
+          "intent_name": "click_main_content",
+          "action": "click",
+          "locator_id": "LOC-0169",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "main_content_opened"
+        },
+        {
+          "intent_id": "INT-130",
+          "intent_name": "click_about_this_item",
+          "action": "click",
+          "locator_id": "LOC-0170",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "about_this_item_opened"
+        },
+        {
+          "intent_id": "INT-131",
+          "intent_name": "click_about_this_item_ajanta_waterproof_anti_skid_lightweight_",
+          "action": "click",
+          "locator_id": "LOC-0171",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "about_this_item_opened"
+        },
+        {
+          "intent_id": "INT-132",
+          "intent_name": "click_buying_options",
+          "action": "click",
+          "locator_id": "LOC-0173",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "buying_options_opened"
+        },
+        {
+          "intent_id": "INT-133",
+          "intent_name": "click_compare_with_similar_items",
+          "action": "click",
+          "locator_id": "LOC-0174",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "compare_with_similar_items_opened"
+        },
+        {
+          "intent_id": "INT-134",
+          "intent_name": "click_videos",
+          "action": "click",
+          "locator_id": "LOC-0175",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "videos_opened"
+        },
+        {
+          "intent_id": "INT-135",
+          "intent_name": "click_reviews",
+          "action": "click",
+          "locator_id": "LOC-0176",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "reviews_opened"
+        },
+        {
+          "intent_id": "INT-136",
+          "intent_name": "click_search_alt__",
+          "action": "click",
+          "locator_id": "LOC-0177",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "search_alt___opened"
+        },
+        {
+          "intent_id": "INT-137",
+          "intent_name": "click_cart_shift__alt__c",
+          "action": "click",
+          "locator_id": "LOC-0178",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "cart_shift__alt__c_opened"
+        },
+        {
+          "intent_id": "INT-138",
+          "intent_name": "click_home_shift__alt__h",
+          "action": "click",
+          "locator_id": "LOC-0179",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "home_shift__alt__h_opened"
+        },
+        {
+          "intent_id": "INT-139",
+          "intent_name": "click_orders_shift__alt__o",
+          "action": "click",
+          "locator_id": "LOC-0180",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "orders_shift__alt__o_opened"
+        },
+        {
+          "intent_id": "INT-140",
+          "intent_name": "click_in",
+          "action": "click",
+          "locator_id": "LOC-0181",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "in_opened"
+        },
+        {
+          "intent_id": "INT-141",
+          "intent_name": "click_delivering_to_delhi_110008_update_location",
+          "action": "click",
+          "locator_id": "LOC-0182",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "delivering_to_delhi_110008_update_location_opened"
+        },
+        {
+          "intent_id": "INT-142",
+          "intent_name": "click_en",
+          "action": "click",
+          "locator_id": "LOC-0183",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "en_opened"
+        },
+        {
+          "intent_id": "INT-143",
+          "intent_name": "click_hello_sign_in_account__lists",
+          "action": "click",
+          "locator_id": "LOC-0184",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "hello_sign_in_account__lists_opened"
+        },
+        {
+          "intent_id": "INT-144",
+          "intent_name": "click_returns__orders",
+          "action": "click",
+          "locator_id": "LOC-0185",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "returns__orders_opened"
+        },
+        {
+          "intent_id": "INT-145",
+          "intent_name": "click_0_cart",
+          "action": "click",
+          "locator_id": "LOC-0186",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "0_cart_opened"
+        },
+        {
+          "intent_id": "INT-146",
+          "intent_name": "click_all",
+          "action": "click",
+          "locator_id": "LOC-0187",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "all_opened"
+        },
+        {
+          "intent_id": "INT-147",
+          "intent_name": "click_mx_player",
+          "action": "click",
+          "locator_id": "LOC-0188",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "mx_player_opened"
+        },
+        {
+          "intent_id": "INT-148",
+          "intent_name": "click_sell",
+          "action": "click",
+          "locator_id": "LOC-0189",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "sell_opened"
+        },
+        {
+          "intent_id": "INT-149",
+          "intent_name": "click_bestsellers",
+          "action": "click",
+          "locator_id": "LOC-0190",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "bestsellers_opened"
+        },
+        {
+          "intent_id": "INT-150",
+          "intent_name": "click_todays_deals",
+          "action": "click",
+          "locator_id": "LOC-0191",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "todays_deals_opened"
+        },
+        {
+          "intent_id": "INT-151",
+          "intent_name": "click_mobiles",
+          "action": "click",
+          "locator_id": "LOC-0192",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "mobiles_opened"
+        },
+        {
+          "intent_id": "INT-152",
+          "intent_name": "click_new_releases",
+          "action": "click",
+          "locator_id": "LOC-0193",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "new_releases_opened"
+        },
+        {
+          "intent_id": "INT-153",
+          "intent_name": "click_customer_service",
+          "action": "click",
+          "locator_id": "LOC-0194",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "customer_service_opened"
+        },
+        {
+          "intent_id": "INT-154",
+          "intent_name": "click_amazon_pay",
+          "action": "click",
+          "locator_id": "LOC-0195",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "amazon_pay_opened"
+        },
+        {
+          "intent_id": "INT-155",
+          "intent_name": "click_electronics",
+          "action": "click",
+          "locator_id": "LOC-0196",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "electronics_opened"
+        },
+        {
+          "intent_id": "INT-156",
+          "intent_name": "click_home__kitchen",
+          "action": "click",
+          "locator_id": "LOC-0197",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "home__kitchen_opened"
+        },
+        {
+          "intent_id": "INT-157",
+          "intent_name": "click_fashion",
+          "action": "click",
+          "locator_id": "LOC-0198",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "fashion_opened"
+        },
+        {
+          "intent_id": "INT-158",
+          "intent_name": "click_computers",
+          "action": "click",
+          "locator_id": "LOC-0199",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "computers_opened"
+        },
+        {
+          "intent_id": "INT-159",
+          "intent_name": "click_toys__games",
+          "action": "click",
+          "locator_id": "LOC-0200",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "toys__games_opened"
+        },
+        {
+          "intent_id": "INT-160",
+          "intent_name": "click_car__motorbike",
+          "action": "click",
+          "locator_id": "LOC-0201",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "car__motorbike_opened"
+        },
+        {
+          "intent_id": "INT-161",
+          "intent_name": "click_beauty__personal_care",
+          "action": "click",
+          "locator_id": "LOC-0202",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "beauty__personal_care_opened"
+        },
+        {
+          "intent_id": "INT-162",
+          "intent_name": "click_gift_cards",
+          "action": "click",
+          "locator_id": "LOC-0203",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "gift_cards_opened"
+        },
+        {
+          "intent_id": "INT-163",
+          "intent_name": "click_home_improvement",
+          "action": "click",
+          "locator_id": "LOC-0204",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "home_improvement_opened"
+        },
+        {
+          "intent_id": "INT-164",
+          "intent_name": "click_grocery__gourmet_foods",
+          "action": "click",
+          "locator_id": "LOC-0205",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "grocery__gourmet_foods_opened"
+        },
+        {
+          "intent_id": "INT-165",
+          "intent_name": "click_health_household__personal_care",
+          "action": "click",
+          "locator_id": "LOC-0206",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "health_household__personal_care_opened"
+        },
+        {
+          "intent_id": "INT-166",
+          "intent_name": "click_video_games",
+          "action": "click",
+          "locator_id": "LOC-0207",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "video_games_opened"
+        },
+        {
+          "intent_id": "INT-167",
+          "intent_name": "click_custom_products",
+          "action": "click",
+          "locator_id": "LOC-0208",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "custom_products_opened"
+        },
+        {
+          "intent_id": "INT-168",
+          "intent_name": "click_sports_fitness__outdoors",
+          "action": "click",
+          "locator_id": "LOC-0209",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "sports_fitness__outdoors_opened"
+        },
+        {
+          "intent_id": "INT-169",
+          "intent_name": "click_baby",
+          "action": "click",
+          "locator_id": "LOC-0210",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "baby_opened"
+        },
+        {
+          "intent_id": "INT-170",
+          "intent_name": "click_pet_supplies",
+          "action": "click",
+          "locator_id": "LOC-0211",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "pet_supplies_opened"
+        },
+        {
+          "intent_id": "INT-171",
+          "intent_name": "click_audible",
+          "action": "click",
+          "locator_id": "LOC-0212",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "audible_opened"
+        },
+        {
+          "intent_id": "INT-172",
+          "intent_name": "click_amazonbasics",
+          "action": "click",
+          "locator_id": "LOC-0213",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "amazonbasics_opened"
+        },
+        {
+          "intent_id": "INT-173",
+          "intent_name": "click_subscribe__save",
+          "action": "click",
+          "locator_id": "LOC-0214",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "subscribe__save_opened"
+        },
+        {
+          "intent_id": "INT-174",
+          "intent_name": "click_books",
+          "action": "click",
+          "locator_id": "LOC-0215",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "books_opened"
+        },
+        {
+          "intent_id": "INT-175",
+          "intent_name": "click_kindle_ebooks",
+          "action": "click",
+          "locator_id": "LOC-0216",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "kindle_ebooks_opened"
+        },
+        {
+          "intent_id": "INT-176",
+          "intent_name": "click_flights",
+          "action": "click",
+          "locator_id": "LOC-0217",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "flights_opened"
+        },
+        {
+          "intent_id": "INT-177",
+          "intent_name": "click_sportswear",
+          "action": "click",
+          "locator_id": "LOC-0219",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "sportswear_opened"
+        },
+        {
+          "intent_id": "INT-178",
+          "intent_name": "click_create_a_wish_list",
+          "action": "click",
+          "locator_id": "LOC-0220",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "create_a_wish_list_opened"
+        },
+        {
+          "intent_id": "INT-179",
+          "intent_name": "click_wish_from_any_website",
+          "action": "click",
+          "locator_id": "LOC-0221",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "wish_from_any_website_opened"
+        },
+        {
+          "intent_id": "INT-180",
+          "intent_name": "click_baby_wishlist",
+          "action": "click",
+          "locator_id": "LOC-0222",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "baby_wishlist_opened"
+        },
+        {
+          "intent_id": "INT-181",
+          "intent_name": "click_discover_your_style",
+          "action": "click",
+          "locator_id": "LOC-0223",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "discover_your_style_opened"
+        },
+        {
+          "intent_id": "INT-182",
+          "intent_name": "click_explore_showroom",
+          "action": "click",
+          "locator_id": "LOC-0224",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "explore_showroom_opened"
+        },
+        {
+          "intent_id": "INT-183",
+          "intent_name": "click_your_account",
+          "action": "click",
+          "locator_id": "LOC-0225",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_account_opened"
+        },
+        {
+          "intent_id": "INT-184",
+          "intent_name": "click_your_orders",
+          "action": "click",
+          "locator_id": "LOC-0226",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_orders_opened"
+        },
+        {
+          "intent_id": "INT-185",
+          "intent_name": "click_your_wish_list",
+          "action": "click",
+          "locator_id": "LOC-0227",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_wish_list_opened"
+        },
+        {
+          "intent_id": "INT-186",
+          "intent_name": "click_keep_shopping_for",
+          "action": "click",
+          "locator_id": "LOC-0228",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "keep_shopping_for_opened"
+        },
+        {
+          "intent_id": "INT-187",
+          "intent_name": "click_your_recommendations",
+          "action": "click",
+          "locator_id": "LOC-0229",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_recommendations_opened"
+        },
+        {
+          "intent_id": "INT-188",
+          "intent_name": "click_your_prime_membership",
+          "action": "click",
+          "locator_id": "LOC-0230",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_prime_membership_opened"
+        },
+        {
+          "intent_id": "INT-189",
+          "intent_name": "click_your_prime_video",
+          "action": "click",
+          "locator_id": "LOC-0231",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_prime_video_opened"
+        },
+        {
+          "intent_id": "INT-190",
+          "intent_name": "click_your_subscribe__save_items",
+          "action": "click",
+          "locator_id": "LOC-0232",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_subscribe__save_items_opened"
+        },
+        {
+          "intent_id": "INT-191",
+          "intent_name": "click_memberships__subscriptions",
+          "action": "click",
+          "locator_id": "LOC-0233",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "memberships__subscriptions_opened"
+        },
+        {
+          "intent_id": "INT-192",
+          "intent_name": "click_your_seller_account",
+          "action": "click",
+          "locator_id": "LOC-0234",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_seller_account_opened"
+        },
+        {
+          "intent_id": "INT-193",
+          "intent_name": "click_manage_your_content_and_devices",
+          "action": "click",
+          "locator_id": "LOC-0235",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "manage_your_content_and_devices_opened"
+        },
+        {
+          "intent_id": "INT-194",
+          "intent_name": "click_your_music_library",
+          "action": "click",
+          "locator_id": "LOC-0236",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "your_music_library_opened"
+        },
+        {
+          "intent_id": "INT-195",
+          "intent_name": "click_register_for_a_free_business_account",
+          "action": "click",
+          "locator_id": "LOC-0237",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "register_for_a_free_business_account_opened"
+        },
+        {
+          "intent_id": "INT-196",
+          "intent_name": "click_product_summary_presents_key_product_information",
+          "action": "click",
+          "locator_id": "LOC-0239",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "product_summary_presents_key_product_information_opened"
+        },
+        {
+          "intent_id": "INT-197",
+          "intent_name": "click_sponsored",
+          "action": "click",
+          "locator_id": "LOC-0240",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "sponsored_opened"
+        },
+        {
+          "intent_id": "INT-198",
+          "intent_name": "click_shoes__handbags",
+          "action": "click",
+          "locator_id": "LOC-0241",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "shoes__handbags_opened"
+        },
+        {
+          "intent_id": "INT-199",
+          "intent_name": "click_shoes",
+          "action": "click",
+          "locator_id": "LOC-0242",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "shoes_opened"
+        },
+        {
+          "intent_id": "INT-200",
+          "intent_name": "click_mens_shoes",
+          "action": "click",
+          "locator_id": "LOC-0243",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "mens_shoes_opened"
+        },
+        {
+          "intent_id": "INT-201",
+          "intent_name": "click_casual_shoes",
+          "action": "click",
+          "locator_id": "LOC-0244",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "casual_shoes_opened"
+        },
+        {
+          "intent_id": "INT-202",
+          "intent_name": "click_loafers__moccasins",
+          "action": "click",
+          "locator_id": "LOC-0245",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "loafers__moccasins_opened"
+        },
+        {
+          "intent_id": "INT-203",
+          "intent_name": "click_brand_ajanta",
+          "action": "click",
+          "locator_id": "LOC-0247",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "brand_ajanta_opened"
+        },
+        {
+          "intent_id": "INT-204",
+          "intent_name": "click_42_42_out_of_5_stars",
+          "action": "click",
+          "locator_id": "LOC-0248",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "42_42_out_of_5_stars_opened"
+        },
+        {
+          "intent_id": "INT-205",
+          "intent_name": "click_88",
+          "action": "click",
+          "locator_id": "LOC-0249",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "88_opened"
+        },
+        {
+          "intent_id": "INT-206",
+          "intent_name": "click_1_offer",
+          "action": "click",
+          "locator_id": "LOC-0251",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "1_offer_opened"
+        },
+        {
+          "intent_id": "INT-207",
+          "intent_name": "click_sign_up_for_free",
+          "action": "click",
+          "locator_id": "LOC-0252",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "sign_up_for_free_opened"
+        },
+        {
+          "intent_id": "INT-208",
+          "intent_name": "click_next_page",
+          "action": "click",
+          "locator_id": "LOC-0253",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "next_page_opened"
+        },
+        {
+          "intent_id": "INT-209",
+          "intent_name": "click_10_days_return__exchange",
+          "action": "click",
+          "locator_id": "LOC-0255",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "10_days_return__exchange_opened"
+        },
+        {
+          "intent_id": "INT-210",
+          "intent_name": "click_pay_on_delivery",
+          "action": "click",
+          "locator_id": "LOC-0256",
+          "page_id": "PAGE-003",
+          "value": null,
+          "expected_result": "pay_on_delivery_opened"
+        }
+      ],
+      "user_flows": [
+        {
+          "flow_id": "FLOW-001",
+          "inferred_name": "Interact with Fresh",
+          "inferred_scenario_type": "general",
+          "confidence": 0.95,
+          "pages_involved": [
+            "PAGE-002",
+            "PAGE-003"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "seq": 1,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Fresh",
+              "page_id": "PAGE-002",
+              "page_path": "/gp/new-releases"
+            },
+            {
+              "step": 2,
+              "seq": 2,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "var aPageStart = (new Date()).getTime();\n\n\n\nvar ue_t0=ue_t0||+new Date();\n\n\n\n\n\n\n\n\nwindow.ue_ihb = (window.ue_ihb || wind",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 3,
+              "seq": 3,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Sell",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 4,
+              "seq": 4,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "var aPageStart = (new Date()).getTime();\n\n\n\nvar ue_t0=ue_t0||+new Date();\n\n\n\n\n\n\n\n\nwindow.ue_ihb = (window.ue_ihb || wind",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 5,
+              "seq": 5,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Today's Deals",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 6,
+              "seq": 6,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Prime",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 7,
+              "seq": 7,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Prime",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 8,
+              "seq": 8,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "New Releases",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 9,
+              "seq": 9,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Customer Service",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 10,
+              "seq": 10,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "For support during your shopping journey, refer to the Customer Service - Frequently Asked Questions Help page.",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 11,
+              "seq": 11,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "New Releases",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 12,
+              "seq": 12,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Amazon Launchpad",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 13,
+              "seq": 13,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Amazon Renewed",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 14,
+              "seq": 14,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Bags, Wallets and Luggage",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            },
+            {
+              "step": 15,
+              "seq": 15,
+              "locator_id": null,
+              "action": "click",
+              "display_text": "Books",
+              "page_id": "PAGE-003",
+              "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+            }
+          ],
+          "api_calls_observed": [
+            {
+              "url": "https://m.media-amazon.com/images/G/01/csm/showads.v2.js?adspot_=1",
+              "method": "GET"
+            },
+            {
+              "url": "https://unagi.amazon.in/1/events/com.amazon.csm.csa.prod",
+              "method": "POST"
+            },
+            {
+              "url": "https://www.amazon.in/hz/primenavigation/primeflyout?amazonprimeflyoutContent=amazonprime&metricKey=primeMetric&isPrime=false&rid=XJZ7PB8SZRMY77M55BV1&_=1782385224625",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/nav/ajax/hMenuDesktopFirstLayer?ajaxTemplate=hMenuDesktopFirstLayer&pageType=GPHelp&hmDataAjaxHint=1&isFreshRegion=false&isFreshCustomer=false&isPrimeMember=false&isPrimeDay=false&isBackup=false&firstName=false&navDeviceType=desktop&hashCustomerAndSessionId=529c7cc22367b2c18c2ae2cee130921d9e2d3f28&environmentVFI=AmazonNavigationOrchestrator%2Fbigmesh-patch%40B6469611165-AL2023_aarch64&languageCode=en_IN&customerCountryCode=IN",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/hz/primenavigation/primeflyout?amazonprimeflyoutContent=amazonprime&metricKey=primeMetric&isPrime=false&rid=5KP7SY7C6KW6M8CRZ2Q2&_=1782385235182",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/nav/ajax/hMenuDesktopFirstLayer?ajaxTemplate=hMenuDesktopFirstLayer&pageType=zeitgeist&hmDataAjaxHint=1&isFreshRegion=false&isFreshCustomer=false&isPrimeMember=false&isPrimeDay=false&isBackup=false&firstName=false&navDeviceType=desktop&hashCustomerAndSessionId=529c7cc22367b2c18c2ae2cee130921d9e2d3f28&environmentVFI=AmazonNavigationOrchestrator%2Fbigmesh-patch%40B6469611165-AL2023_aarch64&languageCode=en_IN&customerCountryCode=IN",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/vap/ew/componentbuilder",
+              "method": "POST"
+            },
+            {
+              "url": "https://www.amazon.in/hz/rhf?currentPageType=zeitgeist&currentSubPageType=bsnr&excludeAsin=&fieldKeywords=&k=&keywords=&search=&auditEnabled=&previewCampaigns=&forceWidgets=&searchAlias=&cardJSPresent=true",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/c41f7626-e10f-4726-adfd-db787b975348/default.vertical.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/3549d0e6-dd18-40bd-9c7c-bc8118853941/default.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/1359f821-08d1-450e-8da9-7f05ff2ae918/default.vertical.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/db5ae732-ac2a-42ce-b736-3e0429422de5/default.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/3549d0e6-dd18-40bd-9c7c-bc8118853941/default.jobtemplate.hls360.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/c41f7626-e10f-4726-adfd-db787b975348/default.vertical.jobtemplate.hls360.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/fsx/storeingress/groceries/flyout/desktop?groceriesContent=groceries&metricKey=groceriesMetric&rid=VQV8CMJYKQ24TAE6V915&_=1782385249000",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/2357ccf7-fb82-44e7-8af8-16167f35297c/default.vertical.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/6a9c72c9-480c-4e9a-ae96-dbd947d97300/default.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://images-eu.ssl-images-amazon.com/images/G/31/img18/Electronics/Megamenu/megamenumar18f.json?_=1782385253065",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/fsx/storeingress/groceries/flyout/desktop?groceriesContent=groceries&metricKey=groceriesMetric&rid=W0CQF3YFKAE68D6VQC4D&_=1782385253073",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/6ead39d7-bbc5-4454-bb64-c3e9246c0a26/default.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/3549d0e6-dd18-40bd-9c7c-bc8118853941/default.jobtemplate.hls360_00001.ts",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/db5ae732-ac2a-42ce-b736-3e0429422de5/default.jobtemplate.hls360.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/1359f821-08d1-450e-8da9-7f05ff2ae918/default.vertical.jobtemplate.hls360.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/c41f7626-e10f-4726-adfd-db787b975348/default.vertical.jobtemplate.hls360_00001.ts",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/fsx/storeingress/groceries/flyout/desktop?groceriesContent=groceries&metricKey=groceriesMetric&rid=99QTNAVNXCXYJF7FYBR5&_=1782385259861",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/0178aac3-db8a-4114-8d3e-e9311d5a3d68/default.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/db5ae732-ac2a-42ce-b736-3e0429422de5/default.jobtemplate.hls360_00001.ts",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/1359f821-08d1-450e-8da9-7f05ff2ae918/default.vertical.jobtemplate.hls360_00001.ts",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/cart/add-to-cart/patc-config?clientName=SiteWideActionExecutor&ref_=ax_patc_cfg",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/ce21f7e5-098f-4b18-9dd1-7a0bbd969738/default.jobtemplate.hls.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/ce21f7e5-098f-4b18-9dd1-7a0bbd969738/default.jobtemplate.hls360.m3u8",
+              "method": "GET"
+            },
+            {
+              "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/ce21f7e5-098f-4b18-9dd1-7a0bbd969738/default.jobtemplate.hls360_00001.ts",
+              "method": "GET"
+            },
+            {
+              "url": "https://www.amazon.in/gp/product/ajax/twisterDimensionSlotsDefault?isDimensionSlotsAjax=1&asinList=B0H1MJNFTZ,B0FHH3L3LD,B0H1MH7VV5,B0H1MFDGW5,B0H1MJDBMK,B0H1MDRG3H&vs=1&asin=B0H1MJNFTZ&productTypeDefinition=SHOES&productGroupId=shoes_display_on_website&parentAsin=B0FJXKBPTV&isPrime=0&originalHttpReferer=https%3A%2F%2Fwww.amazon.in%2Fgp%2Fnew-releases%2Fshoes%2Fref%3Dzg_bsnr_nav_shoes_0&deviceOs=unrecognized&landingAsin=B0H1MJNFTZ&deviceType=web&showFancyPrice=false&twisterFlavor=twisterPlusDesktopConfigurator",
+              "method": "GET"
+            },
+            {
+              "url": "https://api.stores.eu-south-2.prod.paets.advertising.amazon.dev/v1/ad-events/loaded/01KVZ71JMW03EYEDVR4346AZQH?publisherId=stores",
+              "method": "GET"
+            },
+            {
+              "url": "https://aes.eu-south.ono.axp.amazon-adsystem.com/x/px?t=atf&bi=v1_CGrnR34DjOP67xKAC909xiKWQClKb6EI6Yh9nmHTrpP8NJw1k6wiIsQX5XscoCybjqMywKpYsUfKrgmcXisuI3Eb4UzjTaiUSBlUPxggFgX7Rtkm52Qs4JI3Bwm5ab3-H9LXZEym6pBJQRtt_wyoNBwRbhdaUJokXxmxOaAhRwmTnLvNkU09VRukO5HvOLMyGDYHe9Ldkp1VQ2kvJcJFYPwQjdO5gZ8zCguXJ7Qv2Ekfu5UulOqxAEEvggSD2FFYCHngLufnlSlW1VwXO5NvZgWweXC-xgDdGuawrZvNR4wbIWGm0vyl_zjKSzfRALimw_cT_cA2aO3Ty77bK6WSNeQt89ppXwgN8rAT3NB1GapE7F1VCkqF7AOx2JEuQE2BQx1d1mjbo2VVjwjbEKOzXllrYJT4s-hdRfY5PGlvhDNjC8BSmRp_Ikx6xKtAJnErB-OwY_bznOiiQSUpfSGawaJPU2SZgXXpXQtbVq4hhfCRSlNN4oim9xjtYBF7KbuMzPd38wZHKZwxjBXZskqT52TcZRR-clg6NC-OZy_pH7frdCj9P3dN_CcdA2nJdEHrZugam_0heQiji4VlkuQ2OFDEERNkliYk8fEU6dq6lHEwuL76_a4ZPEuk5FyqboqRK2QwaegvECdK7tpAZJFsuhdHzo7WPCdRcn4K481l2MNLBHwMcyOEkXAYhR_zQ8Bn8FwH-2l79sofoN4iOW-XLmcM2rbvN8rn_6HyG3QXPD7xgCLxfo9CwhQez_QUEf69r_ldHB6VnWPN9SjmHEHDJQw_ghP2GFpWpJxHRt0JUgiW-2oGA-VRsCpqj5OSVmjGTsWxQjdC1iTRuvBWRc5ouYSjo20Glf6yLveEodCygGyK31eT93A3wBPLv1qupjHKiPUZk94hqXjuB_54ftUgP_3_4-aE7CFgKScUJRjJo3GN1TpxK2kYOXVoURPA7l6axTG3S4bA1aWW8NfJwCWJar5dPNqBIon06W2xVj90E8BtQxpQbE9rd4Dy_z3GYnZHASS51ZZL7TApeZ476r2c4RpbvjFOId6xgEhK54p_hB8DSXOBU4aiNhG9YoZcJ99CTS-QUJCQIBglNIG8f5ahnvzteiaO1Ix9edABBCl0BLKcC0-cXvhmmAQbNo-M48z54JU9SujpuzYpHOdPn0sKT1U3bvvmJEjzDYgos7DoiqC6sDid6yvR0J8Vqxd7dOsoM3m9HXn8012OXh09nFb8EtqIzO53oItYxyiO87ldDHjKaHEbVVq-0Uq8hy0QD63HKekrlu-5RXvBFoZhVYozh3Yo1aUi17CI8xeYqVuIC9DUb-puc_jRwdIinAWe4rUGMfM2Qn66_Gjp1McAC0oB4IWwyt4MoVhIUNNwEs0InpM0jFW8JEq9uuyzBHjPfr1MSh_deE-6dgr6RissbI-IQ73Ptif3b1Nw6_E6-ePOhWRrcSpV2_U9O-4-CCbyKCecwHMnP3eim4WnwRPqCSn7Fl_M_jWIQOkd3pwZnu8b3VN98m2UKESqNnhm7pYxkPKAlib7QBdNV-13N6CGWsI3Khj-oZebAEjaHTS8DaAHgvmL9OqTy_WuZdp6KNMgtMc0Q9zOB0jyyZP5bf7qEF0uZTcUzOH9irA5_8Pu8XTB8uGSRWrrGyeTrRkOhGBEbb-BKinnNkPNzp0vVlqKjCN5_JMRZyjya0EZLrFVjO8nX870cNALlY7maUMRysK8-s6DgaVMKPyEvTRj5GWxlMk3LQHo8RZfkBybnoVzDDa3-HfyoM_3nuACX88EnzeRE4B879RCwU63_uova69sd98HjVt5QIz4nA_aI6z2L1jd8czpZPj1tuRuhq5RLKXw_aNz4l93A6Eee89j-6qUcDgOZv3s0KhZS-iIfup7Rj8_tTdGxISmTZy4kGsIWLKN4dokutv5Lngf2YjHi2BnRRD4FszvN0fI7ifVZunLs-vshplxQOSE&c=%7B%22atf%22%3Atrue%7D",
+              "method": "GET"
+            },
+            {
+              "url": "https://aes.eu-south.ono.axp.amazon-adsystem.com/x/px?t=v&bi=v1_CGrnR34DjOP67xKAC909xiKWQClKb6EI6Yh9nmHTrpP8NJw1k6wiIsQX5XscoCybjqMywKpYsUfKrgmcXisuI3Eb4UzjTaiUSBlUPxggFgX7Rtkm52Qs4JI3Bwm5ab3-H9LXZEym6pBJQRtt_wyoNBwRbhdaUJokXxmxOaAhRwmTnLvNkU09VRukO5HvOLMyGDYHe9Ldkp1VQ2kvJcJFYPwQjdO5gZ8zCguXJ7Qv2Ekfu5UulOqxAEEvggSD2FFYCHngLufnlSlW1VwXO5NvZgWweXC-xgDdGuawrZvNR4wbIWGm0vyl_zjKSzfRALimw_cT_cA2aO3Ty77bK6WSNeQt89ppXwgN8rAT3NB1GapE7F1VCkqF7AOx2JEuQE2BQx1d1mjbo2VVjwjbEKOzXllrYJT4s-hdRfY5PGlvhDNjC8BSmRp_Ikx6xKtAJnErB-OwY_bznOiiQSUpfSGawaJPU2SZgXXpXQtbVq4hhfCRSlNN4oim9xjtYBF7KbuMzPd38wZHKZwxjBXZskqT52TcZRR-clg6NC-OZy_pH7frdCj9P3dN_CcdA2nJdEHrZugam_0heQiji4VlkuQ2OFDEERNkliYk8fEU6dq6lHEwuL76_a4ZPEuk5FyqboqRK2QwaegvECdK7tpAZJFsuhdHzo7WPCdRcn4K481l2MNLBHwMcyOEkXAYhR_zQ8Bn8FwH-2l79sofoN4iOW-XLmcM2rbvN8rn_6HyG3QXPD7xgCLxfo9CwhQez_QUEf69r_ldHB6VnWPN9SjmHEHDJQw_ghP2GFpWpJxHRt0JUgiW-2oGA-VRsCpqj5OSVmjGTsWxQjdC1iTRuvBWRc5ouYSjo20Glf6yLveEodCygGyK31eT93A3wBPLv1qupjHKiPUZk94hqXjuB_54ftUgP_3_4-aE7CFgKScUJRjJo3GN1TpxK2kYOXVoURPA7l6axTG3S4bA1aWW8NfJwCWJar5dPNqBIon06W2xVj90E8BtQxpQbE9rd4Dy_z3GYnZHASS51ZZL7TApeZ476r2c4RpbvjFOId6xgEhK54p_hB8DSXOBU4aiNhG9YoZcJ99CTS-QUJCQIBglNIG8f5ahnvzteiaO1Ix9edABBCl0BLKcC0-cXvhmmAQbNo-M48z54JU9SujpuzYpHOdPn0sKT1U3bvvmJEjzDYgos7DoiqC6sDid6yvR0J8Vqxd7dOsoM3m9HXn8012OXh09nFb8EtqIzO53oItYxyiO87ldDHjKaHEbVVq-0Uq8hy0QD63HKekrlu-5RXvBFoZhVYozh3Yo1aUi17CI8xeYqVuIC9DUb-puc_jRwdIinAWe4rUGMfM2Qn66_Gjp1McAC0oB4IWwyt4MoVhIUNNwEs0InpM0jFW8JEq9uuyzBHjPfr1MSh_deE-6dgr6RissbI-IQ73Ptif3b1Nw6_E6-ePOhWRrcSpV2_U9O-4-CCbyKCecwHMnP3eim4WnwRPqCSn7Fl_M_jWIQOkd3pwZnu8b3VN98m2UKESqNnhm7pYxkPKAlib7QBdNV-13N6CGWsI3Khj-oZebAEjaHTS8DaAHgvmL9OqTy_WuZdp6KNMgtMc0Q9zOB0jyyZP5bf7qEF0uZTcUzOH9irA5_8Pu8XTB8uGSRWrrGyeTrRkOhGBEbb-BKinnNkPNzp0vVlqKjCN5_JMRZyjya0EZLrFVjO8nX870cNALlY7maUMRysK8-s6DgaVMKPyEvTRj5GWxlMk3LQHo8RZfkBybnoVzDDa3-HfyoM_3nuACX88EnzeRE4B879RCwU63_uova69sd98HjVt5QIz4nA_aI6z2L1jd8czpZPj1tuRuhq5RLKXw_aNz4l93A6Eee89j-6qUcDgOZv3s0KhZS-iIfup7Rj8_tTdGxISmTZy4kGsIWLKN4dokutv5Lngf2YjHi2BnRRD4FszvN0fI7ifVZunLs-vshplxQOSE&c=%7B%22v%22%3A%7B%22def%22%3A%22iab%22%2C%22p%22%3A0.5%2C%22t%22%3A1000%2C%22ib%22%3Afalse%7D%2C%22wh%22%3A720%2C%22ww%22%3A1280%2C%22sx%22%3A0%2C%22sy%22%3A0%2C%22ah%22%3A55%2C%22aw%22%3A1280%2C%22top%22%3A149%2C%22left%22%3A-7.6666669845581055%2C%22ptv%22%3A4.942%2C%22ttv%22%3A1.017%7D",
+              "method": "GET"
+            },
+            {
+              "url": "https://unagi-eu.amazon.com/1/events/com.amazon.eel.SponsoredProductsEventTracking.prod.ZAZ",
+              "method": "POST"
+            },
+            {
+              "url": "https://www.amazon.in/acp/eu-south-2/cr-media-carousel/cr-media-carousel-417924d5-fa27-4f6c-8d5d-0460509c5a57-1780608512907/getTreatmentNoTrigger?page-type=Detail&stamp=1782385265364",
+              "method": "POST"
+            }
+          ],
+          "can_generate_test_case_directly": true
+        }
+      ],
+      "dom_pages_count": 3,
+      "comprehension_status": "success",
+      "comprehension_source": "dom_synthesized",
+      "scenarios_count": 12,
+      "business_scenarios_path": "application_assets\\projects\\AmazonTest\\comprehension\\business_scenarios.json",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 0,
+    "grounded_intents": 0,
+    "passing_tests": 0,
+    "failing_tests": 0
+  },
+  "business_scenarios": {},
+  "test_cases": {},
+  "new_additions": [],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": []
+}

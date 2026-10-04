@@ -1,0 +1,20 @@
+{
+  "name": "BDDAgent",
+  "registry_key": "bdd",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.bdd.agent",
+  "version": "0.1.0",
+  "status": "stub",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Placeholder BDD scenario generation agent. Currently returns a static stub result; no BDD logic is implemented yet.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": false, "description": "Defaults to 'unknown' if absent" }
+  ],
+  "outputs": [
+    { "name": "status", "type": "string", "description": "Always 'stub' in the current implementation" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

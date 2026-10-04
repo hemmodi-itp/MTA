@@ -1,0 +1,27 @@
+{
+  "name": "DiscoveryAgent",
+  "registry_key": "discovery",
+  "category": "comprehension",
+  "module_path": "agents.comprehension.discovery.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Mandatory gateway step for every QA workflow. Runs DOM scan and/or BRD comprehension depending on project.yaml inputs (url/brd_dir), and blocks the workflow if mandatory outputs are missing.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Used to derive output paths" },
+    { "name": "url", "type": "string", "required": false, "description": "Target application URL; triggers DOM scan" },
+    { "name": "brd_dir", "type": "string", "required": false, "description": "Path to BRD document or directory; triggers BRD comprehension" },
+    { "name": "browser", "type": "string", "required": false, "description": "chromium (default) | firefox | webkit" },
+    { "name": "headless", "type": "boolean", "required": false, "description": "Default true" }
+  ],
+  "outputs": [
+    { "name": "business_scenarios_path", "type": "string", "description": "comprehension/business_scenarios.json" },
+    { "name": "intents_path", "type": "string", "description": "test_creation/intents.yaml" },
+    { "name": "scenarios_count", "type": "integer", "description": "Number of business scenarios produced" },
+    { "name": "missing_outputs", "type": "array", "description": "Present only when blocking=true" }
+  ],
+  "dependencies": ["ComprehensionAgent"],
+  "skills": [],
+  "doc": "agent.md"
+}

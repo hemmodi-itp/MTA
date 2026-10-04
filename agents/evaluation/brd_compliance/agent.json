@@ -1,0 +1,24 @@
+{
+  "name": "BrdComplianceAgent",
+  "registry_key": "brd_compliance",
+  "category": "evaluation",
+  "module_path": "agents.evaluation.brd_compliance.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Joins requirement traceability's criterion verdicts with the Pass/Fail Engine's runtime tests into a requirement → criterion → evidence → verdict matrix, flags code-vs-runtime discrepancies (implemented but broken at runtime, works but not found in code, inconsistent runtime results, runtime-only criteria never reached) and measures the evidence mix (E5/E4 runtime vs E3/E2 code); compliance scoring (v1.1) uses the discrepancies and runtime counts for gates and recommendations.",
+  "inputs": [
+    { "name": "requirements", "type": "list", "required": true, "description": "Traced requirements with criteria, priority, origin, verifiability, verdict, score" },
+    { "name": "criterion_verdicts", "type": "list", "required": true, "description": "Traceability verdicts incl. static_verdict / static_strength" },
+    { "name": "pass_fail", "type": "object", "required": false, "description": "Runtime verdicts per criterion and test with artifact links" },
+    { "name": "mode", "type": "string", "required": false, "description": "brd_only disables the runtime-only discrepancy" },
+    { "name": "live_url", "type": "string", "required": false, "description": "Deployed URL (runtime testing possible)" }
+  ],
+  "outputs": [
+    { "name": "brd_compliance", "type": "object", "description": "matrix[{requirement, criteria[{verdict, strength, credit, basis, static, runtime{verdict, strength, mixed, tests[]}, discrepancy}]}], discrepancies[{kind, severity, detail, criterion_code, requirement_code}], evidence_mix{by_strength, runtime_share, credit_by_basis}, counts" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

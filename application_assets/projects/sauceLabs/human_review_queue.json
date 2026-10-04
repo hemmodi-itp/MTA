@@ -1,0 +1,398 @@
+[
+  {
+    "timestamp": "2026-09-16T11:32:27.989783+00:00",
+    "kind": "locator_map_drift",
+    "project": "sauceLabs",
+    "module_id": "_project",
+    "source": "build_named_locator_map",
+    "added": [
+      "username",
+      "password",
+      "input_loc_0003"
+    ],
+    "updated": [],
+    "possibly_removed": [],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-16T11:32:39.236112+00:00",
+    "kind": "locator_map_drift",
+    "project": "sauceLabs",
+    "module_id": "_default",
+    "source": "live_validation",
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "input_loc_0003"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-16T11:40:47.071426+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M01_BS_001",
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T11:44:59.804067+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M01_BS_002",
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button locator key for clicking the signin button",
+      "error_message locator key for asserting login failure error messages in negative/boundary tests"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:02:01.595696+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M01_BS_003",
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button",
+      "error_message"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:06:32.246800+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_001",
+    "missing_actions": [],
+    "missing_locators": [
+      "Username input field on the login page to authenticate prior to viewing inventory",
+      "Password input field on the login page to authenticate prior to viewing inventory",
+      "Login button to submit user credentials",
+      "Inventory page header/title element displaying 'Products'",
+      "Product catalog item container/list to verify count and product details",
+      "Shopping cart icon/link element in the inventory header",
+      "Product sort dropdown selection element"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:11:42.741537+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_002",
+    "missing_actions": [],
+    "missing_locators": [
+      "add_to_cart_button (Button to add 'Sauce Labs Backpack' to the shopping cart)",
+      "shopping_cart_badge (Shopping cart badge element displaying the item count)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:15:31.697189+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_003",
+    "missing_actions": [],
+    "missing_locators": [
+      "remove_from_cart_button (Remove button for item on inventory page, e.g., Sauce Labs Backpack)",
+      "shopping_cart_badge (Badge displaying cart item count)",
+      "add_to_cart_button (Add to cart button for item on inventory page)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:20:04.574123+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_004",
+    "missing_actions": [],
+    "missing_locators": [
+      "add_to_cart_button_1: Locator for the 'Add to Cart' button on the first product",
+      "add_to_cart_button_2: Locator for the 'Add to Cart' button on the second product",
+      "add_to_cart_button_3: Locator for the 'Add to Cart' button on the third product",
+      "shopping_cart_badge: Locator for the shopping cart badge showing total selected items count",
+      "remove_button: Locator for verifying product buttons show 'Remove' after being added to cart"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:23:40.890961+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_005",
+    "missing_actions": [],
+    "missing_locators": [
+      "product_sort_dropdown - Dropdown element on the inventory page used to select product sort order",
+      "inventory_item_name - Product name elements displaying individual product titles to verify alphabetical order"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:27:42.629725+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_006",
+    "missing_actions": [],
+    "missing_locators": [
+      "product_sort_dropdown (select element for sorting products)",
+      "inventory_item_name (product name elements to verify Z to A alphabetical order)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:28:48.311739+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_007",
+    "missing_actions": [],
+    "missing_locators": [
+      "product_sort_dropdown (Dropdown menu to select product sorting option)",
+      "inventory_item_price (Price elements of products to verify low-to-high sorting order)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-16T12:30:07.681044+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_008",
+    "missing_actions": [],
+    "missing_locators": [
+      "Product sort dropdown menu (select element for sorting products)",
+      "Product price element or product list (for verifying descending price order)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T09:54:29.009342+00:00",
+    "kind": "locator_map_drift",
+    "project": "sauceLabs",
+    "module_id": "_default",
+    "source": "live_validation",
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "input_loc_0003"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-17T09:55:42.962674+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M01_BS_004",
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button - Button to submit the login form and trigger validation",
+      "error_message - Container or inline element to verify validation error messages"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:01:59.657626+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M01_BS_005",
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button",
+      "error_message"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:05:56.782784+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_002",
+    "missing_actions": [],
+    "missing_locators": [
+      "add_to_cart_button (button to add product 'Sauce Labs Backpack' to cart)",
+      "shopping_cart_badge (badge element displaying total items in cart)",
+      "product_item_button (button element to check button text state change to 'Remove')"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:08:12.365553+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_003",
+    "missing_actions": [],
+    "missing_locators": [
+      "remove_button: Button to remove an item (e.g. Sauce Labs Backpack) from the cart on the inventory page",
+      "add_to_cart_button: Button displaying 'Add to cart' after item removal",
+      "shopping_cart_badge: Shopping cart badge element displaying item count"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:09:59.652909+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_004",
+    "missing_actions": [],
+    "missing_locators": [
+      "Add to cart button for first product",
+      "Add to cart button for second product",
+      "Add to cart button for third product",
+      "Shopping cart badge count locator",
+      "Remove button locator for items in cart"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:11:12.440081+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_005",
+    "missing_actions": [],
+    "missing_locators": [
+      "Product sort dropdown menu (select element for product sorting)",
+      "Product name list items (elements displaying product titles to verify alphabetical order)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:12:18.379459+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_006",
+    "missing_actions": [],
+    "missing_locators": [
+      "Product sort dropdown menu element (e.g., select_sort_option)",
+      "Product name list elements or inventory container to verify Z to A sorting order"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:13:30.368435+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_007",
+    "missing_actions": [],
+    "missing_locators": [
+      "product_sort_dropdown",
+      "product_price"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:14:43.277902+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_008",
+    "missing_actions": [],
+    "missing_locators": [
+      "product_sort_dropdown",
+      "inventory_item_price"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:15:58.409522+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_009",
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for product title link or product image on the Inventory page to initiate navigation",
+      "Locator for product title element on the Product Details page to verify navigation success"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:17:13.360573+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_010",
+    "missing_actions": [],
+    "missing_locators": [
+      "Shopping cart icon in top header",
+      "Cart page heading ('Your Cart')",
+      "Cart items list or item container"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:18:34.973994+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_011",
+    "missing_actions": [],
+    "missing_locators": [
+      "Hamburger menu button at top left of the Inventory page",
+      "Sidebar navigation menu container",
+      "Sidebar navigation menu links / options"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:19:49.794794+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_012",
+    "missing_actions": [],
+    "missing_locators": [
+      "Sidebar menu button / icon to open the sidebar menu",
+      "Logout link / button inside the sidebar menu"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:21:07.341311+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_013",
+    "missing_actions": [],
+    "missing_locators": [
+      "add_to_cart_button (Button to add 'Sauce Labs Backpack' to cart)",
+      "shopping_cart_badge (Cart badge element displaying item count)",
+      "product_sort_dropdown (Dropdown element for product sorting)",
+      "hamburger_menu_button (Button to open hamburger menu)",
+      "close_menu_button (Button to close hamburger menu)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:31:03.153400+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_014",
+    "missing_actions": [],
+    "missing_locators": [
+      "shopping_cart_badge locator to verify preserved cart badge count after refresh",
+      "page_title_heading locator to verify 'Products' header after refresh",
+      "add_to_cart_button locator to populate cart selections prior to refresh"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:32:24.507862+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_015",
+    "missing_actions": [],
+    "missing_locators": [
+      "Add to Cart button for selected inventory item (e.g., Sauce Labs Backpack)",
+      "Remove button for selected inventory item to verify button state transition",
+      "Shopping cart badge count indicator element"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T10:35:11.550150+00:00",
+    "kind": "missing_capability",
+    "project": "sauceLabs",
+    "scenario_id": "M02_BS_016",
+    "missing_actions": [],
+    "missing_locators": [
+      "error_message"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  }
+]

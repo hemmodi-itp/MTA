@@ -1,0 +1,84 @@
+{
+  "specs": [
+    {
+      "spec_id": "M01_BS_001",
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "scenario_title": "Navigate to page information using navigation bar",
+      "file": "M01/test_M01_BS_001_navigate_to_page_information_using_navigation_bar.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-07-15T15:15:26.854439+00:00",
+      "last_run": "2026-07-15",
+      "last_result": "failed"
+    },
+    {
+      "spec_id": "M01_BS_002",
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "scenario_title": "Browse new AWS items in What's New section",
+      "file": "M01/test_M01_BS_002_browse_new_aws_items_in_what_s_new_section.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-07-15T15:15:33.700683+00:00",
+      "last_run": "2026-07-15",
+      "last_result": "failed"
+    },
+    {
+      "spec_id": "M01_BS_003",
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "scenario_title": "View client showcase through image carousel",
+      "file": "M01/test_M01_BS_003_view_client_showcase_through_image_carousel.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-07-15T15:15:40.273357+00:00",
+      "last_run": "2026-07-15",
+      "last_result": "failed"
+    },
+    {
+      "spec_id": "M01_BS_004",
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "scenario_title": "Read customer success stories through story cards",
+      "file": "M01/test_M01_BS_004_read_customer_success_stories_through_story_cards.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-07-15T15:15:47.583581+00:00",
+      "last_run": "2026-07-15",
+      "last_result": "failed"
+    },
+    {
+      "spec_id": "M01_BS_005",
+      "module_id": "M01",
+      "module_name": "HomePage",
+      "scenario_title": "Explore AWS products information from homepage",
+      "file": "M01/test_M01_BS_005_explore_aws_products_information_from_homepage.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generation_mode": "action_library",
+      "generated_at": "2026-07-15T15:15:55.173952+00:00",
+      "last_run": "2026-07-15",
+      "last_result": "failed"
+    }
+  ],
+  "project": "AWS_WORLD",
+  "updated_at": "2026-07-15T15:15:55.174021+00:00",
+  "total_scenarios": 5,
+  "new_additions": [
+    "M01/test_M01_BS_001_navigate_to_page_information_using_navigation_bar.spec.ts",
+    "M01/test_M01_BS_002_browse_new_aws_items_in_what_s_new_section.spec.ts",
+    "M01/test_M01_BS_003_view_client_showcase_through_image_carousel.spec.ts",
+    "M01/test_M01_BS_004_read_customer_success_stories_through_story_cards.spec.ts",
+    "M01/test_M01_BS_005_explore_aws_products_information_from_homepage.spec.ts"
+  ]
+}

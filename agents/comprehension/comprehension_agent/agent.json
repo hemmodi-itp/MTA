@@ -1,0 +1,23 @@
+{
+  "name": "ComprehensionAgent",
+  "registry_key": "comprehension",
+  "category": "comprehension",
+  "module_path": "agents.comprehension.comprehension_agent.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Reads BRD documents and produces structured business scenarios via a five-step pipeline (parse, extract requirements, generate scenarios, validate, export). Supports flat and per-module modes. Invoked directly by DiscoveryAgent as a plain Python import, not only through the registry.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": false, "description": "Falls back to request.message, then 'project'" },
+    { "name": "brd_dir", "type": "string", "required": false, "description": "Path to BRD document or directory" },
+    { "name": "modules", "type": "array", "required": false, "description": "List of {id, name, brd_file} dicts — presence switches to modular mode" }
+  ],
+  "outputs": [
+    { "name": "business_scenarios_path", "type": "string", "description": "comprehension/business_scenarios.json" },
+    { "name": "scenarios_valid", "type": "integer", "description": "Count of validated scenarios" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

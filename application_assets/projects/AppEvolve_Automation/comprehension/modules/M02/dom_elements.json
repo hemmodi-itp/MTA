@@ -1,0 +1,142 @@
+{
+  "url": "https://pt-dev.appevolve.intuitive.ai/appevolve/dashboard",
+  "project": "AppEvolve_Automation",
+  "scan_mode": "interactive",
+  "total_element_count": 1,
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "page_id": "PAGE-001",
+      "blast_radius_source": null,
+      "blast_radius_score": null,
+      "tag": "button",
+      "display_text": "Finish Recording",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Finish Recording"
+        },
+        "get_by_text": {
+          "text": "Finish Recording"
+        }
+      },
+      "technical_locators": {
+        "css": "div>button",
+        "xpath": "/html[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Finish Recording"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Finish Recording"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ],
+  "pages": [
+    {
+      "page_id": "PAGE-001",
+      "page_name": "appevolve_dashboard",
+      "path": "/appevolve/dashboard",
+      "url": "https://pt-dev.appevolve.intuitive.ai/appevolve/dashboard",
+      "element_count": 1,
+      "user_clicked_locators": [],
+      "elements": [
+        {
+          "locator_id": "LOC-0001",
+          "page_id": "PAGE-001",
+          "blast_radius_source": null,
+          "blast_radius_score": null,
+          "tag": "button",
+          "display_text": "Finish Recording",
+          "semantic_locators": {
+            "role": "button",
+            "label": "",
+            "placeholder": null,
+            "aria_label": null,
+            "title": null
+          },
+          "attribute_locators": {
+            "testid": null,
+            "id": null,
+            "name": null,
+            "type": null
+          },
+          "playwright_locators": {
+            "get_by_role": {
+              "role": "button",
+              "name": "Finish Recording"
+            },
+            "get_by_text": {
+              "text": "Finish Recording"
+            }
+          },
+          "technical_locators": {
+            "css": "div>button",
+            "xpath": "/html[1]/div[1]/button[1]"
+          },
+          "recommended_locator": {
+            "type": "role",
+            "value": {
+              "role": "button",
+              "name": "Finish Recording"
+            },
+            "score": 110,
+            "unique": true,
+            "match_count": 1
+          },
+          "locator_candidates": [
+            {
+              "type": "role",
+              "value": {
+                "role": "button",
+                "name": "Finish Recording"
+              },
+              "score": 110,
+              "unique": true,
+              "match_count": 1
+            }
+          ],
+          "quality": {
+            "visible": true,
+            "enabled": true
+          },
+          "intent_hints": []
+        }
+      ]
+    }
+  ]
+}

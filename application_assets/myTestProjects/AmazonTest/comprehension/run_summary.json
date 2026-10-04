@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "intents_path": "application_assets\\projects\\AmazonTest\\test_creation\\intents.yaml",
+  "dom_status": "success",
+  "dom_intents_count": 210,
+  "dom_intents_path": "application_assets\\projects\\AmazonTest\\comprehension\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\AmazonTest\\comprehension\\dom_elements.json",
+  "dom_pages_count": 3,
+  "comprehension_status": "success",
+  "comprehension_source": "dom_synthesized",
+  "scenarios_count": 12,
+  "business_scenarios_path": "application_assets\\projects\\AmazonTest\\comprehension\\business_scenarios.json",
+  "mode": "both",
+  "module": "discovery",
+  "user_flows_path": "application_assets\\projects\\AmazonTest\\comprehension\\interactive\\user_flows.json"
+}

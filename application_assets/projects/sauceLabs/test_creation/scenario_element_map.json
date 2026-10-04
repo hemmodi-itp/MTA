@@ -1,0 +1,177 @@
+{
+  "M01_BS_001": {
+    "scenario_title": "Access SauceLabs Login Page URL",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Username')",
+        "relevance": "username input field — verified on login page load",
+        "intent_id": "DOM_INT_001",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "username",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Password')",
+        "relevance": "password input field — verified on login page load",
+        "intent_id": "DOM_INT_002",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "password",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByTestId('login-button')",
+        "relevance": "login button — verified on login page load",
+        "intent_id": "DOM_INT_003",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "loginbutton",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_002": {
+    "scenario_title": "User Login Validation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Username')",
+        "relevance": "username input field — used to enter valid username in step 1",
+        "intent_id": "DOM_INT_001",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "username",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Password')",
+        "relevance": "password input field — used to enter valid password in step 2",
+        "intent_id": "DOM_INT_002",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "password",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByTestId('login-button')",
+        "relevance": "login button — clicked to submit credentials in step 3",
+        "intent_id": "DOM_INT_003",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "loginbutton",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_003": {
+    "scenario_title": "Login Form Missing Required Fields Validation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Username')",
+        "relevance": "username input field — left blank to test missing field validation",
+        "intent_id": "DOM_INT_001",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "username",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Password')",
+        "relevance": "password input field — left blank to test missing field validation",
+        "intent_id": "DOM_INT_002",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "password",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByTestId('login-button')",
+        "relevance": "login button — clicked to trigger required field validation",
+        "intent_id": "DOM_INT_003",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "loginbutton",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_004": {
+    "scenario_title": "Inline Error Message Display Placement Validation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Username')",
+        "relevance": "username input field — target input for checking inline error placement",
+        "intent_id": "DOM_INT_001",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "username",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Password')",
+        "relevance": "password input field — target input for checking inline error placement",
+        "intent_id": "DOM_INT_002",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "password",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByTestId('login-button')",
+        "relevance": "login button — clicked to trigger validation error display",
+        "intent_id": "DOM_INT_003",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "loginbutton",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_005": {
+    "scenario_title": "Standard User Login and Confirmation Redirection",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0001",
+        "playwright_expr": "page.getByPlaceholder('Username')",
+        "relevance": "username input field — used to enter standard_user",
+        "intent_id": "DOM_INT_001",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "username",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0002",
+        "playwright_expr": "page.getByPlaceholder('Password')",
+        "relevance": "password input field — used to enter standard password",
+        "intent_id": "DOM_INT_002",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "password",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0003",
+        "playwright_expr": "page.getByTestId('login-button')",
+        "relevance": "login button — clicked to authenticate and trigger page redirection",
+        "intent_id": "DOM_INT_003",
+        "action": "fill",
+        "expected_result": null,
+        "cluster": "loginbutton",
+        "confidence": 0.5
+      }
+    ]
+  }
+}

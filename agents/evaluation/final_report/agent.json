@@ -1,0 +1,27 @@
+{
+  "name": "FinalReportAgent",
+  "registry_key": "final_report",
+  "category": "evaluation",
+  "module_path": "agents.evaluation.final_report.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Assembles the run's Final Evaluation Report deterministically from Components 1-8 — decision (Compliant / with warnings / Partially / Not compliant / Not assessable), executive summary, what was evaluated, compliance matrix, runtime results with failure screenshots, code-vs-runtime discrepancies, critical findings, gates, recommendations, evidence coverage, limitations and method — rendered as JSON, Markdown and a printable sandboxed HTML page.",
+  "inputs": [
+    { "name": "score", "type": "object", "required": true, "description": "Compliance scoring result (compliance, interval, gates, risk, depth)" },
+    { "name": "requirements", "type": "list", "required": false, "description": "Traced requirements with verdicts and scores" },
+    { "name": "brd_compliance", "type": "object", "required": false, "description": "Compliance matrix, discrepancies, evidence mix" },
+    { "name": "pass_fail", "type": "object", "required": false, "description": "Runtime verdicts per test and criterion" },
+    { "name": "app_classification", "type": "object", "required": false, "description": "Application type and testing strategy" },
+    { "name": "runtime_profile", "type": "object", "required": false, "description": "Runtime discovery profile (login, pages)" },
+    { "name": "findings", "type": "list", "required": false, "description": "Repository review findings" },
+    { "name": "recommendations", "type": "list", "required": false, "description": "Prioritised recommendations from scoring" }
+  ],
+  "outputs": [
+    { "name": "final_report", "type": "object", "description": "{data: report JSON (meta, decision, summary, application, requirements, runtime, discrepancies, findings, gates, recommendations, coverage, limitations, method), markdown, html}" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

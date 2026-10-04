@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "intents_path": "application_assets\\projects\\geminiTest4\\test_creation\\intents.yaml",
+  "partial_reasons": [],
+  "dom_status": "success",
+  "dom_intents_count": 17,
+  "dom_intents_path": "application_assets\\projects\\geminiTest4\\comprehension\\modules\\M01\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\geminiTest4\\comprehension\\modules\\M01\\dom_elements.json",
+  "comprehension_status": "success",
+  "scenarios_count": 17,
+  "business_scenarios_path": "application_assets\\projects\\geminiTest4\\comprehension\\business_scenarios.json",
+  "mode": "both",
+  "module": "discovery",
+  "module_id": "M01"
+}

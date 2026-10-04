@@ -1,0 +1,21 @@
+{
+  "name": "ExecutionAgent",
+  "registry_key": "execution",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.execution.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Thin wrapper around UIExecutionAgent — runs it, then extracts and classifies per-test failures for HealingAgent. Not referenced by any current workflows/*.yaml (all of them call UIExecutionAgent directly under step name ui_execution); kept registered as a documented, currently-unwired alternate entrypoint.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Forwarded to UIExecutionAgent" }
+  ],
+  "outputs": [
+    { "name": "summary", "type": "object", "description": "suite, scenarios_executed, passed, failed" },
+    { "name": "results", "type": "array", "description": "Forwarded from UIExecutionAgent, unmodified" }
+  ],
+  "dependencies": ["UIExecutionAgent"],
+  "skills": [],
+  "doc": "agent.md"
+}

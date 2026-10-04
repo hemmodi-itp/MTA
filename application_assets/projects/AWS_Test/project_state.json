@@ -1,0 +1,1580 @@
+{
+  "project": "AWS_Test",
+  "schema_version": "1.0",
+  "last_updated": "2026-07-14T14:40:48.356186+00:00",
+  "last_run_id": "85967bba-caa5-4f14-a906-f9967cb78d07",
+  "discovery": {
+    "dom_fingerprint": "sha256:ea09a9f05f2a518a138db16ece56bd3a8edce7bae8c6fd841e3f883efeb67f4a",
+    "brd_fingerprint": "sha256:4c78fc919c13a36d6552012cb98866096ea6a19e015c8d13cd3a24c48f5699d1",
+    "last_discovered": "2026-07-16T13:58:56.434870+00:00",
+    "cached_output": {
+      "status": "success",
+      "intents_path": "application_assets\\projects\\AWS_Test\\test_creation\\intents.yaml",
+      "partial_reasons": [],
+      "dom_status": "success",
+      "dom_intents_count": 128,
+      "dom_intents_path": "application_assets\\projects\\AWS_Test\\comprehension\\modules\\M01\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\AWS_Test\\comprehension\\modules\\M01\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "DOM_INT_001",
+          "intent_name": "enter_element",
+          "action": "fill",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_002",
+          "intent_name": "enter_allow_crosscontext_behavioral_ads",
+          "action": "fill",
+          "locator_id": "LOC-0004",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_003",
+          "intent_name": "enter_opt_out_of_crosscontext_behavioral_ads",
+          "action": "fill",
+          "locator_id": "LOC-0004",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_004",
+          "intent_name": "enter_im_looking_for",
+          "action": "fill",
+          "locator_id": "LOC-0005",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_005",
+          "intent_name": "enter_search",
+          "action": "fill",
+          "locator_id": "LOC-0008",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_006",
+          "intent_name": "click_accept",
+          "action": "click",
+          "locator_id": "LOC-0009",
+          "value": null,
+          "expected_result": "accept_opened"
+        },
+        {
+          "intent_id": "DOM_INT_007",
+          "intent_name": "click_decline",
+          "action": "click",
+          "locator_id": "LOC-0010",
+          "value": null,
+          "expected_result": "decline_opened"
+        },
+        {
+          "intent_id": "DOM_INT_008",
+          "intent_name": "click_customize",
+          "action": "click",
+          "locator_id": "LOC-0011",
+          "value": null,
+          "expected_result": "customize_opened"
+        },
+        {
+          "intent_id": "DOM_INT_009",
+          "intent_name": "click_cancel",
+          "action": "click",
+          "locator_id": "LOC-0012",
+          "value": null,
+          "expected_result": "cancel_opened"
+        },
+        {
+          "intent_id": "DOM_INT_010",
+          "intent_name": "click_save_preferences",
+          "action": "click",
+          "locator_id": "LOC-0013",
+          "value": null,
+          "expected_result": "save_preferences_opened"
+        },
+        {
+          "intent_id": "DOM_INT_011",
+          "intent_name": "click_element",
+          "action": "click",
+          "locator_id": "LOC-0015",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_012",
+          "intent_name": "click_filter_all",
+          "action": "click",
+          "locator_id": "LOC-0018",
+          "value": null,
+          "expected_result": "filter_all_opened"
+        },
+        {
+          "intent_id": "DOM_INT_013",
+          "intent_name": "click_english",
+          "action": "click",
+          "locator_id": "LOC-0019",
+          "value": null,
+          "expected_result": "english_opened"
+        },
+        {
+          "intent_id": "DOM_INT_014",
+          "intent_name": "click_support",
+          "action": "click",
+          "locator_id": "LOC-0020",
+          "value": null,
+          "expected_result": "support_opened"
+        },
+        {
+          "intent_id": "DOM_INT_015",
+          "intent_name": "click_my_account",
+          "action": "click",
+          "locator_id": "LOC-0021",
+          "value": null,
+          "expected_result": "my_account_opened"
+        },
+        {
+          "intent_id": "DOM_INT_016",
+          "intent_name": "click_discover_aws",
+          "action": "click",
+          "locator_id": "LOC-0022",
+          "value": null,
+          "expected_result": "discover_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_017",
+          "intent_name": "click_products",
+          "action": "click",
+          "locator_id": "LOC-0023",
+          "value": null,
+          "expected_result": "products_opened"
+        },
+        {
+          "intent_id": "DOM_INT_018",
+          "intent_name": "click_solutions",
+          "action": "click",
+          "locator_id": "LOC-0024",
+          "value": null,
+          "expected_result": "solutions_opened"
+        },
+        {
+          "intent_id": "DOM_INT_019",
+          "intent_name": "click_pricing",
+          "action": "click",
+          "locator_id": "LOC-0025",
+          "value": null,
+          "expected_result": "pricing_opened"
+        },
+        {
+          "intent_id": "DOM_INT_020",
+          "intent_name": "click_resources",
+          "action": "click",
+          "locator_id": "LOC-0026",
+          "value": null,
+          "expected_result": "resources_opened"
+        },
+        {
+          "intent_id": "DOM_INT_021",
+          "intent_name": "click_show_8_more",
+          "action": "click",
+          "locator_id": "LOC-0028",
+          "value": null,
+          "expected_result": "show_8_more_opened"
+        },
+        {
+          "intent_id": "DOM_INT_022",
+          "intent_name": "click_north_america",
+          "action": "click",
+          "locator_id": "LOC-0029",
+          "value": null,
+          "expected_result": "north_america_opened"
+        },
+        {
+          "intent_id": "DOM_INT_023",
+          "intent_name": "click_south_america",
+          "action": "click",
+          "locator_id": "LOC-0030",
+          "value": null,
+          "expected_result": "south_america_opened"
+        },
+        {
+          "intent_id": "DOM_INT_024",
+          "intent_name": "click_europe",
+          "action": "click",
+          "locator_id": "LOC-0031",
+          "value": null,
+          "expected_result": "europe_opened"
+        },
+        {
+          "intent_id": "DOM_INT_025",
+          "intent_name": "click_middle_east",
+          "action": "click",
+          "locator_id": "LOC-0032",
+          "value": null,
+          "expected_result": "middle_east_opened"
+        },
+        {
+          "intent_id": "DOM_INT_026",
+          "intent_name": "click_africa",
+          "action": "click",
+          "locator_id": "LOC-0033",
+          "value": null,
+          "expected_result": "africa_opened"
+        },
+        {
+          "intent_id": "DOM_INT_027",
+          "intent_name": "click_asia_pacific",
+          "action": "click",
+          "locator_id": "LOC-0034",
+          "value": null,
+          "expected_result": "asia_pacific_opened"
+        },
+        {
+          "intent_id": "DOM_INT_028",
+          "intent_name": "click_australia_and_new_zealand",
+          "action": "click",
+          "locator_id": "LOC-0035",
+          "value": null,
+          "expected_result": "australia_and_new_zealand_opened"
+        },
+        {
+          "intent_id": "DOM_INT_029",
+          "intent_name": "click_geographic_regions_9",
+          "action": "click",
+          "locator_id": "LOC-0036",
+          "value": null,
+          "expected_result": "geographic_regions_9_opened"
+        },
+        {
+          "intent_id": "DOM_INT_030",
+          "intent_name": "click_aws_govcloud_useast",
+          "action": "click",
+          "locator_id": "LOC-0037",
+          "value": null,
+          "expected_result": "aws_govcloud_useast_opened"
+        },
+        {
+          "intent_id": "DOM_INT_031",
+          "intent_name": "click_aws_govcloud_uswest",
+          "action": "click",
+          "locator_id": "LOC-0038",
+          "value": null,
+          "expected_result": "aws_govcloud_uswest_opened"
+        },
+        {
+          "intent_id": "DOM_INT_032",
+          "intent_name": "click_canada_central",
+          "action": "click",
+          "locator_id": "LOC-0039",
+          "value": null,
+          "expected_result": "canada_central_opened"
+        },
+        {
+          "intent_id": "DOM_INT_033",
+          "intent_name": "click_canada_west_calgary",
+          "action": "click",
+          "locator_id": "LOC-0040",
+          "value": null,
+          "expected_result": "canada_west_calgary_opened"
+        },
+        {
+          "intent_id": "DOM_INT_034",
+          "intent_name": "click_mexico_central",
+          "action": "click",
+          "locator_id": "LOC-0041",
+          "value": null,
+          "expected_result": "mexico_central_opened"
+        },
+        {
+          "intent_id": "DOM_INT_035",
+          "intent_name": "click_us_west_northern_california",
+          "action": "click",
+          "locator_id": "LOC-0042",
+          "value": null,
+          "expected_result": "us_west_northern_california_opened"
+        },
+        {
+          "intent_id": "DOM_INT_036",
+          "intent_name": "click_us_east_northern_virginia",
+          "action": "click",
+          "locator_id": "LOC-0043",
+          "value": null,
+          "expected_result": "us_east_northern_virginia_opened"
+        },
+        {
+          "intent_id": "DOM_INT_037",
+          "intent_name": "click_us_east_ohio",
+          "action": "click",
+          "locator_id": "LOC-0044",
+          "value": null,
+          "expected_result": "us_east_ohio_opened"
+        },
+        {
+          "intent_id": "DOM_INT_038",
+          "intent_name": "click_us_west_oregon",
+          "action": "click",
+          "locator_id": "LOC-0045",
+          "value": null,
+          "expected_result": "us_west_oregon_opened"
+        },
+        {
+          "intent_id": "DOM_INT_039",
+          "intent_name": "click_edge_locations_31",
+          "action": "click",
+          "locator_id": "LOC-0046",
+          "value": null,
+          "expected_result": "edge_locations_31_opened"
+        },
+        {
+          "intent_id": "DOM_INT_040",
+          "intent_name": "click_yes",
+          "action": "click",
+          "locator_id": "LOC-0047",
+          "value": null,
+          "expected_result": "yes_opened"
+        },
+        {
+          "intent_id": "DOM_INT_041",
+          "intent_name": "click_no",
+          "action": "click",
+          "locator_id": "LOC-0048",
+          "value": null,
+          "expected_result": "no_opened"
+        },
+        {
+          "intent_id": "DOM_INT_042",
+          "intent_name": "click_back_to_top",
+          "action": "click",
+          "locator_id": "LOC-0050",
+          "value": null,
+          "expected_result": "back_to_top_opened"
+        },
+        {
+          "intent_id": "DOM_INT_043",
+          "intent_name": "click_hi_i_can_connect_you_with_an_aws_representative_or_answer_questions_you_have_on_aws",
+          "action": "click",
+          "locator_id": "LOC-0051",
+          "value": null,
+          "expected_result": "hi_i_can_connect_you_with_an_aws_representative_or_answer_questions_you_have_on_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_044",
+          "intent_name": "click_1",
+          "action": "click",
+          "locator_id": "LOC-0053",
+          "value": null,
+          "expected_result": "1_opened"
+        },
+        {
+          "intent_id": "DOM_INT_045",
+          "intent_name": "click_aws_cookie_notice",
+          "action": "click",
+          "locator_id": "LOC-0054",
+          "value": null,
+          "expected_result": "aws_cookie_notice_opened"
+        },
+        {
+          "intent_id": "DOM_INT_046",
+          "intent_name": "click_cookie_notice",
+          "action": "click",
+          "locator_id": "LOC-0055",
+          "value": null,
+          "expected_result": "cookie_notice_opened"
+        },
+        {
+          "intent_id": "DOM_INT_047",
+          "intent_name": "click_here",
+          "action": "click",
+          "locator_id": "LOC-0056",
+          "value": null,
+          "expected_result": "here_opened"
+        },
+        {
+          "intent_id": "DOM_INT_048",
+          "intent_name": "click_aws_privacy_notice",
+          "action": "click",
+          "locator_id": "LOC-0057",
+          "value": null,
+          "expected_result": "aws_privacy_notice_opened"
+        },
+        {
+          "intent_id": "DOM_INT_049",
+          "intent_name": "click_skip_to_main_content",
+          "action": "click",
+          "locator_id": "LOC-0058",
+          "value": null,
+          "expected_result": "skip_to_main_content_opened"
+        },
+        {
+          "intent_id": "DOM_INT_050",
+          "intent_name": "click_contact_us",
+          "action": "click",
+          "locator_id": "LOC-0060",
+          "value": null,
+          "expected_result": "contact_us_opened"
+        },
+        {
+          "intent_id": "DOM_INT_051",
+          "intent_name": "click_aws_marketplace",
+          "action": "click",
+          "locator_id": "LOC-0061",
+          "value": null,
+          "expected_result": "aws_marketplace_opened"
+        },
+        {
+          "intent_id": "DOM_INT_052",
+          "intent_name": "click_reinvent",
+          "action": "click",
+          "locator_id": "LOC-0063",
+          "value": null,
+          "expected_result": "reinvent_opened"
+        },
+        {
+          "intent_id": "DOM_INT_053",
+          "intent_name": "click_sign_in_to_console",
+          "action": "click",
+          "locator_id": "LOC-0064",
+          "value": null,
+          "expected_result": "sign_in_to_console_opened"
+        },
+        {
+          "intent_id": "DOM_INT_054",
+          "intent_name": "click_create_account",
+          "action": "click",
+          "locator_id": "LOC-0065",
+          "value": null,
+          "expected_result": "create_account_opened"
+        },
+        {
+          "intent_id": "DOM_INT_055",
+          "intent_name": "click_start_free_with_aws",
+          "action": "click",
+          "locator_id": "LOC-0066",
+          "value": null,
+          "expected_result": "start_free_with_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_056",
+          "intent_name": "click_event_reinvent_2026_build_whats_next_join_us_nov_30_to_dec_4_in_las_vegas_save_1200_with_early_bird_pricing_ends_august_25_register_today",
+          "action": "click",
+          "locator_id": "LOC-0067",
+          "value": null,
+          "expected_result": "event_reinvent_2026_build_whats_next_join_us_nov_30_to_dec_4_in_las_vegas_save_1200_with_early_bird_pricing_ends_august_25_register_today_opened"
+        },
+        {
+          "intent_id": "DOM_INT_057",
+          "intent_name": "click_agentic_ai_data_leaders_use_agentic_ai_to_lead_industries_see_how_pga_tour_autodesk_and_bmw_are_building_data_foundations_for_agentic_ai_with_an_open_architecture_on_aws_explore_how_they_innovate",
+          "action": "click",
+          "locator_id": "LOC-0068",
+          "value": null,
+          "expected_result": "agentic_ai_data_leaders_use_agentic_ai_to_lead_industries_see_how_pga_tour_autodesk_and_bmw_are_building_data_foundations_for_agentic_ai_with_an_open_architecture_on_aws_explore_how_they_innovate_opened"
+        },
+        {
+          "intent_id": "DOM_INT_058",
+          "intent_name": "click_artificial_intelligence_ai_find_your_ai_path_with_aws_startups_from_the_first_idea_to_scaled_product_discover_ai_tools_credits_and_expert_guidance_matched_to_your_startup_stage_explore_ai_for_startups",
+          "action": "click",
+          "locator_id": "LOC-0069",
+          "value": null,
+          "expected_result": "artificial_intelligence_ai_find_your_ai_path_with_aws_startups_from_the_first_idea_to_scaled_product_discover_ai_tools_credits_and_expert_guidance_matched_to_your_startup_stage_explore_ai_for_startups_opened"
+        },
+        {
+          "intent_id": "DOM_INT_059",
+          "intent_name": "click_view_more_stories",
+          "action": "click",
+          "locator_id": "LOC-0070",
+          "value": null,
+          "expected_result": "view_more_stories_opened"
+        },
+        {
+          "intent_id": "DOM_INT_062",
+          "intent_name": "click_industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story",
+          "action": "click",
+          "locator_id": "LOC-0071",
+          "value": null,
+          "expected_result": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story_opened"
+        },
+        {
+          "intent_id": "DOM_INT_219",
+          "intent_name": "click_automotive_how_audi_uses_ai_to_connect_over_50_manufacturing_plants_worldwide_view_the_story",
+          "action": "click",
+          "locator_id": "LOC-0072",
+          "value": null,
+          "expected_result": "automotive_how_audi_uses_ai_to_connect_over_50_manufacturing_plants_worldwide_view_the_story_opened"
+        },
+        {
+          "intent_id": "DOM_INT_220",
+          "intent_name": "click_travel__hospitality_how_bookingcom_personalizes_every_trip_processing_up_to_250k_requests_per_second_on_aws_view_the_story",
+          "action": "click",
+          "locator_id": "LOC-0073",
+          "value": null,
+          "expected_result": "travel__hospitality_how_bookingcom_personalizes_every_trip_processing_up_to_250k_requests_per_second_on_aws_view_the_story_opened"
+        },
+        {
+          "intent_id": "DOM_INT_221",
+          "intent_name": "click_travel__hospitality_how_tui_uses_amazon_connect_to_consolidate_more_than_85_customer_service_applications_view_the_story",
+          "action": "click",
+          "locator_id": "LOC-0075",
+          "value": null,
+          "expected_result": "travel__hospitality_how_tui_uses_amazon_connect_to_consolidate_more_than_85_customer_service_applications_view_the_story_opened"
+        },
+        {
+          "intent_id": "DOM_INT_064",
+          "intent_name": "click_retail_adidas_drives_enterprisewide_transformation_adidas_accelerates_application_deployment_40x_using_aws_for_sap_streamlining_business_operations_and_resource_planning_view_the_story",
+          "action": "click",
+          "locator_id": "LOC-0076",
+          "value": null,
+          "expected_result": "retail_adidas_drives_enterprisewide_transformation_adidas_accelerates_application_deployment_40x_using_aws_for_sap_streamlining_business_operations_and_resource_planning_view_the_story_opened"
+        },
+        {
+          "intent_id": "DOM_INT_065",
+          "intent_name": "click_retail_tapestry_amplifies_store_associate_voices_worldwide_tapestry_implements_aws_aipowered_feedback_analysis_enabling_datadriven_decisions_through_enhanced_associate_insights_view_the_story",
+          "action": "click",
+          "locator_id": "LOC-0077",
+          "value": null,
+          "expected_result": "retail_tapestry_amplifies_store_associate_voices_worldwide_tapestry_implements_aws_aipowered_feedback_analysis_enabling_datadriven_decisions_through_enhanced_associate_insights_view_the_story_opened"
+        },
+        {
+          "intent_id": "DOM_INT_066",
+          "intent_name": "click_explore_aws_for_your_industry",
+          "action": "click",
+          "locator_id": "LOC-0078",
+          "value": null,
+          "expected_result": "explore_aws_for_your_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_067",
+          "intent_name": "click_financial_services_develop_innovative_and_secure_solutions_across_banking_capital_markets_insurance_and_payments_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0079",
+          "value": null,
+          "expected_result": "financial_services_develop_innovative_and_secure_solutions_across_banking_capital_markets_insurance_and_payments_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_068",
+          "intent_name": "click_healthcare_and_life_sciences_accelerate_innovation_and_improve_patient_care_with_healthcare_data_management_and_security_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0080",
+          "value": null,
+          "expected_result": "healthcare_and_life_sciences_accelerate_innovation_and_improve_patient_care_with_healthcare_data_management_and_security_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_069",
+          "intent_name": "click_government_solutions_designed_to_help_government_agencies_modernize_meet_mandates_reduce_costs_and_deliver_mission_outcomes_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0081",
+          "value": null,
+          "expected_result": "government_solutions_designed_to_help_government_agencies_modernize_meet_mandates_reduce_costs_and_deliver_mission_outcomes_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_070",
+          "intent_name": "click_telecommunications_accelerate_innovation_scale_with_confidence_and_add_agility_with_cloudbased_telecom_solutions_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0082",
+          "value": null,
+          "expected_result": "telecommunications_accelerate_innovation_scale_with_confidence_and_add_agility_with_cloudbased_telecom_solutions_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_071",
+          "intent_name": "click_advertising_and_marketing_turn_data_into_customerwinning_campaigns_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0083",
+          "value": null,
+          "expected_result": "advertising_and_marketing_turn_data_into_customerwinning_campaigns_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_072",
+          "intent_name": "click_manufacturing_optimize_production_and_speed_timetomarket_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0084",
+          "value": null,
+          "expected_result": "manufacturing_optimize_production_and_speed_timetomarket_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_073",
+          "intent_name": "click_media_and_entertainment_transform_media__entertainment_with_the_most_purposebuilt_capabilities_and_partner_solutions_of_any_cloud_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0085",
+          "value": null,
+          "expected_result": "media_and_entertainment_transform_media__entertainment_with_the_most_purposebuilt_capabilities_and_partner_solutions_of_any_cloud_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_074",
+          "intent_name": "click_games_enable_game_development_for_every_genre_and_platform_from_aaa_titles_to_indie_studios_view_industry",
+          "action": "click",
+          "locator_id": "LOC-0086",
+          "value": null,
+          "expected_result": "games_enable_game_development_for_every_genre_and_platform_from_aaa_titles_to_indie_studios_view_industry_opened"
+        },
+        {
+          "intent_id": "DOM_INT_075",
+          "intent_name": "click_create_an_aws_account",
+          "action": "click",
+          "locator_id": "LOC-0087",
+          "value": null,
+          "expected_result": "create_an_aws_account_opened"
+        },
+        {
+          "intent_id": "DOM_INT_076",
+          "intent_name": "click_what_is_aws",
+          "action": "click",
+          "locator_id": "LOC-0088",
+          "value": null,
+          "expected_result": "what_is_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_077",
+          "intent_name": "click_what_is_cloud_computing",
+          "action": "click",
+          "locator_id": "LOC-0089",
+          "value": null,
+          "expected_result": "what_is_cloud_computing_opened"
+        },
+        {
+          "intent_id": "DOM_INT_078",
+          "intent_name": "click_what_is_agentic_ai",
+          "action": "click",
+          "locator_id": "LOC-0090",
+          "value": null,
+          "expected_result": "what_is_agentic_ai_opened"
+        },
+        {
+          "intent_id": "DOM_INT_079",
+          "intent_name": "click_cloud_computing_concepts_hub",
+          "action": "click",
+          "locator_id": "LOC-0091",
+          "value": null,
+          "expected_result": "cloud_computing_concepts_hub_opened"
+        },
+        {
+          "intent_id": "DOM_INT_080",
+          "intent_name": "click_aws_cloud_security",
+          "action": "click",
+          "locator_id": "LOC-0092",
+          "value": null,
+          "expected_result": "aws_cloud_security_opened"
+        },
+        {
+          "intent_id": "DOM_INT_081",
+          "intent_name": "click_whats_new",
+          "action": "click",
+          "locator_id": "LOC-0093",
+          "value": null,
+          "expected_result": "whats_new_opened"
+        },
+        {
+          "intent_id": "DOM_INT_082",
+          "intent_name": "click_blogs",
+          "action": "click",
+          "locator_id": "LOC-0094",
+          "value": null,
+          "expected_result": "blogs_opened"
+        },
+        {
+          "intent_id": "DOM_INT_083",
+          "intent_name": "click_press_releases",
+          "action": "click",
+          "locator_id": "LOC-0095",
+          "value": null,
+          "expected_result": "press_releases_opened"
+        },
+        {
+          "intent_id": "DOM_INT_084",
+          "intent_name": "click_getting_started",
+          "action": "click",
+          "locator_id": "LOC-0096",
+          "value": null,
+          "expected_result": "getting_started_opened"
+        },
+        {
+          "intent_id": "DOM_INT_085",
+          "intent_name": "click_training",
+          "action": "click",
+          "locator_id": "LOC-0097",
+          "value": null,
+          "expected_result": "training_opened"
+        },
+        {
+          "intent_id": "DOM_INT_086",
+          "intent_name": "click_aws_trust_center",
+          "action": "click",
+          "locator_id": "LOC-0098",
+          "value": null,
+          "expected_result": "aws_trust_center_opened"
+        },
+        {
+          "intent_id": "DOM_INT_087",
+          "intent_name": "click_aws_solutions_library",
+          "action": "click",
+          "locator_id": "LOC-0099",
+          "value": null,
+          "expected_result": "aws_solutions_library_opened"
+        },
+        {
+          "intent_id": "DOM_INT_088",
+          "intent_name": "click_architecture_center",
+          "action": "click",
+          "locator_id": "LOC-0100",
+          "value": null,
+          "expected_result": "architecture_center_opened"
+        },
+        {
+          "intent_id": "DOM_INT_089",
+          "intent_name": "click_product_and_technical_faqs",
+          "action": "click",
+          "locator_id": "LOC-0101",
+          "value": null,
+          "expected_result": "product_and_technical_faqs_opened"
+        },
+        {
+          "intent_id": "DOM_INT_090",
+          "intent_name": "click_analyst_reports",
+          "action": "click",
+          "locator_id": "LOC-0102",
+          "value": null,
+          "expected_result": "analyst_reports_opened"
+        },
+        {
+          "intent_id": "DOM_INT_091",
+          "intent_name": "click_aws_partners",
+          "action": "click",
+          "locator_id": "LOC-0103",
+          "value": null,
+          "expected_result": "aws_partners_opened"
+        },
+        {
+          "intent_id": "DOM_INT_092",
+          "intent_name": "click_builder_center",
+          "action": "click",
+          "locator_id": "LOC-0104",
+          "value": null,
+          "expected_result": "builder_center_opened"
+        },
+        {
+          "intent_id": "DOM_INT_093",
+          "intent_name": "click_sdks__tools",
+          "action": "click",
+          "locator_id": "LOC-0105",
+          "value": null,
+          "expected_result": "sdks__tools_opened"
+        },
+        {
+          "intent_id": "DOM_INT_094",
+          "intent_name": "click_net_on_aws",
+          "action": "click",
+          "locator_id": "LOC-0106",
+          "value": null,
+          "expected_result": "net_on_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_095",
+          "intent_name": "click_python_on_aws",
+          "action": "click",
+          "locator_id": "LOC-0107",
+          "value": null,
+          "expected_result": "python_on_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_096",
+          "intent_name": "click_java_on_aws",
+          "action": "click",
+          "locator_id": "LOC-0108",
+          "value": null,
+          "expected_result": "java_on_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_097",
+          "intent_name": "click_php_on_aws",
+          "action": "click",
+          "locator_id": "LOC-0109",
+          "value": null,
+          "expected_result": "php_on_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_098",
+          "intent_name": "click_javascript_on_aws",
+          "action": "click",
+          "locator_id": "LOC-0110",
+          "value": null,
+          "expected_result": "javascript_on_aws_opened"
+        },
+        {
+          "intent_id": "DOM_INT_099",
+          "intent_name": "click_file_a_support_ticket",
+          "action": "click",
+          "locator_id": "LOC-0111",
+          "value": null,
+          "expected_result": "file_a_support_ticket_opened"
+        },
+        {
+          "intent_id": "DOM_INT_100",
+          "intent_name": "click_aws_repost",
+          "action": "click",
+          "locator_id": "LOC-0112",
+          "value": null,
+          "expected_result": "aws_repost_opened"
+        },
+        {
+          "intent_id": "DOM_INT_101",
+          "intent_name": "click_knowledge_center",
+          "action": "click",
+          "locator_id": "LOC-0113",
+          "value": null,
+          "expected_result": "knowledge_center_opened"
+        },
+        {
+          "intent_id": "DOM_INT_102",
+          "intent_name": "click_aws_support_overview",
+          "action": "click",
+          "locator_id": "LOC-0114",
+          "value": null,
+          "expected_result": "aws_support_overview_opened"
+        },
+        {
+          "intent_id": "DOM_INT_103",
+          "intent_name": "click_aws_accessibility",
+          "action": "click",
+          "locator_id": "LOC-0115",
+          "value": null,
+          "expected_result": "aws_accessibility_opened"
+        },
+        {
+          "intent_id": "DOM_INT_104",
+          "intent_name": "click_legal",
+          "action": "click",
+          "locator_id": "LOC-0116",
+          "value": null,
+          "expected_result": "legal_opened"
+        },
+        {
+          "intent_id": "DOM_INT_105",
+          "intent_name": "click_event_code_of_conduct",
+          "action": "click",
+          "locator_id": "LOC-0117",
+          "value": null,
+          "expected_result": "event_code_of_conduct_opened"
+        },
+        {
+          "intent_id": "DOM_INT_106",
+          "intent_name": "click_event_terms__conditions",
+          "action": "click",
+          "locator_id": "LOC-0118",
+          "value": null,
+          "expected_result": "event_terms__conditions_opened"
+        },
+        {
+          "intent_id": "DOM_INT_107",
+          "intent_name": "click_privacy",
+          "action": "click",
+          "locator_id": "LOC-0119",
+          "value": null,
+          "expected_result": "privacy_opened"
+        },
+        {
+          "intent_id": "DOM_INT_108",
+          "intent_name": "click_site_terms",
+          "action": "click",
+          "locator_id": "LOC-0120",
+          "value": null,
+          "expected_result": "site_terms_opened"
+        },
+        {
+          "intent_id": "DOM_INT_109",
+          "intent_name": "click_cookie_preferences",
+          "action": "click",
+          "locator_id": "LOC-0121",
+          "value": null,
+          "expected_result": "cookie_preferences_opened"
+        },
+        {
+          "intent_id": "DOM_INT_110",
+          "intent_name": "click_retail",
+          "action": "click",
+          "locator_id": "LOC-0122",
+          "value": null,
+          "expected_result": "retail_opened"
+        },
+        {
+          "intent_id": "DOM_INT_222",
+          "intent_name": "enter_allow_performance_category_allowed",
+          "action": "fill",
+          "locator_id": "LOC-0123",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_223",
+          "intent_name": "enter_allow_functional_category_allowed",
+          "action": "fill",
+          "locator_id": "LOC-0124",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_224",
+          "intent_name": "enter_allow_advertising_category_allowed",
+          "action": "fill",
+          "locator_id": "LOC-0125",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_225",
+          "intent_name": "click_open_navigation_menu",
+          "action": "click",
+          "locator_id": "LOC-0139",
+          "value": null,
+          "expected_result": "open_navigation_menu_opened"
+        },
+        {
+          "intent_id": "DOM_INT_226",
+          "intent_name": "click_close",
+          "action": "click",
+          "locator_id": "LOC-0141",
+          "value": null,
+          "expected_result": "close_opened"
+        },
+        {
+          "intent_id": "DOM_INT_227",
+          "intent_name": "click_aws_profile",
+          "action": "click",
+          "locator_id": "LOC-0143",
+          "value": null,
+          "expected_result": "aws_profile_opened"
+        },
+        {
+          "intent_id": "DOM_INT_228",
+          "intent_name": "click_open_feedback",
+          "action": "click",
+          "locator_id": "LOC-0153",
+          "value": null,
+          "expected_result": "open_feedback_opened"
+        },
+        {
+          "intent_id": "DOM_INT_229",
+          "intent_name": "click_previous_slide",
+          "action": "click",
+          "locator_id": "LOC-0154",
+          "value": null,
+          "expected_result": "previous_slide_opened"
+        },
+        {
+          "intent_id": "DOM_INT_230",
+          "intent_name": "click_next_slide",
+          "action": "click",
+          "locator_id": "LOC-0155",
+          "value": null,
+          "expected_result": "next_slide_opened"
+        },
+        {
+          "intent_id": "DOM_INT_231",
+          "intent_name": "click_close_notification",
+          "action": "click",
+          "locator_id": "LOC-0221",
+          "value": null,
+          "expected_result": "close_notification_opened"
+        },
+        {
+          "intent_id": "DOM_INT_232",
+          "intent_name": "click_x",
+          "action": "click",
+          "locator_id": "LOC-0288",
+          "value": null,
+          "expected_result": "x_opened"
+        },
+        {
+          "intent_id": "DOM_INT_233",
+          "intent_name": "click_facebook",
+          "action": "click",
+          "locator_id": "LOC-0289",
+          "value": null,
+          "expected_result": "facebook_opened"
+        },
+        {
+          "intent_id": "DOM_INT_234",
+          "intent_name": "click_linkedin",
+          "action": "click",
+          "locator_id": "LOC-0290",
+          "value": null,
+          "expected_result": "linkedin_opened"
+        },
+        {
+          "intent_id": "DOM_INT_235",
+          "intent_name": "click_instagram",
+          "action": "click",
+          "locator_id": "LOC-0291",
+          "value": null,
+          "expected_result": "instagram_opened"
+        },
+        {
+          "intent_id": "DOM_INT_236",
+          "intent_name": "click_twitch",
+          "action": "click",
+          "locator_id": "LOC-0292",
+          "value": null,
+          "expected_result": "twitch_opened"
+        },
+        {
+          "intent_id": "DOM_INT_237",
+          "intent_name": "click_youtube",
+          "action": "click",
+          "locator_id": "LOC-0293",
+          "value": null,
+          "expected_result": "youtube_opened"
+        },
+        {
+          "intent_id": "DOM_INT_238",
+          "intent_name": "click_podcasts",
+          "action": "click",
+          "locator_id": "LOC-0294",
+          "value": null,
+          "expected_result": "podcasts_opened"
+        },
+        {
+          "intent_id": "DOM_INT_239",
+          "intent_name": "click_email",
+          "action": "click",
+          "locator_id": "LOC-0295",
+          "value": null,
+          "expected_result": "email_opened"
+        }
+      ],
+      "comprehension_status": "success",
+      "scenarios_count": 3,
+      "business_scenarios_path": "application_assets\\projects\\AWS_Test\\comprehension\\business_scenarios.json",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 40,
+    "grounded_intents": 0,
+    "passing_tests": 10,
+    "failing_tests": 17
+  },
+  "business_scenarios": {},
+  "test_cases": {
+    "SC-001": {
+      "name": "Save Changes",
+      "scenario": "SC-001",
+      "suite": null,
+      "status": "failing",
+      "test_data_hash": "sha256:357780fd962facd39a36f267c8eefb052c2a599cbcb19102464539685c7f5fc2",
+      "last_run": "2026-07-10",
+      "last_run_id": "24414466-f260-4810-98cd-3d5585929772"
+    },
+    "SC-002": {
+      "name": "Browse AWS_Test",
+      "scenario": "SC-002",
+      "suite": null,
+      "status": "failing",
+      "test_data_hash": "sha256:338d339eefd95ca6b32ba8ec5b9d38391dbc44c358403274abc61a9f0087963d",
+      "last_run": "2026-07-10",
+      "last_run_id": "24414466-f260-4810-98cd-3d5585929772"
+    },
+    "SC-003": {
+      "name": "Interact with AWS_Test",
+      "scenario": "SC-003",
+      "suite": null,
+      "status": "failing",
+      "test_data_hash": "sha256:23c36825a0daeea86e831d42b1aea88d75d3c9704c507ea230acdf78a3bc51df",
+      "last_run": "2026-07-10",
+      "last_run_id": "24414466-f260-4810-98cd-3d5585929772"
+    },
+    "M01_BS_001": {
+      "name": "Navigate using navigation bar to fetch page information",
+      "scenario": "M01_BS_001",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:002f5c5c4263fe496921e9f72a576c4bf7d4fbe782ae66e4e7a42c051f768f37",
+      "last_run": "2026-07-14",
+      "last_run_id": "85967bba-caa5-4f14-a906-f9967cb78d07"
+    },
+    "M01_BS_002": {
+      "name": "Browse new AWS items in What's New section",
+      "scenario": "M01_BS_002",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:c91d71facfdee48f2b8110c05cd43b2e82cd6dd8e3ec142c03c778d5dbdeb3a8",
+      "last_run": "2026-07-14",
+      "last_run_id": "85967bba-caa5-4f14-a906-f9967cb78d07"
+    },
+    "M01_BS_003": {
+      "name": "View client images through image carousel",
+      "scenario": "M01_BS_003",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:58cdcaac8b9e157196932f975bbb29d5ec7bc2213df9114dfbcf5221331d1236",
+      "last_run": "2026-07-14",
+      "last_run_id": "85967bba-caa5-4f14-a906-f9967cb78d07"
+    },
+    "M01_BS_004": {
+      "name": "Browse customer success stories through story cards",
+      "scenario": "M01_BS_004",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:354bfeee90415c8f92a42fc4df1d344a93e0c7a96b96451b0379bd0a3716cd31",
+      "last_run": "2026-07-14",
+      "last_run_id": "85967bba-caa5-4f14-a906-f9967cb78d07"
+    },
+    "M01_BS_005": {
+      "name": "Return to top of page using back to top functionality",
+      "scenario": "M01_BS_005",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:793091e29cf9f190cb17f28abd5af3714151bd447d99ff9c00d856098c1da63f",
+      "last_run": "2026-07-13",
+      "last_run_id": "fe5f064f-094e-4acf-8567-5442ad69a255"
+    },
+    "SC-004": {
+      "name": "User Registration",
+      "scenario": "SC-004",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:fb110b8f02f256aa212ab7764c27a7b2fa9b240f2f660770c7dbb1339e00c40c",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-005": {
+      "name": "Search Products",
+      "scenario": "SC-005",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:9869ca06e9ad6de9b3ef7b15095da4c776f19d49bf22e6c7933c13ff1acae957",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-006": {
+      "name": "User Sign In",
+      "scenario": "SC-006",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:638977b62a87887eb1706c2a60bc1133c0a33e240fb6d81f94714db91faeb912",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-007": {
+      "name": "Add Item",
+      "scenario": "SC-007",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:4ade95f9493508d5937c1b39a9eb39d1360ff6564defd9a4c735add33ec618e3",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-008": {
+      "name": "Create Account",
+      "scenario": "SC-008",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:be322817513ea968a3cbce26b92953503b08f3ded6bc36949de6f8e90f942b64",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-009": {
+      "name": "Browse AWS_Test",
+      "scenario": "SC-009",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:d45cbd3b6465a0a64ceb3421cb282b311dc85260137c2fc60c0639b41f5562b4",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "SC-010": {
+      "name": "Interact with AWS_Test",
+      "scenario": "SC-010",
+      "suite": null,
+      "status": "pending",
+      "test_data_hash": "sha256:21eae6ae723343866e2afb8675293c1b76edaaa2e056e4f07fe8cdc8f96102c0",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M02_BS_001": {
+      "name": "User navigates Aurora page using navigation bar",
+      "scenario": "M02_BS_001",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:9488a23f6bd4e65276f89ed444bcede9977ae71986332948938dbeb422b8db85",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_002": {
+      "name": "User reads Aurora introduction information",
+      "scenario": "M02_BS_002",
+      "suite": "M02",
+      "status": "passing",
+      "test_data_hash": "sha256:c85014fa1f73a66fe5dd629c3ce8ec0807939d28d0abb2bfe88145c0c1b190d6",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_003": {
+      "name": "User explores Aurora benefits information",
+      "scenario": "M02_BS_003",
+      "suite": "M02",
+      "status": "passing",
+      "test_data_hash": "sha256:b952923ec766776e009d5f3468979bb3723d9bf0a8eec4fdc3a977547b254201",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_004": {
+      "name": "User views customer success stories",
+      "scenario": "M02_BS_004",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:980c18ad26c050b8f00bb57a7bd4785d4b36938630f8870d5222612f8875211e",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_005": {
+      "name": "User follows Get Started with Aurora workflow",
+      "scenario": "M02_BS_005",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:f8ccd2a8d93de25ea8989ba1f69af6bc2420cc0b3008bb21a7550256cb34eee9",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_006": {
+      "name": "User explores Aurora pricing information",
+      "scenario": "M02_BS_006",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:17dc3f965f8c991041428d22bb54849ce82f4f28c5843af64404116d2bc7303b",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_007": {
+      "name": "Guest user explores Aurora product features",
+      "scenario": "M02_BS_007",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:e496013a7facfaa9edcc72592dabff651d81328b82a51599d2866d8aa27400dd",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_008": {
+      "name": "Logged in user accesses Aurora product information",
+      "scenario": "M02_BS_008",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:9fae2e4bdbce93460d9a778fbeea53c208e3d1629068904781e1058233e73fe9",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_009": {
+      "name": "User executes automated workflows successfully",
+      "scenario": "M02_BS_009",
+      "suite": "M02",
+      "status": "passing",
+      "test_data_hash": "sha256:65675f4ab632c6bcd25de95e1dacb9513608df37b7c3daae3e29ce9cc667ec2f",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M02_BS_010": {
+      "name": "System executes all automated test cases",
+      "scenario": "M02_BS_010",
+      "suite": "M02",
+      "status": "passing",
+      "test_data_hash": "sha256:c3d07272383b33ca2e4842c86b905a1a221f1ab6b7d1d38ba6e4b6ae0bab7177",
+      "last_run": "2026-07-13",
+      "last_run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d"
+    },
+    "M03_BS_007": {
+      "name": "Browse AWS Aurora pricing page with navigation to different pricing models",
+      "scenario": "M03_BS_007",
+      "suite": "M03",
+      "status": "passing",
+      "test_data_hash": "sha256:bece56830519dee4be614a3221e9450768d82c9c37dc8bac04bc40bf4b97832c",
+      "last_run": "2026-07-13",
+      "last_run_id": "b7693132-b9e8-4d24-b6d9-bb44999b736c"
+    },
+    "M03_BS_008": {
+      "name": "Access Understand Pricing section to learn how to get started",
+      "scenario": "M03_BS_008",
+      "suite": "M03",
+      "status": "passing",
+      "test_data_hash": "sha256:9cad2e31d0a9397e6c076d9611139d117e582d0ecdd5914185bbb13ee846a4cf",
+      "last_run": "2026-07-13",
+      "last_run_id": "b7693132-b9e8-4d24-b6d9-bb44999b736c"
+    },
+    "M03_BS_009": {
+      "name": "Review payment options in How to Pay section",
+      "scenario": "M03_BS_009",
+      "suite": "M03",
+      "status": "passing",
+      "test_data_hash": "sha256:75665f24f6047f07e41369d5bf1155b9cdad9281c39f5a091670ba4637162ea0",
+      "last_run": "2026-07-13",
+      "last_run_id": "b7693132-b9e8-4d24-b6d9-bb44999b736c"
+    },
+    "M03_BS_010": {
+      "name": "Browse pricing information for multiple AWS products",
+      "scenario": "M03_BS_010",
+      "suite": "M03",
+      "status": "passing",
+      "test_data_hash": "sha256:e8039fc35e6da9f91038c99fa3dc1a98bf2660ddefb47ffcf153e9f1fa332853",
+      "last_run": "2026-07-13",
+      "last_run_id": "b7693132-b9e8-4d24-b6d9-bb44999b736c"
+    },
+    "M03_BS_011": {
+      "name": "Get started with AWS services for free",
+      "scenario": "M03_BS_011",
+      "suite": "M03",
+      "status": "passing",
+      "test_data_hash": "sha256:953cc1162c06f5022cafe24eff63707ac821a0a4b03712d8fafe1237495325be",
+      "last_run": "2026-07-13",
+      "last_run_id": "b7693132-b9e8-4d24-b6d9-bb44999b736c"
+    },
+    "M03_BS_012": {
+      "name": "Request customized pricing quote from AWS sales",
+      "scenario": "M03_BS_012",
+      "suite": "M03",
+      "status": "passing",
+      "test_data_hash": "sha256:6a7cd2c1b20326821c6622cc304e5b506f6890b272798cc1cad4e73b9602444e",
+      "last_run": "2026-07-13",
+      "last_run_id": "b7693132-b9e8-4d24-b6d9-bb44999b736c"
+    },
+    "M01_BS_006": {
+      "name": "Navigate through Products menu to find specific AWS services",
+      "scenario": "M01_BS_006",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:b3c8ae7ea376a816eecbcbaa2b9478682ff066051e68b9c7290e05258aeae349",
+      "last_run": "2026-07-14",
+      "last_run_id": "85967bba-caa5-4f14-a906-f9967cb78d07"
+    },
+    "M01_BS_007": {
+      "name": "Browse homepage content as authenticated user",
+      "scenario": "M01_BS_007",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:04986d3a4751d8336aa8ddd528255e3e218f039d5f2a0cef548708597230da28",
+      "last_run": "2026-07-14",
+      "last_run_id": "85967bba-caa5-4f14-a906-f9967cb78d07"
+    },
+    "M04_BS_001": {
+      "name": "Navigate between different Partner sections using navigation bar",
+      "scenario": "M04_BS_001",
+      "suite": "M04",
+      "status": "failing",
+      "test_data_hash": "sha256:2270832d0bbeff66de3740588b7cb090116af6121ef573637d03934ff2b000d9",
+      "last_run": "2026-07-14",
+      "last_run_id": "8ae437f3-3887-4864-976a-c179fc4f9931"
+    },
+    "M04_BS_002": {
+      "name": "View AWS Partner Network getting started information",
+      "scenario": "M04_BS_002",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:1d59b020f6447898c122f8e5acf4856a3ec1f7b7912e85384cf5d73858c1f8ae",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_003": {
+      "name": "Explore AWS Partner benefits and expansion opportunities",
+      "scenario": "M04_BS_003",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:65bed6153315d713459d83b2fbc9c6f49c8375470dd03e74cb4032dff1bcf978",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_004": {
+      "name": "Browse latest updates in What's New section",
+      "scenario": "M04_BS_004",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:f0619470456ac7a5800cadc962552cb553f1ecc572c8f1bae3a455926dd0296a",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_005": {
+      "name": "Discover AWS Partner success stories and innovations",
+      "scenario": "M04_BS_005",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:633244f7da4476ee9c481a5954e3001e816b6b43c8216f027faec558fe2fbdab",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_006": {
+      "name": "Complete automated workflow execution for partner onboarding",
+      "scenario": "M04_BS_006",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:35fc7918dcfbd2af894d31902b2b61642f00ce182f1d058995caf61d06d1bd80",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M04_BS_008": {
+      "name": "Guest user initiates partner registration process",
+      "scenario": "M04_BS_008",
+      "suite": "M04",
+      "status": "pending",
+      "test_data_hash": "sha256:524e859e9659738266562ed4b69059d67f8c36c16be5957cc636f39c8c3f8cfe",
+      "last_run": "",
+      "last_run_id": ""
+    }
+  },
+  "new_additions": [
+    "M01_BS_001",
+    "M01_BS_003",
+    "M01_BS_005",
+    "SC-004",
+    "SC-005",
+    "SC-006",
+    "SC-007",
+    "SC-008",
+    "SC-009",
+    "SC-010",
+    "SC-002",
+    "SC-003",
+    "M02_BS_001",
+    "M02_BS_004",
+    "M02_BS_005",
+    "M02_BS_008",
+    "SC-001",
+    "M01_BS_006",
+    "M04_BS_001",
+    "M04_BS_002",
+    "M04_BS_003",
+    "M04_BS_004",
+    "M04_BS_005",
+    "M04_BS_006",
+    "M04_BS_008"
+  ],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": [
+    {
+      "run_id": "85967bba-caa5-4f14-a906-f9967cb78d07",
+      "timestamp": "2026-07-14T14:37:48.803857+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 9,
+      "total": 9
+    },
+    {
+      "run_id": "8ae437f3-3887-4864-976a-c179fc4f9931",
+      "timestamp": "2026-07-14T12:35:57.041292+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 6,
+      "total": 6
+    },
+    {
+      "run_id": "32a5a66b-b7ac-47a6-8d1d-509ed09def37",
+      "timestamp": "2026-07-14T12:11:52.034929+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 6,
+      "total": 6
+    },
+    {
+      "run_id": "ebe5201c-af5d-452d-92a1-be801dcbd95b",
+      "timestamp": "2026-07-14T12:06:53.808528+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 6,
+      "total": 6
+    },
+    {
+      "run_id": "7d541c6a-de97-4dd6-9e79-450b0bcc9ccc",
+      "timestamp": "2026-07-14T11:31:36.571238+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 1,
+      "total": 1
+    },
+    {
+      "run_id": "fe5f064f-094e-4acf-8567-5442ad69a255",
+      "timestamp": "2026-07-13T16:38:56.061021+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 3,
+      "failed": 21,
+      "total": 24
+    },
+    {
+      "run_id": "bef9fb47-f2d1-4dda-a5f8-3058861c512e",
+      "timestamp": "2026-07-13T16:14:08.204168+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 2,
+      "failed": 15,
+      "total": 17
+    },
+    {
+      "run_id": "b7693132-b9e8-4d24-b6d9-bb44999b736c",
+      "timestamp": "2026-07-13T13:15:09.864874+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 16,
+      "failed": 0,
+      "total": 16
+    },
+    {
+      "run_id": "0f5cbe0b-1900-43a5-9498-23e4d7230a08",
+      "timestamp": "2026-07-13T12:46:10.460419+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 9,
+      "failed": 7,
+      "total": 16
+    },
+    {
+      "run_id": "5d4a1f19-1e84-4e5f-8d97-76487c8ec2d1",
+      "timestamp": "2026-07-13T09:52:16.044513+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 7,
+      "failed": 21,
+      "total": 28
+    },
+    {
+      "run_id": "7e0321e7-0be7-4cb0-8d71-91aef5042e9d",
+      "timestamp": "2026-07-13T06:55:08.552055+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 14,
+      "failed": 16,
+      "total": 30
+    },
+    {
+      "run_id": "2c80e3b5-a9b4-4e4a-95b4-251fddb1b1d3",
+      "timestamp": "2026-07-10T16:06:40.385676+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 7,
+      "failed": 11,
+      "total": 18
+    },
+    {
+      "run_id": "4a0a70f4-9bef-4cac-9269-32b4a8f776c8",
+      "timestamp": "2026-07-10T10:10:01.695860+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 2,
+      "failed": 15,
+      "total": 17
+    },
+    {
+      "run_id": "24414466-f260-4810-98cd-3d5585929772",
+      "timestamp": "2026-07-09T19:15:09.312618+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 3,
+      "failed": 28,
+      "total": 31
+    }
+  ]
+}

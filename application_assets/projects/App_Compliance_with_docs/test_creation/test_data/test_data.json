@@ -1,0 +1,676 @@
+[
+  {
+    "testdata_id": "TD-001",
+    "scenario_id": "GEN_BS_001",
+    "scenario_title": "Toggle Application Theme using Dark Mode Switch",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_toggle_switch",
+        "field_type": "navigation",
+        "value": "LOC-0001"
+      },
+      {
+        "field_name": "assert_active_theme",
+        "field_type": "assertion",
+        "value": "dark"
+      },
+      {
+        "field_name": "assert_theme_class",
+        "field_type": "assertion",
+        "value": "theme-dark"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Theme toggle fails to update application visual theme to dark mode",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_toggle_switch",
+                "field_type": "navigation",
+                "value": "LOC-0001"
+              },
+              {
+                "field_name": "assert_active_theme",
+                "field_type": "assertion",
+                "value": "light"
+              },
+              {
+                "field_name": "assert_theme_class",
+                "field_type": "assertion",
+                "value": "theme-light"
+              }
+            ],
+            "expected_error": "Visual theme failed to switch to dark mode"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-002",
+    "scenario_id": "GEN_BS_002",
+    "scenario_title": "Open Demo Project",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_demo_project_option",
+        "field_type": "navigation",
+        "value": "LOC-0002"
+      },
+      {
+        "field_name": "assert_demo_project_title",
+        "field_type": "assertion",
+        "value": "Demo Project"
+      },
+      {
+        "field_name": "assert_demo_project_url",
+        "field_type": "url",
+        "value": "/projects/demo"
+      },
+      {
+        "field_name": "assert_widgets_count",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Demo project content fails to load or returns missing project state",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_demo_project_option",
+                "field_type": "navigation",
+                "value": "LOC-0002"
+              },
+              {
+                "field_name": "assert_demo_project_title",
+                "field_type": "assertion",
+                "value": "Project Not Found"
+              },
+              {
+                "field_name": "assert_demo_project_url",
+                "field_type": "url",
+                "value": "/error/404"
+              },
+              {
+                "field_name": "assert_widgets_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Unable to load demo project. Please try again later."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-003",
+    "scenario_id": "GEN_BS_003",
+    "scenario_title": "Access BRD Compliance Criterion Level View",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_criterion_level_link",
+        "field_type": "navigation",
+        "value": "BRD Compliance Criterion Level (LOC-0003)"
+      },
+      {
+        "field_name": "assert_criterion_heading",
+        "field_type": "assertion",
+        "value": "Criterion Level Compliance Overview"
+      },
+      {
+        "field_name": "assert_url_path",
+        "field_type": "url",
+        "value": "/compliance/brd/criterion-level"
+      },
+      {
+        "field_name": "assert_min_criteria_count",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation target fails to load or displays 404 error",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_criterion_level_link",
+                "field_type": "navigation",
+                "value": "BRD Compliance Criterion Level (LOC-0003)"
+              },
+              {
+                "field_name": "assert_criterion_heading",
+                "field_type": "assertion",
+                "value": "404 - Page Not Found"
+              },
+              {
+                "field_name": "assert_url_path",
+                "field_type": "url",
+                "value": "/compliance/brd/error"
+              },
+              {
+                "field_name": "assert_min_criteria_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Failed to load BRD compliance criterion level view."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-004",
+    "scenario_id": "GEN_BS_004",
+    "scenario_title": "Create a New Project",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "assert_heading",
+        "field_type": "assertion",
+        "value": "Create New Project"
+      },
+      {
+        "field_name": "assert_url",
+        "field_type": "url",
+        "value": "/projects/new"
+      },
+      {
+        "field_name": "assert_element",
+        "field_type": "assertion",
+        "value": "project_creation_modal"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Project creation workflow fails to launch upon clicking control",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "assert_heading",
+                "field_type": "assertion",
+                "value": "Page Not Found"
+              },
+              {
+                "field_name": "assert_url",
+                "field_type": "url",
+                "value": "/projects/error"
+              },
+              {
+                "field_name": "assert_element",
+                "field_type": "assertion",
+                "value": "error_message_container"
+              }
+            ],
+            "expected_error": "Failed to open project creation workflow"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "M01_BS_001",
+    "scenario_title": "Switch Application Theme to Dark Mode",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_dark_mode_button",
+        "field_type": "navigation",
+        "value": "btn-dark-mode"
+      },
+      {
+        "field_name": "assert_active_theme",
+        "field_type": "assertion",
+        "value": "dark"
+      },
+      {
+        "field_name": "assert_theme_class",
+        "field_type": "assertion",
+        "value": "theme-dark"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Visual theme fails to switch to dark mode after clicking button",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_dark_mode_button",
+                "field_type": "navigation",
+                "value": "btn-dark-mode"
+              },
+              {
+                "field_name": "assert_active_theme",
+                "field_type": "assertion",
+                "value": "light"
+              },
+              {
+                "field_name": "assert_theme_class",
+                "field_type": "assertion",
+                "value": "theme-light"
+              }
+            ],
+            "expected_error": "Visual theme failed to switch to dark mode"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-006",
+    "scenario_id": "M01_BS_002",
+    "scenario_title": "Open Demo Project",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_open_demo_project_button",
+        "field_type": "navigation",
+        "value": "btn_open_demo_project"
+      },
+      {
+        "field_name": "assert_demo_project_title",
+        "field_type": "assertion",
+        "value": "Demo Project"
+      },
+      {
+        "field_name": "assert_demo_project_url",
+        "field_type": "url",
+        "value": "/projects/demo"
+      },
+      {
+        "field_name": "assert_project_widgets_count",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Demo project content fails to load or returns missing project state",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_open_demo_project_button",
+                "field_type": "navigation",
+                "value": "btn_open_demo_project"
+              },
+              {
+                "field_name": "assert_demo_project_title",
+                "field_type": "assertion",
+                "value": "Project Not Found"
+              },
+              {
+                "field_name": "assert_demo_project_url",
+                "field_type": "url",
+                "value": "/error/404"
+              },
+              {
+                "field_name": "assert_project_widgets_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Unable to load demo project. Please try again later."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-007",
+    "scenario_id": "M01_BS_003",
+    "scenario_title": "Access BRD Compliance Criterion Level View",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_brd_criterion_button",
+        "field_type": "navigation",
+        "value": "LOC-BRD-001"
+      },
+      {
+        "field_name": "assert_criterion_view_title",
+        "field_type": "assertion",
+        "value": "BRD Compliance Criterion Level View"
+      },
+      {
+        "field_name": "assert_criterion_url",
+        "field_type": "url",
+        "value": "/compliance/brd/criterion-level"
+      },
+      {
+        "field_name": "assert_criterion_details_count",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "BRD compliance criterion level view fails to load or returns missing content state",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_brd_criterion_button",
+                "field_type": "navigation",
+                "value": "LOC-BRD-001"
+              },
+              {
+                "field_name": "assert_criterion_view_title",
+                "field_type": "assertion",
+                "value": "Page Not Found"
+              },
+              {
+                "field_name": "assert_criterion_url",
+                "field_type": "url",
+                "value": "/error/404"
+              },
+              {
+                "field_name": "assert_criterion_details_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Unable to load BRD compliance criterion level view. Content unavailable."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-008",
+    "scenario_id": "M01_BS_004",
+    "scenario_title": "Create New Project",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_new_project_button",
+        "field_type": "navigation",
+        "value": "LOC-0004"
+      },
+      {
+        "field_name": "assert_project_creation_title",
+        "field_type": "assertion",
+        "value": "Create New Project"
+      },
+      {
+        "field_name": "assert_project_creation_url",
+        "field_type": "url",
+        "value": "/projects/new"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Project creation workflow fails to initiate or screen fails to load",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_new_project_button",
+                "field_type": "navigation",
+                "value": "LOC-0004"
+              },
+              {
+                "field_name": "assert_project_creation_title",
+                "field_type": "assertion",
+                "value": "Service Unavailable"
+              },
+              {
+                "field_name": "assert_project_creation_url",
+                "field_type": "url",
+                "value": "/error/500"
+              }
+            ],
+            "expected_error": "Unable to initiate new project workflow. Please try again later."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-009",
+    "scenario_id": "M01_BS_005",
+    "scenario_title": "Delete Item or Resource",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_delete_button",
+        "field_type": "navigation",
+        "value": "LOC-0005"
+      },
+      {
+        "field_name": "click_confirm_button",
+        "field_type": "navigation",
+        "value": "LOC-0006"
+      },
+      {
+        "field_name": "assert_success_message",
+        "field_type": "assertion",
+        "value": "Item successfully deleted"
+      },
+      {
+        "field_name": "assert_deleted_item_status",
+        "field_type": "assertion",
+        "value": "Removed"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Item deletion fails due to dependency constraints or system failure",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_delete_button",
+                "field_type": "navigation",
+                "value": "LOC-0005"
+              },
+              {
+                "field_name": "click_confirm_button",
+                "field_type": "navigation",
+                "value": "LOC-0006"
+              },
+              {
+                "field_name": "assert_success_message",
+                "field_type": "assertion",
+                "value": "Failed to delete item"
+              },
+              {
+                "field_name": "assert_deleted_item_status",
+                "field_type": "assertion",
+                "value": "Active"
+              }
+            ],
+            "expected_error": "Unable to delete item. It may be in use or referenced by another resource."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-010",
+    "scenario_id": "M01_BS_006",
+    "scenario_title": "Access Shopflow Demo",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_shopflow_demo_option",
+        "field_type": "navigation",
+        "value": "LOC-0006"
+      },
+      {
+        "field_name": "assert_shopflow_demo_title",
+        "field_type": "assertion",
+        "value": "Shopflow Demo"
+      },
+      {
+        "field_name": "assert_shopflow_demo_url",
+        "field_type": "url",
+        "value": "/demo/shopflow"
+      },
+      {
+        "field_name": "assert_demo_components_count",
+        "field_type": "count_min",
+        "value": "1"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Shopflow demo project content fails to load or returns error state",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_shopflow_demo_option",
+                "field_type": "navigation",
+                "value": "LOC-0006"
+              },
+              {
+                "field_name": "assert_shopflow_demo_title",
+                "field_type": "assertion",
+                "value": "Project Not Found"
+              },
+              {
+                "field_name": "assert_shopflow_demo_url",
+                "field_type": "url",
+                "value": "/error/404"
+              },
+              {
+                "field_name": "assert_demo_components_count",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Unable to load Shopflow demo project. Please try again later."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-011",
+    "scenario_id": "M01_BS_007",
+    "scenario_title": "Execute Open Action",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "select_document_item",
+        "field_type": "select",
+        "value": "DOC-2024-Compliance-Report.pdf"
+      },
+      {
+        "field_name": "click_open_action",
+        "field_type": "navigation",
+        "value": "LOC-0007"
+      },
+      {
+        "field_name": "assert_document_title",
+        "field_type": "assertion",
+        "value": "DOC-2024-Compliance-Report.pdf"
+      },
+      {
+        "field_name": "assert_view_rendered",
+        "field_type": "assertion",
+        "value": "Document Viewer Loaded"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Target document is unavailable or unreadable upon open action",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_document_item",
+                "field_type": "select",
+                "value": "DOC-CORRUPTED-000.pdf"
+              },
+              {
+                "field_name": "click_open_action",
+                "field_type": "navigation",
+                "value": "LOC-0007"
+              },
+              {
+                "field_name": "assert_document_title",
+                "field_type": "assertion",
+                "value": "Error Loading Resource"
+              },
+              {
+                "field_name": "assert_view_rendered",
+                "field_type": "assertion",
+                "value": "Failed to render document"
+              }
+            ],
+            "expected_error": "Unable to open the selected resource. The document format is invalid or corrupted."
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Opening a document with maximum allowed title length",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "select_document_item",
+                "field_type": "select",
+                "value": "DOC_2024_A_Very_Long_Resource_Name_That_Reaches_The_Maximum_Allowed_Character_Limit_For_Document_Titles_In_System_Archive_Folder_Final_Version_Verified.pdf"
+              },
+              {
+                "field_name": "click_open_action",
+                "field_type": "navigation",
+                "value": "LOC-0007"
+              },
+              {
+                "field_name": "assert_document_title",
+                "field_type": "assertion",
+                "value": "DOC_2024_A_Very_Long_Resource_Name_That_Reaches_The_Maximum_Allowed_Character_Limit_For_Document_Titles_In_System_Archive_Folder_Final_Version_Verified.pdf"
+              },
+              {
+                "field_name": "assert_view_rendered",
+                "field_type": "assertion",
+                "value": "Document Viewer Loaded"
+              }
+            ],
+            "expected_error": null
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "url": "https://www.saucedemo.com/",
+  "project": "sauceLabs",
+  "page_name": "sauceLabs",
+  "intent_count": 3,
+  "intents": [
+    {
+      "intent_id": "DOM_INT_001",
+      "intent_name": "enter_username",
+      "action": "fill",
+      "locator_id": "LOC-0001",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_002",
+      "intent_name": "enter_password",
+      "action": "fill",
+      "locator_id": "LOC-0002",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_003",
+      "intent_name": "enter_loginbutton",
+      "action": "fill",
+      "locator_id": "LOC-0003",
+      "value": null,
+      "expected_result": null
+    }
+  ]
+}

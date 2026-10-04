@@ -1,0 +1,732 @@
+{
+  "M01_BS_001": {
+    "scenario_title": "Navigate using navigation bar to fetch page information",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0022",
+        "playwright_expr": "page.getByRole('button', { name: 'Discover AWS' })",
+        "relevance": "navigation bar element for discovering AWS services",
+        "intent_id": "DOM_INT_016",
+        "action": "click",
+        "expected_result": "discover_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "navigation bar element for accessing product information",
+        "intent_id": "DOM_INT_017",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0024",
+        "playwright_expr": "page.getByRole('button', { name: 'Solutions' })",
+        "relevance": "navigation bar element for solutions page information",
+        "intent_id": "DOM_INT_018",
+        "action": "click",
+        "expected_result": "solutions_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0025",
+        "playwright_expr": "page.getByRole('button', { name: 'Pricing' })",
+        "relevance": "navigation bar element for pricing information",
+        "intent_id": "DOM_INT_019",
+        "action": "click",
+        "expected_result": "pricing_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0026",
+        "playwright_expr": "page.getByRole('button', { name: 'Resources' })",
+        "relevance": "navigation bar element for resources page information",
+        "intent_id": "DOM_INT_020",
+        "action": "click",
+        "expected_result": "resources_opened",
+        "cluster": "resources",
+        "confidence": 0.5
+      }
+    ]
+  },
+  "M01_BS_002": {
+    "scenario_title": "Browse new AWS items in What's New section",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0093",
+        "playwright_expr": "page.getByRole('link', { name: 'What\\'s New' })",
+        "relevance": "link to What's New section containing latest AWS items",
+        "intent_id": "DOM_INT_081",
+        "action": "click",
+        "expected_result": "whats_new_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0068",
+        "playwright_expr": "page.getByRole('link', { name: 'Agentic AI\nData leaders use agentic AI to lead industries\nSee how PGA Tour, Autodesk, and BMW are building data foundations for agentic AI with an open architecture on AWS.\nExplore how they innovate' })",
+        "relevance": "new AWS item card for agentic AI features",
+        "intent_id": "DOM_INT_057",
+        "action": "click",
+        "expected_result": "agentic_ai_data_leaders_use_agentic_ai_to_lead_industries_see_how_pga_tour_autodesk_and_bmw_are_building_data_foundations_for_agentic_ai_with_an_open_architecture_on_aws_explore_how_they_innovate_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0069",
+        "playwright_expr": "page.getByRole('link', { name: 'Artificial Intelligence (AI)\nFind Your AI Path with AWS Startups\nFrom the first idea to scaled product. Discover AI tools, credits and expert guidance matched to your startup stage.\nExplore AI for Startups' })",
+        "relevance": "new AWS item card for AI startup features",
+        "intent_id": "DOM_INT_058",
+        "action": "click",
+        "expected_result": "artificial_intelligence_ai_find_your_ai_path_with_aws_startups_from_the_first_idea_to_scaled_product_discover_ai_tools_credits_and_expert_guidance_matched_to_your_startup_stage_explore_ai_for_startups_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "M01_BS_003": {
+    "scenario_title": "View client images through image carousel",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0154",
+        "playwright_expr": "page.getByRole('button', { name: 'Previous slide' })",
+        "relevance": "carousel navigation control for viewing previous client images",
+        "intent_id": "DOM_INT_229",
+        "action": "click",
+        "expected_result": "previous_slide_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0155",
+        "playwright_expr": "page.getByRole('button', { name: 'Next slide' })",
+        "relevance": "carousel navigation control for viewing next client images",
+        "intent_id": "DOM_INT_230",
+        "action": "click",
+        "expected_result": "next_slide_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0071",
+        "playwright_expr": "page.getByRole('link', { name: 'Industrial\nSiemens Mobility turns 175 years of data into searchable insights with AWS AI\nView the story' })",
+        "relevance": "client image card displaying Siemens success story",
+        "intent_id": "DOM_INT_062",
+        "action": "click",
+        "expected_result": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0072",
+        "playwright_expr": "page.getByRole('link', { name: 'Automotive\nHow Audi uses AI to connect over 50 manufacturing plants worldwide\nView the story' })",
+        "relevance": "client image card displaying Audi success story",
+        "intent_id": "DOM_INT_219",
+        "action": "click",
+        "expected_result": "automotive_how_audi_uses_ai_to_connect_over_50_manufacturing_plants_worldwide_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "M01_BS_004": {
+    "scenario_title": "Browse customer success stories through story cards",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0070",
+        "playwright_expr": "page.getByRole('link', { name: 'View more stories' })",
+        "relevance": "link to view additional customer success stories",
+        "intent_id": "DOM_INT_059",
+        "action": "click",
+        "expected_result": "view_more_stories_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0076",
+        "playwright_expr": "page.getByRole('link', { name: 'Retail\nAdidas drives enterprise-wide transformation\nAdidas accelerates application deployment 40x using AWS for SAP, streamlining business operations and resource planning.\nView the story' })",
+        "relevance": "customer story card for Adidas transformation",
+        "intent_id": "DOM_INT_064",
+        "action": "click",
+        "expected_result": "retail_adidas_drives_enterprisewide_transformation_adidas_accelerates_application_deployment_40x_using_aws_for_sap_streamlining_business_operations_and_resource_planning_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0077",
+        "playwright_expr": "page.getByRole('link', { name: 'Retail\nTapestry amplifies store associate voices worldwide\nTapestry implements AWS AI-powered feedback analysis, enabling data-driven decisions through enhanced associate insights.\nView the story' })",
+        "relevance": "customer story card for Tapestry AI implementation",
+        "intent_id": "DOM_INT_065",
+        "action": "click",
+        "expected_result": "retail_tapestry_amplifies_store_associate_voices_worldwide_tapestry_implements_aws_aipowered_feedback_analysis_enabling_datadriven_decisions_through_enhanced_associate_insights_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.8
+      },
+      {
+        "locator_id": "LOC-0073",
+        "playwright_expr": "page.getByRole('link', { name: 'Travel & Hospitality\nHow Booking.com personalizes every trip, processing up to 250k requests per second on AWS\nView the story' })",
+        "relevance": "customer story card for Booking.com personalization",
+        "intent_id": "DOM_INT_220",
+        "action": "click",
+        "expected_result": "travel__hospitality_how_bookingcom_personalizes_every_trip_processing_up_to_250k_requests_per_second_on_aws_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "M01_BS_005": {
+    "scenario_title": "Return to top of page using back to top functionality",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0050",
+        "playwright_expr": "page.getByRole('button', { name: 'Back to top' })",
+        "relevance": "back to top button for returning to page header",
+        "intent_id": "DOM_INT_042",
+        "action": "click",
+        "expected_result": "back_to_top_opened",
+        "cluster": "back",
+        "confidence": 0.7
+      }
+    ]
+  },
+  "M01_BS_006": {
+    "scenario_title": "Navigate through Products menu to find specific AWS services",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "products menu button in navigation bar",
+        "intent_id": "DOM_INT_017",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.6
+      }
+    ]
+  },
+  "M01_BS_007": {
+    "scenario_title": "Browse homepage content as authenticated user",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0022",
+        "playwright_expr": "page.getByRole('button', { name: 'Discover AWS' })",
+        "relevance": "navigation bar element for homepage browsing",
+        "intent_id": "DOM_INT_016",
+        "action": "click",
+        "expected_result": "discover_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0093",
+        "playwright_expr": "page.getByRole('link', { name: 'What\\'s New' })",
+        "relevance": "What's New section for latest AWS updates",
+        "intent_id": "DOM_INT_081",
+        "action": "click",
+        "expected_result": "whats_new_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0154",
+        "playwright_expr": "page.getByRole('button', { name: 'Previous slide' })",
+        "relevance": "image carousel navigation for client images",
+        "intent_id": "DOM_INT_229",
+        "action": "click",
+        "expected_result": "previous_slide_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0070",
+        "playwright_expr": "page.getByRole('link', { name: 'View more stories' })",
+        "relevance": "customer story cards section access",
+        "intent_id": "DOM_INT_059",
+        "action": "click",
+        "expected_result": "view_more_stories_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      }
+    ]
+  },
+  "M01_BS_008": {
+    "scenario_title": "Browse homepage content as guest user",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0022",
+        "playwright_expr": "page.getByRole('button', { name: 'Discover AWS' })",
+        "relevance": "navigation bar for accessing different page sections",
+        "intent_id": "DOM_INT_016",
+        "action": "click",
+        "expected_result": "discover_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0093",
+        "playwright_expr": "page.getByRole('link', { name: 'What\\'s New' })",
+        "relevance": "What's New section available to guest users",
+        "intent_id": "DOM_INT_081",
+        "action": "click",
+        "expected_result": "whats_new_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0154",
+        "playwright_expr": "page.getByRole('button', { name: 'Previous slide' })",
+        "relevance": "image carousel navigation for viewing client content",
+        "intent_id": "DOM_INT_229",
+        "action": "click",
+        "expected_result": "previous_slide_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0070",
+        "playwright_expr": "page.getByRole('link', { name: 'View more stories' })",
+        "relevance": "customer story cards accessible without login",
+        "intent_id": "DOM_INT_059",
+        "action": "click",
+        "expected_result": "view_more_stories_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      }
+    ]
+  },
+  "M01_BS_009": {
+    "scenario_title": "Access comprehensive AWS product information from homepage",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "products menu for accessing AWS product information",
+        "intent_id": "DOM_INT_017",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0088",
+        "playwright_expr": "page.getByRole('link', { name: 'What Is AWS?' })",
+        "relevance": "link to comprehensive AWS product information",
+        "intent_id": "DOM_INT_076",
+        "action": "click",
+        "expected_result": "what_is_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      },
+      {
+        "locator_id": "LOC-0089",
+        "playwright_expr": "page.getByRole('link', { name: 'What Is Cloud Computing?' })",
+        "relevance": "link to AWS cloud computing product details",
+        "intent_id": "DOM_INT_077",
+        "action": "click",
+        "expected_result": "what_is_cloud_computing_opened",
+        "cluster": "aws",
+        "confidence": 0.81
+      }
+    ]
+  },
+  "M01_BS_010": {
+    "scenario_title": "Explore AWS service updates through What's New section",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0093",
+        "playwright_expr": "page.getByRole('link', { name: 'What\\'s New' })",
+        "relevance": "What's New section for exploring latest AWS updates",
+        "intent_id": "DOM_INT_081",
+        "action": "click",
+        "expected_result": "whats_new_opened",
+        "cluster": "aws",
+        "confidence": 0.63
+      },
+      {
+        "locator_id": "LOC-0068",
+        "playwright_expr": "page.getByRole('link', { name: 'Agentic AI\nData leaders use agentic AI to lead industries\nSee how PGA Tour, Autodesk, and BMW are building data foundations for agentic AI with an open architecture on AWS.\nExplore how they innovate' })",
+        "relevance": "new AWS feature item for detailed information",
+        "intent_id": "DOM_INT_057",
+        "action": "click",
+        "expected_result": "agentic_ai_data_leaders_use_agentic_ai_to_lead_industries_see_how_pga_tour_autodesk_and_bmw_are_building_data_foundations_for_agentic_ai_with_an_open_architecture_on_aws_explore_how_they_innovate_opened",
+        "cluster": "aws",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0069",
+        "playwright_expr": "page.getByRole('link', { name: 'Artificial Intelligence (AI)\nFind Your AI Path with AWS Startups\nFrom the first idea to scaled product. Discover AI tools, credits and expert guidance matched to your startup stage.\nExplore AI for Startups' })",
+        "relevance": "specific new feature for AWS service updates",
+        "intent_id": "DOM_INT_058",
+        "action": "click",
+        "expected_result": "artificial_intelligence_ai_find_your_ai_path_with_aws_startups_from_the_first_idea_to_scaled_product_discover_ai_tools_credits_and_expert_guidance_matched_to_your_startup_stage_explore_ai_for_startups_opened",
+        "cluster": "aws",
+        "confidence": 0.7
+      }
+    ]
+  },
+  "M01_BS_011": {
+    "scenario_title": "Navigate to Amazon QuickSight through Products menu",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "products menu item for accessing services",
+        "intent_id": "DOM_INT_017",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.6
+      }
+    ]
+  },
+  "M02_BS_001": {
+    "scenario_title": "User navigates Aurora page using navigation bar",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0022",
+        "playwright_expr": "page.getByRole('button', { name: 'Discover AWS' })",
+        "relevance": "navigation bar element for page information access",
+        "intent_id": "DOM_INT_016",
+        "action": "click",
+        "expected_result": "discover_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "navigation element for fetching Aurora page information",
+        "intent_id": "DOM_INT_017",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.5
+      },
+      {
+        "locator_id": "LOC-0024",
+        "playwright_expr": "page.getByRole('button', { name: 'Solutions' })",
+        "relevance": "navigation element for Aurora solutions information",
+        "intent_id": "DOM_INT_018",
+        "action": "click",
+        "expected_result": "solutions_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      }
+    ]
+  },
+  "M03_BS_007": {
+    "scenario_title": "Browse AWS Aurora pricing page with navigation to different pricing models",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0025",
+        "playwright_expr": "page.getByRole('button', { name: 'Pricing' })",
+        "relevance": "navigation bar for accessing pricing models",
+        "intent_id": "DOM_INT_019",
+        "action": "click",
+        "expected_result": "pricing_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      },
+      {
+        "locator_id": "LOC-0157",
+        "playwright_expr": "page.getByRole('tab', { name: 'North America' })",
+        "relevance": "pricing model navigation tab for North America"
+      },
+      {
+        "locator_id": "LOC-0158",
+        "playwright_expr": "page.getByRole('tab', { name: 'South America' })",
+        "relevance": "pricing model navigation tab for South America"
+      },
+      {
+        "locator_id": "LOC-0159",
+        "playwright_expr": "page.getByRole('tab', { name: 'Europe' })",
+        "relevance": "pricing model navigation tab for Europe"
+      }
+    ]
+  },
+  "M03_BS_011": {
+    "scenario_title": "Get started with AWS services for free",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0066",
+        "playwright_expr": "page.getByRole('button', { name: 'Start free with AWS' })",
+        "relevance": "Get Started for Free button for accessing free tier",
+        "intent_id": "DOM_INT_055",
+        "action": "click",
+        "expected_result": "start_free_with_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.7
+      }
+    ]
+  },
+  "M04_BS_001": {
+    "scenario_title": "Navigate between different Partner sections using navigation bar",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0103",
+        "playwright_expr": "page.getByRole('link', { name: 'AWS Partners' })",
+        "relevance": "Partner navigation header in navigation bar",
+        "intent_id": "DOM_INT_091",
+        "action": "click",
+        "expected_result": "aws_partners_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0022",
+        "playwright_expr": "page.getByRole('button', { name: 'Discover AWS' })",
+        "relevance": "navigation bar element for Partner sections",
+        "intent_id": "DOM_INT_016",
+        "action": "click",
+        "expected_result": "discover_aws_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      },
+      {
+        "locator_id": "LOC-0024",
+        "playwright_expr": "page.getByRole('button', { name: 'Solutions' })",
+        "relevance": "navigation element for Partner solutions section",
+        "intent_id": "DOM_INT_018",
+        "action": "click",
+        "expected_result": "solutions_opened",
+        "cluster": "aws",
+        "confidence": 0.54
+      }
+    ]
+  },
+  "SC-001": {
+    "scenario_title": "Save Changes",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0126",
+        "playwright_expr": "page.getByRole('textbox', { name: 'Allow cross-context behavioral ads' })",
+        "relevance": "input field for allow crosscontext behavioral ads"
+      },
+      {
+        "locator_id": "LOC-0127",
+        "playwright_expr": "page.getByRole('textbox', { name: 'Opt out of cross-context behavioral ads' })",
+        "relevance": "input field for opt out of crosscontext behavioral ads"
+      },
+      {
+        "locator_id": "LOC-0128",
+        "playwright_expr": "page.getByPlaceholder('I\\'m looking for...')",
+        "relevance": "input field for im looking for search"
+      },
+      {
+        "locator_id": "LOC-0131",
+        "playwright_expr": "page.getByPlaceholder('Search')",
+        "relevance": "input field for search functionality"
+      },
+      {
+        "locator_id": "LOC-0013",
+        "playwright_expr": "page.getByRole('button', { name: 'Save preferences' })",
+        "relevance": "save preferences button for saving changes",
+        "intent_id": "DOM_INT_010",
+        "action": "click",
+        "expected_result": "save_preferences_opened",
+        "cluster": "aws",
+        "confidence": 0.9
+      }
+    ]
+  },
+  "SC-002": {
+    "scenario_title": "User Login",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0064",
+        "playwright_expr": "page.getByRole('link', { name: 'Sign in to console' })",
+        "relevance": "sign in to console button for user login",
+        "intent_id": "DOM_INT_053",
+        "action": "click",
+        "expected_result": "sign_in_to_console_opened",
+        "cluster": "console",
+        "confidence": 0.7
+      }
+    ]
+  },
+  "SC-003": {
+    "scenario_title": "Create Account",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0065",
+        "playwright_expr": "page.getByRole('button', { name: 'Create account' })",
+        "relevance": "create account button for account creation",
+        "intent_id": "DOM_INT_054",
+        "action": "click",
+        "expected_result": "create_account_opened",
+        "cluster": "aws",
+        "confidence": 0.72
+      }
+    ]
+  },
+  "SC-004": {
+    "scenario_title": "User Registration",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0067",
+        "playwright_expr": "page.getByRole('link', { name: 'Event\nre:Invent 2026: Build what\\'s next\nJoin us Nov. 30 to Dec. 4 in Las Vegas. Save $1,200 with early bird pricing. Ends August 25.\nRegister today' })",
+        "relevance": "event registration link for re:Invent 2026",
+        "intent_id": "DOM_INT_056",
+        "action": "click",
+        "expected_result": "event_reinvent_2026_build_whats_next_join_us_nov_30_to_dec_4_in_las_vegas_save_1200_with_early_bird_pricing_ends_august_25_register_today_opened",
+        "cluster": "aws",
+        "confidence": 1.0
+      }
+    ]
+  },
+  "SC-005": {
+    "scenario_title": "Search Products",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0071",
+        "playwright_expr": "page.getByRole('link', { name: 'Industrial\nSiemens Mobility turns 175 years of data into searchable insights with AWS AI\nView the story' })",
+        "relevance": "searchable insights product story link",
+        "intent_id": "DOM_INT_062",
+        "action": "click",
+        "expected_result": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story_opened",
+        "cluster": "aws",
+        "confidence": 1.0
+      }
+    ]
+  },
+  "SC-008": {
+    "scenario_title": "Create Account",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0087",
+        "playwright_expr": "page.getByRole('button', { name: 'Create an AWS account' })",
+        "relevance": "create an aws account button for account creation",
+        "intent_id": "DOM_INT_075",
+        "action": "click",
+        "expected_result": "create_an_aws_account_opened",
+        "cluster": "aws",
+        "confidence": 0.8
+      }
+    ]
+  },
+  "SC-009": {
+    "scenario_title": "Browse AWS_Test",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0018",
+        "playwright_expr": "page.getByRole('button', { name: 'Filter: All' })",
+        "relevance": "filter all button for browsing interface",
+        "intent_id": "DOM_INT_012",
+        "action": "click",
+        "expected_result": "filter_all_opened",
+        "cluster": "filter",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0050",
+        "playwright_expr": "page.getByRole('button', { name: 'Back to top' })",
+        "relevance": "back to top button for navigation",
+        "intent_id": "DOM_INT_042",
+        "action": "click",
+        "expected_result": "back_to_top_opened",
+        "cluster": "back",
+        "confidence": 0.7
+      },
+      {
+        "locator_id": "LOC-0060",
+        "playwright_expr": "page.getByRole('link', { name: 'Contact Us' })",
+        "relevance": "contact us link for interface browsing",
+        "intent_id": "DOM_INT_050",
+        "action": "click",
+        "expected_result": "contact_us_opened",
+        "cluster": "contact",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0070",
+        "playwright_expr": "page.getByRole('link', { name: 'View more stories' })",
+        "relevance": "view more stories link for content browsing",
+        "intent_id": "DOM_INT_059",
+        "action": "click",
+        "expected_result": "view_more_stories_opened",
+        "cluster": "aws",
+        "confidence": 0.9
+      },
+      {
+        "locator_id": "LOC-0114",
+        "playwright_expr": "page.getByRole('link', { name: 'AWS Support Overview' })",
+        "relevance": "AWS support overview link for browsing support section",
+        "intent_id": "DOM_INT_102",
+        "action": "click",
+        "expected_result": "aws_support_overview_opened",
+        "cluster": "aws",
+        "confidence": 0.9
+      }
+    ]
+  },
+  "SC-010": {
+    "scenario_title": "Interact with AWS_Test",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0009",
+        "playwright_expr": "page.getByRole('button', { name: 'Accept' })",
+        "relevance": "accept button for user interaction",
+        "intent_id": "DOM_INT_006",
+        "action": "click",
+        "expected_result": "accept_opened",
+        "cluster": "accept",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0010",
+        "playwright_expr": "page.getByRole('button', { name: 'Decline' })",
+        "relevance": "decline button for user interaction",
+        "intent_id": "DOM_INT_007",
+        "action": "click",
+        "expected_result": "decline_opened",
+        "cluster": "decline",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0011",
+        "playwright_expr": "page.getByRole('button', { name: 'Customize' })",
+        "relevance": "customize button for interface interaction",
+        "intent_id": "DOM_INT_008",
+        "action": "click",
+        "expected_result": "customize_opened",
+        "cluster": "customize",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0012",
+        "playwright_expr": "page.getByRole('button', { name: 'Cancel' })",
+        "relevance": "cancel button for interaction control",
+        "intent_id": "DOM_INT_009",
+        "action": "click",
+        "expected_result": "cancel_opened",
+        "cluster": "cancel",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0023",
+        "playwright_expr": "page.getByRole('button', { name: 'Products' })",
+        "relevance": "products button for menu interaction",
+        "intent_id": "DOM_INT_017",
+        "action": "click",
+        "expected_result": "products_opened",
+        "cluster": "products",
+        "confidence": 0.6
+      },
+      {
+        "locator_id": "LOC-0025",
+        "playwright_expr": "page.getByRole('button', { name: 'Pricing' })",
+        "relevance": "pricing button for navigation interaction",
+        "intent_id": "DOM_INT_019",
+        "action": "click",
+        "expected_result": "pricing_opened",
+        "cluster": "aws",
+        "confidence": 0.9
+      }
+    ]
+  }
+}

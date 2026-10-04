@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "intents_path": "application_assets\\projects\\AWS_WORLD\\test_creation\\intents.yaml",
+  "partial_reasons": [],
+  "dom_status": "success",
+  "dom_intents_count": 128,
+  "dom_intents_path": "application_assets\\projects\\AWS_WORLD\\comprehension\\modules\\M01\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\AWS_WORLD\\comprehension\\modules\\M01\\dom_elements.json",
+  "comprehension_status": "success",
+  "scenarios_count": 5,
+  "business_scenarios_path": "application_assets\\projects\\AWS_WORLD\\comprehension\\business_scenarios.json",
+  "mode": "both",
+  "module": "discovery",
+  "module_id": "M01"
+}

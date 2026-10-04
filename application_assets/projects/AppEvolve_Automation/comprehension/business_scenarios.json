@@ -1,0 +1,2191 @@
+{
+  "project": "AppEvolve_Automation",
+  "total_scenarios": 58,
+  "scenarios": [
+    {
+      "scenario_id": "BS-001",
+      "title": "Dashboard page loads with proper navigation structure",
+      "business_objective": "Ensure users can access the dashboard with functional navigation menu",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User has access to the AppEvolve application",
+        "Browser is capable of rendering the dashboard"
+      ],
+      "steps": [
+        "User navigates to the dashboard page",
+        "User verifies left sidebar navigation menu is visible",
+        "User confirms all navigation items are clickable",
+        "User validates page title contains 'AppEvolve' and 'Projects'"
+      ],
+      "expected_result": "Dashboard loads successfully with functional left navigation bar containing AppEvolve, Settings, Help, Search, Main, Dashboard, and Projects components, and proper page title is displayed",
+      "business_rules": [
+        "BR-01",
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": null
+    },
+    {
+      "scenario_id": "BS-002",
+      "title": "Search functionality in left navigation bar",
+      "business_objective": "Allow users to efficiently find navigation items using search",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard is loaded",
+        "Left navigation bar is visible"
+      ],
+      "steps": [
+        "User locates the search option in the left navigation bar",
+        "User enters search criteria for navigation items",
+        "User verifies search results are displayed",
+        "User confirms search functionality works as expected"
+      ],
+      "expected_result": "Search functionality successfully filters and displays relevant navigation items based on user input",
+      "business_rules": [
+        "BR-01",
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": null
+    },
+    {
+      "scenario_id": "BS-003",
+      "title": "Project status charts display on dashboard",
+      "business_objective": "Provide users with visual representation of project status information",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard is loaded",
+        "User has access to project status data"
+      ],
+      "steps": [
+        "User views the right side of the dashboard page",
+        "User verifies project status charts are displayed",
+        "User confirms charts contain relevant project status information"
+      ],
+      "expected_result": "Right side of the dashboard displays project status information in chart format",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": null
+    },
+    {
+      "scenario_id": "BS-004",
+      "title": "Project listing navigation and interaction",
+      "business_objective": "Enable users to browse and access individual projects from the dashboard",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard is loaded",
+        "Projects are available in the system"
+      ],
+      "steps": [
+        "User scrolls down on the dashboard page",
+        "User verifies project listing becomes visible",
+        "User clicks on a project link",
+        "User confirms navigation to the selected project"
+      ],
+      "expected_result": "Project listing is visible on scrolling with clickable links that successfully navigate users to individual projects",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": null
+    },
+    {
+      "scenario_id": "BS-005",
+      "title": "Responsive design validation across multiple viewports",
+      "business_objective": "Ensure consistent user experience across different device sizes",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Dashboard application is accessible",
+        "Testing environment supports viewport resizing"
+      ],
+      "steps": [
+        "Test agent loads dashboard at 375x812 viewport size",
+        "Test agent verifies no horizontal overflow occurs",
+        "Test agent resizes viewport to 768x1024",
+        "Test agent confirms no horizontal overflow at tablet size",
+        "Test agent resizes viewport to 1280x800",
+        "Test agent validates no horizontal overflow at desktop size"
+      ],
+      "expected_result": "Dashboard renders properly without horizontal overflow at all specified viewport sizes (375x812, 768x1024, and 1280x800)",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": null
+    },
+    {
+      "scenario_id": "BS-006",
+      "title": "Error-free page load validation",
+      "business_objective": "Ensure technical stability and quality of the dashboard application",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Browser developer tools are accessible",
+        "Dashboard application is available"
+      ],
+      "steps": [
+        "Test agent opens browser developer console",
+        "Test agent navigates to the dashboard page",
+        "Test agent monitors console for any error messages during initial load",
+        "Test agent verifies console error count is zero"
+      ],
+      "expected_result": "Dashboard loads without generating any console errors, indicating clean initial page load",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": null
+    },
+    {
+      "scenario_id": "BS-007",
+      "title": "Dashboard sections and content validation",
+      "business_objective": "Verify all required dashboard sections are present with correct content structure",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard is loaded",
+        "User has access to view dashboard content"
+      ],
+      "steps": [
+        "User views the dashboard main content area",
+        "User verifies 'AI-Driven Legacy Code Conversion' section is visible",
+        "User confirms 'Statistics and Reports' section is present",
+        "User locates 'Recent Projects (194)' section",
+        "User verifies project details table is displayed",
+        "User validates all section titles are correct"
+      ],
+      "expected_result": "All required dashboard sections are visible with correct titles: AI-Driven Legacy Code Conversion, Statistics and Reports, Recent Projects (194), and project details table",
+      "business_rules": [
+        "BR-06",
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": null
+    },
+    {
+      "scenario_id": "M02_BS_001",
+      "title": "Selenium Projects landing page loads successfully with correct structure",
+      "business_objective": "Ensure visitors can access the Selenium Projects page and view all essential content without technical issues",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Internet connection is available",
+        "Browser is functional"
+      ],
+      "steps": [
+        "Navigate to the Selenium Projects landing page",
+        "Wait for page to fully load",
+        "Verify page returns HTTP 200 status",
+        "Check that no console errors are present",
+        "Confirm page title contains both 'Selenium' and 'Projects'"
+      ],
+      "expected_result": "Page loads successfully with HTTP 200 status, displays correct title, and shows no console errors",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "6. Test Scenarios — Module 1",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "4. Business Rules",
+          "requirement_id": "REQ-009",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "50cd8ef0eb12e2deecac767a426f2209ebd363a5fd2a4cb48172b8896d308665"
+    },
+    {
+      "scenario_id": "M02_BS_002",
+      "title": "Global navbar displays all required navigation elements",
+      "business_objective": "Provide visitors with consistent navigation options and branding across the site",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Selenium Projects page is loaded successfully"
+      ],
+      "steps": [
+        "Locate the global navbar on the page",
+        "Verify Selenium logo is present and visible",
+        "Confirm all required navigation links are displayed: About, Documentation, Downloads, Projects, Blog, Support",
+        "Check that language toggle control is present",
+        "Check that theme toggle control is present"
+      ],
+      "expected_result": "Global navbar contains all specified elements including logo, navigation links, and toggle controls",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "dcd6589c208e461a015d95de82df2cb87870f5bafb5b118575e3e1ac1effd202"
+    },
+    {
+      "scenario_id": "M02_BS_003",
+      "title": "Hero section displays project introduction content",
+      "business_objective": "Welcome visitors and provide context about Selenium Projects",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Selenium Projects page is loaded successfully"
+      ],
+      "steps": [
+        "Locate the hero/page header section",
+        "Verify 'Selenium Projects' heading is displayed",
+        "Confirm introductory paragraph content is present and readable"
+      ],
+      "expected_result": "Hero section contains the main heading and brief introduction paragraph as specified",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "6b1e24cdce0ceaef880edf89d8b1e7cb9a577992fe4de9c6bf0f865d9b2f8393"
+    },
+    {
+      "scenario_id": "M02_BS_004",
+      "title": "WebDriver project card displays complete information and actions",
+      "business_objective": "Provide visitors with comprehensive information about WebDriver and enable them to download or learn more",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Selenium Projects page is loaded successfully"
+      ],
+      "steps": [
+        "Locate the WebDriver project card",
+        "Verify WebDriver logo is displayed",
+        "Confirm project description text is present",
+        "Check that Download button is visible and actionable",
+        "Verify 'Read more' link is present"
+      ],
+      "expected_result": "WebDriver project card contains all required elements: logo, description, Download button, and Read more link",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "7a258ed51916f5ab9a6a9731ab79209ec21e11707e28da046a61c30f26128e7c"
+    },
+    {
+      "scenario_id": "M02_BS_005",
+      "title": "IDE project card displays complete information with browser-specific actions",
+      "business_objective": "Provide visitors with comprehensive information about Selenium IDE and enable them to install or learn more",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Selenium Projects page is loaded successfully"
+      ],
+      "steps": [
+        "Locate the IDE project card",
+        "Verify IDE logo is displayed",
+        "Confirm project description text is present",
+        "Check that Download button is visible",
+        "Check that 'Add to Chrome' button is visible",
+        "Check that 'Add to Firefox' button is visible",
+        "Verify 'Read more' link is present"
+      ],
+      "expected_result": "IDE project card contains all required elements: logo, description, multiple action buttons, and Read more link",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "76380d420bd0e176db075f9cf29ee2f9dcf4d02c402806c6ab5d31f4726e12bb"
+    },
+    {
+      "scenario_id": "M02_BS_006",
+      "title": "Grid project card displays complete information and actions",
+      "business_objective": "Provide visitors with comprehensive information about Selenium Grid and enable them to download or learn more",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Selenium Projects page is loaded successfully"
+      ],
+      "steps": [
+        "Locate the Grid project card",
+        "Verify Grid logo is displayed",
+        "Confirm project description text is present",
+        "Check that Download button is visible and actionable",
+        "Verify 'Read more' link is present"
+      ],
+      "expected_result": "Grid project card contains all required elements: logo, description, Download button, and Read more link",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "4898a5e990832507a3acf9b6aadc3c3205e321764228e2eba0930ae127fbc942"
+    },
+    {
+      "scenario_id": "M02_BS_007",
+      "title": "Footer contains complete legal and social information",
+      "business_objective": "Provide visitors with legal information, community links, and licensing details",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Selenium Projects page is loaded successfully"
+      ],
+      "steps": [
+        "Scroll to the page footer",
+        "Verify copyright information is displayed",
+        "Check that GitHub social link is present",
+        "Check that Twitter/X social link is present",
+        "Check that LinkedIn social link is present",
+        "Check that Slack social link is present",
+        "Confirm Apache License notice is displayed"
+      ],
+      "expected_result": "Footer contains all required elements: copyright, social media links, and Apache License notice",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "fd55f3f84d557010796ca5b098498330afd3baf9a5f82661b3a86a1bb4079f41"
+    },
+    {
+      "scenario_id": "M02_BS_008",
+      "title": "Page layout adapts correctly across different viewport sizes",
+      "business_objective": "Ensure optimal user experience across mobile, tablet, and desktop devices",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Selenium Projects page is loaded successfully"
+      ],
+      "steps": [
+        "Resize browser viewport to 375px width (mobile)",
+        "Verify layout does not break or overflow horizontally",
+        "Resize browser viewport to 768px width (tablet)",
+        "Verify layout does not break or overflow horizontally",
+        "Resize browser viewport to 1280px width (desktop)",
+        "Verify layout does not break or overflow horizontally",
+        "Confirm all three project sections remain fully visible at each viewport size"
+      ],
+      "expected_result": "Page layout remains functional and visually intact across all specified viewport widths without horizontal overflow or layout collapse",
+      "business_rules": [
+        "BR-01",
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_02_dashboard.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.8,
+      "module_id": "M02",
+      "module_name": "Dashboard",
+      "content_hash": "2719cd5238f476a1854a06cf089319f186048fdbff631747afd2cfdcc910b68d"
+    },
+    {
+      "scenario_id": "M03_BS_001",
+      "title": "Navigate through left sidebar menu items",
+      "business_objective": "Verify that all navigation menu items in the left sidebar are accessible and functional",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Left navigation bar is visible"
+      ],
+      "steps": [
+        "User clicks on Settings in the left navigation bar",
+        "User clicks on Help from the left navigation bar",
+        "User clicks on Dashboard and views dashboard content",
+        "User clicks on Projects in the left navigation bar",
+        "User clicks on Role and Permission tab"
+      ],
+      "expected_result": "All navigation items respond to clicks and redirect to appropriate pages or sections",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "13add424e7009e5067c7b961f391317ab7f4e293c9f2be8bc4d096956441f4ac"
+    },
+    {
+      "scenario_id": "M03_BS_002",
+      "title": "Search functionality in left navigation bar",
+      "business_objective": "Enable users to quickly find navigation items using search functionality",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Left navigation bar with search option is visible"
+      ],
+      "steps": [
+        "User locates the search option in the left navigation bar",
+        "User enters search terms in the search field",
+        "User initiates search for navigation items"
+      ],
+      "expected_result": "Search functionality filters and displays relevant navigation items based on user input",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "99667c0af07aadae94b2a48f19d991e4cac670beaf507ff9e65ea5634638dedc"
+    },
+    {
+      "scenario_id": "M03_BS_003",
+      "title": "View project status charts",
+      "business_objective": "Provide visual representation of project status through charts on the dashboard",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Project data is available for display"
+      ],
+      "steps": [
+        "User views the right side of the dashboard page",
+        "User observes project status charts",
+        "User interacts with chart elements if applicable"
+      ],
+      "expected_result": "Project status is displayed in chart format on the right side of the page",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.88,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "5fc34fddea99c545e55912ceea56646baa4b4997cdc813c35e86e429b7761b72"
+    },
+    {
+      "scenario_id": "M03_BS_004",
+      "title": "Browse project listings with scrollable navigation",
+      "business_objective": "Allow users to browse through project listings with functional navigation links",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Multiple projects are available for listing"
+      ],
+      "steps": [
+        "User scrolls down to view project listings",
+        "User identifies clickable navigation links within project listings",
+        "User clicks on navigation links to access project details"
+      ],
+      "expected_result": "Project listings are visible on scrolling with functional clickable navigation links",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.87,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "06aa6df39b69a1003a113b723218c88dcdd6d064b4fcdd091dd59134e20b4fb8"
+    },
+    {
+      "scenario_id": "M03_BS_005",
+      "title": "Responsive design validation across multiple viewports",
+      "business_objective": "Ensure consistent user experience across different device sizes without layout issues",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Dashboard page is loaded",
+        "Testing environment supports viewport resizing"
+      ],
+      "steps": [
+        "Test agent sets viewport to 375x812 (mobile)",
+        "Test agent verifies no horizontal overflow occurs",
+        "Test agent sets viewport to 768x1024 (tablet)",
+        "Test agent verifies no horizontal overflow occurs",
+        "Test agent sets viewport to 1280x800 (desktop)",
+        "Test agent verifies no horizontal overflow occurs"
+      ],
+      "expected_result": "Page renders correctly without horizontal overflow at all specified viewport sizes",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "fd9e5fb6494f20f6786eb43a8e263a33a1e9d942c175767673f5f4a8e72a1eb5"
+    },
+    {
+      "scenario_id": "M03_BS_006",
+      "title": "Verify page title contains required elements",
+      "business_objective": "Ensure proper page identification and SEO compliance through correct page titles",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Dashboard page is loaded"
+      ],
+      "steps": [
+        "Test agent inspects the page title element",
+        "Test agent verifies 'AppEvolve' is present in the title",
+        "Test agent verifies 'Projects' is present in the title"
+      ],
+      "expected_result": "Page title contains both 'AppEvolve' and 'Projects' text",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.98,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "a5cfcc0dbac621b25a7339cfdd705dea68b976e30142cb241c9035949e2668d0"
+    },
+    {
+      "scenario_id": "M03_BS_007",
+      "title": "Validate error-free page load",
+      "business_objective": "Ensure technical quality and stability of the dashboard by preventing console errors",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Browser console is cleared",
+        "Page is ready to load"
+      ],
+      "steps": [
+        "Test agent initiates dashboard page load",
+        "Test agent monitors browser console during initial load",
+        "Test agent counts any console errors that occur"
+      ],
+      "expected_result": "Page loads with zero console errors",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.92,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "11c5adcb102388a1af8b5256a2fcd838f28b66a492e8565e8ce4be63169e67e2"
+    },
+    {
+      "scenario_id": "M03_BS_008",
+      "title": "Verify dashboard sections visibility and content",
+      "business_objective": "Ensure all required dashboard sections are visible with correct content structure",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page"
+      ],
+      "steps": [
+        "User verifies 'AI-Driven Legacy Code Conversion' section is visible",
+        "User verifies 'Statistics and Reports' section is visible",
+        "User verifies 'Recent Projects (194)' section is visible",
+        "User confirms project details table is present"
+      ],
+      "expected_result": "All required dashboard sections are visible with proper content structure",
+      "business_rules": [
+        "BR-06",
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "8fde7190238b229e74dd3cb74a346964002457c784cde61786e10368e9463b25"
+    },
+    {
+      "scenario_id": "M03_BS_009",
+      "title": "Navigate through left sidebar menu items",
+      "business_objective": "Enable users to access all navigation menu items for efficient dashboard navigation",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Left navigation bar is visible and loaded"
+      ],
+      "steps": [
+        "User clicks on Settings in the left navigation bar",
+        "User clicks on Help from the left navigation bar",
+        "User clicks on Dashboard in the left navigation bar",
+        "User clicks on Projects in the left navigation bar"
+      ],
+      "expected_result": "All navigation menu items are clickable and responsive, allowing user to navigate between different sections",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "871233d50ccb9e2d5bc22d6cccbe6ec2f5f2feb3abc83d2ff2f9cf02a3a62f86"
+    },
+    {
+      "scenario_id": "M03_BS_010",
+      "title": "Search functionality in left navigation bar",
+      "business_objective": "Provide users with quick access to navigation items through search capability",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Left navigation bar with search option is visible"
+      ],
+      "steps": [
+        "User locates the search option in the left navigation bar",
+        "User enters search term for navigation items",
+        "User views search results",
+        "User selects an item from search results"
+      ],
+      "expected_result": "Search functionality works correctly and filters navigation items based on user input",
+      "business_rules": [
+        "BR-01",
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "263bfcdbb4983a7165b9f47beb7356911dfeb8183efc4d8fb9d548f0c15a3daa"
+    },
+    {
+      "scenario_id": "M03_BS_011",
+      "title": "View project status charts and listings",
+      "business_objective": "Display project information in visual charts and detailed listings for project status monitoring",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Project data is available to display"
+      ],
+      "steps": [
+        "User views the right side of the page for project charts",
+        "User examines project status displayed in chart format",
+        "User scrolls down the page",
+        "User views the project listing that appears on scrolling"
+      ],
+      "expected_result": "Project status charts are visible on the right side and project listings appear when user scrolls",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "22110a42e65d9b931f133f8a55af41659761e3ff6055708469db63c057a458ce"
+    },
+    {
+      "scenario_id": "M03_BS_012",
+      "title": "Navigate to new project via project links",
+      "business_objective": "Enable users to access individual project details by clicking on project links",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the AppEvolve dashboard page",
+        "Project listings are visible with clickable links"
+      ],
+      "steps": [
+        "User scrolls to view project listings",
+        "User identifies a project link in the listing",
+        "User clicks on the project link"
+      ],
+      "expected_result": "User is navigated to the selected project's detail page",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "ca28ea9cc3c3cfbbf1c3c956ec618fb3b90bb7bd77dad4d34da1eddbe66c72cb"
+    },
+    {
+      "scenario_id": "M03_BS_013",
+      "title": "Verify page responsive design and technical requirements",
+      "business_objective": "Ensure the dashboard meets technical standards for responsive design and page performance",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Dashboard page is accessible",
+        "Testing environment is ready"
+      ],
+      "steps": [
+        "Load the dashboard page on desktop viewport",
+        "Load the dashboard page on tablet viewport",
+        "Load the dashboard page on mobile viewport",
+        "Check page title for AppEvolve and Projects text",
+        "Monitor browser console for errors during page load"
+      ],
+      "expected_result": "Page renders without horizontal overflow on all viewport sizes, contains correct page title, and loads without console errors",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "d026da7cc25dc625234987d92fea18c7cf928b074218e8631a1c5e3f9e5729fb"
+    },
+    {
+      "scenario_id": "M03_BS_014",
+      "title": "Dashboard Navigation Menu Verification",
+      "business_objective": "Ensure users can access all dashboard navigation features through a functional left sidebar",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User has navigated to the AppEvolve dashboard",
+        "Dashboard page has loaded successfully"
+      ],
+      "steps": [
+        "User observes the left sidebar navigation menu",
+        "User verifies all navigation items are present: AppEvolve, Settings, Help, Search, Main, Dashboard, Projects",
+        "User clicks on each navigation item to verify clickability",
+        "User confirms each click responds appropriately"
+      ],
+      "expected_result": "All navigation menu items in the left sidebar are visible and clickable, allowing user navigation throughout the application",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "c6acdc60b18f6a3dfeee02ee32d35c0c8b4fd5d1b96c79814cd199b7ea1b291d"
+    },
+    {
+      "scenario_id": "M03_BS_015",
+      "title": "Navigation Search Functionality",
+      "business_objective": "Enable users to quickly find navigation items through search functionality",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the dashboard page",
+        "Left navigation sidebar is visible"
+      ],
+      "steps": [
+        "User locates the search option in the left navigation bar",
+        "User enters a search term for a navigation item",
+        "User verifies search results are displayed",
+        "User selects a result from the search",
+        "User confirms navigation to the selected item works"
+      ],
+      "expected_result": "Search functionality successfully filters navigation items and allows user to navigate to selected results",
+      "business_rules": [
+        "BR-06d"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "e487b4f6b9c4baf9c1532ccb5313a3edb3594bd2e2e75654cc6c990baed5b43b"
+    },
+    {
+      "scenario_id": "M03_BS_016",
+      "title": "Project Status Charts Display",
+      "business_objective": "Provide users with visual representation of project status through charts on the dashboard",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the dashboard page",
+        "Project data is available for display"
+      ],
+      "steps": [
+        "User views the right side of the dashboard page",
+        "User verifies project status charts are displayed",
+        "User confirms charts contain relevant project status information",
+        "User verifies charts are properly formatted and readable"
+      ],
+      "expected_result": "Project status information is clearly displayed in chart format on the right side of the dashboard",
+      "business_rules": [
+        "BR-06a"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "7fa102c9f780a41ee964f5c42cb59c88afabb89529dacae8cd6aaddcc53ecb9c"
+    },
+    {
+      "scenario_id": "M03_BS_017",
+      "title": "Project Listing Navigation",
+      "business_objective": "Allow users to browse and access individual projects through a scrollable project listing",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User is on the dashboard page",
+        "Multiple projects exist in the system"
+      ],
+      "steps": [
+        "User scrolls down on the dashboard page",
+        "User verifies project listing section is visible",
+        "User confirms Recent Projects section shows project count",
+        "User clicks on a project link from the listing",
+        "User verifies navigation to the selected project works"
+      ],
+      "expected_result": "User can scroll to view project listings and successfully navigate to individual projects through clickable links",
+      "business_rules": [
+        "BR-06b",
+        "BR-06c"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "5d225f2f582a22fe5f81bf1aaee240458a15dcf09d79ac0a13656fce3e36cd22"
+    },
+    {
+      "scenario_id": "M03_BS_018",
+      "title": "Responsive Design Verification",
+      "business_objective": "Ensure dashboard functions properly across different device screen sizes without layout issues",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Dashboard page is accessible",
+        "Testing environment supports viewport resizing"
+      ],
+      "steps": [
+        "Agent loads dashboard at 375x812 viewport (mobile)",
+        "Agent verifies no horizontal overflow occurs",
+        "Agent resizes viewport to 768x1024 (tablet)",
+        "Agent confirms layout remains intact without horizontal overflow",
+        "Agent resizes viewport to 1280x800 (desktop)",
+        "Agent validates layout displays correctly without horizontal overflow"
+      ],
+      "expected_result": "Dashboard renders properly without horizontal overflow at all specified viewport sizes",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "3d5b90c45afca53a09295a061dd7efbe1ce646932223fcd8a7f7bc4cd023df78"
+    },
+    {
+      "scenario_id": "M03_BS_019",
+      "title": "Page Title Validation",
+      "business_objective": "Ensure proper page identification and branding through correct page title",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Dashboard page is loaded"
+      ],
+      "steps": [
+        "Agent inspects the page title element",
+        "Agent verifies title contains 'AppEvolve'",
+        "Agent verifies title contains 'Projects'",
+        "Agent confirms both terms are present in the title"
+      ],
+      "expected_result": "Page title contains both 'AppEvolve' and 'Projects' for proper identification",
+      "business_rules": [
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "4bd7f8bb39069a882a0712e85a227e999b84d996e66e8199bbc1424c5048d6e3"
+    },
+    {
+      "scenario_id": "M03_BS_020",
+      "title": "Error-Free Page Load Validation",
+      "business_objective": "Ensure dashboard loads cleanly without JavaScript errors that could impact user experience",
+      "actor": "Automated test agent",
+      "preconditions": [
+        "Browser console is accessible for monitoring",
+        "Dashboard URL is available"
+      ],
+      "steps": [
+        "Agent clears browser console",
+        "Agent navigates to the dashboard page",
+        "Agent waits for complete page load",
+        "Agent checks browser console for any error messages",
+        "Agent verifies error count is zero"
+      ],
+      "expected_result": "Dashboard loads successfully with zero console errors, indicating clean initial page load",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "8. Acceptance Criteria",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "fd895e6708d732437a5a2b490942bb3ce536ec371f6cb3e7d5c068dc622f4e9c"
+    },
+    {
+      "scenario_id": "M03_BS_021",
+      "title": "Dashboard Section Content Verification",
+      "business_objective": "Validate that all required dashboard sections and content are visible to users",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "User has loaded the dashboard page successfully"
+      ],
+      "steps": [
+        "User verifies 'AI-Driven Legacy Code Conversion' section is visible",
+        "User confirms 'Statistics and Reports' section is present",
+        "User locates 'Recent Projects' section with project count",
+        "User verifies project details table is displayed",
+        "User confirms all section titles are correctly formatted"
+      ],
+      "expected_result": "All required dashboard sections are visible with proper titles and content organization",
+      "business_rules": [
+        "BR-06",
+        "BR-06a",
+        "BR-06b",
+        "BR-06c",
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "1d155f05a5f276287e2b2efe37a27468449dabcadcd47117da124f5a3c49c29d"
+    },
+    {
+      "scenario_id": "M03_BS_022",
+      "title": "Role and Permission tab interaction",
+      "business_objective": "Validate that users can access and interact with Role and Permission functionality through the navigation interface",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded",
+        "Left navigation bar is visible",
+        "Role and Permission tab is present in the interface"
+      ],
+      "steps": [
+        "User clicks on Role and Permission tab",
+        "System opens the corresponding tab interface",
+        "User verifies the Role and Permission content is displayed"
+      ],
+      "expected_result": "Role and Permission tab opens successfully and displays the appropriate content interface",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.75,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "2c72cbda9cd953316b0a812e104c11c70c7715cee7efbdd2b428f4f8f68a8332"
+    },
+    {
+      "scenario_id": "M03_BS_023",
+      "title": "Complete navigation workflow validation",
+      "business_objective": "Ensure all major navigation paths work correctly in sequence as part of the complete user workflow",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully",
+        "All navigation components are visible and functional"
+      ],
+      "steps": [
+        "User lands on Dashboard and verifies initial load",
+        "User clicks on settings in the left navigation bar",
+        "User clicks on help from the left navigation bar",
+        "User performs a search using the left navigation search functionality",
+        "User clicks on dashboard and verifies all dashboard content is visible",
+        "User clicks on projects in the left bar and verifies redirection to Projects page",
+        "User clicks on Role and Permission and verifies the tab functionality"
+      ],
+      "expected_result": "All navigation interactions complete successfully with proper page transitions and content display",
+      "business_rules": [
+        "BR-01",
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "6e662162d95074037675647c50cd36691e6128d116bc858a7847b89a4998c720"
+    },
+    {
+      "scenario_id": "M03_BS_024",
+      "title": "Settings navigation functionality verification",
+      "business_objective": "Ensure users can access application settings through the left navigation sidebar",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully",
+        "Left navigation bar is visible with all required components"
+      ],
+      "steps": [
+        "User identifies the Settings option in the left navigation bar",
+        "User clicks on the Settings menu item",
+        "System processes the navigation request"
+      ],
+      "expected_result": "Settings page or section opens successfully and user is able to access settings functionality",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "7c6e30f20805c3c2d3031dad3a7c82f430d99b386e0b884f0763b2110368de70"
+    },
+    {
+      "scenario_id": "M03_BS_025",
+      "title": "Help navigation functionality verification",
+      "business_objective": "Ensure users can access help documentation through the left navigation sidebar",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully",
+        "Left navigation bar is visible with all required components"
+      ],
+      "steps": [
+        "User identifies the Help option in the left navigation bar",
+        "User clicks on the Help menu item",
+        "System processes the navigation request"
+      ],
+      "expected_result": "Help page or documentation opens successfully and user can access help content",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "860594af6427fad9e61b75e61169f515d13f56f12d84169bc975781aa6cd4945"
+    },
+    {
+      "scenario_id": "M03_BS_026",
+      "title": "Main navigation menu functionality verification",
+      "business_objective": "Ensure users can navigate to the main section through the left navigation sidebar",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully",
+        "Left navigation bar is visible with all required components"
+      ],
+      "steps": [
+        "User identifies the Main option in the left navigation bar",
+        "User clicks on the Main menu item",
+        "System processes the navigation request"
+      ],
+      "expected_result": "Main section opens successfully and displays the appropriate content",
+      "business_rules": [
+        "BR-01"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "f1df68d0fef25d72e304f30364e33662e2017781a96dc8b0a151fae13a769b9e"
+    },
+    {
+      "scenario_id": "M03_BS_027",
+      "title": "Project table functionality verification",
+      "business_objective": "Ensure project details are properly displayed in a structured table format on the dashboard",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully",
+        "Project data is available in the system"
+      ],
+      "steps": [
+        "User scrolls down to view the project listing section",
+        "User locates the project details table",
+        "User examines the table structure and project information displayed"
+      ],
+      "expected_result": "Project details table is present and displays project information in an organized format",
+      "business_rules": [
+        "BR-06"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "64cd937121dc4b846c770b39b17ef46fa741be9e96e218a7fed4d8ac76f046c4"
+    },
+    {
+      "scenario_id": "M03_BS_028",
+      "title": "AI-Driven Legacy Code Conversion section visibility",
+      "business_objective": "Verify that the AI-Driven Legacy Code Conversion section is visible and accessible to users",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully"
+      ],
+      "steps": [
+        "User scans the dashboard for the AI-Driven Legacy Code Conversion section",
+        "User verifies the section title is correctly displayed",
+        "User confirms the section content is visible"
+      ],
+      "expected_result": "AI-Driven Legacy Code Conversion section is clearly visible with proper title and content",
+      "business_rules": [
+        "BR-06",
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.88,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "5f14f3935431cd86f5bdec3c2bbe7060af6bd3110a613217b4e595341ab57204"
+    },
+    {
+      "scenario_id": "M03_BS_029",
+      "title": "Statistics and Reports section visibility verification",
+      "business_objective": "Ensure the Statistics and Reports section is properly displayed on the dashboard",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully"
+      ],
+      "steps": [
+        "User navigates to locate the Statistics and Reports section",
+        "User verifies the section title displays correctly",
+        "User confirms the section content and reports are accessible"
+      ],
+      "expected_result": "Statistics and Reports section is visible with correct title and accessible content",
+      "business_rules": [
+        "BR-06",
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.88,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "b0fa7572c6150ffffc0190db57308a0c7eff478605a4a2e75a69b6a916c960bf"
+    },
+    {
+      "scenario_id": "M03_BS_030",
+      "title": "Recent Projects count display verification",
+      "business_objective": "Verify that the Recent Projects section displays the correct project count of 194",
+      "actor": "Visitor (anonymous)",
+      "preconditions": [
+        "Dashboard page is loaded successfully",
+        "Recent Projects section contains 194 projects"
+      ],
+      "steps": [
+        "User locates the Recent Projects section on the dashboard",
+        "User verifies the section title includes the project count",
+        "User confirms the count displays as 194 projects"
+      ],
+      "expected_result": "Recent Projects section is visible and displays the correct count of 194 projects",
+      "business_rules": [
+        "BR-06",
+        "BR-08"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_03_dashboard_upgrade.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.92,
+      "module_id": "M03",
+      "module_name": "Dashboard",
+      "content_hash": "f7ee4fe3c0a38599c5b087b518e682ca4a7f9b5d9522432661d96aa62501e1de"
+    },
+    {
+      "scenario_id": "M04_BS_001",
+      "title": "View Project Details",
+      "business_objective": "Allow users to view comprehensive project information",
+      "actor": "User",
+      "preconditions": [
+        "User is on the application interface",
+        "At least one project exists in the system"
+      ],
+      "steps": [
+        "Navigate to the project page"
+      ],
+      "expected_result": "Project page displays all project details including name, description, and owner information",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "1. Purpose",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "59d65c4f7bdce9219b8f664b980be0886700f433c98a53be37e85a1bbf403d9e"
+    },
+    {
+      "scenario_id": "M04_BS_002",
+      "title": "Navigate Between Projects",
+      "business_objective": "Enable users to easily switch between different projects",
+      "actor": "User",
+      "preconditions": [
+        "User is on the application interface",
+        "Multiple projects exist in the system",
+        "Left navigation bar is visible"
+      ],
+      "steps": [
+        "View available projects in the left navigation bar",
+        "Select a project from the left navigation bar"
+      ],
+      "expected_result": "Selected project becomes active and its details are displayed",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "73b4e6dceed0972722dca0b34eea9b461ea568e6d4fefbb994274bd01b06459a"
+    },
+    {
+      "scenario_id": "M04_BS_003",
+      "title": "Create New Project Successfully",
+      "business_objective": "Allow users to add new projects to the system",
+      "actor": "User",
+      "preconditions": [
+        "User is on the application interface",
+        "Add Project functionality is available"
+      ],
+      "steps": [
+        "Click on Add Project",
+        "Enter project name in the Project Name field",
+        "Enter project description in the Project Description field",
+        "Enter project owner in the Project Owner field",
+        "Click on Create Project button"
+      ],
+      "expected_result": "New project is created and added to the system with all specified details",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "8add3cced38fd0070925a4681507e5ed5368e4d643769c522c31418047d0ff4d"
+    },
+    {
+      "scenario_id": "M04_BS_004",
+      "title": "Open Add Project Dialog",
+      "business_objective": "Provide user interface access to project creation functionality",
+      "actor": "User",
+      "preconditions": [
+        "User is on the application interface",
+        "Add Project functionality is available and visible"
+      ],
+      "steps": [
+        "Click on Add Project"
+      ],
+      "expected_result": "A new popup window opens containing the add project form with Project Name, Project Description, Project Owner fields and Create Project button",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "c63f1aad9cd581212b6545d1441fedcbe8199efabbd48d31474b5356022b74a9"
+    },
+    {
+      "scenario_id": "M04_BS_005",
+      "title": "Create Project with Missing Required Fields",
+      "business_objective": "Ensure data integrity by preventing incomplete project creation",
+      "actor": "User",
+      "preconditions": [
+        "User is on the project page",
+        "Add Project popup is open"
+      ],
+      "steps": [
+        "Leave one or more required fields (Project Name, Project Description, Project Owner) empty",
+        "Click on Create Project button"
+      ],
+      "expected_result": "System prevents project creation and displays validation messages for missing fields",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "f261e6528599c94a7dfa25da58d21bc7b61e4b4a40c3fff97a56aab4dd6b1d83"
+    },
+    {
+      "scenario_id": "M04_BS_006",
+      "title": "Cancel Project Creation",
+      "business_objective": "Allow users to abort project creation without saving incomplete data",
+      "actor": "User",
+      "preconditions": [
+        "User is on the project page",
+        "Add Project popup is open",
+        "User has partially filled in project fields"
+      ],
+      "steps": [
+        "Click outside the popup or on a cancel/close button",
+        "Confirm cancellation if prompted"
+      ],
+      "expected_result": "Popup closes without creating a project and user returns to the main project page",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.75,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "a67dad353a297fe2c7be4485ffa1b612ae7473cf81960d64714dc2cfc4b82939"
+    },
+    {
+      "scenario_id": "M04_BS_007",
+      "title": "View Newly Created Project in Navigation",
+      "business_objective": "Verify that newly created projects are immediately available for selection",
+      "actor": "User",
+      "preconditions": [
+        "User has successfully created a new project",
+        "User is on the project page"
+      ],
+      "steps": [
+        "Look at the left navigation bar",
+        "Locate the newly created project in the project list"
+      ],
+      "expected_result": "The newly created project appears in the left navigation bar and is selectable",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "2d7061aa8ba5b43f4cba3b3ebe8534170ccd1964caaa71b942202523606d1337"
+    },
+    {
+      "scenario_id": "M04_BS_008",
+      "title": "Create Project with Duplicate Project Name",
+      "business_objective": "Ensure system handles duplicate project names appropriately during project creation",
+      "actor": "User",
+      "preconditions": [
+        "User is logged into the system",
+        "A project with name 'ExistingProject' already exists in the system"
+      ],
+      "steps": [
+        "Click on Add Project",
+        "Enter 'ExistingProject' in Project Name field",
+        "Enter 'Test Description' in Project Description field",
+        "Enter 'John Doe' in Project Owner field",
+        "Click on create project button"
+      ],
+      "expected_result": "System displays appropriate validation message for duplicate project name and does not create the project",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.75,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "373b62183f1b71b30c61d77ad770e68acf1b9384cdd0ebc1c5c217b686e8a75f"
+    },
+    {
+      "scenario_id": "M04_BS_009",
+      "title": "Create Project with Invalid Project Owner",
+      "business_objective": "Validate that only valid users can be assigned as project owners during project creation",
+      "actor": "User",
+      "preconditions": [
+        "User is logged into the system",
+        "Add Project popup is open"
+      ],
+      "steps": [
+        "Enter 'TestProject' in Project Name field",
+        "Enter 'Test Description' in Project Description field",
+        "Enter 'InvalidUser@nonexistent.com' in Project Owner field",
+        "Click on create project button"
+      ],
+      "expected_result": "System displays validation error for invalid project owner and does not create the project",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.7,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "50087f7fb207cdd7f97b7098add98831e6c701a92dc04bee0d6775d1b90265db"
+    },
+    {
+      "scenario_id": "M04_BS_010",
+      "title": "Create Project with Maximum Character Limits",
+      "business_objective": "Ensure system properly handles field validation for maximum character limits in project creation",
+      "actor": "User",
+      "preconditions": [
+        "User is logged into the system",
+        "Add Project popup is open"
+      ],
+      "steps": [
+        "Enter a project name exceeding maximum allowed characters in Project Name field",
+        "Enter a project description exceeding maximum allowed characters in Project Description field",
+        "Enter valid project owner in Project Owner field",
+        "Click on create project button"
+      ],
+      "expected_result": "System displays validation errors for fields exceeding character limits and does not create the project",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.65,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "aa8972e7d82a8c45f29ead0ea4018ee2ea7888737ceff3de79e83e0d92438bf1"
+    },
+    {
+      "scenario_id": "M04_BS_011",
+      "title": "View Empty Project List",
+      "business_objective": "Ensure system properly displays navigation when no projects exist",
+      "actor": "User",
+      "preconditions": [
+        "User is logged into the system",
+        "No projects exist in the system"
+      ],
+      "steps": [
+        "Navigate to the main project page",
+        "View the left navigation bar"
+      ],
+      "expected_result": "Left navigation bar displays empty state or appropriate message indicating no projects are available",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "2. Page Structure Overview",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.8,
+      "module_id": "M04",
+      "module_name": "Dashboard",
+      "content_hash": "0ac2b308d85a2bbdccc454437e9437637eea4e146f53308faa6e58b7bcb2d418"
+    },
+    {
+      "scenario_id": "SC-001",
+      "title": "Use AppEvolve",
+      "business_objective": "Allow user to use appevolve on AppEvolve",
+      "actor": "User",
+      "preconditions": [
+        "AppEvolve page is loaded"
+      ],
+      "steps": [
+        "Enter search in the input field"
+      ],
+      "expected_result": "Action completes successfully",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    },
+    {
+      "scenario_id": "SC-002",
+      "title": "Interact with AppEvolve",
+      "business_objective": "Allow user to interact with elements on AppEvolve",
+      "actor": "User",
+      "preconditions": [
+        "AppEvolve page is loaded"
+      ],
+      "steps": [
+        "Click the element",
+        "Click the tour",
+        "Click the users3total",
+        "Click the clients2total",
+        "Click the projects143total",
+        "Click the profiles0total",
+        "Click the proj190",
+        "Click the proj201",
+        "Click the proj197",
+        "Click the proj200",
+        "Click the proj199",
+        "Click the proj179",
+        "Click the proj198",
+        "Click the proj196",
+        "Click the proj195",
+        "Click the proj194",
+        "Click the proj193",
+        "Click the proj192",
+        "Click the proj191",
+        "Click the proj183",
+        "Click the proj189",
+        "Click the proj188",
+        "Click the proj175",
+        "Click the proj185",
+        "Click the proj181",
+        "Click the proj187",
+        "Click the proj186",
+        "Click the proj184",
+        "Click the proj182",
+        "Click the proj180",
+        "Click the proj178",
+        "Click the proj177",
+        "Click the proj176",
+        "Click the proj168",
+        "Click the proj174",
+        "Click the proj172",
+        "Click the proj2",
+        "Click the proj173",
+        "Click the proj171",
+        "Click the proj170",
+        "Click the proj161",
+        "Click the proj154",
+        "Click the proj164",
+        "Click the proj169",
+        "Click the proj167",
+        "Click the proj166",
+        "Click the proj165",
+        "Click the proj163",
+        "Click the proj162",
+        "Click the proj160",
+        "Click the proj159",
+        "Click the proj158",
+        "Click the proj155",
+        "Click the proj152",
+        "Click the proj151",
+        "Click the proj147"
+      ],
+      "expected_result": "Interaction completes as expected",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null,
+      "content_hash": null
+    }
+  ],
+  "modules": [
+    "M03",
+    "M04",
+    "M02"
+  ]
+}

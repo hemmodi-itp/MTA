@@ -1,0 +1,399 @@
+{
+  "project": "sauceLabs",
+  "schema_version": "1.0",
+  "last_updated": "2026-07-06T12:52:27.247293+00:00",
+  "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c",
+  "discovery": {
+    "dom_fingerprint": "sha256:07323c2a20448566638f3c9979faff43010a438286a947fc889f23cd3d10fa60",
+    "brd_fingerprint": "sha256:948891cd6d8a260b2646e6ad2a790c65168e9240d01a79ecff909f077c432d4b",
+    "last_discovered": "2026-07-06T10:15:42.400656+00:00",
+    "cached_output": {
+      "status": "success",
+      "intents_path": "application_assets\\projects\\sauceLabs\\test_creation\\intents.yaml",
+      "dom_status": "success",
+      "dom_intents_count": 19,
+      "dom_intents_path": "application_assets\\projects\\sauceLabs\\comprehension\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\sauceLabs\\comprehension\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "INT-001",
+          "intent_name": "click_open_menu",
+          "action": "click",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": "open_menu_opened"
+        },
+        {
+          "intent_id": "INT-002",
+          "intent_name": "click_close_menu",
+          "action": "click",
+          "locator_id": "LOC-0002",
+          "value": null,
+          "expected_result": "close_menu_opened"
+        },
+        {
+          "intent_id": "INT-003",
+          "intent_name": "click_add_to_cart",
+          "action": "click",
+          "locator_id": "LOC-0003",
+          "value": null,
+          "expected_result": "add_to_cart_opened"
+        },
+        {
+          "intent_id": "INT-004",
+          "intent_name": "select_name_a_to_z_name_z_to_a_price_low_to_high_price_high_to_low",
+          "action": "select",
+          "locator_id": "LOC-0009",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-005",
+          "intent_name": "click_all_items",
+          "action": "click",
+          "locator_id": "LOC-0010",
+          "value": null,
+          "expected_result": "all_items_opened"
+        },
+        {
+          "intent_id": "INT-006",
+          "intent_name": "click_about",
+          "action": "click",
+          "locator_id": "LOC-0011",
+          "value": null,
+          "expected_result": "about_opened"
+        },
+        {
+          "intent_id": "INT-007",
+          "intent_name": "click_logout",
+          "action": "click",
+          "locator_id": "LOC-0012",
+          "value": null,
+          "expected_result": "logout_opened"
+        },
+        {
+          "intent_id": "INT-008",
+          "intent_name": "click_reset_app_state",
+          "action": "click",
+          "locator_id": "LOC-0013",
+          "value": null,
+          "expected_result": "reset_app_state_opened"
+        },
+        {
+          "intent_id": "INT-009",
+          "intent_name": "click_4",
+          "action": "click",
+          "locator_id": "LOC-0014",
+          "value": null,
+          "expected_result": "4_opened"
+        },
+        {
+          "intent_id": "INT-010",
+          "intent_name": "click_element",
+          "action": "click",
+          "locator_id": "LOC-0015",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "INT-011",
+          "intent_name": "click_sauce_labs_backpack",
+          "action": "click",
+          "locator_id": "LOC-0016",
+          "value": null,
+          "expected_result": "sauce_labs_backpack_opened"
+        },
+        {
+          "intent_id": "INT-012",
+          "intent_name": "click_sauce_labs_bike_light",
+          "action": "click",
+          "locator_id": "LOC-0018",
+          "value": null,
+          "expected_result": "sauce_labs_bike_light_opened"
+        },
+        {
+          "intent_id": "INT-013",
+          "intent_name": "click_sauce_labs_bolt_tshirt",
+          "action": "click",
+          "locator_id": "LOC-0020",
+          "value": null,
+          "expected_result": "sauce_labs_bolt_tshirt_opened"
+        },
+        {
+          "intent_id": "INT-014",
+          "intent_name": "click_sauce_labs_fleece_jacket",
+          "action": "click",
+          "locator_id": "LOC-0022",
+          "value": null,
+          "expected_result": "sauce_labs_fleece_jacket_opened"
+        },
+        {
+          "intent_id": "INT-015",
+          "intent_name": "click_sauce_labs_onesie",
+          "action": "click",
+          "locator_id": "LOC-0024",
+          "value": null,
+          "expected_result": "sauce_labs_onesie_opened"
+        },
+        {
+          "intent_id": "INT-016",
+          "intent_name": "click_testallthethings_tshirt_red",
+          "action": "click",
+          "locator_id": "LOC-0026",
+          "value": null,
+          "expected_result": "testallthethings_tshirt_red_opened"
+        },
+        {
+          "intent_id": "INT-017",
+          "intent_name": "click_twitter",
+          "action": "click",
+          "locator_id": "LOC-0027",
+          "value": null,
+          "expected_result": "twitter_opened"
+        },
+        {
+          "intent_id": "INT-018",
+          "intent_name": "click_facebook",
+          "action": "click",
+          "locator_id": "LOC-0028",
+          "value": null,
+          "expected_result": "facebook_opened"
+        },
+        {
+          "intent_id": "INT-019",
+          "intent_name": "click_linkedin",
+          "action": "click",
+          "locator_id": "LOC-0029",
+          "value": null,
+          "expected_result": "linkedin_opened"
+        }
+      ],
+      "comprehension_status": "success",
+      "scenarios_count": 13,
+      "business_scenarios_path": "application_assets\\projects\\sauceLabs\\comprehension\\business_scenarios.json",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 14,
+    "grounded_intents": 0,
+    "passing_tests": 0,
+    "failing_tests": 11
+  },
+  "business_scenarios": {},
+  "test_cases": {
+    "BS-001": {
+      "name": "Standard user successfully logs into the system",
+      "scenario": "BS-001",
+      "suite": "M01",
+      "status": "pending",
+      "test_data_hash": "sha256:a440e47c4021210f2797f6a551dbdf1b7aa58d93f74bfa29a4498eb001590ffa",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "BS-002": {
+      "name": "Guest user accesses login page",
+      "scenario": "BS-002",
+      "suite": "M01",
+      "status": "pending",
+      "test_data_hash": "sha256:f8a8b6d6af23e25489820fed7fc1650644e3e6803ee76478fe1895fedd741347",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "BS-003": {
+      "name": "Automated test validates login functionality",
+      "scenario": "BS-003",
+      "suite": "M01",
+      "status": "pending",
+      "test_data_hash": "sha256:6161fc5fa2a01ba0bd7853f9e1a693e49db9a88d89677cbecd7752f3fe592577",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "BS-004": {
+      "name": "Remove Product from Shopping Cart",
+      "scenario": "BS-004",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:11402667669d7b083a6a0ea81df9cff018e904c69a839837a497028c75eb810b",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-005": {
+      "name": "Sort Products Alphabetically A to Z",
+      "scenario": "BS-005",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:abf32529d6cb6d45c3d4413b0150b6813ac01e739f18419d4f01c42edd5cae28",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-006": {
+      "name": "Sort Products Alphabetically Z to A",
+      "scenario": "BS-006",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:48c68ea9d9c505f4d205cad276094ba5c284e97d5b5ae00f8b503c8c2e63c365",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-007": {
+      "name": "Sort Products by Price Low to High",
+      "scenario": "BS-007",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:c6d39a8137fa55e14b4800fdbbf586fb349beb57ebc73fb9146d6a1b2442989e",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-008": {
+      "name": "Sort Products by Price High to Low",
+      "scenario": "BS-008",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:71a204a3f55887a1553129767f4ad932753c377cf36849410bbfea3a8bea9af2",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-009": {
+      "name": "Navigate to Product Details Page",
+      "scenario": "BS-009",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:6665254842cca8b53230a1092bfb9f566f6325c3cd900af4751853344983a9dc",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-010": {
+      "name": "Access Shopping Cart Page",
+      "scenario": "BS-010",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:6ebf936702df769980f537826127d0152f0ee097c005a5712e1b8381bbf454fd",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-011": {
+      "name": "Open Navigation Menu",
+      "scenario": "BS-011",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:7c7443e7bbf0f3340a04a568f7367f44c4def50d3c4027a7e7e021a2f148bd35",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-012": {
+      "name": "Logout from Application",
+      "scenario": "BS-012",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:b4fa6aa5c43ec78857d217fb36bfce1a0a30aeff8e32217ddcf7304b29087892",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-013": {
+      "name": "Verify Cart Persistence During Interface Interactions",
+      "scenario": "BS-013",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:246cf1ad2a258ec1d469b6ef136f425d4363016bac98a4b6cee46d0942e9a67c",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    },
+    "BS-014": {
+      "name": "Maintain Cart State After Page Refresh",
+      "scenario": "BS-014",
+      "suite": "M02",
+      "status": "failing",
+      "test_data_hash": "sha256:d83314c532a92a68091e2c7a0c0b4355b0927895b814ff509aff176e53d825e7",
+      "last_run": "2026-07-06",
+      "last_run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c"
+    }
+  },
+  "new_additions": [
+    "BS-001",
+    "BS-002",
+    "BS-003",
+    "BS-004",
+    "BS-005",
+    "BS-006",
+    "BS-007",
+    "BS-008",
+    "BS-009",
+    "BS-010",
+    "BS-011",
+    "BS-012",
+    "BS-013",
+    "BS-014"
+  ],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": [
+    {
+      "run_id": "7a559e6b-b588-4592-bd85-9193cce1da1c",
+      "timestamp": "2026-07-06T12:52:27.192994+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 11,
+      "total": 11
+    },
+    {
+      "run_id": "d8d4b3eb-2f73-471d-9de2-ebf11c80b238",
+      "timestamp": "2026-07-06T10:31:18.028208+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 11,
+      "total": 11
+    },
+    {
+      "run_id": "b4731ea7-f276-455a-8221-2664838fff3c",
+      "timestamp": "2026-06-29T14:40:26.108157+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 3,
+      "failed": 0,
+      "total": 3
+    },
+    {
+      "run_id": "b17a4ad9-d3e0-46b4-9e40-f6d0dd95229f",
+      "timestamp": "2026-06-29T14:38:55.331095+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 3,
+      "failed": 0,
+      "total": 3
+    },
+    {
+      "run_id": "5e910f78-7461-436c-b18f-8d14d898d275",
+      "timestamp": "2026-06-29T14:03:52.406347+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 8,
+      "failed": 0,
+      "total": 8
+    },
+    {
+      "run_id": "3db1f885-69bd-4cb2-8185-e9093d1c059e",
+      "timestamp": "2026-06-29T14:00:57.210311+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 23,
+      "failed": 1,
+      "total": 24
+    },
+    {
+      "run_id": "cf4969df-8ff0-42af-8a11-894bcb3e249f",
+      "timestamp": "2026-06-29T13:58:19.128728+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 8,
+      "failed": 0,
+      "total": 8
+    }
+  ]
+}

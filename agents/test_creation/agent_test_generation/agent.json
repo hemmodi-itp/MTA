@@ -1,0 +1,55 @@
+{
+  "name": "AgentTestGenerationAgent",
+  "registry_key": "agent_test_generation",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.agent_test_generation.agent",
+  "version": "1.1.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Uses Gemini to generate acceptance tests strictly from the BRD — agent-specific tests per requirement/acceptance criterion and general tests only for qualities the BRD states — discarding any test whose BRD quote cannot be verified.",
+  "inputs": [
+    {
+      "name": "requirements",
+      "type": "array",
+      "required": true,
+      "description": "REQ-xx requirements (with source quotes) from BrdBuilderAgent"
+    },
+    {
+      "name": "brd_markdown",
+      "type": "string",
+      "required": true,
+      "description": "Full BRD text — the only source of test content"
+    },
+    {
+      "name": "agent_profile",
+      "type": "object",
+      "required": false,
+      "description": "Only its interface is used, to phrase inputs for how the agent is called"
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "required": false,
+      "description": "Submission mode"
+    },
+    {
+      "name": "connector_mode",
+      "type": "string",
+      "required": false,
+      "description": "Optional LLM connector override"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "test_cases",
+      "type": "array",
+      "description": "TC-xxx tests with requirement_ref, acceptance_criterion, verified brd_reference, input, expected behaviour and pass criteria"
+    }
+  ],
+  "dependencies": [],
+  "skills": [
+    "agent_test_design"
+  ],
+  "doc": "agent.md"
+}

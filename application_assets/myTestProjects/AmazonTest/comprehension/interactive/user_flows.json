@@ -1,0 +1,306 @@
+{
+  "flows": [
+    {
+      "flow_id": "FLOW-001",
+      "inferred_name": "Interact with Fresh",
+      "inferred_scenario_type": "general",
+      "confidence": 0.95,
+      "pages_involved": [
+        "PAGE-002",
+        "PAGE-003"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "seq": 1,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Fresh",
+          "page_id": "PAGE-002",
+          "page_path": "/gp/new-releases"
+        },
+        {
+          "step": 2,
+          "seq": 2,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "var aPageStart = (new Date()).getTime();\n\n\n\nvar ue_t0=ue_t0||+new Date();\n\n\n\n\n\n\n\n\nwindow.ue_ihb = (window.ue_ihb || wind",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 3,
+          "seq": 3,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Sell",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 4,
+          "seq": 4,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "var aPageStart = (new Date()).getTime();\n\n\n\nvar ue_t0=ue_t0||+new Date();\n\n\n\n\n\n\n\n\nwindow.ue_ihb = (window.ue_ihb || wind",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 5,
+          "seq": 5,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Today's Deals",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 6,
+          "seq": 6,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Prime",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 7,
+          "seq": 7,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Prime",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 8,
+          "seq": 8,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "New Releases",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 9,
+          "seq": 9,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Customer Service",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 10,
+          "seq": 10,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "For support during your shopping journey, refer to the Customer Service - Frequently Asked Questions Help page.",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 11,
+          "seq": 11,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "New Releases",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 12,
+          "seq": 12,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Amazon Launchpad",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 13,
+          "seq": 13,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Amazon Renewed",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 14,
+          "seq": 14,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Bags, Wallets and Luggage",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        },
+        {
+          "step": 15,
+          "seq": 15,
+          "locator_id": null,
+          "action": "click",
+          "display_text": "Books",
+          "page_id": "PAGE-003",
+          "page_path": "/AJANTA-Waterproof-Anti-Skid-Lightweight-Comfortable/dp/B0H1MJNFTZ/ref=zg_bsnr_g_shoes_d_sccl_1/523-5082273-4687634"
+        }
+      ],
+      "api_calls_observed": [
+        {
+          "url": "https://m.media-amazon.com/images/G/01/csm/showads.v2.js?adspot_=1",
+          "method": "GET"
+        },
+        {
+          "url": "https://unagi.amazon.in/1/events/com.amazon.csm.csa.prod",
+          "method": "POST"
+        },
+        {
+          "url": "https://www.amazon.in/hz/primenavigation/primeflyout?amazonprimeflyoutContent=amazonprime&metricKey=primeMetric&isPrime=false&rid=XJZ7PB8SZRMY77M55BV1&_=1782385224625",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/nav/ajax/hMenuDesktopFirstLayer?ajaxTemplate=hMenuDesktopFirstLayer&pageType=GPHelp&hmDataAjaxHint=1&isFreshRegion=false&isFreshCustomer=false&isPrimeMember=false&isPrimeDay=false&isBackup=false&firstName=false&navDeviceType=desktop&hashCustomerAndSessionId=529c7cc22367b2c18c2ae2cee130921d9e2d3f28&environmentVFI=AmazonNavigationOrchestrator%2Fbigmesh-patch%40B6469611165-AL2023_aarch64&languageCode=en_IN&customerCountryCode=IN",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/hz/primenavigation/primeflyout?amazonprimeflyoutContent=amazonprime&metricKey=primeMetric&isPrime=false&rid=5KP7SY7C6KW6M8CRZ2Q2&_=1782385235182",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/nav/ajax/hMenuDesktopFirstLayer?ajaxTemplate=hMenuDesktopFirstLayer&pageType=zeitgeist&hmDataAjaxHint=1&isFreshRegion=false&isFreshCustomer=false&isPrimeMember=false&isPrimeDay=false&isBackup=false&firstName=false&navDeviceType=desktop&hashCustomerAndSessionId=529c7cc22367b2c18c2ae2cee130921d9e2d3f28&environmentVFI=AmazonNavigationOrchestrator%2Fbigmesh-patch%40B6469611165-AL2023_aarch64&languageCode=en_IN&customerCountryCode=IN",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/vap/ew/componentbuilder",
+          "method": "POST"
+        },
+        {
+          "url": "https://www.amazon.in/hz/rhf?currentPageType=zeitgeist&currentSubPageType=bsnr&excludeAsin=&fieldKeywords=&k=&keywords=&search=&auditEnabled=&previewCampaigns=&forceWidgets=&searchAlias=&cardJSPresent=true",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/c41f7626-e10f-4726-adfd-db787b975348/default.vertical.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/3549d0e6-dd18-40bd-9c7c-bc8118853941/default.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/1359f821-08d1-450e-8da9-7f05ff2ae918/default.vertical.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/db5ae732-ac2a-42ce-b736-3e0429422de5/default.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/3549d0e6-dd18-40bd-9c7c-bc8118853941/default.jobtemplate.hls360.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/c41f7626-e10f-4726-adfd-db787b975348/default.vertical.jobtemplate.hls360.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/fsx/storeingress/groceries/flyout/desktop?groceriesContent=groceries&metricKey=groceriesMetric&rid=VQV8CMJYKQ24TAE6V915&_=1782385249000",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/2357ccf7-fb82-44e7-8af8-16167f35297c/default.vertical.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/6a9c72c9-480c-4e9a-ae96-dbd947d97300/default.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://images-eu.ssl-images-amazon.com/images/G/31/img18/Electronics/Megamenu/megamenumar18f.json?_=1782385253065",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/fsx/storeingress/groceries/flyout/desktop?groceriesContent=groceries&metricKey=groceriesMetric&rid=W0CQF3YFKAE68D6VQC4D&_=1782385253073",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/6ead39d7-bbc5-4454-bb64-c3e9246c0a26/default.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/3549d0e6-dd18-40bd-9c7c-bc8118853941/default.jobtemplate.hls360_00001.ts",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/db5ae732-ac2a-42ce-b736-3e0429422de5/default.jobtemplate.hls360.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/1359f821-08d1-450e-8da9-7f05ff2ae918/default.vertical.jobtemplate.hls360.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/c41f7626-e10f-4726-adfd-db787b975348/default.vertical.jobtemplate.hls360_00001.ts",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/fsx/storeingress/groceries/flyout/desktop?groceriesContent=groceries&metricKey=groceriesMetric&rid=99QTNAVNXCXYJF7FYBR5&_=1782385259861",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/0178aac3-db8a-4114-8d3e-e9311d5a3d68/default.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/db5ae732-ac2a-42ce-b736-3e0429422de5/default.jobtemplate.hls360_00001.ts",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/1359f821-08d1-450e-8da9-7f05ff2ae918/default.vertical.jobtemplate.hls360_00001.ts",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/cart/add-to-cart/patc-config?clientName=SiteWideActionExecutor&ref_=ax_patc_cfg",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/ce21f7e5-098f-4b18-9dd1-7a0bbd969738/default.jobtemplate.hls.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/ce21f7e5-098f-4b18-9dd1-7a0bbd969738/default.jobtemplate.hls360.m3u8",
+          "method": "GET"
+        },
+        {
+          "url": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-eu-west-1-prod/ce21f7e5-098f-4b18-9dd1-7a0bbd969738/default.jobtemplate.hls360_00001.ts",
+          "method": "GET"
+        },
+        {
+          "url": "https://www.amazon.in/gp/product/ajax/twisterDimensionSlotsDefault?isDimensionSlotsAjax=1&asinList=B0H1MJNFTZ,B0FHH3L3LD,B0H1MH7VV5,B0H1MFDGW5,B0H1MJDBMK,B0H1MDRG3H&vs=1&asin=B0H1MJNFTZ&productTypeDefinition=SHOES&productGroupId=shoes_display_on_website&parentAsin=B0FJXKBPTV&isPrime=0&originalHttpReferer=https%3A%2F%2Fwww.amazon.in%2Fgp%2Fnew-releases%2Fshoes%2Fref%3Dzg_bsnr_nav_shoes_0&deviceOs=unrecognized&landingAsin=B0H1MJNFTZ&deviceType=web&showFancyPrice=false&twisterFlavor=twisterPlusDesktopConfigurator",
+          "method": "GET"
+        },
+        {
+          "url": "https://api.stores.eu-south-2.prod.paets.advertising.amazon.dev/v1/ad-events/loaded/01KVZ71JMW03EYEDVR4346AZQH?publisherId=stores",
+          "method": "GET"
+        },
+        {
+          "url": "https://aes.eu-south.ono.axp.amazon-adsystem.com/x/px?t=atf&bi=v1_CGrnR34DjOP67xKAC909xiKWQClKb6EI6Yh9nmHTrpP8NJw1k6wiIsQX5XscoCybjqMywKpYsUfKrgmcXisuI3Eb4UzjTaiUSBlUPxggFgX7Rtkm52Qs4JI3Bwm5ab3-H9LXZEym6pBJQRtt_wyoNBwRbhdaUJokXxmxOaAhRwmTnLvNkU09VRukO5HvOLMyGDYHe9Ldkp1VQ2kvJcJFYPwQjdO5gZ8zCguXJ7Qv2Ekfu5UulOqxAEEvggSD2FFYCHngLufnlSlW1VwXO5NvZgWweXC-xgDdGuawrZvNR4wbIWGm0vyl_zjKSzfRALimw_cT_cA2aO3Ty77bK6WSNeQt89ppXwgN8rAT3NB1GapE7F1VCkqF7AOx2JEuQE2BQx1d1mjbo2VVjwjbEKOzXllrYJT4s-hdRfY5PGlvhDNjC8BSmRp_Ikx6xKtAJnErB-OwY_bznOiiQSUpfSGawaJPU2SZgXXpXQtbVq4hhfCRSlNN4oim9xjtYBF7KbuMzPd38wZHKZwxjBXZskqT52TcZRR-clg6NC-OZy_pH7frdCj9P3dN_CcdA2nJdEHrZugam_0heQiji4VlkuQ2OFDEERNkliYk8fEU6dq6lHEwuL76_a4ZPEuk5FyqboqRK2QwaegvECdK7tpAZJFsuhdHzo7WPCdRcn4K481l2MNLBHwMcyOEkXAYhR_zQ8Bn8FwH-2l79sofoN4iOW-XLmcM2rbvN8rn_6HyG3QXPD7xgCLxfo9CwhQez_QUEf69r_ldHB6VnWPN9SjmHEHDJQw_ghP2GFpWpJxHRt0JUgiW-2oGA-VRsCpqj5OSVmjGTsWxQjdC1iTRuvBWRc5ouYSjo20Glf6yLveEodCygGyK31eT93A3wBPLv1qupjHKiPUZk94hqXjuB_54ftUgP_3_4-aE7CFgKScUJRjJo3GN1TpxK2kYOXVoURPA7l6axTG3S4bA1aWW8NfJwCWJar5dPNqBIon06W2xVj90E8BtQxpQbE9rd4Dy_z3GYnZHASS51ZZL7TApeZ476r2c4RpbvjFOId6xgEhK54p_hB8DSXOBU4aiNhG9YoZcJ99CTS-QUJCQIBglNIG8f5ahnvzteiaO1Ix9edABBCl0BLKcC0-cXvhmmAQbNo-M48z54JU9SujpuzYpHOdPn0sKT1U3bvvmJEjzDYgos7DoiqC6sDid6yvR0J8Vqxd7dOsoM3m9HXn8012OXh09nFb8EtqIzO53oItYxyiO87ldDHjKaHEbVVq-0Uq8hy0QD63HKekrlu-5RXvBFoZhVYozh3Yo1aUi17CI8xeYqVuIC9DUb-puc_jRwdIinAWe4rUGMfM2Qn66_Gjp1McAC0oB4IWwyt4MoVhIUNNwEs0InpM0jFW8JEq9uuyzBHjPfr1MSh_deE-6dgr6RissbI-IQ73Ptif3b1Nw6_E6-ePOhWRrcSpV2_U9O-4-CCbyKCecwHMnP3eim4WnwRPqCSn7Fl_M_jWIQOkd3pwZnu8b3VN98m2UKESqNnhm7pYxkPKAlib7QBdNV-13N6CGWsI3Khj-oZebAEjaHTS8DaAHgvmL9OqTy_WuZdp6KNMgtMc0Q9zOB0jyyZP5bf7qEF0uZTcUzOH9irA5_8Pu8XTB8uGSRWrrGyeTrRkOhGBEbb-BKinnNkPNzp0vVlqKjCN5_JMRZyjya0EZLrFVjO8nX870cNALlY7maUMRysK8-s6DgaVMKPyEvTRj5GWxlMk3LQHo8RZfkBybnoVzDDa3-HfyoM_3nuACX88EnzeRE4B879RCwU63_uova69sd98HjVt5QIz4nA_aI6z2L1jd8czpZPj1tuRuhq5RLKXw_aNz4l93A6Eee89j-6qUcDgOZv3s0KhZS-iIfup7Rj8_tTdGxISmTZy4kGsIWLKN4dokutv5Lngf2YjHi2BnRRD4FszvN0fI7ifVZunLs-vshplxQOSE&c=%7B%22atf%22%3Atrue%7D",
+          "method": "GET"
+        },
+        {
+          "url": "https://aes.eu-south.ono.axp.amazon-adsystem.com/x/px?t=v&bi=v1_CGrnR34DjOP67xKAC909xiKWQClKb6EI6Yh9nmHTrpP8NJw1k6wiIsQX5XscoCybjqMywKpYsUfKrgmcXisuI3Eb4UzjTaiUSBlUPxggFgX7Rtkm52Qs4JI3Bwm5ab3-H9LXZEym6pBJQRtt_wyoNBwRbhdaUJokXxmxOaAhRwmTnLvNkU09VRukO5HvOLMyGDYHe9Ldkp1VQ2kvJcJFYPwQjdO5gZ8zCguXJ7Qv2Ekfu5UulOqxAEEvggSD2FFYCHngLufnlSlW1VwXO5NvZgWweXC-xgDdGuawrZvNR4wbIWGm0vyl_zjKSzfRALimw_cT_cA2aO3Ty77bK6WSNeQt89ppXwgN8rAT3NB1GapE7F1VCkqF7AOx2JEuQE2BQx1d1mjbo2VVjwjbEKOzXllrYJT4s-hdRfY5PGlvhDNjC8BSmRp_Ikx6xKtAJnErB-OwY_bznOiiQSUpfSGawaJPU2SZgXXpXQtbVq4hhfCRSlNN4oim9xjtYBF7KbuMzPd38wZHKZwxjBXZskqT52TcZRR-clg6NC-OZy_pH7frdCj9P3dN_CcdA2nJdEHrZugam_0heQiji4VlkuQ2OFDEERNkliYk8fEU6dq6lHEwuL76_a4ZPEuk5FyqboqRK2QwaegvECdK7tpAZJFsuhdHzo7WPCdRcn4K481l2MNLBHwMcyOEkXAYhR_zQ8Bn8FwH-2l79sofoN4iOW-XLmcM2rbvN8rn_6HyG3QXPD7xgCLxfo9CwhQez_QUEf69r_ldHB6VnWPN9SjmHEHDJQw_ghP2GFpWpJxHRt0JUgiW-2oGA-VRsCpqj5OSVmjGTsWxQjdC1iTRuvBWRc5ouYSjo20Glf6yLveEodCygGyK31eT93A3wBPLv1qupjHKiPUZk94hqXjuB_54ftUgP_3_4-aE7CFgKScUJRjJo3GN1TpxK2kYOXVoURPA7l6axTG3S4bA1aWW8NfJwCWJar5dPNqBIon06W2xVj90E8BtQxpQbE9rd4Dy_z3GYnZHASS51ZZL7TApeZ476r2c4RpbvjFOId6xgEhK54p_hB8DSXOBU4aiNhG9YoZcJ99CTS-QUJCQIBglNIG8f5ahnvzteiaO1Ix9edABBCl0BLKcC0-cXvhmmAQbNo-M48z54JU9SujpuzYpHOdPn0sKT1U3bvvmJEjzDYgos7DoiqC6sDid6yvR0J8Vqxd7dOsoM3m9HXn8012OXh09nFb8EtqIzO53oItYxyiO87ldDHjKaHEbVVq-0Uq8hy0QD63HKekrlu-5RXvBFoZhVYozh3Yo1aUi17CI8xeYqVuIC9DUb-puc_jRwdIinAWe4rUGMfM2Qn66_Gjp1McAC0oB4IWwyt4MoVhIUNNwEs0InpM0jFW8JEq9uuyzBHjPfr1MSh_deE-6dgr6RissbI-IQ73Ptif3b1Nw6_E6-ePOhWRrcSpV2_U9O-4-CCbyKCecwHMnP3eim4WnwRPqCSn7Fl_M_jWIQOkd3pwZnu8b3VN98m2UKESqNnhm7pYxkPKAlib7QBdNV-13N6CGWsI3Khj-oZebAEjaHTS8DaAHgvmL9OqTy_WuZdp6KNMgtMc0Q9zOB0jyyZP5bf7qEF0uZTcUzOH9irA5_8Pu8XTB8uGSRWrrGyeTrRkOhGBEbb-BKinnNkPNzp0vVlqKjCN5_JMRZyjya0EZLrFVjO8nX870cNALlY7maUMRysK8-s6DgaVMKPyEvTRj5GWxlMk3LQHo8RZfkBybnoVzDDa3-HfyoM_3nuACX88EnzeRE4B879RCwU63_uova69sd98HjVt5QIz4nA_aI6z2L1jd8czpZPj1tuRuhq5RLKXw_aNz4l93A6Eee89j-6qUcDgOZv3s0KhZS-iIfup7Rj8_tTdGxISmTZy4kGsIWLKN4dokutv5Lngf2YjHi2BnRRD4FszvN0fI7ifVZunLs-vshplxQOSE&c=%7B%22v%22%3A%7B%22def%22%3A%22iab%22%2C%22p%22%3A0.5%2C%22t%22%3A1000%2C%22ib%22%3Afalse%7D%2C%22wh%22%3A720%2C%22ww%22%3A1280%2C%22sx%22%3A0%2C%22sy%22%3A0%2C%22ah%22%3A55%2C%22aw%22%3A1280%2C%22top%22%3A149%2C%22left%22%3A-7.6666669845581055%2C%22ptv%22%3A4.942%2C%22ttv%22%3A1.017%7D",
+          "method": "GET"
+        },
+        {
+          "url": "https://unagi-eu.amazon.com/1/events/com.amazon.eel.SponsoredProductsEventTracking.prod.ZAZ",
+          "method": "POST"
+        },
+        {
+          "url": "https://www.amazon.in/acp/eu-south-2/cr-media-carousel/cr-media-carousel-417924d5-fa27-4f6c-8d5d-0460509c5a57-1780608512907/getTreatmentNoTrigger?page-type=Detail&stamp=1782385265364",
+          "method": "POST"
+        }
+      ],
+      "can_generate_test_case_directly": true
+    }
+  ]
+}

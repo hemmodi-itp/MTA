@@ -1,0 +1,395 @@
+{
+  "GEN_BS_001": {
+    "tests": [
+      {
+        "name": "positive — toggle application theme to dark mode using dark mode switch",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "switch_to_dark_mode"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "switch_to_dark_mode",
+            "message": "Dark mode switch should be visible on the page after toggling theme"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Element or container locator to verify application theme attribute or theme class (e.g. theme-dark)"
+    ]
+  },
+  "GEN_BS_002": {
+    "tests": [
+      {
+        "name": "positive — open demo project successfully loads project page",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "open_the_demo_project"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/projects/demo",
+            "message": "URL should contain /projects/demo after opening the demo project"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "Demo Project",
+            "message": "Page title should contain Demo Project"
+          }
+        ]
+      },
+      {
+        "name": "positive — switch to dark mode toggles dark theme",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "switch_to_dark_mode"
+          }
+        ]
+      },
+      {
+        "name": "negative — opening demo project handles load failure state",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "open_the_demo_project"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/error/404",
+            "message": "URL should redirect to 404 error page when demo project content fails to load"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "widgets_container (element to assert demo project widget count)",
+      "error_message_toast (element to display 'Unable to load demo project. Please try again later.')",
+      "theme_status_indicator (element to assert dark mode state after toggle)"
+    ]
+  },
+  "GEN_BS_003": {
+    "tests": [
+      {
+        "name": "positive — access BRD compliance criterion level view",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "brd_compliance_criterion_level"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/compliance/brd/criterion-level",
+            "message": "Application should navigate to the BRD compliance criterion level view"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "criterion_level_heading",
+      "criteria_count_element"
+    ]
+  },
+  "M01_BS_001": {
+    "tests": [
+      {
+        "name": "positive — switch application visual theme to dark mode",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "switch_to_dark_mode"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "switch_to_dark_mode",
+            "message": "Dark mode toggle control should remain visible and accessible after switching theme"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for application root or body element to assert active 'theme-dark' CSS class"
+    ]
+  },
+  "M01_BS_002": {
+    "tests": [
+      {
+        "name": "positive — user opens and explores the demo project",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "open_the_demo_project"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/projects/demo",
+            "message": "URL should contain /projects/demo after clicking open demo project"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "Demo Project",
+            "message": "Page title should contain Demo Project after opening the demo project"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for demo project widget element to verify widget count"
+    ]
+  },
+  "M01_BS_003": {
+    "tests": [
+      {
+        "name": "positive — open demo project",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "open_the_demo_project"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "project",
+            "message": "URL should contain project after opening the demo project"
+          }
+        ]
+      },
+      {
+        "name": "positive — access BRD compliance criterion level view succeeds",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "brd_compliance_criterion_level"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/compliance/brd/criterion-level",
+            "message": "URL should lead to the BRD compliance criterion level page"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "BRD Compliance Criterion Level View",
+            "message": "Page title should display BRD Compliance Criterion Level View"
+          }
+        ]
+      },
+      {
+        "name": "negative — BRD compliance criterion level view fails to load",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "brd_compliance_criterion_level"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/error/404",
+            "message": "URL should redirect to the 404 error page when BRD compliance criterion level view fails to load"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "Page Not Found",
+            "message": "Page title should display Page Not Found on failure"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "GEN_BS_004": {
+    "tests": [
+      {
+        "name": "positive — user initiates creation of a new project",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "new_project_2"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/projects/new",
+            "message": "The application should open the project creation workflow"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M01_BS_004": {
+    "tests": [
+      {
+        "name": "positive — clicking new project button initiates new project creation workflow",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "new_project_2"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/projects/new",
+            "message": "Clicking New Project should navigate to the project creation URL"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "Create New Project",
+            "message": "Page title should reflect the project creation screen"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M01_BS_005": {
+    "tests": [
+      {
+        "name": "positive — delete target item or resource from the system",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "delete"
+          }
+        ]
+      },
+      {
+        "name": "positive — open and create projects in demo area",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "open"
+          },
+          {
+            "action": "click",
+            "locator_key": "new_project_2"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "confirm_delete_button (LOC-0006)",
+      "deletion_success_message",
+      "deletion_error_message"
+    ]
+  },
+  "M01_BS_006": {
+    "tests": [
+      {
+        "name": "positive — user accesses Shopflow demo project successfully",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "shopflow_demo"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/demo/shopflow",
+            "message": "URL should contain /demo/shopflow after clicking the Shopflow demo option"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "Shopflow Demo",
+            "message": "Page title should contain Shopflow Demo"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": []
+  },
+  "M01_BS_007": {
+    "tests": [
+      {
+        "name": "positive — execute open action to render selected document",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "click",
+            "locator_key": "open"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "DOC-2024-Compliance-Report.pdf",
+            "message": "The page title should contain the name of the opened document"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "document_item_selector (locator to select the specific document or resource before opening)",
+      "error_message_banner (locator to verify error message display when opening corrupted or unavailable resources)"
+    ]
+  }
+}

@@ -1,0 +1,138 @@
+project:
+  name: AppEvolve_Automation
+  application_name: AppEvolve
+  browser: chromium
+  headless: false
+  interactive_scan: false
+          # true = live browser session, user drives navigation/login manually
+
+input:
+  brd_dir: application_assets/projects/AppEvolve_Automation/inputs
+
+auth:
+  enabled: false                  # login is tested as a module scenario, not as pipeline auth
+  strategy: storageState
+  storage_state_path: application_assets/projects/AppEvolve_Automation/.auth/auth.json
+
+modules:
+  - id: M01
+    name: Login
+    url: https://pt-dev.appevolve.intuitive.ai/
+    brd_file: module_01_login.md
+
+  # setup: reused for (1) discovery/DOM-scan setup and (2) injected as a
+  # beforeEach hook into this module's generated .spec.ts files (see
+  # sauceLabs/project.yaml M02 for the same pattern applied to a simpler,
+  # non-SSO login).
+  - id: M02
+    name: Dashboard
+    url: https://pt-dev.appevolve.intuitive.ai/appevolve/dashboard
+    brd_file: module_02_dashboard.md
+    setup:
+      - goto: https://pt-dev.appevolve.intuitive.ai/
+      - click: "button:has-text('SSO Login')"
+      - wait: 4000
+      - fill:
+          selector: "#username"
+          value_env: APPEVOLVE_AUTOMATION_DEV_USERNAME
+      - fill:
+          selector: "#password"
+          value_env: APPEVOLVE_AUTOMATION_DEV_PASSWORD
+      - click: "#kc-login"
+      - wait: 2000
+      # First-time product tour overlay — not guaranteed to appear on every
+      # run (e.g. already dismissed in a prior session). If absent, this step
+      # times out (~30s) and logs as failed, but the sequence continues.
+      - click: "button.joyride__hurray-btn"
+      - wait: 1000
+
+
+  - id: M03
+    name: Dashboard
+    url: https://pt-dev.appevolve.intuitive.ai/appevolve/dashboard
+    brd_file: module_03_dashboard_upgrade.md
+    setup:
+      - goto: https://pt-dev.appevolve.intuitive.ai/
+      - click: "button:has-text('SSO Login')"
+      - wait: 4000
+      - fill:
+          selector: "#username"
+          value_env: APPEVOLVE_AUTOMATION_DEV_USERNAME
+      - fill:
+          selector: "#password"
+          value_env: APPEVOLVE_AUTOMATION_DEV_PASSWORD
+      - click: "#kc-login"
+      - wait: 2000
+      # First-time product tour overlay — not guaranteed to appear on every
+      # run (e.g. already dismissed in a prior session). If absent, this step
+      # times out (~30s) and logs as failed, but the sequence continues.
+      - click: "button.joyride__hurray-btn"
+      - wait: 1000
+
+
+  - id: M04
+    name: Dashboard
+    url: https://pt-dev.appevolve.intuitive.ai/appevolve/projects
+    brd_file: input_BRD.md
+    setup:
+      - goto: https://pt-dev.appevolve.intuitive.ai/
+      - click: "button:has-text('SSO Login')"
+      - wait: 4000
+      - fill:
+          selector: "#username"
+          value_env: APPEVOLVE_AUTOMATION_DEV_USERNAME
+      - fill:
+          selector: "#password"
+          value_env: APPEVOLVE_AUTOMATION_DEV_PASSWORD
+      - click: "#kc-login"
+      - wait: 2000
+      # First-time product tour overlay — not guaranteed to appear on every
+      # run (e.g. already dismissed in a prior session). If absent, this step
+      # times out (~30s) and logs as failed, but the sequence continues.
+      - click: "button.joyride__hurray-btn"
+      - wait: 1000
+
+# Controls how many negative/boundary test cases get generated per scenario,
+# and how many alternate data values each one tries. Defaults below match the
+# platform defaults (1 negative + 1 boundary case, up to 3 data iterations
+# each) — override per-project here, or per-module inside modules[].
+test_generation:
+  max_negative_cases: 0
+  max_boundary_cases: 0
+  max_data_iterations: 3
+
+test_execution:
+  suite: AppEvolve_Automation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Not read by any code yet — a future --env selector could use this to
+# override the module URL + setup credentials per environment. Credentials
+# are already relocated to .env now so this is ready to wire up later.
+env:
+  qa:
+    url: https://pt-dev.appevolve.intuitive.ai/
+    username_env: APPEVOLVE_AUTOMATION_QA_USERNAME
+    password_env: APPEVOLVE_AUTOMATION_QA_PASSWORD
+
+  uat:
+    url: https://pt-dev.appevolve.intuitive.ai/
+    username_env: APPEVOLVE_AUTOMATION_UAT_USERNAME
+    password_env: APPEVOLVE_AUTOMATION_UAT_PASSWORD

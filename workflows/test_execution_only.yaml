@@ -1,0 +1,29 @@
+# test_execution_only.yaml — test_execution category, standalone (no healing)
+#
+# Step 1: ui_execution — npx playwright test → Playwright JSON + HTML reports
+# Step 2: reporting    — Playwright JSON + test_suite.json → HTML + JSON reports
+#
+# Assumes test scripts already exist on disk (test_test_creation_only / full_workflow already ran).
+# Uses UIExecutionAgent directly (step name "ui_execution"), same as full_workflow.yaml — not the
+# ExecutionAgent wrapper, so failing tests here are not auto-healed. Use
+# test_execution_and_healing.yaml if healing is desired.
+
+steps:
+  - name: ui_execution
+    description: "Run npx playwright test — headless chromium, JSON + HTML reporters"
+    # Inputs:   test_creation/test_scripts/*.spec.ts
+    #           test_creation/test_suite.json
+    #           playwright.config.ts
+    # Outputs:  test_execution/reports/json/{ts}_results.json
+    #           test_execution/reports/html/{ts}/
+    #           test_execution/reports/index.json
+
+  - name: reporting
+    description: "Aggregate Playwright results + test_suite.json → HTML + JSON reports"
+    always_run: true
+    depends_on: [ui_execution]
+    # Inputs:   test_execution/reports/json/{ts}_results.json
+    #           test_creation/test_suite.json
+    # Outputs:  test_execution/reports/html/{ts}_{project}.html
+    #           test_execution/reports/json/{ts}_{project}.json
+    #           test_execution/reports/index.json

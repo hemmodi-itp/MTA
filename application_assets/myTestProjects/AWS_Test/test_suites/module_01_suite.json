@@ -1,0 +1,22 @@
+{
+  "suite_id": "module_01",
+  "name": "Module 01 — Full Tests",
+  "description": "All positive, negative, and boundary scenarios for Module 01. Rename this file to match your module (e.g. module_01_login_suite.json).",
+  "type": "module",
+  "scope": "M01",
+
+  "scenarios": [
+    "M01_BS_001",
+    "M01_BS_002",
+    "M01_BS_003"
+  ],
+
+  "all_modules": false,
+  "modules": ["M01"],
+
+  "metadata": {
+    "owner": "QA Team",
+    "estimated_runtime_sec": 300,
+    "notes": "Duplicate this file for each module. Update suite_id, name, scope, scenarios, and modules."
+  }
+}

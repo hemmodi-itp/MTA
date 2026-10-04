@@ -1,0 +1,153 @@
+{
+  "specs": [
+    {
+      "spec_id": "BS-001",
+      "scenario_title": "New Investor Registration and Onboarding",
+      "file": "test_BS-001_new_investor_registration_and_onboarding.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:34:21.830419+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-002",
+      "scenario_title": "Compliance Review and Approval Workflow",
+      "file": "test_BS-002_compliance_review_and_approval_workflow.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:35:08.266259+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-003",
+      "scenario_title": "Investor Portal Access and Dashboard View",
+      "file": "test_BS-003_investor_portal_access_and_dashboard_view.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:35:52.175472+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-004",
+      "scenario_title": "Investor Profile Management and Updates",
+      "file": "test_BS-004_investor_profile_management_and_updates.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:36:37.687639+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-005",
+      "scenario_title": "Document Upload and Management",
+      "file": "test_BS-005_document_upload_and_management.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:37:21.419030+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-006",
+      "scenario_title": "Investment Report Generation and Access",
+      "file": "test_BS-006_investment_report_generation_and_access.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:38:04.840291+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-007",
+      "scenario_title": "Subscription Processing and Capital Activity Tracking",
+      "file": "test_BS-007_subscription_processing_and_capital_activity_tracking.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:39:09.620295+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-008",
+      "scenario_title": "Investor Communication and Announcement Distribution",
+      "file": "test_BS-008_investor_communication_and_announcement_distribution.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:40:11.188564+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-009",
+      "scenario_title": "Compliance Monitoring and Periodic Review",
+      "file": "test_BS-009_compliance_monitoring_and_periodic_review.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:41:20.746636+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-010",
+      "scenario_title": "Document Access and Secure Download",
+      "file": "test_BS-010_document_access_and_secure_download.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:42:14.386249+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-011",
+      "scenario_title": "Redemption and Transfer Processing",
+      "file": "test_BS-011_redemption_and_transfer_processing.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:43:21.189276+00:00",
+      "last_run": null,
+      "last_result": null
+    },
+    {
+      "spec_id": "BS-012",
+      "scenario_title": "Tax Reporting Package Generation",
+      "file": "test_BS-012_tax_reporting_package_generation.spec.ts",
+      "status": "new",
+      "tier_used": 0,
+      "fallback_route": null,
+      "generated_at": "2026-06-18T10:44:19.337288+00:00",
+      "last_run": null,
+      "last_result": null
+    }
+  ],
+  "project": "alterDomusInvest",
+  "updated_at": "2026-06-18T10:44:19.337369+00:00",
+  "total_scenarios": 12,
+  "new_additions": [
+    "test_BS-001_new_investor_registration_and_onboarding.spec.ts",
+    "test_BS-002_compliance_review_and_approval_workflow.spec.ts",
+    "test_BS-003_investor_portal_access_and_dashboard_view.spec.ts",
+    "test_BS-004_investor_profile_management_and_updates.spec.ts",
+    "test_BS-005_document_upload_and_management.spec.ts",
+    "test_BS-006_investment_report_generation_and_access.spec.ts",
+    "test_BS-007_subscription_processing_and_capital_activity_tracking.spec.ts",
+    "test_BS-008_investor_communication_and_announcement_distribution.spec.ts",
+    "test_BS-009_compliance_monitoring_and_periodic_review.spec.ts",
+    "test_BS-010_document_access_and_secure_download.spec.ts",
+    "test_BS-011_redemption_and_transfer_processing.spec.ts",
+    "test_BS-012_tax_reporting_package_generation.spec.ts"
+  ]
+}

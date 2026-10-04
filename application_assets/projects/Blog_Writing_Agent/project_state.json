@@ -1,0 +1,142 @@
+{
+  "project": "Blog_Writing_Agent",
+  "schema_version": "1.0",
+  "last_updated": "2026-09-23T13:18:56.174331+00:00",
+  "last_run_id": "27abcf51-f6cf-4054-a0de-2080e6952e15",
+  "discovery": {
+    "dom_fingerprint": "sha256:bc2ffa71c22f17ea3ddb7dde85dcc31020aa91e0652552af9e186e8837b3f000",
+    "brd_fingerprint": "",
+    "last_discovered": "2026-09-23T13:01:52.944489+00:00",
+    "cached_output": {
+      "status": "success",
+      "intents_path": "application_assets\\projects\\Blog_Writing_Agent\\test_creation\\intents.yaml",
+      "dom_status": "success",
+      "dom_intents_count": 5,
+      "dom_intents_path": "application_assets\\projects\\Blog_Writing_Agent\\test_comprehension\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\Blog_Writing_Agent\\test_comprehension\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "DOM_INT_001",
+          "intent_name": "click_element",
+          "action": "click",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": null
+        },
+        {
+          "intent_id": "DOM_INT_002",
+          "intent_name": "click_stop",
+          "action": "click",
+          "locator_id": "LOC-0002",
+          "value": null,
+          "expected_result": "stop_opened"
+        },
+        {
+          "intent_id": "DOM_INT_003",
+          "intent_name": "click_deploy",
+          "action": "click",
+          "locator_id": "LOC-0003",
+          "value": null,
+          "expected_result": "deploy_opened"
+        },
+        {
+          "intent_id": "DOM_INT_004",
+          "intent_name": "click_main_menu",
+          "action": "click",
+          "locator_id": "LOC-0004",
+          "value": null,
+          "expected_result": "main_menu_opened"
+        },
+        {
+          "intent_id": "DOM_INT_005",
+          "intent_name": "click_link_to_heading",
+          "action": "click",
+          "locator_id": "LOC-0008",
+          "value": null,
+          "expected_result": "link_to_heading_opened"
+        }
+      ],
+      "comprehension_status": "success",
+      "scenarios_count": 5,
+      "business_scenarios_path": "application_assets\\projects\\Blog_Writing_Agent\\test_comprehension\\business_scenarios.json",
+      "comprehension_source": "ui_scanner",
+      "mode": "url_only",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 5,
+    "grounded_intents": 0,
+    "passing_tests": 2,
+    "failing_tests": 3
+  },
+  "business_scenarios": {},
+  "test_cases": {
+    "M01_BS_001": {
+      "name": "Navigate to Main Menu",
+      "scenario": "M01_BS_001",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:bc9ddf94d60b208b2905645d8ce56d26bc71819efbf82c5f27f9cf3a027469e4",
+      "last_run": "2026-09-23",
+      "last_run_id": "27abcf51-f6cf-4054-a0de-2080e6952e15"
+    },
+    "M01_BS_002": {
+      "name": "Deploy Blog Agent Service",
+      "scenario": "M01_BS_002",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:25e635008e284e8d23878d16e25c259509c16dc5056a08bbfd7f3fda814b395a",
+      "last_run": "2026-09-23",
+      "last_run_id": "27abcf51-f6cf-4054-a0de-2080e6952e15"
+    },
+    "M01_BS_003": {
+      "name": "Stop Active Process",
+      "scenario": "M01_BS_003",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:26c0d2b624ad2dd02425f19293cca41d9a20b707b23820fa5c50efdc225dc3aa",
+      "last_run": "2026-09-23",
+      "last_run_id": "27abcf51-f6cf-4054-a0de-2080e6952e15"
+    },
+    "M01_BS_004": {
+      "name": "Jump to Section Heading",
+      "scenario": "M01_BS_004",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:d1cb01e749e693f5e5fb5e1753a5d3937ce5a52aab0ff3fe62fa9b72778d7958",
+      "last_run": "2026-09-23",
+      "last_run_id": "27abcf51-f6cf-4054-a0de-2080e6952e15"
+    },
+    "M01_BS_005": {
+      "name": "Interact with Generic UI Element",
+      "scenario": "M01_BS_005",
+      "suite": "M01",
+      "status": "passing",
+      "test_data_hash": "sha256:21b1ce95fa3ede4d6e5e74f896acbbd801e1fc8b17290a79a2e8c507cb499ed0",
+      "last_run": "2026-09-23",
+      "last_run_id": "27abcf51-f6cf-4054-a0de-2080e6952e15"
+    }
+  },
+  "new_additions": [
+    "M01_BS_002",
+    "M01_BS_003",
+    "M01_BS_004"
+  ],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": [
+    {
+      "run_id": "27abcf51-f6cf-4054-a0de-2080e6952e15",
+      "timestamp": "2026-09-23T13:16:02.822237+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 3,
+      "failed": 4,
+      "total": 7
+    }
+  ]
+}

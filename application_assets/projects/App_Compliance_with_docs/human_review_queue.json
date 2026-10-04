@@ -1,0 +1,247 @@
+[
+  {
+    "timestamp": "2026-09-17T13:50:58.351521+00:00",
+    "kind": "locator_map_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_project",
+    "source": "build_named_locator_map",
+    "added": [
+      "switch_to_dark_mode",
+      "open_the_demo_project",
+      "brd_compliance_criterion_level",
+      "new_project",
+      "new_project_2"
+    ],
+    "updated": [],
+    "possibly_removed": [],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-17T13:51:03.891518+00:00",
+    "kind": "locator_map_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_default",
+    "source": "live_validation",
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "new_project",
+      "new_project_2"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-17T13:53:57.695120+00:00",
+    "kind": "dom_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_default",
+    "source": null,
+    "added": [],
+    "updated": [
+      "LOC-0004"
+    ],
+    "possibly_removed": [],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-17T14:00:05.334194+00:00",
+    "kind": "locator_map_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_project",
+    "source": "build_named_locator_map",
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "new_project"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-17T14:00:08.545762+00:00",
+    "kind": "locator_map_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_default",
+    "source": "live_validation",
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "new_project",
+      "new_project_2"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-17T14:01:13.877932+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "GEN_BS_001",
+    "missing_actions": [],
+    "missing_locators": [
+      "Element or container locator to verify application theme attribute or theme class (e.g. theme-dark)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T14:02:27.368745+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "GEN_BS_002",
+    "missing_actions": [],
+    "missing_locators": [
+      "widgets_container (element to assert demo project widget count)",
+      "error_message_toast (element to display 'Unable to load demo project. Please try again later.')",
+      "theme_status_indicator (element to assert dark mode state after toggle)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T14:03:44.011555+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "GEN_BS_003",
+    "missing_actions": [],
+    "missing_locators": [
+      "criterion_level_heading",
+      "criteria_count_element"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T14:04:43.791217+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "GEN_BS_004",
+    "missing_actions": [],
+    "missing_locators": [
+      "Control to create a new project (LOC-0004)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T14:05:58.776409+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "M01_BS_001",
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for application root or body element to assert active 'theme-dark' CSS class"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T14:07:12.405604+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "M01_BS_002",
+    "missing_actions": [],
+    "missing_locators": [
+      "Locator for demo project widget element to verify widget count"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-17T14:09:42.506554+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "M01_BS_004",
+    "missing_actions": [],
+    "missing_locators": [
+      "new_project_button (LOC-0004) - locator for the 'New project' button required to trigger project creation"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-23T08:35:27.886050+00:00",
+    "kind": "dom_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_default",
+    "source": null,
+    "added": [],
+    "updated": [],
+    "possibly_removed": [
+      "LOC-0002",
+      "LOC-0003",
+      "LOC-0001",
+      "LOC-0004"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-23T10:30:17.206792+00:00",
+    "kind": "dom_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_default",
+    "source": null,
+    "added": [
+      "LOC-0005",
+      "LOC-0006",
+      "LOC-0007"
+    ],
+    "updated": [
+      "LOC-0004",
+      "LOC-0004"
+    ],
+    "possibly_removed": [],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-23T10:37:47.388175+00:00",
+    "kind": "locator_map_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_project",
+    "source": "build_named_locator_map",
+    "added": [
+      "delete",
+      "shopflow_demo",
+      "open"
+    ],
+    "updated": [],
+    "possibly_removed": [
+      "new_project"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  },
+  {
+    "timestamp": "2026-09-23T10:41:32.637034+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "M01_BS_005",
+    "missing_actions": [],
+    "missing_locators": [
+      "confirm_delete_button (LOC-0006)",
+      "deletion_success_message",
+      "deletion_error_message"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-23T10:43:54.731463+00:00",
+    "kind": "missing_capability",
+    "project": "App_Compliance_with_docs",
+    "scenario_id": "M01_BS_007",
+    "missing_actions": [],
+    "missing_locators": [
+      "document_item_selector (locator to select the specific document or resource before opening)",
+      "error_message_banner (locator to verify error message display when opening corrupted or unavailable resources)"
+    ],
+    "action": "Add the missing action to ActionEngine/ALLOWED_ACTIONS or the missing element to locator_map.json, then regenerate this scenario"
+  },
+  {
+    "timestamp": "2026-09-24T10:53:55.751216+00:00",
+    "kind": "dom_drift",
+    "project": "App_Compliance_with_docs",
+    "module_id": "_default",
+    "source": null,
+    "added": [],
+    "updated": [
+      "LOC-0004",
+      "LOC-0004"
+    ],
+    "possibly_removed": [
+      "LOC-0005",
+      "LOC-0006",
+      "LOC-0007"
+    ],
+    "action": "Review added/updated/possibly-removed elements \u2014 nothing was deleted automatically; a possibly-removed entry may be stale and worth pruning by hand once confirmed gone"
+  }
+]

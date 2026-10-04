@@ -1,0 +1,23 @@
+# Test Case Catalog
+
+Total: **17 scenario(s)**
+
+| scenario_id | module_id | module_name | title | description | status | last_result | spec_file | last_run | generation_mode |
+|---|---|---|---|---|---|---|---|---|---|
+| M01_BS_001 | M01 | Homepage | Access Gemini Home Page Interface | Ensure authenticated users can access the main Gemini interface with all required UI components | generated | failed | M01/test_M01_BS_001_access_gemini_home_page_interface.spec.ts | 2026-07-17 | action_library |
+| M01_BS_002 | M01 | Homepage | Enter Text into Prompt Interface | Enable users to input text prompts for AI interaction | generated | passed | M01/test_M01_BS_002_enter_text_into_prompt_interface.spec.ts | 2026-07-17 | action_library |
+| M01_BS_003 | M01 | Homepage | Submit Prompt Using Submit Button | Allow users to submit prompts via button click and initiate AI conversation | no_test_yet |  |  |  |  |
+| M01_BS_004 | M01 | Homepage | Submit Prompt Using Enter Key | Provide keyboard shortcut for efficient prompt submission | no_test_yet |  |  |  |  |
+| M01_BS_005 | M01 | Homepage | Create Multi-line Prompt | Enable users to create formatted multi-line prompts without accidental submission | no_test_yet |  |  |  |  |
+| M01_BS_006 | M01 | Homepage | Browse Available AI Models | Allow users to view and select from available AI models | generated | passed | M01/test_M01_BS_006_browse_available_ai_models.spec.ts | 2026-07-17 | action_library |
+| M01_BS_007 | M01 | Homepage | Switch AI Model | Enable users to select different AI models for their conversations | generated | failed | M01/test_M01_BS_007_switch_ai_model.spec.ts | 2026-07-17 | action_library |
+| M01_BS_008 | M01 | Homepage | Access Upgrade Options | Provide users access to subscription upgrade options | generated | failed | M01/test_M01_BS_008_access_upgrade_options.spec.ts | 2026-07-17 | action_library |
+| M01_BS_009 | M01 | Homepage | Toggle Sidebar Visibility | Allow users to manage screen real estate by collapsing or expanding the sidebar | generated | failed | M01/test_M01_BS_009_toggle_sidebar_visibility.spec.ts | 2026-07-17 | action_library |
+| M01_BS_010 | M01 | Homepage | Start New Conversation | Enable users to start fresh conversations without previous context | generated | failed | M01/test_M01_BS_010_start_new_conversation.spec.ts | 2026-07-17 | action_library |
+| M01_BS_011 | M01 | Homepage | Access Previous Conversations | Allow users to continue or review their conversation history | generated | failed | M01/test_M01_BS_011_access_previous_conversations.spec.ts | 2026-07-17 | action_library |
+| M01_BS_012 | M01 | Homepage | Access Settings | Provide users access to application settings and configuration options | generated | passed | M01/test_M01_BS_012_access_settings.spec.ts | 2026-07-17 | action_library |
+| M01_BS_013 | M01 | Homepage | Access Search Functionality | Enable users to search through conversations or content | generated | passed | M01/test_M01_BS_013_access_search_functionality.spec.ts | 2026-07-17 | action_library |
+| M01_BS_014 | M01 | Homepage | Navigate Using Keyboard | Ensure accessibility by providing keyboard navigation through all interface controls | generated | passed | M01/test_M01_BS_014_navigate_using_keyboard.spec.ts | 2026-07-17 | action_library |
+| M01_BS_015 | M01 | Homepage | Access Voice Input | Enable users to provide voice input as an alternative to typing | generated | passed | M01/test_M01_BS_015_access_voice_input.spec.ts | 2026-07-17 | action_library |
+| M01_BS_016 | M01 | Homepage | Monitor AI Response Generation | Provide visual feedback to users during AI processing to indicate system activity | no_test_yet |  |  |  |  |
+| M01_BS_017 | M01 | Homepage | Maintain Conversation State After Refresh | Ensure data persistence so users don't lose their conversation progress | no_test_yet |  |  |  |  |

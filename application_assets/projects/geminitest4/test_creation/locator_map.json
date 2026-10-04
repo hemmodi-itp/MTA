@@ -1,0 +1,153 @@
+{
+  "open_sidebar": {
+    "type": "role",
+    "locator": "button",
+    "name": "Open sidebar",
+    "description": "Open sidebar",
+    "_source_locator_id": "LOC-0001",
+    "_module_id": "M01"
+  },
+  "listen": {
+    "type": "role",
+    "locator": "button",
+    "name": "Listen",
+    "description": "Listen",
+    "_source_locator_id": "LOC-0002",
+    "_module_id": "M01"
+  },
+  "sign_in": {
+    "type": "role",
+    "locator": "button",
+    "name": "Sign in",
+    "description": "Sign in",
+    "_source_locator_id": "LOC-0003",
+    "_module_id": "M01"
+  },
+  "sign_in_2": {
+    "type": "role",
+    "locator": "button",
+    "name": "Sign in",
+    "description": "Sign in",
+    "_source_locator_id": "LOC-0004",
+    "_module_id": "M01"
+  },
+  "settings": {
+    "type": "role",
+    "locator": "button",
+    "name": "Settings",
+    "description": "Settings",
+    "_source_locator_id": "LOC-0005",
+    "_module_id": "M01"
+  },
+  "upload_tools": {
+    "type": "role",
+    "locator": "button",
+    "name": "Upload & tools",
+    "description": "Upload & tools",
+    "_source_locator_id": "LOC-0006",
+    "_module_id": "M01"
+  },
+  "flash": {
+    "type": "role",
+    "locator": "button",
+    "name": "Flash",
+    "description": "Flash",
+    "_source_locator_id": "LOC-0007",
+    "_module_id": "M01"
+  },
+  "microphone": {
+    "type": "role",
+    "locator": "button",
+    "name": "Microphone",
+    "description": "Microphone",
+    "_source_locator_id": "LOC-0008",
+    "_module_id": "M01"
+  },
+  "google_apps": {
+    "type": "role",
+    "locator": "button",
+    "name": "Google apps",
+    "description": "Google apps",
+    "_source_locator_id": "LOC-0009",
+    "_module_id": "M01"
+  },
+  "sign_in_3": {
+    "type": "role",
+    "locator": "link",
+    "name": "Sign in",
+    "description": "Sign in",
+    "_source_locator_id": "LOC-0010",
+    "_module_id": "M01"
+  },
+  "gemini": {
+    "type": "role",
+    "locator": "link",
+    "name": "Gemini",
+    "description": "Gemini",
+    "_source_locator_id": "LOC-0011",
+    "_module_id": "M01"
+  },
+  "about_gemini_opens_in_a_new_window": {
+    "type": "role",
+    "locator": "link",
+    "name": "About Gemini\nOpens in a new window",
+    "description": "About Gemini\nOpens in a new window",
+    "_source_locator_id": "LOC-0012",
+    "_module_id": "M01"
+  },
+  "get_gemini_app_opens_in_a_new_window": {
+    "type": "role",
+    "locator": "link",
+    "name": "Get Gemini App\nOpens in a new window",
+    "description": "Get Gemini App\nOpens in a new window",
+    "_source_locator_id": "LOC-0013",
+    "_module_id": "M01"
+  },
+  "subscriptions_opens_in_a_new_window": {
+    "type": "role",
+    "locator": "link",
+    "name": "Subscriptions\nOpens in a new window",
+    "description": "Subscriptions\nOpens in a new window",
+    "_source_locator_id": "LOC-0014",
+    "_module_id": "M01"
+  },
+  "for_business_opens_in_a_new_window": {
+    "type": "role",
+    "locator": "link",
+    "name": "For Business\nOpens in a new window",
+    "description": "For Business\nOpens in a new window",
+    "_source_locator_id": "LOC-0015",
+    "_module_id": "M01"
+  },
+  "new_chat": {
+    "type": "role",
+    "locator": "link",
+    "name": "New chat",
+    "description": "New chat",
+    "_source_locator_id": "LOC-0016",
+    "_module_id": "M01"
+  },
+  "a_loc_0017": {
+    "type": "css",
+    "locator": "chat-app-orchestrator>chat-app>main>side-navigation-v2>bard-sidenav-container>bard-sidenav>side-navigation-content>div>div>infinite-scroller>div:nth-of-type(3)>sidenav-error-message>div>span>span>a",
+    "description": "",
+    "_source_locator_id": "LOC-0017",
+    "_module_id": "M01"
+  },
+  "google_terms_opens_in_a_new_window": {
+    "type": "role",
+    "locator": "link",
+    "name": "Google Terms\nOpens in a new window",
+    "description": "Google Terms\nOpens in a new window",
+    "_source_locator_id": "LOC-0018",
+    "_module_id": "M01"
+  },
+  "google_privacy_policy_opens_in_a_new_window": {
+    "type": "role",
+    "locator": "link",
+    "name": "Google Privacy Policy\nOpens in a new window",
+    "description": "Google Privacy Policy\nOpens in a new window",
+    "_source_locator_id": "LOC-0019",
+    "_module_id": "M01"
+  }
+}

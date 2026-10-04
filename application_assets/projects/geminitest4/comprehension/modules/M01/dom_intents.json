@@ -1,0 +1,144 @@
+{
+  "url": "https://gemini.google.com",
+  "project": "geminiTest4",
+  "page_name": "geminiTest4",
+  "intent_count": 17,
+  "intents": [
+    {
+      "intent_id": "DOM_INT_001",
+      "intent_name": "click_open_sidebar",
+      "action": "click",
+      "locator_id": "LOC-0001",
+      "value": null,
+      "expected_result": "open_sidebar_opened"
+    },
+    {
+      "intent_id": "DOM_INT_002",
+      "intent_name": "click_listen",
+      "action": "click",
+      "locator_id": "LOC-0002",
+      "value": null,
+      "expected_result": "listen_opened"
+    },
+    {
+      "intent_id": "DOM_INT_003",
+      "intent_name": "click_sign_in",
+      "action": "click",
+      "locator_id": "LOC-0003",
+      "value": null,
+      "expected_result": "sign_in_opened"
+    },
+    {
+      "intent_id": "DOM_INT_004",
+      "intent_name": "click_settings",
+      "action": "click",
+      "locator_id": "LOC-0005",
+      "value": null,
+      "expected_result": "settings_opened"
+    },
+    {
+      "intent_id": "DOM_INT_005",
+      "intent_name": "click_upload__tools",
+      "action": "click",
+      "locator_id": "LOC-0006",
+      "value": null,
+      "expected_result": "upload__tools_opened"
+    },
+    {
+      "intent_id": "DOM_INT_006",
+      "intent_name": "click_flash",
+      "action": "click",
+      "locator_id": "LOC-0007",
+      "value": null,
+      "expected_result": "flash_opened"
+    },
+    {
+      "intent_id": "DOM_INT_007",
+      "intent_name": "click_microphone",
+      "action": "click",
+      "locator_id": "LOC-0008",
+      "value": null,
+      "expected_result": "microphone_opened"
+    },
+    {
+      "intent_id": "DOM_INT_008",
+      "intent_name": "click_google_apps",
+      "action": "click",
+      "locator_id": "LOC-0009",
+      "value": null,
+      "expected_result": "google_apps_opened"
+    },
+    {
+      "intent_id": "DOM_INT_009",
+      "intent_name": "click_gemini",
+      "action": "click",
+      "locator_id": "LOC-0011",
+      "value": null,
+      "expected_result": "gemini_opened"
+    },
+    {
+      "intent_id": "DOM_INT_010",
+      "intent_name": "click_about_gemini_opens_in_a_new_window",
+      "action": "click",
+      "locator_id": "LOC-0012",
+      "value": null,
+      "expected_result": "about_gemini_opens_in_a_new_window_opened"
+    },
+    {
+      "intent_id": "DOM_INT_011",
+      "intent_name": "click_get_gemini_app_opens_in_a_new_window",
+      "action": "click",
+      "locator_id": "LOC-0013",
+      "value": null,
+      "expected_result": "get_gemini_app_opens_in_a_new_window_opened"
+    },
+    {
+      "intent_id": "DOM_INT_012",
+      "intent_name": "click_subscriptions_opens_in_a_new_window",
+      "action": "click",
+      "locator_id": "LOC-0014",
+      "value": null,
+      "expected_result": "subscriptions_opens_in_a_new_window_opened"
+    },
+    {
+      "intent_id": "DOM_INT_013",
+      "intent_name": "click_for_business_opens_in_a_new_window",
+      "action": "click",
+      "locator_id": "LOC-0015",
+      "value": null,
+      "expected_result": "for_business_opens_in_a_new_window_opened"
+    },
+    {
+      "intent_id": "DOM_INT_014",
+      "intent_name": "click_new_chat",
+      "action": "click",
+      "locator_id": "LOC-0016",
+      "value": null,
+      "expected_result": "new_chat_opened"
+    },
+    {
+      "intent_id": "DOM_INT_015",
+      "intent_name": "click_element",
+      "action": "click",
+      "locator_id": "LOC-0017",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_016",
+      "intent_name": "click_google_terms_opens_in_a_new_window",
+      "action": "click",
+      "locator_id": "LOC-0018",
+      "value": null,
+      "expected_result": "google_terms_opens_in_a_new_window_opened"
+    },
+    {
+      "intent_id": "DOM_INT_017",
+      "intent_name": "click_google_privacy_policy_opens_in_a_new_window",
+      "action": "click",
+      "locator_id": "LOC-0019",
+      "value": null,
+      "expected_result": "google_privacy_policy_opens_in_a_new_window_opened"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "ActionGenerationAgent",
+  "registry_key": "action_generation",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.action_generation.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Converts each BRD-traced test case into grounded, executable browser/HTTP actions on the elements Runtime Discovery found on the live app: Gemini proposes steps by element id, the engine validates them against the inventory, falls back to per-class rules, and completes each plan with login, navigation, required-field test data, trigger, wait, download, evidence capture and a judged assertion.",
+  "inputs": [
+    { "name": "test_cases", "type": "list", "required": true, "description": "BRD-traced tests with code, input, expected_behavior, variant_type, criterion_code" },
+    { "name": "runtime_profile", "type": "object", "required": true, "description": "RuntimeDiscoveryAgent output (pages, forms, fields, buttons, downloads, chat box, login)" },
+    { "name": "app_classification", "type": "object", "required": false, "description": "AppClassificationAgent output: class(es) and testing strategy" },
+    { "name": "live_credentials", "type": "object", "required": false, "description": "Presence only — decides whether a login wall blocks; never copied into plans" },
+    { "name": "agent_profile", "type": "object", "required": false, "description": "interface.endpoints for REST API plans" },
+    { "name": "mode", "type": "string", "required": true, "description": "Submission mode; brd_only skips" },
+    { "name": "live_url", "type": "string", "required": true, "description": "Deployed app URL; empty skips" }
+  ],
+  "outputs": [
+    { "name": "action_plan", "type": "object", "description": "status, reason, requires_login, inventory_size, counts, plans[{plan_id, test_id, test_code, criterion_code, class, kind, scored, status, source, reason, steps[]}]" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

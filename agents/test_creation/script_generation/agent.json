@@ -1,0 +1,31 @@
+{
+  "name": "ScriptGenerationAgent",
+  "registry_key": "script_generation",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.script_generation.agent",
+  "version": "2.1.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Generates one TypeScript Playwright .spec.ts file per business scenario. The LLM returns a validated JSON action-plan (fixed action verbs + named locator_map.json keys + reusable flows.json entries, never raw Playwright code), which a deterministic renderer turns into the .spec.ts file. Locators are merge-written from dom_elements.json into one project-wide locator_map.json (never deleted/duplicated on rescan), backing generated Page-factory classes (pages.ts) that are the actual automation surface at test-run time. Per-scenario tiered fallback and module setup-step injection. Positive-test count scales with SemanticMapAgent's functional clusters; negative/boundary counts stay a hard project.yaml-configured ceiling, filled by highest-confidence intent first.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Used to derive test_creation paths" },
+    { "name": "connector_mode", "type": "string", "required": false, "description": "Optional LLM connector override" },
+    { "name": "comprehension/business_scenarios.json", "type": "file", "required": true, "description": "Scenarios to generate scripts for — MissingInputError if absent" },
+    { "name": "comprehension/dom_elements.json", "type": "file", "required": true, "description": "Merge-source for test_creation/locator_map.json" },
+    { "name": "test_creation/scenario_element_map.json", "type": "file", "required": false, "description": "SemanticMapAgent output — relevant_elements (+ intent_id/action/expected_result/cluster/confidence when available); {} is tolerated but yields much thinner scripts" },
+    { "name": "test_creation/test_data/test_data.json", "type": "file", "required": false, "description": "Per-scenario positive/negative/boundary variants, keyed by scenario_id — a drift warning logs if none of its ids match current business_scenarios.json" },
+    { "name": "test_creation/flows.json", "type": "file", "required": false, "description": "Reusable named flows (e.g. login) the plan can reference via useFlow" }
+  ],
+  "outputs": [
+    { "name": "scripts_generated", "type": "integer", "description": "Number of .spec.ts files written this run" },
+    { "name": "test_suite_path", "type": "string", "description": "test_creation/test_suite.json — each spec entry now carries generation_mode" },
+    { "name": "locator_map_path", "type": "string", "description": "test_creation/locator_map.json — merge-written from dom_elements.json every run" },
+    { "name": "pages_path", "type": "string", "description": "test_creation/pages.ts — every module's Page-factory class + PAGE_REGISTRY" },
+    { "name": "flows_path", "type": "string", "description": "test_creation/flows.generated.ts — rebuilt from flows.json when present" },
+    { "name": "test_plans_path", "type": "string", "description": "test_creation/test_plans.json — validated JSON plan per scenario (tier 0/1 only)" }
+  ],
+  "dependencies": ["SemanticMapAgent"],
+  "skills": [],
+  "doc": "agent.md"
+}

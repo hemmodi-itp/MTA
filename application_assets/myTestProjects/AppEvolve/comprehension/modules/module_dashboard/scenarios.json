@@ -1,0 +1,24 @@
+{
+  "project": "AppEvolve",
+  "module": "dashboard",
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "title": "Search Products",
+      "business_objective": "Allow user to search products on AppEvolve (Selenium Projects Page)",
+      "actor": "User",
+      "preconditions": [
+        "AppEvolve (Selenium Projects Page) page is loaded"
+      ],
+      "steps": [
+        "Click the search k"
+      ],
+      "expected_result": "search_k_opened",
+      "business_rules": [],
+      "traceability": [],
+      "confidence_score": 0.75,
+      "module_id": null,
+      "module_name": null
+    }
+  ]
+}

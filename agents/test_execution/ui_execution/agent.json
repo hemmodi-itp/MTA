@@ -1,0 +1,25 @@
+{
+  "name": "UIExecutionAgent",
+  "registry_key": "ui_execution",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.ui_execution.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Runs generated TypeScript Playwright .spec.ts files (or legacy pytest .py files) via subprocess, streams progress, handles browser-close/headless-switch heuristics, and returns a flat per-test results list.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Used to derive test_creation/execution paths" },
+    { "name": "module_filter", "type": "string", "required": false, "description": "Scope execution to one module's specs" },
+    { "name": "suite", "type": "string", "required": false, "description": "Named suite to execute" }
+  ],
+  "outputs": [
+    { "name": "passed", "type": "integer", "description": "Count of passed tests" },
+    { "name": "failed", "type": "integer", "description": "Count of failed tests" },
+    { "name": "results", "type": "array", "description": "Flat per-test result list" },
+    { "name": "report_json", "type": "string", "description": "Path to the Playwright JSON report" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

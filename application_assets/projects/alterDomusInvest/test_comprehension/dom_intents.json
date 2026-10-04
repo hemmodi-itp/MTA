@@ -1,0 +1,736 @@
+{
+  "url": "https://alterdomus.com/services/investor-management/",
+  "project": "alterDomusInvest",
+  "page_name": "alterDomusInvest",
+  "intent_count": 91,
+  "intents": [
+    {
+      "intent_id": "DOM_INT_001",
+      "intent_name": "enter_when_autocomplete_results_are_available_use_up_and_down_arrows_to_review_and_enter_to_go_to_the_desired_page_touch_device_users_explore_by_touch_or_with_swipe_gestures",
+      "action": "fill",
+      "locator_id": "LOC-0001",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_002",
+      "intent_name": "enter_element",
+      "action": "fill",
+      "locator_id": "LOC-0002",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_003",
+      "intent_name": "enter_linkedin",
+      "action": "fill",
+      "locator_id": "LOC-0003",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_004",
+      "intent_name": "enter_first",
+      "action": "fill",
+      "locator_id": "LOC-0004",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_005",
+      "intent_name": "enter_last",
+      "action": "fill",
+      "locator_id": "LOC-0005",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_006",
+      "intent_name": "enter_company",
+      "action": "fill",
+      "locator_id": "LOC-0006",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_007",
+      "intent_name": "enter_email",
+      "action": "fill",
+      "locator_id": "LOC-0007",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_008",
+      "intent_name": "enter_phone_number",
+      "action": "fill",
+      "locator_id": "LOC-0008",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_009",
+      "intent_name": "enter_city",
+      "action": "fill",
+      "locator_id": "LOC-0009",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_010",
+      "intent_name": "enter_input_104",
+      "action": "fill",
+      "locator_id": "LOC-0010",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_011",
+      "intent_name": "enter_less_than_250m",
+      "action": "fill",
+      "locator_id": "LOC-0011",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_012",
+      "intent_name": "enter_250m500m",
+      "action": "fill",
+      "locator_id": "LOC-0012",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_013",
+      "intent_name": "enter_500m1b",
+      "action": "fill",
+      "locator_id": "LOC-0013",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_014",
+      "intent_name": "enter_1b5b",
+      "action": "fill",
+      "locator_id": "LOC-0014",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_015",
+      "intent_name": "enter_more_than_5b",
+      "action": "fill",
+      "locator_id": "LOC-0015",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_016",
+      "intent_name": "enter_private_equity",
+      "action": "fill",
+      "locator_id": "LOC-0016",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_017",
+      "intent_name": "enter_venture_capital",
+      "action": "fill",
+      "locator_id": "LOC-0017",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_018",
+      "intent_name": "enter_private_credit",
+      "action": "fill",
+      "locator_id": "LOC-0018",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_019",
+      "intent_name": "enter_real_estate",
+      "action": "fill",
+      "locator_id": "LOC-0019",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_020",
+      "intent_name": "enter_infrastructure",
+      "action": "fill",
+      "locator_id": "LOC-0020",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_021",
+      "intent_name": "enter_other",
+      "action": "fill",
+      "locator_id": "LOC-0021",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_022",
+      "intent_name": "enter_i_consent_to_the_processing_of_my_personal_data_for_the_purposes_of_treating_my_request_privacy_notice",
+      "action": "fill",
+      "locator_id": "LOC-0022",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_023",
+      "intent_name": "enter_input_72",
+      "action": "fill",
+      "locator_id": "LOC-0023",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_024",
+      "intent_name": "enter_input_73",
+      "action": "fill",
+      "locator_id": "LOC-0024",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_025",
+      "intent_name": "enter_input_9",
+      "action": "fill",
+      "locator_id": "LOC-0025",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_026",
+      "intent_name": "enter_input_15",
+      "action": "fill",
+      "locator_id": "LOC-0026",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_027",
+      "intent_name": "enter_input_278870",
+      "action": "fill",
+      "locator_id": "LOC-0027",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_028",
+      "intent_name": "enter_input_278871",
+      "action": "fill",
+      "locator_id": "LOC-0028",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_029",
+      "intent_name": "enter_input_278872",
+      "action": "fill",
+      "locator_id": "LOC-0029",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_030",
+      "intent_name": "enter_input_278873",
+      "action": "fill",
+      "locator_id": "LOC-0030",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_031",
+      "intent_name": "enter_input_278874",
+      "action": "fill",
+      "locator_id": "LOC-0031",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_032",
+      "intent_name": "enter_input_278875",
+      "action": "fill",
+      "locator_id": "LOC-0032",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_033",
+      "intent_name": "enter_input_278876",
+      "action": "fill",
+      "locator_id": "LOC-0033",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_034",
+      "intent_name": "enter_input_278877",
+      "action": "fill",
+      "locator_id": "LOC-0034",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_035",
+      "intent_name": "enter_input_278878",
+      "action": "fill",
+      "locator_id": "LOC-0035",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_036",
+      "intent_name": "enter_gform_ajax",
+      "action": "fill",
+      "locator_id": "LOC-0036",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_037",
+      "intent_name": "enter_gform_submission_method",
+      "action": "fill",
+      "locator_id": "LOC-0037",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_038",
+      "intent_name": "enter_gform_theme",
+      "action": "fill",
+      "locator_id": "LOC-0038",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_039",
+      "intent_name": "enter_gform_style_settings",
+      "action": "fill",
+      "locator_id": "LOC-0039",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_040",
+      "intent_name": "enter_is_submit_34",
+      "action": "fill",
+      "locator_id": "LOC-0040",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_041",
+      "intent_name": "enter_gform_submit",
+      "action": "fill",
+      "locator_id": "LOC-0041",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_042",
+      "intent_name": "enter_gform_currency",
+      "action": "fill",
+      "locator_id": "LOC-0042",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_043",
+      "intent_name": "enter_gform_unique_id",
+      "action": "fill",
+      "locator_id": "LOC-0043",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_044",
+      "intent_name": "enter_state_34",
+      "action": "fill",
+      "locator_id": "LOC-0044",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_045",
+      "intent_name": "enter_gform_target_page_number_34",
+      "action": "fill",
+      "locator_id": "LOC-0045",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_046",
+      "intent_name": "enter_gform_source_page_number_34",
+      "action": "fill",
+      "locator_id": "LOC-0046",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_047",
+      "intent_name": "enter_gform_field_values",
+      "action": "fill",
+      "locator_id": "LOC-0047",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_048",
+      "intent_name": "click_close_this_consent_banner",
+      "action": "click",
+      "locator_id": "LOC-0048",
+      "value": null,
+      "expected_result": "close_this_consent_banner_opened"
+    },
+    {
+      "intent_id": "DOM_INT_049",
+      "intent_name": "click_element",
+      "action": "click",
+      "locator_id": "LOC-0049",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_050",
+      "intent_name": "click_cookie_preferences",
+      "action": "click",
+      "locator_id": "LOC-0050",
+      "value": null,
+      "expected_result": "cookie_preferences_opened"
+    },
+    {
+      "intent_id": "DOM_INT_051",
+      "intent_name": "click_close_cookie_preferences",
+      "action": "click",
+      "locator_id": "LOC-0051",
+      "value": null,
+      "expected_result": "close_cookie_preferences_opened"
+    },
+    {
+      "intent_id": "DOM_INT_052",
+      "intent_name": "click_open_search",
+      "action": "click",
+      "locator_id": "LOC-0052",
+      "value": null,
+      "expected_result": "open_search_opened"
+    },
+    {
+      "intent_id": "DOM_INT_053",
+      "intent_name": "click_img_altclose_search_popup_srchttpsalterdomuscomwpcontentthemesalterdomustwentyfivev210assetsimagescrosssvg",
+      "action": "click",
+      "locator_id": "LOC-0053",
+      "value": null,
+      "expected_result": "img_altclose_search_popup_srchttpsalterdomuscomwpcontentthemesalterdomustwentyfivev210assetsimagescrosssvg_opened"
+    },
+    {
+      "intent_id": "DOM_INT_054",
+      "intent_name": "click_submit",
+      "action": "click",
+      "locator_id": "LOC-0054",
+      "value": null,
+      "expected_result": "submit_opened"
+    },
+    {
+      "intent_id": "DOM_INT_055",
+      "intent_name": "select_afghanistan_land_islands_albania_algeria_american_samoa_andorra_angola_anguilla_antarctica_antigua_and_barbuda_argentina_armenia_aruba_australia_austria_azerbaijan_bahamas_bahrain_bangladesh_barbados_belarus_belgium_belize_benin_bermuda_bhutan_bolivia_bonaire_sint_eustatius_and_saba_bosnia_and_herzegovina_botswana_bouvet_island_brazil_british_indian_ocean_territory_brunei_darussalam_bulgaria_burkina_faso_burundi_cabo_verde_cambodia_cameroon_canada_cayman_islands_central_african_republic_chad_chile_china_christmas_island_cocos_islands_colombia_comoros_congo_congo_democratic_republic_of_the_cook_islands_costa_rica_cte_divoire_croatia_cuba_curaao_cyprus_czechia_denmark_djibouti_dominica_dominican_republic_ecuador_egypt_el_salvador_equatorial_guinea_eritrea_estonia_eswatini_ethiopia_falkland_islands_faroe_islands_fiji_finland_france_french_guiana_french_polynesia_french_southern_territories_gabon_gambia_georgia_germany_ghana_gibraltar_greece_greenland_grenada_guadeloupe_guam_guatemala_guernsey_guinea_guineabissau_guyana_haiti_heard_island_and_mcdonald_islands_holy_see_honduras_hong_kong_hungary_iceland_india_indonesia_iran_iraq_ireland_isle_of_man_israel_italy_jamaica_japan_jersey_jordan_kazakhstan_kenya_kiribati_korea_democratic_peoples_republic_of_korea_republic_of_kuwait_kyrgyzstan_lao_peoples_democratic_republic_latvia_lebanon_lesotho_liberia_libya_liechtenstein_lithuania_luxembourg_macao_madagascar_malawi_malaysia_maldives_mali_malta_marshall_islands_martinique_mauritania_mauritius_mayotte_mexico_micronesia_moldova_monaco_mongolia_montenegro_montserrat_morocco_mozambique_myanmar_namibia_nauru_nepal_netherlands_new_caledonia_new_zealand_nicaragua_niger_nigeria_niue_norfolk_island_north_macedonia_northern_mariana_islands_norway_oman_pakistan_palau_palestine_state_of_panama_papua_new_guinea_paraguay_peru_philippines_pitcairn_poland_portugal_puerto_rico_qatar_runion_romania_russian_federation_rwanda_saint_barthlemy_saint_helena_ascension_and_tristan_da_cunha_saint_kitts_and_nevis_saint_lucia_saint_martin_saint_pierre_and_miquelon_saint_vincent_and_the_grenadines_samoa_san_marino_sao_tome_and_principe_saudi_arabia_senegal_serbia_seychelles_sierra_leone_singapore_sint_maarten_slovakia_slovenia_solomon_islands_somalia_south_africa_south_georgia_and_the_south_sandwich_islands_south_sudan_spain_sri_lanka_sudan_suriname_svalbard_and_jan_mayen_sweden_switzerland_syria_arab_republic_taiwan_tajikistan_tanzania_the_united_republic_of_thailand_timorleste_togo_tokelau_tonga_trinidad_and_tobago_tunisia_trkiye_turkmenistan_turks_and_caicos_islands_tuvalu_uganda_ukraine_united_arab_emirates_united_kingdom_united_states_uruguay_us_minor_outlying_islands_uzbekistan_vanuatu_venezuela_viet_nam_virgin_islands_british_virgin_islands_us_wallis_and_futuna_western_sahara_yemen_zambia_zimbabwe",
+      "action": "select",
+      "locator_id": "LOC-0055",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_056",
+      "intent_name": "enter_message",
+      "action": "fill",
+      "locator_id": "LOC-0056",
+      "value": null,
+      "expected_result": null
+    },
+    {
+      "intent_id": "DOM_INT_057",
+      "intent_name": "click_skip_to_content",
+      "action": "click",
+      "locator_id": "LOC-0058",
+      "value": null,
+      "expected_result": "skip_to_content_opened"
+    },
+    {
+      "intent_id": "DOM_INT_058",
+      "intent_name": "click_ad_connect",
+      "action": "click",
+      "locator_id": "LOC-0059",
+      "value": null,
+      "expected_result": "ad_connect_opened"
+    },
+    {
+      "intent_id": "DOM_INT_059",
+      "intent_name": "click_careers",
+      "action": "click",
+      "locator_id": "LOC-0060",
+      "value": null,
+      "expected_result": "careers_opened"
+    },
+    {
+      "intent_id": "DOM_INT_060",
+      "intent_name": "click_menu",
+      "action": "click",
+      "locator_id": "LOC-0061",
+      "value": null,
+      "expected_result": "menu_opened"
+    },
+    {
+      "intent_id": "DOM_INT_061",
+      "intent_name": "click_alter_domus",
+      "action": "click",
+      "locator_id": "LOC-0062",
+      "value": null,
+      "expected_result": "alter_domus_opened"
+    },
+    {
+      "intent_id": "DOM_INT_062",
+      "intent_name": "click_who_we_serve",
+      "action": "click",
+      "locator_id": "LOC-0063",
+      "value": null,
+      "expected_result": "who_we_serve_opened"
+    },
+    {
+      "intent_id": "DOM_INT_063",
+      "intent_name": "click_alternative_asset_managers",
+      "action": "click",
+      "locator_id": "LOC-0064",
+      "value": null,
+      "expected_result": "alternative_asset_managers_opened"
+    },
+    {
+      "intent_id": "DOM_INT_064",
+      "intent_name": "click_asset_owners",
+      "action": "click",
+      "locator_id": "LOC-0065",
+      "value": null,
+      "expected_result": "asset_owners_opened"
+    },
+    {
+      "intent_id": "DOM_INT_065",
+      "intent_name": "click_endowments__foundations",
+      "action": "click",
+      "locator_id": "LOC-0066",
+      "value": null,
+      "expected_result": "endowments__foundations_opened"
+    },
+    {
+      "intent_id": "DOM_INT_066",
+      "intent_name": "click_financial_institutions",
+      "action": "click",
+      "locator_id": "LOC-0067",
+      "value": null,
+      "expected_result": "financial_institutions_opened"
+    },
+    {
+      "intent_id": "DOM_INT_067",
+      "intent_name": "click_wealth_managers__family_offices",
+      "action": "click",
+      "locator_id": "LOC-0068",
+      "value": null,
+      "expected_result": "wealth_managers__family_offices_opened"
+    },
+    {
+      "intent_id": "DOM_INT_068",
+      "intent_name": "click_private_equity",
+      "action": "click",
+      "locator_id": "LOC-0069",
+      "value": null,
+      "expected_result": "private_equity_opened"
+    },
+    {
+      "intent_id": "DOM_INT_069",
+      "intent_name": "click_venture_capital",
+      "action": "click",
+      "locator_id": "LOC-0070",
+      "value": null,
+      "expected_result": "venture_capital_opened"
+    },
+    {
+      "intent_id": "DOM_INT_070",
+      "intent_name": "click_fund_of_funds",
+      "action": "click",
+      "locator_id": "LOC-0071",
+      "value": null,
+      "expected_result": "fund_of_funds_opened"
+    },
+    {
+      "intent_id": "DOM_INT_071",
+      "intent_name": "click_real_estate",
+      "action": "click",
+      "locator_id": "LOC-0072",
+      "value": null,
+      "expected_result": "real_estate_opened"
+    },
+    {
+      "intent_id": "DOM_INT_072",
+      "intent_name": "click_infrastructure",
+      "action": "click",
+      "locator_id": "LOC-0073",
+      "value": null,
+      "expected_result": "infrastructure_opened"
+    },
+    {
+      "intent_id": "DOM_INT_073",
+      "intent_name": "click_private_credit",
+      "action": "click",
+      "locator_id": "LOC-0074",
+      "value": null,
+      "expected_result": "private_credit_opened"
+    },
+    {
+      "intent_id": "DOM_INT_074",
+      "intent_name": "click_the_next_billion_how_middle_market_managers_scale_without_stalling",
+      "action": "click",
+      "locator_id": "LOC-0075",
+      "value": null,
+      "expected_result": "the_next_billion_how_middle_market_managers_scale_without_stalling_opened"
+    },
+    {
+      "intent_id": "DOM_INT_075",
+      "intent_name": "click_bain_capital_selects_alter_domus_to_support_credit_portfolios",
+      "action": "click",
+      "locator_id": "LOC-0076",
+      "value": null,
+      "expected_result": "bain_capital_selects_alter_domus_to_support_credit_portfolios_opened"
+    },
+    {
+      "intent_id": "DOM_INT_076",
+      "intent_name": "click_services",
+      "action": "click",
+      "locator_id": "LOC-0077",
+      "value": null,
+      "expected_result": "services_opened"
+    },
+    {
+      "intent_id": "DOM_INT_077",
+      "intent_name": "click_explore_all_services",
+      "action": "click",
+      "locator_id": "LOC-0078",
+      "value": null,
+      "expected_result": "explore_all_services_opened"
+    },
+    {
+      "intent_id": "DOM_INT_078",
+      "intent_name": "click_strategic_organizational_design",
+      "action": "click",
+      "locator_id": "LOC-0079",
+      "value": null,
+      "expected_result": "strategic_organizational_design_opened"
+    },
+    {
+      "intent_id": "DOM_INT_079",
+      "intent_name": "click_market_intelligence_program",
+      "action": "click",
+      "locator_id": "LOC-0080",
+      "value": null,
+      "expected_result": "market_intelligence_program_opened"
+    },
+    {
+      "intent_id": "DOM_INT_080",
+      "intent_name": "click_technology",
+      "action": "click",
+      "locator_id": "LOC-0081",
+      "value": null,
+      "expected_result": "technology_opened"
+    },
+    {
+      "intent_id": "DOM_INT_081",
+      "intent_name": "click_portfolio_data_management",
+      "action": "click",
+      "locator_id": "LOC-0082",
+      "value": null,
+      "expected_result": "portfolio_data_management_opened"
+    },
+    {
+      "intent_id": "DOM_INT_082",
+      "intent_name": "click_clo_compliance_services",
+      "action": "click",
+      "locator_id": "LOC-0083",
+      "value": null,
+      "expected_result": "clo_compliance_services_opened"
+    },
+    {
+      "intent_id": "DOM_INT_083",
+      "intent_name": "click_alliances__partnerships",
+      "action": "click",
+      "locator_id": "LOC-0084",
+      "value": null,
+      "expected_result": "alliances__partnerships_opened"
+    },
+    {
+      "intent_id": "DOM_INT_084",
+      "intent_name": "click_about_us",
+      "action": "click",
+      "locator_id": "LOC-0085",
+      "value": null,
+      "expected_result": "about_us_opened"
+    },
+    {
+      "intent_id": "DOM_INT_085",
+      "intent_name": "click_asia_pacific",
+      "action": "click",
+      "locator_id": "LOC-0086",
+      "value": null,
+      "expected_result": "asia_pacific_opened"
+    },
+    {
+      "intent_id": "DOM_INT_086",
+      "intent_name": "click_global_overview",
+      "action": "click",
+      "locator_id": "LOC-0087",
+      "value": null,
+      "expected_result": "global_overview_opened"
+    },
+    {
+      "intent_id": "DOM_INT_087",
+      "intent_name": "click_insights",
+      "action": "click",
+      "locator_id": "LOC-0088",
+      "value": null,
+      "expected_result": "insights_opened"
+    },
+    {
+      "intent_id": "DOM_INT_088",
+      "intent_name": "click_explore_all_insights",
+      "action": "click",
+      "locator_id": "LOC-0089",
+      "value": null,
+      "expected_result": "explore_all_insights_opened"
+    },
+    {
+      "intent_id": "DOM_INT_089",
+      "intent_name": "click_contact_us",
+      "action": "click",
+      "locator_id": "LOC-0090",
+      "value": null,
+      "expected_result": "contact_us_opened"
+    },
+    {
+      "intent_id": "DOM_INT_090",
+      "intent_name": "click_learn_more",
+      "action": "click",
+      "locator_id": "LOC-0091",
+      "value": null,
+      "expected_result": "learn_more_opened"
+    },
+    {
+      "intent_id": "DOM_INT_091",
+      "intent_name": "click_privacy_notice",
+      "action": "click",
+      "locator_id": "LOC-0092",
+      "value": null,
+      "expected_result": "privacy_notice_opened"
+    }
+  ]
+}

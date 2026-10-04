@@ -1,0 +1,45 @@
+project:
+  name: testApplication                  # matches folder name under application_assets/projects/
+  application_name: Contrast Security     # human-readable app name (used in reports and LLM prompts)
+  browser: chromium                       # chromium | firefox | webkit
+  headless: false                         # false = visible browser; true = background (CI)
+  interactive_scan: false                 # false = automated headless/headed crawl (no user input needed)
+                                          # true  = user-guided session — you navigate, scanner records
+                                          #         (start with: python main.py --project YourProjectName --record)
+
+input:
+  # Directory containing per-module BRD files.
+  # Each module entry below references a brd_file relative to this directory.
+  brd_dir: application_assets/projects/testApplication/inputs
+
+
+auth:
+  enabled: false
+  strategy: storageState                  # storageState = reuse saved session across runs
+                                          # live_login   = re-authenticate on every pipeline run
+  storage_state_path: application_assets/projects/YourProjectName/.auth/auth.json
+
+
+modules:
+  - id: M01
+    name: test Module One           # e.g. Login, Dashboard, Search, Checkout
+    url: https://www.contrastsecurity.com/       # URL discovery scans and every generated spec in this module navigates to
+    brd_file: module_01_name.md    # BRD file inside inputs/ for this module
+
+  
+
+
+test_generation:
+  max_negative_cases: 1     # 0 disables negative-case generation entirely
+  max_boundary_cases: 1     # 0 disables boundary-case generation entirely
+  max_data_iterations: 3    # alternate value sets tried within each negative/boundary test
+
+test_execution:
+  suite: YourProjectName
+
+# ── Suites (optional) — named scenario groupings for `--suite` ──────────────
+# Define suites under test_suites/*.json (see test_suites/test_suites.md),
+# then run one with:
+#   python main.py --project YourProjectName --suite smoke
+# Suite scenario lists accept any spec_id scheme the pipeline has produced —
+# legacy hyphenated ("BS-001") or the current module-scoped ("M03_BS_006").

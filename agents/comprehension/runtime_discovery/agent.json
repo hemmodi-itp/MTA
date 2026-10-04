@@ -1,0 +1,23 @@
+{
+  "name": "RuntimeDiscoveryAgent",
+  "registry_key": "runtime_discovery",
+  "category": "comprehension",
+  "module_path": "agents.comprehension.runtime_discovery.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Opens the live deployment in Playwright (logging in with a test account when configured), crawls its pages and inspects DOM, forms, buttons, downloads, chat interfaces, authentication and network calls, and outputs a runtime profile with a preliminary app type and candidate user flows.",
+  "inputs": [
+    { "name": "live_url", "type": "string", "required": true, "description": "Deployed app URL (skipped when brd_only or empty)" },
+    { "name": "mode", "type": "string", "required": true, "description": "Submission mode" },
+    { "name": "repo_graph", "type": "object", "required": false, "description": "Knowledge graph: page and API routes used as crawl hints" },
+    { "name": "live_credentials", "type": "object", "required": false, "description": "{username, password} test account, decrypted at run time" }
+  ],
+  "outputs": [
+    { "name": "runtime_profile", "type": "object", "description": "app_type, forms, buttons, downloads, chat_interface, authentication, pages, api_calls, user_flows, gated_pages, needs_credentials, login" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(python -c \"*)",
+      "Bash(python tools/migrate_project_structure.py)",
+      "Bash(python tools/migrate_project_structure.py --dry-run)",
+      "Bash(python tools/refactor_scenarios.py *)",
+      "Bash(python tools/convert_suites.py *)",
+      "Bash(python cli_appevolve.py list *)",
+      "Bash(python -m pytest tests/test_suite_orchestrator.py *)",
+      "Bash(python -c \"from agents.test_creation.testdata.agent import TestDataAgent; print\\('TestDataAgent import OK'\\)\")"
+    ]
+  }
+}

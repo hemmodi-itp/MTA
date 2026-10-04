@@ -1,0 +1,287 @@
+{
+  "BS-001": {
+    "scenario_title": "Verify Core Page Functionality and Layout",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0084",
+        "playwright_expr": "page.getByRole('link', { name: '.in' })",
+        "relevance": "page branding indicator for localized content verification"
+      },
+      {
+        "locator_id": "LOC-0094",
+        "playwright_expr": "page.getByRole('link', { name: 'Today\\'s Deals' })",
+        "relevance": "main deals page navigation link for page access"
+      },
+      {
+        "locator_id": "LOC-0121",
+        "playwright_expr": "page.getByRole('link', { name: 'Today\\'s Deals' })",
+        "relevance": "secondary deals page navigation for layout verification"
+      }
+    ]
+  },
+  "BS-002": {
+    "scenario_title": "Responsive Grid Layout Validation for Desktop Viewport",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card element to verify grid layout positioning"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second deal card element to verify 4-5 items per row"
+      },
+      {
+        "locator_id": "LOC-0060",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "third deal card element to verify grid distribution"
+      },
+      {
+        "locator_id": "LOC-0062",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "fourth deal card element to verify desktop grid layout"
+      }
+    ]
+  },
+  "BS-003": {
+    "scenario_title": "Responsive Grid Layout Validation for Tablet Viewport",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card element to verify tablet grid collapse"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second deal card element to verify 2-3 items per row"
+      },
+      {
+        "locator_id": "LOC-0060",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "third deal card element to verify tablet layout adaptation"
+      }
+    ]
+  },
+  "BS-004": {
+    "scenario_title": "Responsive Grid Layout Validation for Mobile Viewport",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card element to verify mobile stacked layout"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second deal card element to verify 1-2 items per row"
+      }
+    ]
+  },
+  "BS-005": {
+    "scenario_title": "Lazy Loading and Infinite Scroll Functionality",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "initial deal card to establish starting content position"
+      },
+      {
+        "locator_id": "LOC-0064",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "bottom deal card to trigger scroll loading"
+      },
+      {
+        "locator_id": "LOC-0076",
+        "playwright_expr": "page.getByRole('button', { name: 'Back to top' })",
+        "relevance": "page bottom indicator to verify scroll completion"
+      }
+    ]
+  },
+  "BS-006": {
+    "scenario_title": "Single Category Filter Selection",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0030",
+        "playwright_expr": "page.getByRole('button', { name: 'Mobiles' })",
+        "relevance": "category filter button for single selection"
+      },
+      {
+        "locator_id": "LOC-0031",
+        "playwright_expr": "page.getByRole('button', { name: 'Electronics' })",
+        "relevance": "alternative category filter for selection testing"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card to verify filtered results display"
+      }
+    ]
+  },
+  "BS-007": {
+    "scenario_title": "Deal Card Content Validation",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card element to examine content structure"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second deal card to verify consistent content display"
+      },
+      {
+        "locator_id": "LOC-0060",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "third deal card to validate thumbnail and price tags"
+      }
+    ]
+  },
+  "BS-008": {
+    "scenario_title": "Add to Cart Functionality from Deal Card",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "add to cart button to click for purchase action"
+      },
+      {
+        "locator_id": "LOC-0089",
+        "playwright_expr": "page.getByRole('link', { name: '0\nCart' })",
+        "relevance": "global cart summary to verify item addition"
+      }
+    ]
+  },
+  "BS-009": {
+    "scenario_title": "Delivery Pincode Impact on Deal Availability",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0085",
+        "playwright_expr": "page.getByRole('button', { name: 'Delivering to Gurugram 122001\nUpdate location' })",
+        "relevance": "delivery location selector to change pincode"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card to observe availability changes"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second deal card to verify regional filtering"
+      }
+    ]
+  },
+  "BS-010": {
+    "scenario_title": "Keyboard Navigation Accessibility",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0030",
+        "playwright_expr": "page.getByRole('button', { name: 'Mobiles' })",
+        "relevance": "category filter for keyboard tab navigation testing"
+      },
+      {
+        "locator_id": "LOC-0031",
+        "playwright_expr": "page.getByRole('button', { name: 'Electronics' })",
+        "relevance": "second category filter for tab sequence verification"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card button for keyboard accessibility testing"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second deal card for sequential tab navigation"
+      }
+    ]
+  },
+  "BS-011": {
+    "scenario_title": "Lightning Deal Reservation Timer",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0029",
+        "playwright_expr": "page.getByRole('button', { name: 'Lightning Deals' })",
+        "relevance": "lightning deals filter to locate time-limited deals"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "add to cart button for lightning deal reservation"
+      },
+      {
+        "locator_id": "LOC-0089",
+        "playwright_expr": "page.getByRole('link', { name: '0\nCart' })",
+        "relevance": "cart to verify lightning deal reservation and timer"
+      }
+    ]
+  },
+  "BS-012": {
+    "scenario_title": "Lightning Deal Status Updates",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0029",
+        "playwright_expr": "page.getByRole('button', { name: 'Lightning Deals' })",
+        "relevance": "lightning deals filter to access time-limited offers"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "lightning deal card to monitor status changes"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second lightning deal to verify UI state updates"
+      }
+    ]
+  },
+  "BS-013": {
+    "scenario_title": "Multi-Category Filter Combination",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0030",
+        "playwright_expr": "page.getByRole('button', { name: 'Mobiles' })",
+        "relevance": "first category filter for multi-selection"
+      },
+      {
+        "locator_id": "LOC-0031",
+        "playwright_expr": "page.getByRole('button', { name: 'Electronics' })",
+        "relevance": "second category filter for combination testing"
+      },
+      {
+        "locator_id": "LOC-0035",
+        "playwright_expr": "page.getByRole('button', { name: 'Home & Kitchen' })",
+        "relevance": "third category filter for multi-filter verification"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "deal card to verify combined filter results"
+      }
+    ]
+  },
+  "BS-014": {
+    "scenario_title": "Lightning Deal Countdown Clock Functionality",
+    "relevant_elements": [
+      {
+        "locator_id": "LOC-0029",
+        "playwright_expr": "page.getByRole('button', { name: 'Lightning Deals' })",
+        "relevance": "lightning deals filter to access countdown timers"
+      },
+      {
+        "locator_id": "LOC-0056",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "lightning deal card to monitor countdown functionality"
+      },
+      {
+        "locator_id": "LOC-0058",
+        "playwright_expr": "page.getByTestId('add-to-cart-button')",
+        "relevance": "second lightning deal to verify timer accuracy"
+      }
+    ]
+  }
+}

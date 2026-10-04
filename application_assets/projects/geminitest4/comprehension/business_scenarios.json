@@ -1,0 +1,556 @@
+{
+  "project": "geminiTest4",
+  "total_scenarios": 17,
+  "scenarios": [
+    {
+      "scenario_id": "M01_BS_001",
+      "title": "Access Gemini Home Page Interface",
+      "business_objective": "Ensure authenticated users can access the main Gemini interface with all required UI components",
+      "actor": "User",
+      "preconditions": [
+        "User is logged into Gemini"
+      ],
+      "steps": [
+        "User navigates to the Gemini Home page",
+        "User verifies the prompt textbox is displayed",
+        "User verifies the Model selector is displayed",
+        "User verifies the Microphone button is displayed",
+        "User verifies the Sidebar is displayed"
+      ],
+      "expected_result": "All required UI components are visible and accessible on the Home page",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-001 - Verify Home Page Loads Successfully",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "92fb7c3d4cc6cd1090fe5145caf95216f592b4f8b5bb09b139a9c60c39cc3742"
+    },
+    {
+      "scenario_id": "M01_BS_002",
+      "title": "Enter Text into Prompt Interface",
+      "business_objective": "Enable users to input text prompts for AI interaction",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Prompt textbox is visible and accessible"
+      ],
+      "steps": [
+        "User clicks on the prompt textbox",
+        "User types text into the prompt textbox",
+        "User observes the entered text"
+      ],
+      "expected_result": "The text entered by the user is displayed in the prompt textbox",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-002 - Enter Text into Prompt",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "bc47afa37f7058e798676dd4fee45b02db530536f89230bda3ccc798f322d836"
+    },
+    {
+      "scenario_id": "M01_BS_003",
+      "title": "Submit Prompt Using Submit Button",
+      "business_objective": "Allow users to submit prompts via button click and initiate AI conversation",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "User has entered text into the prompt textbox"
+      ],
+      "steps": [
+        "User clicks the Submit button",
+        "User observes the prompt appears in the conversation area",
+        "User observes the AI response generation begins"
+      ],
+      "expected_result": "The submitted prompt appears in the conversation and AI response generation starts",
+      "business_rules": [
+        "BR-001",
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-003 - Submit Prompt using Submit Button",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "dad6e9a98526cd7de47b3a513b41b62e3ba27c688c7580a0f0918110c0297a35"
+    },
+    {
+      "scenario_id": "M01_BS_004",
+      "title": "Submit Prompt Using Enter Key",
+      "business_objective": "Provide keyboard shortcut for efficient prompt submission",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "User has entered text into the prompt textbox",
+        "Prompt textbox has focus"
+      ],
+      "steps": [
+        "User presses the Enter key",
+        "User observes the prompt is submitted"
+      ],
+      "expected_result": "The prompt is submitted and AI response generation begins",
+      "business_rules": [
+        "BR-001",
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-004 - Submit Prompt using Enter Key",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "a7976b99748becaed5b769129e196c2e847b655be640b67442d33cc65b9a85d4"
+    },
+    {
+      "scenario_id": "M01_BS_005",
+      "title": "Create Multi-line Prompt",
+      "business_objective": "Enable users to create formatted multi-line prompts without accidental submission",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Prompt textbox has focus"
+      ],
+      "steps": [
+        "User enters text into the prompt textbox",
+        "User presses Shift + Enter",
+        "User observes a new line is inserted",
+        "User enters additional text on the new line"
+      ],
+      "expected_result": "The prompt textbox contains multiple lines of text without submitting the prompt",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-005 - Verify Shift + Enter Inserts New Line",
+          "requirement_id": "REQ-009",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "ee860f9e2686665464ddbf4c7c3ff45fa090978944899ca430b799e1e8b59001"
+    },
+    {
+      "scenario_id": "M01_BS_006",
+      "title": "Browse Available AI Models",
+      "business_objective": "Allow users to view and select from available AI models",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Model selector is visible"
+      ],
+      "steps": [
+        "User clicks on the Model dropdown",
+        "User observes the list of available models is displayed"
+      ],
+      "expected_result": "A dropdown list showing available AI models is displayed",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-008 - Verify Model Dropdown Opens",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "d9cc6f3455f13e29d9a7f6ad8975648173675459a34f00867a3a230b0de3b976"
+    },
+    {
+      "scenario_id": "M01_BS_007",
+      "title": "Switch AI Model",
+      "business_objective": "Enable users to select different AI models for their conversations",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Model dropdown is open showing available models"
+      ],
+      "steps": [
+        "User selects a different model from the dropdown",
+        "User observes the selected model becomes active"
+      ],
+      "expected_result": "The newly selected AI model becomes the active model for conversations",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-009 - Select Different AI Model",
+          "requirement_id": "REQ-011",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "8b32b409941c5ab3999f42985dcefae2477ab8033e6ec9926018235b8618cd25"
+    },
+    {
+      "scenario_id": "M01_BS_008",
+      "title": "Access Upgrade Options",
+      "business_objective": "Provide users access to subscription upgrade options",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Upgrade button is visible"
+      ],
+      "steps": [
+        "User clicks the Upgrade button",
+        "User observes the Upgrade dialog or subscription page is displayed"
+      ],
+      "expected_result": "An upgrade dialog or subscription page is displayed to the user",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-010 - Verify Upgrade Button Navigation",
+          "requirement_id": "REQ-012",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "c247ab580b138d1334255e7bcb95938c5a21c366084831d8283197926dfa8156"
+    },
+    {
+      "scenario_id": "M01_BS_009",
+      "title": "Toggle Sidebar Visibility",
+      "business_objective": "Allow users to manage screen real estate by collapsing or expanding the sidebar",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Sidebar is visible"
+      ],
+      "steps": [
+        "User clicks the sidebar toggle button",
+        "User observes the sidebar collapses",
+        "User clicks the sidebar toggle button again",
+        "User observes the sidebar expands"
+      ],
+      "expected_result": "The sidebar can be collapsed and expanded via the toggle control",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-011 - Verify Sidebar Collapse",
+          "requirement_id": "REQ-013",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "ad138082ac9ff73d1c8048f73bb11fc8522becfbc71e037808aa3bdd9b795cdf"
+    },
+    {
+      "scenario_id": "M01_BS_010",
+      "title": "Start New Conversation",
+      "business_objective": "Enable users to start fresh conversations without previous context",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "User may have an existing conversation open"
+      ],
+      "steps": [
+        "User clicks the New Chat button",
+        "User observes a new conversation is created",
+        "User observes the prompt textbox is empty"
+      ],
+      "expected_result": "A new conversation is created with an empty prompt textbox ready for input",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-013 - Verify New Chat",
+          "requirement_id": "REQ-014",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "8f2a88b209235501739789ebc12deb111f2df7401542ee09f37413d2066aea18"
+    },
+    {
+      "scenario_id": "M01_BS_011",
+      "title": "Access Previous Conversations",
+      "business_objective": "Allow users to continue or review their conversation history",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "User has previous conversations available in the sidebar"
+      ],
+      "steps": [
+        "User clicks on a previous conversation in the sidebar",
+        "User observes the selected conversation opens"
+      ],
+      "expected_result": "The selected previous conversation is opened and displayed",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-014 - Open Previous Conversation",
+          "requirement_id": "REQ-015",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "13661b6ad29448cd27042bfb902de32eb49de857df93a9a04231e8325252bab7"
+    },
+    {
+      "scenario_id": "M01_BS_012",
+      "title": "Access Settings",
+      "business_objective": "Provide users access to application settings and configuration options",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Settings icon is visible"
+      ],
+      "steps": [
+        "User clicks the Settings icon",
+        "User observes the Settings panel is displayed"
+      ],
+      "expected_result": "The Settings panel is opened showing configuration options",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-015 - Verify Settings Opens",
+          "requirement_id": "REQ-016",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "d2ac12f16fa24b9f875a5c5c838c52f773501cc9cd8bc11460ab85fe31ee61f8"
+    },
+    {
+      "scenario_id": "M01_BS_013",
+      "title": "Access Search Functionality",
+      "business_objective": "Enable users to search through conversations or content",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Search icon is visible"
+      ],
+      "steps": [
+        "User clicks the Search icon",
+        "User observes the Search interface is displayed"
+      ],
+      "expected_result": "The Search interface is opened allowing users to search content",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-016 - Verify Search Opens",
+          "requirement_id": "REQ-017",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "e126492adbd6fc536933fa6b089e61772711b5669f61a5c2ec2360d04e9a3701"
+    },
+    {
+      "scenario_id": "M01_BS_014",
+      "title": "Navigate Using Keyboard",
+      "business_objective": "Ensure accessibility by providing keyboard navigation through all interface controls",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "User is using keyboard for navigation"
+      ],
+      "steps": [
+        "User presses the Tab key repeatedly",
+        "User observes focus moves sequentially through all interactive controls"
+      ],
+      "expected_result": "All interactive controls can be accessed sequentially using the Tab key",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-017 - Verify Keyboard Tab Navigation",
+          "requirement_id": "REQ-018",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "2dadcd6f35c2b7b3f5f6274e5a7dfa2b13ca484fd569ba5b4dc83eb5e2abe3ff"
+    },
+    {
+      "scenario_id": "M01_BS_015",
+      "title": "Access Voice Input",
+      "business_objective": "Enable users to provide voice input as an alternative to typing",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "Microphone button is visible"
+      ],
+      "steps": [
+        "User clicks the Microphone button",
+        "User observes the microphone interface or permission dialog is displayed"
+      ],
+      "expected_result": "The microphone interface is displayed or permission dialog appears for voice input",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-018 - Verify Microphone Button Click",
+          "requirement_id": "REQ-019",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "ac01b84eddd1b331780683b4fb15def9a11fdfbedeb20b1e33ecfa829b7bc1d5"
+    },
+    {
+      "scenario_id": "M01_BS_016",
+      "title": "Monitor AI Response Generation",
+      "business_objective": "Provide visual feedback to users during AI processing to indicate system activity",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "User has submitted a prompt"
+      ],
+      "steps": [
+        "User observes AI response generation begins",
+        "User observes a loading indicator is displayed during generation",
+        "User waits for the response to complete"
+      ],
+      "expected_result": "A loading indicator is visible while the AI generates a response",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-019 - Verify Response Generation",
+          "requirement_id": "REQ-020",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "9b79832a1e2a0ade597d05e0e676dac78056dbeecbe69e2b8f379063257cdb28"
+    },
+    {
+      "scenario_id": "M01_BS_017",
+      "title": "Maintain Conversation State After Refresh",
+      "business_objective": "Ensure data persistence so users don't lose their conversation progress",
+      "actor": "User",
+      "preconditions": [
+        "User is on the Gemini Home page",
+        "User has an active conversation with chat history"
+      ],
+      "steps": [
+        "User refreshes the browser page",
+        "User observes the page reloads",
+        "User verifies the conversation and chat history are still present"
+      ],
+      "expected_result": "The conversation and chat history are preserved and displayed after page refresh",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "module_01_BDD_test4.md",
+          "page_number": null,
+          "section": "TC-020 - Verify Refresh Retains Conversation",
+          "requirement_id": "REQ-021",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Homepage",
+      "content_hash": "08cde040e980576f54aa92f56e77002f1c71b7c75a5ee149c63d53e4f9a33ebd"
+    }
+  ],
+  "modules": [
+    "M01"
+  ]
+}

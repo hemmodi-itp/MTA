@@ -1,0 +1,295 @@
+{
+  "M01_BS_001": {
+    "tests": [
+      {
+        "name": "positive — unauthenticated visitor can access the SauceLabs login page",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "saucedemo.com",
+            "message": "SauceLabs login page URL should be loaded successfully"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "username",
+            "message": "Username input field should be visible on the login page"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "password",
+            "message": "Password input field should be visible on the login page"
+          }
+        ]
+      },
+      {
+        "name": "negative — accessing an invalid page URL fails to load the login form",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "https://www.saucedemo.com/invalid-page"
+          },
+          {
+            "action": "verifyHidden",
+            "locator_key": "username",
+            "message": "Login form username field should not be visible when navigating to an invalid page URL"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button"
+    ]
+  },
+  "M01_BS_002": {
+    "tests": [
+      {
+        "name": "positive — authenticate standard user with valid credentials",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "username",
+            "value": "standard_user"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "password",
+            "value": "secret_sauce"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button locator key for clicking the signin button",
+      "error_message locator key for asserting login failure error messages in negative/boundary tests"
+    ]
+  },
+  "M01_BS_003": {
+    "tests": [
+      {
+        "name": "positive — standard user login with valid credentials succeeds",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "username",
+            "value": "standard_user"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "password",
+            "value": "secret_sauce"
+          },
+          {
+            "action": "pressKey",
+            "locator_key": "password",
+            "value": "Enter"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "inventory",
+            "message": "User should be redirected to the inventory page after submitting valid credentials"
+          }
+        ]
+      },
+      {
+        "name": "negative — submitting form with missing required credentials prevents navigation",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "pressKey",
+            "locator_key": "password",
+            "value": "Enter"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "saucedemo.com",
+            "message": "Form submission should be prevented and user should remain on the login page when mandatory fields are empty"
+          }
+        ]
+      },
+      {
+        "name": "boundary — credentials exceeding maximum character limit are rejected",
+        "type": "boundary",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "username",
+            "value": "user_255_limit_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "password",
+            "value": "secret_sauce"
+          },
+          {
+            "action": "pressKey",
+            "locator_key": "password",
+            "value": "Enter"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "saucedemo.com",
+            "message": "User should remain on login page when submitting username exceeding 255 characters",
+            "soft": true
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button",
+      "error_message"
+    ]
+  },
+  "M02_BS_001": {
+    "tests": [
+      {
+        "name": "positive — view inventory page and verify navigation",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/inventory.html"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/inventory.html",
+            "message": "User should successfully navigate to and remain on the inventory page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "Username input field on the login page to authenticate prior to viewing inventory",
+      "Password input field on the login page to authenticate prior to viewing inventory",
+      "Login button to submit user credentials",
+      "Inventory page header/title element displaying 'Products'",
+      "Product catalog item container/list to verify count and product details",
+      "Shopping cart icon/link element in the inventory header",
+      "Product sort dropdown selection element"
+    ]
+  },
+  "M01_BS_005": {
+    "tests": [
+      {
+        "name": "positive — standard user can enter login credentials",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "username",
+            "value": "standard_user"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "password",
+            "value": "secret_sauce"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "login_button",
+      "error_message"
+    ]
+  },
+  "M02_BS_003": {
+    "tests": [
+      {
+        "name": "positive — remove item from cart via inventory page",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/inventory.html",
+            "message": "User should be on the inventory page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "remove_button: Button to remove an item (e.g. Sauce Labs Backpack) from the cart on the inventory page",
+      "add_to_cart_button: Button displaying 'Add to cart' after item removal",
+      "shopping_cart_badge: Shopping cart badge element displaying item count"
+    ]
+  },
+  "M02_BS_014": {
+    "tests": [
+      {
+        "name": "positive — refreshing the inventory page reloads successfully and preserves session state",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate"
+          },
+          {
+            "action": "reload"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "https://www.saucedemo.com/inventory.html",
+            "message": "Inventory page reloads successfully and preserves the active session URL"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "shopping_cart_badge locator to verify preserved cart badge count after refresh",
+      "page_title_heading locator to verify 'Products' header after refresh",
+      "add_to_cart_button locator to populate cart selections prior to refresh"
+    ]
+  },
+  "M02_BS_016": {
+    "tests": [
+      {
+        "name": "positive — unauthenticated navigation to inventory page redirects to login page",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "https://www.saucedemo.com/inventory.html"
+          },
+          {
+            "action": "verifyUrl",
+            "value": "https://www.saucedemo.com/",
+            "message": "Unauthenticated user attempting to access inventory page should be redirected to the login page"
+          }
+        ]
+      }
+    ],
+    "missing_actions": [],
+    "missing_locators": [
+      "error_message"
+    ]
+  }
+}

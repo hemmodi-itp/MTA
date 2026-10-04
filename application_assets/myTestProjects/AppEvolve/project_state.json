@@ -1,0 +1,39 @@
+{
+  "project": "AppEvolve",
+  "schema_version": "1.0",
+  "last_updated": "2026-06-25T13:16:08.161543+00:00",
+  "last_run_id": "918d7d75-860e-4340-ab46-b1800da8065c",
+  "discovery": {
+    "dom_fingerprint": "sha256:8d144f6a8245f90fd8ac742528062a0aaf9aa47f20315625b59703d0d26dd679",
+    "brd_fingerprint": "sha256:6b5e73868ba656649e8d6f32b5380dcd8b5affdbf147af3c352b6abeafa1cf1b",
+    "last_discovered": "2026-06-25T13:16:08.115060+00:00",
+    "cached_output": {
+      "status": "partial",
+      "intents_path": "application_assets\\projects\\AppEvolve\\test_creation\\intents.yaml",
+      "dom_status": "success",
+      "dom_intents_count": 0,
+      "dom_intents_path": "application_assets\\projects\\AppEvolve\\comprehension\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\AppEvolve\\comprehension\\dom_elements.json",
+      "dom_intents_raw": [],
+      "comprehension_status": "failed",
+      "comprehension_error": "An error occurred (UnrecognizedClientException) when calling the Converse operation: The security token included in the request is invalid",
+      "mode": "both",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 0,
+    "grounded_intents": 0,
+    "passing_tests": 0,
+    "failing_tests": 0
+  },
+  "business_scenarios": {},
+  "test_cases": {},
+  "new_additions": [],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": []
+}

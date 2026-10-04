@@ -1,0 +1,19 @@
+{
+  "status": "partial",
+  "intents_path": "application_assets\\projects\\AWS_Test\\test_creation\\intents.yaml",
+  "partial_reasons": [
+    "comprehension timed out after 60s",
+    "DOM scan timed out after 60s — kept 20 intent(s) captured before the deadline"
+  ],
+  "dom_status": "partial",
+  "dom_intents_count": 20,
+  "dom_intents_path": "application_assets\\projects\\AWS_Test\\comprehension\\modules\\M02\\dom_intents.json",
+  "dom_elements_path": "application_assets\\projects\\AWS_Test\\comprehension\\modules\\M02\\dom_elements.json",
+  "comprehension_status": "success",
+  "comprehension_source": "dom_synthesized",
+  "scenarios_count": 21,
+  "business_scenarios_path": "application_assets\\projects\\AWS_Test\\comprehension\\business_scenarios.json",
+  "mode": "both",
+  "module": "discovery",
+  "module_id": "M02"
+}

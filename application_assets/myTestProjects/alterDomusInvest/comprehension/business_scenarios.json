@@ -1,0 +1,721 @@
+{
+  "project": "alterDomusInvest",
+  "total_scenarios": 12,
+  "scenarios": [
+    {
+      "scenario_id": "BS-001",
+      "title": "New Investor Registration and Onboarding",
+      "business_objective": "Complete the investor onboarding process from account creation to activation",
+      "actor": "Investor",
+      "preconditions": [
+        "Investor has valid identification documents",
+        "Investor has required KYC and AML documentation",
+        "System onboarding workflow is configured"
+      ],
+      "steps": [
+        "Create new investor account with basic information",
+        "Capture complete investor profile details including contact information",
+        "Upload required KYC documents",
+        "Upload required AML documents",
+        "Submit onboarding application for review"
+      ],
+      "expected_result": "Investor account is created with pending status and entered into approval workflow",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 1: Investor Onboarding",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 1: Investor Onboarding",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 1: Investor Onboarding",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 1: Investor Onboarding",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95
+    },
+    {
+      "scenario_id": "BS-002",
+      "title": "Compliance Review and Approval Workflow",
+      "business_objective": "Review and approve investor onboarding applications through compliance checks",
+      "actor": "Compliance Officer",
+      "preconditions": [
+        "Investor has submitted complete onboarding application",
+        "All mandatory documents are uploaded",
+        "KYC and AML review workflows are configured"
+      ],
+      "steps": [
+        "Validate all mandatory information is complete",
+        "Perform KYC review workflow on submitted documents",
+        "Perform AML review workflow and sanctions screening",
+        "Approve or reject the onboarding application",
+        "Generate audit trail of review decisions"
+      ],
+      "expected_result": "Investor onboarding status is updated to approved or rejected with complete audit trail",
+      "business_rules": [
+        "BR-006"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 1: Investor Onboarding",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 1: Investor Onboarding",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 8: Compliance",
+          "requirement_id": "REQ-045",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 8: Compliance",
+          "requirement_id": "REQ-046",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 8: Compliance",
+          "requirement_id": "REQ-047",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.92
+    },
+    {
+      "scenario_id": "BS-003",
+      "title": "Investor Portal Access and Dashboard View",
+      "business_objective": "Provide secure access to investor portal with comprehensive dashboard",
+      "actor": "Investor",
+      "preconditions": [
+        "Investor account is activated and approved",
+        "Investor has valid login credentials",
+        "Multi-factor authentication is configured"
+      ],
+      "steps": [
+        "Access secure login page",
+        "Complete multi-factor authentication process",
+        "View investor dashboard with investment overview",
+        "Display current investment positions",
+        "Display capital balances and commitments",
+        "Display recent distributions and transaction history"
+      ],
+      "expected_result": "Investor successfully accesses portal and views complete investment information within 3 seconds",
+      "business_rules": [
+        "BR-002",
+        "BR-007"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 3: Investor Portal",
+          "requirement_id": "REQ-021",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 3: Investor Portal",
+          "requirement_id": "REQ-022",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 3: Investor Portal",
+          "requirement_id": "REQ-014",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Performance",
+          "requirement_id": "REQ-056",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9
+    },
+    {
+      "scenario_id": "BS-004",
+      "title": "Investor Profile Management and Updates",
+      "business_objective": "Enable investors to maintain and update their profile information",
+      "actor": "Investor",
+      "preconditions": [
+        "Investor is logged into the portal",
+        "Investor has appropriate permissions to edit profile",
+        "Profile management functionality is enabled"
+      ],
+      "steps": [
+        "Navigate to investor profile section",
+        "View current investor profile information",
+        "Edit contact details and personal information",
+        "Update investor classifications if applicable",
+        "Save profile changes with validation"
+      ],
+      "expected_result": "Investor profile is successfully updated and changes are tracked in investor history",
+      "business_rules": [
+        "BR-007"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 2: Investor Profile Management",
+          "requirement_id": "REQ-009",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 2: Investor Profile Management",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 2: Investor Profile Management",
+          "requirement_id": "REQ-011",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 2: Investor Profile Management",
+          "requirement_id": "REQ-013",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.88
+    },
+    {
+      "scenario_id": "BS-005",
+      "title": "Document Upload and Management",
+      "business_objective": "Enable secure document upload, categorization, and version control",
+      "actor": "Investor",
+      "preconditions": [
+        "Investor is authenticated in the portal",
+        "Document management system is available",
+        "Required document categories are configured"
+      ],
+      "steps": [
+        "Navigate to document management section",
+        "Select document category for upload",
+        "Upload new document with secure transmission",
+        "System automatically versions the document",
+        "Categorize document according to predefined types",
+        "Confirm successful document storage"
+      ],
+      "expected_result": "Document is securely uploaded, categorized, versioned, and available for authorized access",
+      "business_rules": [
+        "BR-007"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 4: Document Management",
+          "requirement_id": "REQ-023",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 4: Document Management",
+          "requirement_id": "REQ-024",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 4: Document Management",
+          "requirement_id": "REQ-025",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.85
+    },
+    {
+      "scenario_id": "BS-006",
+      "title": "Investment Report Generation and Access",
+      "business_objective": "Generate and provide investor access to investment reports and statements",
+      "actor": "Investor Relations Manager",
+      "preconditions": [
+        "Fund data is available and validated",
+        "Reporting templates are configured",
+        "Investor portal is operational"
+      ],
+      "steps": [
+        "Generate investor statements for reporting period",
+        "Generate capital account reports",
+        "Generate commitment and distribution reports",
+        "Validate report accuracy and completeness",
+        "Publish reports to investor portal",
+        "Enable secure downloadable access for investors"
+      ],
+      "expected_result": "All investment reports are generated, published, and available for investor download within SLA",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 5: Reporting",
+          "requirement_id": "REQ-029",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 5: Reporting",
+          "requirement_id": "REQ-030",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 5: Reporting",
+          "requirement_id": "REQ-031",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 5: Reporting",
+          "requirement_id": "REQ-032",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 5: Reporting",
+          "requirement_id": "REQ-034",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.93
+    },
+    {
+      "scenario_id": "BS-007",
+      "title": "Subscription Processing and Capital Activity Tracking",
+      "business_objective": "Process investor subscription requests and maintain accurate capital activity records",
+      "actor": "Fund Administrator",
+      "preconditions": [
+        "Investor account is active and approved",
+        "Subscription request is received",
+        "Transfer agency workflow is configured"
+      ],
+      "steps": [
+        "Receive and validate subscription request",
+        "Process subscription through transfer agency workflow",
+        "Update investor capital balances and positions",
+        "Track capital activity in investor records",
+        "Generate transaction confirmation",
+        "Maintain transaction audit logs"
+      ],
+      "expected_result": "Subscription is processed successfully with updated balances and complete audit trail",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 7: Transfer Agency",
+          "requirement_id": "REQ-040",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 7: Transfer Agency",
+          "requirement_id": "REQ-043",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 7: Transfer Agency",
+          "requirement_id": "REQ-044",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.87
+    },
+    {
+      "scenario_id": "BS-008",
+      "title": "Investor Communication and Announcement Distribution",
+      "business_objective": "Create and distribute announcements and notifications to investors",
+      "actor": "Investor Relations Manager",
+      "preconditions": [
+        "Communication management system is operational",
+        "Investor contact preferences are configured",
+        "Email communication system is integrated"
+      ],
+      "steps": [
+        "Create new announcement or notification",
+        "Select target investor groups",
+        "Review and approve communication content",
+        "Distribute communication via email and portal",
+        "Track investor receipt and engagement",
+        "Maintain communication history and audit logs"
+      ],
+      "expected_result": "Communication is successfully distributed to all target investors with complete tracking",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 6: Communication Management",
+          "requirement_id": "REQ-035",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 6: Communication Management",
+          "requirement_id": "REQ-036",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 6: Communication Management",
+          "requirement_id": "REQ-037",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 6: Communication Management",
+          "requirement_id": "REQ-038",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.89
+    },
+    {
+      "scenario_id": "BS-009",
+      "title": "Compliance Monitoring and Periodic Review",
+      "business_objective": "Monitor compliance status and perform periodic reviews of investor documentation",
+      "actor": "Compliance Officer",
+      "preconditions": [
+        "Compliance dashboard is configured",
+        "Document expiry tracking is enabled",
+        "Periodic review schedules are established"
+      ],
+      "steps": [
+        "Access compliance dashboard for overview",
+        "Review document expiry notifications",
+        "Generate periodic review reminders for investors",
+        "Monitor sanctions screening results",
+        "Update compliance status in investor records",
+        "Generate compliance audit reports"
+      ],
+      "expected_result": "Compliance status is current with all periodic reviews completed and documented",
+      "business_rules": [
+        "BR-006"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 8: Compliance",
+          "requirement_id": "REQ-049",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 8: Compliance",
+          "requirement_id": "REQ-048",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 4: Document Management",
+          "requirement_id": "REQ-027",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 8: Compliance",
+          "requirement_id": "REQ-050",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.91
+    },
+    {
+      "scenario_id": "BS-010",
+      "title": "Document Access and Secure Download",
+      "business_objective": "Provide secure access to investment documents with proper authorization",
+      "actor": "Investor",
+      "preconditions": [
+        "Investor is authenticated in portal",
+        "Documents are categorized and available",
+        "Document access permissions are configured"
+      ],
+      "steps": [
+        "Navigate to document access section",
+        "Browse available documents by category",
+        "Select document for download",
+        "System validates access permissions",
+        "Download document securely within 10 seconds",
+        "Log document access for audit trail"
+      ],
+      "expected_result": "Document is successfully downloaded with secure transmission and access logged",
+      "business_rules": [
+        "BR-007"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 3: Investor Portal",
+          "requirement_id": "REQ-019",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 4: Document Management",
+          "requirement_id": "REQ-026",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Performance",
+          "requirement_id": "REQ-057",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.86
+    },
+    {
+      "scenario_id": "BS-011",
+      "title": "Redemption and Transfer Processing",
+      "business_objective": "Process investor redemption and transfer requests with proper workflow controls",
+      "actor": "Fund Administrator",
+      "preconditions": [
+        "Investor has submitted valid redemption or transfer request",
+        "Transfer agency workflows are operational",
+        "Investor account has sufficient balance for transaction"
+      ],
+      "steps": [
+        "Validate redemption or transfer request details",
+        "Process redemption through transfer agency workflow",
+        "Process transfers between accounts if applicable",
+        "Update investor positions and capital balances",
+        "Generate transaction confirmations",
+        "Maintain complete transaction audit logs"
+      ],
+      "expected_result": "Redemption or transfer is processed successfully with updated records and audit trail",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 7: Transfer Agency",
+          "requirement_id": "REQ-041",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 7: Transfer Agency",
+          "requirement_id": "REQ-042",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 7: Transfer Agency",
+          "requirement_id": "REQ-043",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 7: Transfer Agency",
+          "requirement_id": "REQ-044",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.84
+    },
+    {
+      "scenario_id": "BS-012",
+      "title": "Tax Reporting Package Generation",
+      "business_objective": "Generate comprehensive tax reporting packages for investors",
+      "actor": "Operations Team",
+      "preconditions": [
+        "Tax reporting period is closed",
+        "All investor transactions are recorded",
+        "Tax reporting templates are configured"
+      ],
+      "steps": [
+        "Gather investor transaction data for tax period",
+        "Generate tax reporting packages by investor",
+        "Validate tax calculation accuracy",
+        "Review and approve tax reports",
+        "Publish tax packages to investor portal",
+        "Enable secure download access for investors"
+      ],
+      "expected_result": "Tax reporting packages are generated accurately and made available to investors",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 5: Reporting",
+          "requirement_id": "REQ-033",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "input_BRD.md",
+          "page_number": null,
+          "section": "Module 5: Reporting",
+          "requirement_id": "REQ-034",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.83
+    }
+  ]
+}

@@ -1,0 +1,999 @@
+[
+  {
+    "testdata_id": "TD-001",
+    "scenario_id": "SC-001",
+    "scenario_title": "Save Changes",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "enter_element",
+        "field_type": "text",
+        "value": "advertisement tracking"
+      },
+      {
+        "field_name": "enter_allow_crosscontext_behavioral_ads",
+        "field_type": "text",
+        "value": "yes"
+      },
+      {
+        "field_name": "enter_opt_out_crosscontext_behavioral_ads",
+        "field_type": "text",
+        "value": "no"
+      },
+      {
+        "field_name": "enter_im_looking_for",
+        "field_type": "text",
+        "value": "privacy settings"
+      },
+      {
+        "field_name": "enter_search",
+        "field_type": "text",
+        "value": "data collection preferences"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Empty required fields",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "enter_element",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "enter_allow_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "yes"
+              },
+              {
+                "field_name": "enter_opt_out_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "no"
+              },
+              {
+                "field_name": "enter_im_looking_for",
+                "field_type": "text",
+                "value": "privacy settings"
+              },
+              {
+                "field_name": "enter_search",
+                "field_type": "text",
+                "value": "data collection preferences"
+              }
+            ],
+            "expected_error": "Element field is required"
+          }
+        ]
+      },
+      {
+        "variant_id": "NEG-002",
+        "variant_type": "boundary",
+        "description": "Input at maximum field length",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "enter_element",
+                "field_type": "text",
+                "value": "this is a very long advertisement tracking preference description that tests the maximum character limit for this input field and should be exactly at the boundary of what is allowed by the system validation rules"
+              },
+              {
+                "field_name": "enter_allow_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "yes"
+              },
+              {
+                "field_name": "enter_opt_out_crosscontext_behavioral_ads",
+                "field_type": "text",
+                "value": "no"
+              },
+              {
+                "field_name": "enter_im_looking_for",
+                "field_type": "text",
+                "value": "privacy settings"
+              },
+              {
+                "field_name": "enter_search",
+                "field_type": "text",
+                "value": "data collection preferences"
+              }
+            ],
+            "expected_error": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-002",
+    "scenario_id": "SC-002",
+    "scenario_title": "User Login",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_sign_in_target",
+        "field_type": "navigation",
+        "value": "sign_in_to_console"
+      },
+      {
+        "field_name": "expected_console_heading",
+        "field_type": "assertion",
+        "value": "Sign In to AWS Console"
+      },
+      {
+        "field_name": "expected_login_form",
+        "field_type": "assertion",
+        "value": "username"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Sign in console button not found or page fails to load",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_sign_in_target",
+                "field_type": "navigation",
+                "value": "sign_in_to_console"
+              },
+              {
+                "field_name": "expected_console_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_login_form",
+                "field_type": "assertion",
+                "value": "username"
+              }
+            ],
+            "expected_error": "Sign in console page failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-003",
+    "scenario_id": "SC-003",
+    "scenario_title": "Create Account",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_create_account",
+        "field_type": "navigation",
+        "value": "create_account_opened"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "/create-account"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Create Account"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Create account button not functional or page fails to load",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_create_account",
+                "field_type": "navigation",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "/error"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": "Page Not Found"
+              }
+            ],
+            "expected_error": "Unable to navigate to create account page"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-004",
+    "scenario_id": "SC-004",
+    "scenario_title": "User Registration",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "event reinvent 2026 build whats next join us nov 30 to dec 4 in las vegas save 1200 with early bird pricing ends august 25 register today"
+      },
+      {
+        "field_name": "expected_result",
+        "field_type": "assertion",
+        "value": "event_reinvent_2026_build_whats_next_join_us_nov_30_to_dec_4_in_las_vegas_save_1200_with_early_bird_pricing_ends_august_25_register_today_opened"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Expected element or content not found after click",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "event reinvent 2026 build whats next join us nov 30 to dec 4 in las vegas save 1200 with early bird pricing ends august 25 register today"
+              },
+              {
+                "field_name": "expected_result",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Registration page failed to load or expected content not displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-005",
+    "scenario_id": "SC-005",
+    "scenario_title": "Search Products",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "industrial siemens mobility turns 175 years of data into searchable insights with aws ai view the story"
+      },
+      {
+        "field_name": "expected_url",
+        "field_type": "url",
+        "value": "industrial_siemens_mobility_turns_175_years_of_data_into_searchable_insights_with_aws_ai_view_the_story"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Siemens Mobility turns 175 years of data into searchable insights with AWS AI"
+      },
+      {
+        "field_name": "expected_content",
+        "field_type": "assertion",
+        "value": "View the story"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation target not found or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "industrial siemens mobility turns 175 years of data into searchable insights with aws ai view the story"
+              },
+              {
+                "field_name": "expected_url",
+                "field_type": "url",
+                "value": "404"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_content",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Page not found or content unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-006",
+    "scenario_id": "SC-006",
+    "scenario_title": "User Sign In",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "government solutions designed to help government agencies modernize meet mandates reduce costs and deliver mission outcomes view industry"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Government Solutions"
+      },
+      {
+        "field_name": "expected_content",
+        "field_type": "assertion",
+        "value": "modernize meet mandates reduce costs"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/government-solutions"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation target not found or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "government solutions designed to help government agencies modernize meet mandates reduce costs and deliver mission outcomes view industry"
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_content",
+                "field_type": "assertion",
+                "value": "modernize meet mandates reduce costs"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/government-solutions"
+              }
+            ],
+            "expected_error": "Page content failed to load or heading not found"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-007",
+    "scenario_id": "SC-007",
+    "scenario_title": "Add Item",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "telecommunications accelerate innovation scale with confidence and add agility with cloudbased telecom solutions view industry"
+      },
+      {
+        "field_name": "expected_page_content",
+        "field_type": "assertion",
+        "value": "telecommunications_accelerate_innovation_scale_with_confidence_and_add_agility_with_cloudbased_telecom_solutions_view_industry_opened"
+      },
+      {
+        "field_name": "expected_heading",
+        "field_type": "assertion",
+        "value": "Telecommunications Solutions"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation target not found or page fails to load",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "telecommunications accelerate innovation scale with confidence and add agility with cloudbased telecom solutions view industry"
+              },
+              {
+                "field_name": "expected_page_content",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_heading",
+                "field_type": "assertion",
+                "value": "Page Not Found"
+              }
+            ],
+            "expected_error": "Navigation failed - target section not accessible"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-008",
+    "scenario_id": "SC-008",
+    "scenario_title": "Create Account",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_create_account",
+        "field_type": "navigation",
+        "value": "create_an_aws_account_opened"
+      },
+      {
+        "field_name": "expected_page_title",
+        "field_type": "assertion",
+        "value": "Create AWS Account"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/create-account"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Account creation page fails to load or navigation error",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_create_account",
+                "field_type": "navigation",
+                "value": "page_not_found"
+              },
+              {
+                "field_name": "expected_page_title",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/404"
+              }
+            ],
+            "expected_error": "Page not found or navigation failed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-009",
+    "scenario_id": "SC-009",
+    "scenario_title": "Browse AWS_Test",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_target_section",
+        "field_type": "navigation",
+        "value": "AWS_Test interface"
+      },
+      {
+        "field_name": "expected_filter_button",
+        "field_type": "assertion",
+        "value": "filter all"
+      },
+      {
+        "field_name": "expected_contact_link",
+        "field_type": "assertion",
+        "value": "contact us"
+      },
+      {
+        "field_name": "expected_story_content",
+        "field_type": "assertion",
+        "value": "agentic ai data leaders"
+      },
+      {
+        "field_name": "min_industry_sections",
+        "field_type": "count_min",
+        "value": "6"
+      },
+      {
+        "field_name": "expected_page_url",
+        "field_type": "url",
+        "value": "/aws-test"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Key navigation elements missing or incorrect",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_target_section",
+                "field_type": "navigation",
+                "value": "AWS_Test interface"
+              },
+              {
+                "field_name": "expected_filter_button",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_contact_link",
+                "field_type": "assertion",
+                "value": "contact us"
+              },
+              {
+                "field_name": "expected_story_content",
+                "field_type": "assertion",
+                "value": "agentic ai data leaders"
+              },
+              {
+                "field_name": "min_industry_sections",
+                "field_type": "count_min",
+                "value": "6"
+              },
+              {
+                "field_name": "expected_page_url",
+                "field_type": "url",
+                "value": "/aws-test"
+              }
+            ],
+            "expected_error": "Filter button not found or not clickable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-010",
+    "scenario_id": "SC-010",
+    "scenario_title": "Interact with AWS_Test",
+    "actor": "User",
+    "positive_dataset": [
+      {
+        "field_name": "click_target",
+        "field_type": "navigation",
+        "value": "accept"
+      },
+      {
+        "field_name": "expected_page_title",
+        "field_type": "assertion",
+        "value": "AWS_Test"
+      },
+      {
+        "field_name": "expected_button_visible",
+        "field_type": "assertion",
+        "value": "Start free with AWS"
+      },
+      {
+        "field_name": "min_navigation_elements",
+        "field_type": "count_min",
+        "value": "10"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Target element not found or page elements missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_target",
+                "field_type": "navigation",
+                "value": "nonexistent_element"
+              },
+              {
+                "field_name": "expected_page_title",
+                "field_type": "assertion",
+                "value": "AWS_Test"
+              },
+              {
+                "field_name": "expected_button_visible",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_navigation_elements",
+                "field_type": "count_min",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Element not found or page failed to load properly"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-011",
+    "scenario_id": "M01_BS_001",
+    "scenario_title": "Navigate using navigation bar to fetch page information",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "click_navigation_element",
+        "field_type": "navigation",
+        "value": "Products"
+      },
+      {
+        "field_name": "expected_page_heading",
+        "field_type": "assertion",
+        "value": "AWS Products and Services"
+      },
+      {
+        "field_name": "expected_page_content",
+        "field_type": "assertion",
+        "value": "Explore our comprehensive cloud computing services"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "/products"
+      },
+      {
+        "field_name": "min_service_cards",
+        "field_type": "count_min",
+        "value": "5"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Navigation element missing or page content not loaded",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "click_navigation_element",
+                "field_type": "navigation",
+                "value": "Products"
+              },
+              {
+                "field_name": "expected_page_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_page_content",
+                "field_type": "assertion",
+                "value": "Explore our comprehensive cloud computing services"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "/products"
+              },
+              {
+                "field_name": "min_service_cards",
+                "field_type": "count_min",
+                "value": "5"
+              }
+            ],
+            "expected_error": "Page heading not found or failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-012",
+    "scenario_id": "M01_BS_002",
+    "scenario_title": "Browse new AWS items in What's New section",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_to_section",
+        "field_type": "navigation",
+        "value": "What's New"
+      },
+      {
+        "field_name": "expected_section_heading",
+        "field_type": "assertion",
+        "value": "What's New with AWS"
+      },
+      {
+        "field_name": "min_new_items_count",
+        "field_type": "count_min",
+        "value": "5"
+      },
+      {
+        "field_name": "expected_item_category",
+        "field_type": "assertion",
+        "value": "AWS Services"
+      },
+      {
+        "field_name": "click_item_title",
+        "field_type": "assertion",
+        "value": "Amazon EC2 M7i instances"
+      },
+      {
+        "field_name": "expected_detail_url",
+        "field_type": "url",
+        "value": "/about-aws/whats-new/2023/"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "What's New section unavailable or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_to_section",
+                "field_type": "navigation",
+                "value": "What's New"
+              },
+              {
+                "field_name": "expected_section_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_new_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "expected_item_category",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "click_item_title",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_detail_url",
+                "field_type": "url",
+                "value": "/404"
+              }
+            ],
+            "expected_error": "What's New section is currently unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-013",
+    "scenario_id": "M01_BS_003",
+    "scenario_title": "View client images through image carousel",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "navigate_carousel_section",
+        "field_type": "navigation",
+        "value": "client-showcase-carousel"
+      },
+      {
+        "field_name": "expected_carousel_heading",
+        "field_type": "assertion",
+        "value": "Our Trusted Clients"
+      },
+      {
+        "field_name": "expected_client_images",
+        "field_type": "assertion",
+        "value": "Netflix, Airbnb, Spotify"
+      },
+      {
+        "field_name": "min_carousel_items_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "expected_navigation_controls",
+        "field_type": "assertion",
+        "value": "Previous, Next, Indicators"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Carousel content not loaded or missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "navigate_carousel_section",
+                "field_type": "navigation",
+                "value": "client-showcase-carousel"
+              },
+              {
+                "field_name": "expected_carousel_heading",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_client_images",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_carousel_items_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "expected_navigation_controls",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Carousel failed to load client images"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-014",
+    "scenario_id": "M01_BS_004",
+    "scenario_title": "Browse customer success stories through story cards",
+    "actor": "Logged In User",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "Customer Story Cards"
+      },
+      {
+        "field_name": "expected_cards_visible",
+        "field_type": "assertion",
+        "value": "customer success stories"
+      },
+      {
+        "field_name": "min_story_cards_count",
+        "field_type": "count_min",
+        "value": "3"
+      },
+      {
+        "field_name": "click_story_card",
+        "field_type": "navigation",
+        "value": "Netflix Case Study"
+      },
+      {
+        "field_name": "expected_story_content",
+        "field_type": "assertion",
+        "value": "customer testimonials and success cases"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Customer Story Cards section not available or content missing",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "Customer Story Cards"
+              },
+              {
+                "field_name": "expected_cards_visible",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "min_story_cards_count",
+                "field_type": "count_min",
+                "value": "0"
+              },
+              {
+                "field_name": "click_story_card",
+                "field_type": "navigation",
+                "value": "Netflix Case Study"
+              },
+              {
+                "field_name": "expected_story_content",
+                "field_type": "assertion",
+                "value": ""
+              }
+            ],
+            "expected_error": "Customer story cards are not available or failed to load"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testdata_id": "TD-015",
+    "scenario_id": "M01_BS_005",
+    "scenario_title": "Return to top of page using back to top functionality",
+    "actor": "Guest user",
+    "positive_dataset": [
+      {
+        "field_name": "scroll_target_section",
+        "field_type": "navigation",
+        "value": "top"
+      },
+      {
+        "field_name": "expected_back_to_top_button",
+        "field_type": "assertion",
+        "value": "Back to top"
+      },
+      {
+        "field_name": "expected_header_visible",
+        "field_type": "assertion",
+        "value": "AWS"
+      },
+      {
+        "field_name": "expected_url_fragment",
+        "field_type": "url",
+        "value": "#top"
+      },
+      {
+        "field_name": "scroll_position_y",
+        "field_type": "assertion",
+        "value": "0"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_id": "NEG-001",
+        "variant_type": "negative",
+        "description": "Back to top button not found or navigation fails",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "scroll_target_section",
+                "field_type": "navigation",
+                "value": "top"
+              },
+              {
+                "field_name": "expected_back_to_top_button",
+                "field_type": "assertion",
+                "value": ""
+              },
+              {
+                "field_name": "expected_header_visible",
+                "field_type": "assertion",
+                "value": "AWS"
+              },
+              {
+                "field_name": "expected_url_fragment",
+                "field_type": "url",
+                "value": "#top"
+              },
+              {
+                "field_name": "scroll_position_y",
+                "field_type": "assertion",
+                "value": "0"
+              }
+            ],
+            "expected_error": "Back to top button not found"
+          }
+        ]
+      }
+    ]
+  }
+]

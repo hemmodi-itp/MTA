@@ -1,0 +1,83 @@
+{
+  "name": "RepoFetchAgent",
+  "registry_key": "repo_fetch",
+  "category": "comprehension",
+  "module_path": "agents.comprehension.repo_fetch.agent",
+  "version": "2.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Resolves the default branch and the commit SHA first (REST API, or git ref discovery when rate-limited), lists the commit's tree and fetches the selected files by SHA in parallel — authenticated with GITHUB_TOKEN (private repos the token can read) — with rate-limit-aware exponential backoff with jitter; falls back to the commit zip (selected members only, decompressed-size and member caps) when the tree API is unavailable or truncated; reports repo_coverage.",
+  "inputs": [
+    {
+      "name": "github_url",
+      "type": "string",
+      "required": true,
+      "description": "GitHub repository URL (public, or private when GITHUB_TOKEN can read it)"
+    },
+    {
+      "name": "branch",
+      "type": "string",
+      "required": false,
+      "description": "Branch to evaluate; defaults to the repo's default branch"
+    },
+    {
+      "name": "brd_path",
+      "type": "string",
+      "required": false,
+      "description": "User's BRD path or GitHub link — always fetched"
+    },
+    {
+      "name": "workspace_dir",
+      "type": "string",
+      "required": true,
+      "description": "Per-run scratch directory"
+    },
+    {
+      "name": "emit",
+      "type": "callable",
+      "required": false,
+      "description": "Progress callback (message, level)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "repo_dir",
+      "type": "string",
+      "description": "Absolute path of the extracted repository root"
+    },
+    {
+      "name": "repo_tree",
+      "type": "array|null",
+      "description": "Full list of file paths in the commit (from the tree or the zip)"
+    },
+    {
+      "name": "repo_full_name",
+      "type": "string",
+      "description": "owner/repo"
+    },
+    {
+      "name": "branch",
+      "type": "string",
+      "description": "Branch actually downloaded"
+    },
+    {
+      "name": "commit_sha",
+      "type": "string",
+      "description": "Commit every file was fetched at (always resolved)"
+    },
+    {
+      "name": "repo_metadata",
+      "type": "object",
+      "description": "description, language, size_kb, html_url, private"
+    },
+    {
+      "name": "repo_coverage",
+      "type": "object",
+      "description": "source (tree|zip), files_in_tree, selected, fetched, skipped {reason: n}, failed_paths, truncated, truncation_reason, commit_sha, authenticated, private"
+    }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

@@ -1,0 +1,72 @@
+suite: new_additions
+test_cases:
+- scenario: BS-001
+  status: pending
+  suite: new_additions
+  test_case_id: BS-001
+  test_case_name: Standard user successfully logs into the system
+- scenario: BS-002
+  status: pending
+  suite: new_additions
+  test_case_id: BS-002
+  test_case_name: Guest user accesses login page
+- scenario: BS-003
+  status: pending
+  suite: new_additions
+  test_case_id: BS-003
+  test_case_name: Automated test validates login functionality
+- scenario: BS-004
+  status: failing
+  suite: new_additions
+  test_case_id: BS-004
+  test_case_name: Remove Product from Shopping Cart
+- scenario: BS-005
+  status: failing
+  suite: new_additions
+  test_case_id: BS-005
+  test_case_name: Sort Products Alphabetically A to Z
+- scenario: BS-006
+  status: failing
+  suite: new_additions
+  test_case_id: BS-006
+  test_case_name: Sort Products Alphabetically Z to A
+- scenario: BS-007
+  status: failing
+  suite: new_additions
+  test_case_id: BS-007
+  test_case_name: Sort Products by Price Low to High
+- scenario: BS-008
+  status: failing
+  suite: new_additions
+  test_case_id: BS-008
+  test_case_name: Sort Products by Price High to Low
+- scenario: BS-009
+  status: failing
+  suite: new_additions
+  test_case_id: BS-009
+  test_case_name: Navigate to Product Details Page
+- scenario: BS-010
+  status: failing
+  suite: new_additions
+  test_case_id: BS-010
+  test_case_name: Access Shopping Cart Page
+- scenario: BS-011
+  status: failing
+  suite: new_additions
+  test_case_id: BS-011
+  test_case_name: Open Navigation Menu
+- scenario: BS-012
+  status: failing
+  suite: new_additions
+  test_case_id: BS-012
+  test_case_name: Logout from Application
+- scenario: BS-013
+  status: failing
+  suite: new_additions
+  test_case_id: BS-013
+  test_case_name: Verify Cart Persistence During Interface Interactions
+- scenario: BS-014
+  status: failing
+  suite: new_additions
+  test_case_id: BS-014
+  test_case_name: Maintain Cart State After Page Refresh

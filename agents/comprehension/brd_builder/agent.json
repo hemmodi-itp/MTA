@@ -1,0 +1,105 @@
+{
+  "name": "BrdBuilderAgent",
+  "registry_key": "brd_builder",
+  "category": "comprehension",
+  "module_path": "agents.comprehension.brd_builder.agent",
+  "version": "1.2.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Uses exactly the BRD the user points to (path or GitHub link; scanned PDFs read visually by Gemini), otherwise the repo document Gemini confirms describes this agent (only previews are read for the choice), otherwise generates one from the live app (RuntimeDiscoveryAgent's authenticated runtime_profile, or its own crawl) or from code; extracts requirements machine-verified to quote the BRD, with per-criterion verifiability and grounding, and reports every cap as a limitation.",
+  "inputs": [
+    {
+      "name": "mode",
+      "type": "string",
+      "required": true,
+      "description": "brd_and_live | live_only | brd_only"
+    },
+    {
+      "name": "repo_dir",
+      "type": "string",
+      "required": true,
+      "description": "Extracted repository root"
+    },
+    {
+      "name": "repo_full_name",
+      "type": "string",
+      "required": true,
+      "description": "owner/repo — validates BRD links"
+    },
+    {
+      "name": "brd_path",
+      "type": "string",
+      "required": false,
+      "description": "Repo-relative path or GitHub blob/raw URL of the BRD"
+    },
+    {
+      "name": "brd_candidates",
+      "type": "array",
+      "required": false,
+      "description": "Auto-detected BRD paths from RepoAnalysisAgent"
+    },
+    {
+      "name": "agent_profile",
+      "type": "object",
+      "required": true,
+      "description": "Agent profile from RepoAnalysisAgent"
+    },
+    {
+      "name": "code_digest",
+      "type": "string",
+      "required": true,
+      "description": "Key source files, used when generating from code"
+    },
+    {
+      "name": "live_url",
+      "type": "string",
+      "required": false,
+      "description": "Deployed URL — evidence source for a generated BRD (crawled only when runtime_profile is absent)"
+    },
+    {
+      "name": "runtime_profile",
+      "type": "object",
+      "required": false,
+      "description": "RuntimeDiscoveryAgent output (pages, headings, forms/field labels, buttons, downloads, chat box, api_calls), collected with the project's test account; the live evidence for a generated BRD"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "brd_source",
+      "type": "string",
+      "description": "repository | generated_live | generated"
+    },
+    {
+      "name": "brd_path",
+      "type": "string|null",
+      "description": "Repo-relative BRD path when taken from the repo"
+    },
+    {
+      "name": "brd_markdown",
+      "type": "string",
+      "description": "Full BRD text (transcribed by Gemini for image-only documents)"
+    },
+    {
+      "name": "requirements",
+      "type": "array",
+      "description": "REQ-xx requirements: section, verified source_quote, priority, kind, verifiability, origin, confidence, self_generated, and criteria [{code, statement, oracle_hint, verifiability, grounded, confidence, self_generated}] (max 40 requirements, 8 criteria each)"
+    },
+    {
+      "name": "ungrounded_criteria",
+      "type": "array",
+      "description": "Codes of acceptance criteria whose wording could not be traced to the BRD text (kept, lower confidence)"
+    },
+    {
+      "name": "limitations",
+      "type": "array",
+      "description": "Human-readable sentences for the report: caps applied (requirements, criteria, BRD length, evidence size, candidates), an unconfirmed BRD choice, or a self-generated BRD"
+    }
+  ],
+  "dependencies": [],
+  "skills": [
+    "brd_generation",
+    "requirement_extraction"
+  ],
+  "doc": "agent.md"
+}

@@ -1,0 +1,7171 @@
+{
+  "url": "https://aws.amazon.com/pricing/",
+  "project": "AWS_Test",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Allow performance category Allowed",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "awsccc-u-cb-performance",
+        "name": null,
+        "type": "checkbox"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#awsccc-u-cb-performance",
+        "xpath": "//*[@id=\"awsccc-u-cb-performance\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "awsccc-u-cb-performance"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "awsccc-u-cb-performance"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Allow functional category Allowed",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "awsccc-u-cb-functional",
+        "name": null,
+        "type": "checkbox"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#awsccc-u-cb-functional",
+        "xpath": "//*[@id=\"awsccc-u-cb-functional\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "awsccc-u-cb-functional"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "awsccc-u-cb-functional"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Allow advertising category Allowed",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "awsccc-u-cb-advertising",
+        "name": null,
+        "type": "checkbox"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#awsccc-u-cb-advertising",
+        "xpath": "//*[@id=\"awsccc-u-cb-advertising\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "awsccc-u-cb-advertising"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "awsccc-u-cb-advertising"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Allow cross-context behavioral ads",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": "awsccc-u-rg-ccba-allowed",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Allow cross-context behavioral ads"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(3)>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>label>div>div>div>label>input",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/label[1]/div[1]/div[1]/div[1]/label[1]/input[1]"
+      },
+      "recommended_locator": {
+        "type": "label",
+        "value": {
+          "label": "Allow cross-context behavioral ads"
+        },
+        "score": 130,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "label",
+          "value": {
+            "label": "Allow cross-context behavioral ads"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "awsccc-u-rg-ccba-allowed"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0005",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Opt out of cross-context behavioral ads",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": "awsccc-u-rg-ccba-allowed",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Opt out of cross-context behavioral ads"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(3)>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>label>div>div>div>label:nth-of-type(2)>input",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/label[1]/div[1]/div[1]/div[1]/label[2]/input[1]"
+      },
+      "recommended_locator": {
+        "type": "label",
+        "value": {
+          "label": "Opt out of cross-context behavioral ads"
+        },
+        "score": 130,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "label",
+          "value": {
+            "label": "Opt out of cross-context behavioral ads"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "awsccc-u-rg-ccba-allowed"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0006",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "combobox",
+        "label": "",
+        "placeholder": "I'm looking for...",
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": ":0:",
+        "name": null,
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_placeholder": {
+          "placeholder": "I'm looking for..."
+        }
+      },
+      "technical_locators": {
+        "css": "#:0:",
+        "xpath": "//*[@id=\":0:\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": ":0:"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": ":0:"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "placeholder": "I'm looking for..."
+          },
+          "score": 120,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0007",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "combobox",
+        "label": "",
+        "placeholder": "I'm looking for...",
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": ":1:",
+        "name": null,
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_placeholder": {
+          "placeholder": "I'm looking for..."
+        }
+      },
+      "technical_locators": {
+        "css": "#:1:",
+        "xpath": "//*[@id=\":1:\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": ":1:"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": ":1:"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "placeholder": "I'm looking for..."
+          },
+          "score": 120,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0008",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": "Search AWS products & services",
+        "aria_label": "Search AWS products & services",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "search-input",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_placeholder": {
+          "placeholder": "Search AWS products & services"
+        },
+        "get_by_testid": {
+          "testid": "search-input"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div>div>div>div>form>div:nth-of-type(2)>input",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[2]/input[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "search-input"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "search-input"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "placeholder": "Search AWS products & services"
+          },
+          "score": 120,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0009",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "toolbar-item-q-smart-highlight",
+        "id": null,
+        "name": null,
+        "type": "checkbox"
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "toolbar-item-q-smart-highlight"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div:nth-of-type(2)>div>div>div>div>span>label>input",
+        "xpath": "/html[1]/body[1]/div[4]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/span[1]/label[1]/input[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "toolbar-item-q-smart-highlight"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "toolbar-item-q-smart-highlight"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0010",
+      "tag": "button",
+      "display_text": "Accept",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Accept all cookies",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Accept"
+        },
+        "get_by_text": {
+          "text": "Accept"
+        }
+      },
+      "technical_locators": {
+        "css": "div>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Accept"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Accept"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0011",
+      "tag": "button",
+      "display_text": "Decline",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Continue without accepting",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Decline"
+        },
+        "get_by_text": {
+          "text": "Decline"
+        }
+      },
+      "technical_locators": {
+        "css": "div>button:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/button[2]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Decline"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Decline"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0012",
+      "tag": "button",
+      "display_text": "Customize",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Customize cookie preferences",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Customize"
+        },
+        "get_by_text": {
+          "text": "Customize"
+        }
+      },
+      "technical_locators": {
+        "css": "div>button:nth-of-type(3)",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/button[3]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Customize"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Customize"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0013",
+      "tag": "button",
+      "display_text": "Cancel",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Cancel customizing cookie preferences",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Cancel"
+        },
+        "get_by_text": {
+          "text": "Cancel"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div>div>div:nth-of-type(3)>div>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[3]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Cancel"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Cancel"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0014",
+      "tag": "button",
+      "display_text": "Save preferences",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Save customized cookie preferences",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Save preferences"
+        },
+        "get_by_text": {
+          "text": "Save preferences"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div>div>div:nth-of-type(3)>div>button:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[3]/div[1]/button[2]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Save preferences"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Save preferences"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0015",
+      "tag": "button",
+      "display_text": "Cancel",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "cancel-button",
+        "id": null,
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Cancel"
+        },
+        "get_by_text": {
+          "text": "Cancel"
+        },
+        "get_by_testid": {
+          "testid": "cancel-button"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>button",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "cancel-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "cancel-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Cancel"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0016",
+      "tag": "button",
+      "display_text": "Save preferences",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Save preferences"
+        },
+        "get_by_text": {
+          "text": "Save preferences"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>button:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[1]/div[1]/button[2]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Save preferences"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Save preferences"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0017",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Open navigation menu",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "global-nav-mobile-menu-button",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "global-nav-mobile-menu-button"
+        }
+      },
+      "technical_locators": {
+        "css": "nav>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "global-nav-mobile-menu-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "global-nav-mobile-menu-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0018",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "nav-search-toggle",
+        "id": "search-toggle",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "nav-search-toggle"
+        }
+      },
+      "technical_locators": {
+        "css": "#search-toggle",
+        "xpath": "//*[@id=\"search-toggle\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "nav-search-toggle"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "nav-search-toggle"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "search-toggle"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0019",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Close",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "nav>div>ul>li>div>div>div>div>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[1]/div[1]/ul[1]/li[1]/div[1]/div[1]/div[1]/div[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "nav>div>ul>li>div>div>div>div>div>button"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0020",
+      "tag": "button",
+      "display_text": "Filter: All",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Filter: All"
+        },
+        "get_by_text": {
+          "text": "Filter: All"
+        }
+      },
+      "technical_locators": {
+        "css": "nav>div>ul>li>div>div>div>div>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>div>div>div>span>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[1]/div[1]/ul[1]/li[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/span[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Filter: All"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Filter: All"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0021",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "AWS Profile",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "nav>div>ul>li:nth-of-type(2)>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[1]/div[1]/ul[1]/li[2]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "nav>div>ul>li:nth-of-type(2)>div>button"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0022",
+      "tag": "button",
+      "display_text": "English",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "utility-bar-language-button",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "English"
+        },
+        "get_by_text": {
+          "text": "English"
+        },
+        "get_by_testid": {
+          "testid": "utility-bar-language-button"
+        }
+      },
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div>div>div>div>ul>li:nth-of-type(2)>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[2]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "utility-bar-language-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "utility-bar-language-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "English"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0023",
+      "tag": "button",
+      "display_text": "Support",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "floating-ui-4hww5",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Support"
+        },
+        "get_by_text": {
+          "text": "Support"
+        }
+      },
+      "technical_locators": {
+        "css": "#floating-ui-4hww5",
+        "xpath": "//*[@id=\"floating-ui-4hww5\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "floating-ui-4hww5"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "floating-ui-4hww5"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Support"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0024",
+      "tag": "button",
+      "display_text": "My account",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "floating-ui-dw287",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "My account"
+        },
+        "get_by_text": {
+          "text": "My account"
+        }
+      },
+      "technical_locators": {
+        "css": "#floating-ui-dw287",
+        "xpath": "//*[@id=\"floating-ui-dw287\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "floating-ui-dw287"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "floating-ui-dw287"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "My account"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0025",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "AWS Profile",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div>div>div>div:nth-of-type(2)>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[1]/div[1]/div[1]/div[2]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "nav:nth-of-type(2)>div>div>div>div:nth-of-type(2)>div>button"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0026",
+      "tag": "button",
+      "display_text": "Discover AWS",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "globalnav-navitem-discover_aws",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Discover AWS"
+        },
+        "get_by_text": {
+          "text": "Discover AWS"
+        }
+      },
+      "technical_locators": {
+        "css": "#globalnav-navitem-discover_aws",
+        "xpath": "//*[@id=\"globalnav-navitem-discover_aws\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "globalnav-navitem-discover_aws"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "globalnav-navitem-discover_aws"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Discover AWS"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0027",
+      "tag": "button",
+      "display_text": "Products",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "globalnav-navitem-products",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Products"
+        },
+        "get_by_text": {
+          "text": "Products"
+        }
+      },
+      "technical_locators": {
+        "css": "#globalnav-navitem-products",
+        "xpath": "//*[@id=\"globalnav-navitem-products\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "globalnav-navitem-products"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "globalnav-navitem-products"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Products"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "navigate_products"
+      ]
+    },
+    {
+      "locator_id": "LOC-0028",
+      "tag": "button",
+      "display_text": "Solutions",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "globalnav-navitem-solutions",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Solutions"
+        },
+        "get_by_text": {
+          "text": "Solutions"
+        }
+      },
+      "technical_locators": {
+        "css": "#globalnav-navitem-solutions",
+        "xpath": "//*[@id=\"globalnav-navitem-solutions\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "globalnav-navitem-solutions"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "globalnav-navitem-solutions"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Solutions"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0029",
+      "tag": "button",
+      "display_text": "Pricing",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "globalnav-navitem-pricing",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Pricing"
+        },
+        "get_by_text": {
+          "text": "Pricing"
+        }
+      },
+      "technical_locators": {
+        "css": "#globalnav-navitem-pricing",
+        "xpath": "//*[@id=\"globalnav-navitem-pricing\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "globalnav-navitem-pricing"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "globalnav-navitem-pricing"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Pricing"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0030",
+      "tag": "button",
+      "display_text": "Resources",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "globalnav-navitem-resources",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Resources"
+        },
+        "get_by_text": {
+          "text": "Resources"
+        }
+      },
+      "technical_locators": {
+        "css": "#globalnav-navitem-resources",
+        "xpath": "//*[@id=\"globalnav-navitem-resources\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "globalnav-navitem-resources"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "globalnav-navitem-resources"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Resources"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0031",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Close",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[2]/div[1]/ul[2]/li[1]/div[1]/div[1]/div[1]/div[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>button"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0032",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>div>div>div>span>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[2]/div[1]/ul[2]/li[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/span[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li>div>div>div>div>div>div>div:nth-of-type(2)>div>div:nth-of-type(2)>div>div>div>div>span>div>button"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0033",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Open feedback",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "feedback-button",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "feedback-button"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(2)>div>div>div>div>div>div>div>div>div>button",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "feedback-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "feedback-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0034",
+      "tag": "button",
+      "display_text": "Pay-as-you-go",
+      "semantic_locators": {
+        "role": "tab",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "tab-:0:-ams#c1",
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "tab",
+          "name": "Pay-as-you-go"
+        },
+        "get_by_text": {
+          "text": "Pay-as-you-go"
+        }
+      },
+      "technical_locators": {
+        "css": "#tab-:0:-ams#c1",
+        "xpath": "//*[@id=\"tab-:0:-ams#c1\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "tab-:0:-ams#c1"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "tab-:0:-ams#c1"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "tab",
+            "name": "Pay-as-you-go"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0035",
+      "tag": "button",
+      "display_text": "Flat rate",
+      "semantic_locators": {
+        "role": "tab",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "tab-:0:-ams#c2",
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "tab",
+          "name": "Flat rate"
+        },
+        "get_by_text": {
+          "text": "Flat rate"
+        }
+      },
+      "technical_locators": {
+        "css": "#tab-:0:-ams#c2",
+        "xpath": "//*[@id=\"tab-:0:-ams#c2\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "tab-:0:-ams#c2"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "tab-:0:-ams#c2"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "tab",
+            "name": "Flat rate"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0036",
+      "tag": "button",
+      "display_text": "Save when you commit",
+      "semantic_locators": {
+        "role": "tab",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "tab-:0:-ams#c3",
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "tab",
+          "name": "Save when you commit"
+        },
+        "get_by_text": {
+          "text": "Save when you commit"
+        }
+      },
+      "technical_locators": {
+        "css": "#tab-:0:-ams#c3",
+        "xpath": "//*[@id=\"tab-:0:-ams#c3\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "tab-:0:-ams#c3"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "tab-:0:-ams#c3"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "tab",
+            "name": "Save when you commit"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0037",
+      "tag": "button",
+      "display_text": "Pay less by using more",
+      "semantic_locators": {
+        "role": "tab",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "tab-:0:-ams#c4",
+        "name": null,
+        "type": "button"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "tab",
+          "name": "Pay less by using more"
+        },
+        "get_by_text": {
+          "text": "Pay less by using more"
+        }
+      },
+      "technical_locators": {
+        "css": "#tab-:0:-ams#c4",
+        "xpath": "//*[@id=\"tab-:0:-ams#c4\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "tab-:0:-ams#c4"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "tab-:0:-ams#c4"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "tab",
+            "name": "Pay less by using more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0038",
+      "tag": "button",
+      "display_text": "Filter",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Filter"
+        },
+        "get_by_text": {
+          "text": "Filter"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div>div>div>div>div>button",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Filter"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Filter"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0039",
+      "tag": "button",
+      "display_text": "Show 8 more",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Show 8 more"
+        },
+        "get_by_text": {
+          "text": "Show 8 more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(9)>div>button",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[9]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Show 8 more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Show 8 more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0040",
+      "tag": "button",
+      "display_text": "English",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "language-selector-button",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "English"
+        },
+        "get_by_text": {
+          "text": "English"
+        },
+        "get_by_testid": {
+          "testid": "language-selector-button"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(6)>button",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[6]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "language-selector-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "language-selector-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "English"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0041",
+      "tag": "button",
+      "display_text": "Back to top",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Back to top"
+        },
+        "get_by_text": {
+          "text": "Back to top"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(7)>button",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[7]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Back to top"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Back to top"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0042",
+      "tag": "button",
+      "display_text": "Hi, I can connect you with an AWS representative or answer questions you have on AWS.",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "notification-bubble",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Hi, I can connect you with an AWS representative or answer questions you have on AWS."
+        },
+        "get_by_text": {
+          "text": "Hi, I can connect you with an AWS representative or answer questions you have on AWS."
+        },
+        "get_by_testid": {
+          "testid": "notification-bubble"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div:nth-of-type(3)>div>button",
+        "xpath": "/html[1]/body[1]/div[4]/div[2]/div[3]/div[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "notification-bubble"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "notification-bubble"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Hi, I can connect you with an AWS representative or answer questions you have on AWS."
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0043",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Close notification",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "notification-bubble-close-icon",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "notification-bubble-close-icon"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div:nth-of-type(3)>div>button>button",
+        "xpath": "/html[1]/body[1]/div[4]/div[2]/div[3]/div[1]/button[1]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "notification-bubble-close-icon"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "notification-bubble-close-icon"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0044",
+      "tag": "button",
+      "display_text": "Need more info? Highlight any text to get an explanation generated with AWS generative AI.",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "notification-bubble",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Need more info? Highlight any text to get an explanation generated with AWS generative AI."
+        },
+        "get_by_text": {
+          "text": "Need more info? Highlight any text to get an explanation generated with AWS generative AI."
+        },
+        "get_by_testid": {
+          "testid": "notification-bubble"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div:nth-of-type(3)>div>button:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/div[4]/div[2]/div[3]/div[1]/button[2]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "notification-bubble"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "notification-bubble"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Need more info? Highlight any text to get an explanation generated with AWS generative AI."
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0045",
+      "tag": "button",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Close notification",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "notification-bubble-close-icon",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "notification-bubble-close-icon"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div:nth-of-type(3)>div>button:nth-of-type(2)>button",
+        "xpath": "/html[1]/body[1]/div[4]/div[2]/div[3]/div[1]/button[2]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "notification-bubble-close-icon"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "notification-bubble-close-icon"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0046",
+      "tag": "button",
+      "display_text": "2",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Ask a Question",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "bot-icon",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "2"
+        },
+        "get_by_text": {
+          "text": "2"
+        },
+        "get_by_testid": {
+          "testid": "bot-icon"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div:nth-of-type(3)>button",
+        "xpath": "/html[1]/body[1]/div[4]/div[2]/div[3]/button[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "bot-icon"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "bot-icon"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "2"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0047",
+      "tag": "a",
+      "display_text": "AWS Cookie Notice",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Cookie Notice"
+        },
+        "get_by_text": {
+          "text": "AWS Cookie Notice"
+        }
+      },
+      "technical_locators": {
+        "css": "div>p>span>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[6]/div[1]/p[1]/span[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Cookie Notice"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Cookie Notice"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0048",
+      "tag": "a",
+      "display_text": "Cookie Notice",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Cookie Notice"
+        },
+        "get_by_text": {
+          "text": "Cookie Notice"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(3)>div>div>div:nth-of-type(2)>div>div>div>p:nth-of-type(2)>span>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/p[2]/span[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Cookie Notice"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Cookie Notice"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0049",
+      "tag": "a",
+      "display_text": "here",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "here"
+        },
+        "get_by_text": {
+          "text": "here"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(3)>div>div>div:nth-of-type(2)>div>div:nth-of-type(3)>div>p>span>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[3]/div[1]/p[1]/span[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "here"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "here"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0050",
+      "tag": "a",
+      "display_text": "AWS Privacy Notice",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Privacy Notice"
+        },
+        "get_by_text": {
+          "text": "AWS Privacy Notice"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(3)>div>div>div:nth-of-type(2)>div>div:nth-of-type(3)>div>p:nth-of-type(2)>span>a",
+        "xpath": "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[3]/div[1]/p[2]/span[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Privacy Notice"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Privacy Notice"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0051",
+      "tag": "a",
+      "display_text": "Skip to main content",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Skip to main content link",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "aws-page-skip-to-main",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Skip to main content"
+        },
+        "get_by_text": {
+          "text": "Skip to main content"
+        }
+      },
+      "technical_locators": {
+        "css": "#aws-page-skip-to-main",
+        "xpath": "//*[@id=\"aws-page-skip-to-main\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "aws-page-skip-to-main"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "aws-page-skip-to-main"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Skip to main content"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0052",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "mobile-nav-item-logo-link",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "mobile-nav-item-logo-link"
+        }
+      },
+      "technical_locators": {
+        "css": "nav>div>div>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[1]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "mobile-nav-item-logo-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "mobile-nav-item-logo-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0053",
+      "tag": "a",
+      "display_text": "Contact us",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Contact us"
+        },
+        "get_by_text": {
+          "text": "Contact us"
+        }
+      },
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div>div>div>div>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Contact us"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Contact us"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0054",
+      "tag": "a",
+      "display_text": "AWS Marketplace",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Marketplace"
+        },
+        "get_by_text": {
+          "text": "AWS Marketplace"
+        }
+      },
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div>div>div>div>ul>li:nth-of-type(4)>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[4]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Marketplace"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Marketplace"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0055",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "nav-item-logo-link",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_testid": {
+          "testid": "nav-item-logo-link"
+        }
+      },
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[2]/div[1]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "nav-item-logo-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "nav-item-logo-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0056",
+      "tag": "a",
+      "display_text": "re:Invent",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "re:Invent"
+        },
+        "get_by_text": {
+          "text": "re:Invent"
+        }
+      },
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[2]/div[1]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "re:Invent"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "re:Invent"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0057",
+      "tag": "a",
+      "display_text": "Sign in to console",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Sign in to console"
+        },
+        "get_by_text": {
+          "text": "Sign in to console"
+        }
+      },
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[2]/div[1]/ul[2]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Sign in to console"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Sign in to console"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0058",
+      "tag": "a",
+      "display_text": "Create account",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "create-account-button",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Create account"
+        },
+        "get_by_text": {
+          "text": "Create account"
+        },
+        "get_by_testid": {
+          "testid": "create-account-button"
+        }
+      },
+      "technical_locators": {
+        "css": "nav:nth-of-type(2)>div:nth-of-type(2)>div>ul:nth-of-type(2)>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[2]/div[2]/div[1]/ul[2]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "create-account-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "create-account-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Create account"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0059",
+      "tag": "a",
+      "display_text": "Overview",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Overview"
+        },
+        "get_by_text": {
+          "text": "Overview"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Overview"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Overview"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0060",
+      "tag": "a",
+      "display_text": "Free Tier",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Free Tier"
+        },
+        "get_by_text": {
+          "text": "Free Tier"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Free Tier"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Free Tier"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0061",
+      "tag": "a",
+      "display_text": "Cost Optimization",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Cost Optimization"
+        },
+        "get_by_text": {
+          "text": "Cost Optimization"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Cost Optimization"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Cost Optimization"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0062",
+      "tag": "a",
+      "display_text": "Resources",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Resources"
+        },
+        "get_by_text": {
+          "text": "Resources"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>ul>li:nth-of-type(4)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[4]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Resources"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Resources"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0063",
+      "tag": "a",
+      "display_text": "Home",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Home"
+        },
+        "get_by_text": {
+          "text": "Home"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>div>div>nav>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/nav[1]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Home"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Home"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0064",
+      "tag": "a",
+      "display_text": "Get started for free",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Get started for free"
+        },
+        "get_by_text": {
+          "text": "Get started for free"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>div:nth-of-type(2)>div>div>div>div>div:nth-of-type(2)>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Get started for free"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Get started for free"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0065",
+      "tag": "a",
+      "display_text": "Request a pricing quote",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Request a pricing quote"
+        },
+        "get_by_text": {
+          "text": "Request a pricing quote"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div>div:nth-of-type(2)>div>div>div>div>div:nth-of-type(2)>div:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "button",
+          "name": "Request a pricing quote"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Request a pricing quote"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0066",
+      "tag": "a",
+      "display_text": "AWS Pricing Calculator",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Pricing Calculator"
+        },
+        "get_by_text": {
+          "text": "AWS Pricing Calculator"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/p[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Pricing Calculator"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Pricing Calculator"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0067",
+      "tag": "a",
+      "display_text": "Learn more about flat-rate pricing",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Learn more about flat-rate pricing: Flat rate",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Learn more about flat-rate pricing"
+        },
+        "get_by_text": {
+          "text": "Learn more about flat-rate pricing"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(2)>div>div>div:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Learn more about flat-rate pricing"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Learn more about flat-rate pricing"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0068",
+      "tag": "a",
+      "display_text": "Learn more about Savings Plans here",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Learn more about Savings Plans here: Save when you commit",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Learn more about Savings Plans here"
+        },
+        "get_by_text": {
+          "text": "Learn more about Savings Plans here"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(3)>div>div:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[3]/div[1]/div[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Learn more about Savings Plans here"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Learn more about Savings Plans here"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0069",
+      "tag": "a",
+      "display_text": "Learn more about tiered pricing",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Learn more about tiered pricing: Pay less by using more",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Learn more about tiered pricing"
+        },
+        "get_by_text": {
+          "text": "Learn more about tiered pricing"
+        }
+      },
+      "technical_locators": {
+        "css": "div:nth-of-type(4)>div>div>div:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[4]/div[1]/div[1]/div[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Learn more about tiered pricing"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Learn more about tiered pricing"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0070",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[5]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/p[2]/a[2]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(2)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0071",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(3)",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[5]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/p[2]/a[3]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(3)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0072",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(4)",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[5]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/p[2]/a[4]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(4)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0073",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(5)",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[5]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/p[2]/a[5]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(5)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0074",
+      "tag": "a",
+      "display_text": "aws-private-pricing-program@amazon.com",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "aws-private-pricing-program@amazon.com"
+        },
+        "get_by_text": {
+          "text": "aws-private-pricing-program@amazon.com"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div:nth-of-type(3)>div>p:nth-of-type(2)>a:nth-of-type(6)",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[5]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/p[2]/a[6]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "aws-private-pricing-program@amazon.com"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "aws-private-pricing-program@amazon.com"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0075",
+      "tag": "a",
+      "display_text": "2020-11-19\nAWS Network Firewall\nDeploy network security across your Amazon VPCs with just a few clicks\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2020-11-19\nAWS Network Firewall\nDeploy network security across your Amazon VPCs with just a few clicks\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2020-11-19\nAWS Network Firewall\nDeploy network security across your Amazon VPCs with just a few clicks\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2020-11-19\nAWS Network Firewall\nDeploy network security across your Amazon VPCs with just a few clicks\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2020-11-19\nAWS Network Firewall\nDeploy network security across your Amazon VPCs with just a few clicks\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0076",
+      "tag": "a",
+      "display_text": "2013-03-26\nAWS CloudHSM\nHardware-based key storage for regulatory compliance\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2013-03-26\nAWS CloudHSM\nHardware-based key storage for regulatory compliance\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2013-03-26\nAWS CloudHSM\nHardware-based key storage for regulatory compliance\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(2)>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2013-03-26\nAWS CloudHSM\nHardware-based key storage for regulatory compliance\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2013-03-26\nAWS CloudHSM\nHardware-based key storage for regulatory compliance\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0077",
+      "tag": "a",
+      "display_text": "2014-07-10\nAmazon Cognito\nIdentity management for your apps\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2014-07-10\nAmazon Cognito\nIdentity management for your apps\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2014-07-10\nAmazon Cognito\nIdentity management for your apps\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(3)>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2014-07-10\nAmazon Cognito\nIdentity management for your apps\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2014-07-10\nAmazon Cognito\nIdentity management for your apps\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0078",
+      "tag": "a",
+      "display_text": "2021-11-29\nAmazon Inspector\nAutomated and continual vulnerability management for Amazon EC2 and Amazon ECR\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2021-11-29\nAmazon Inspector\nAutomated and continual vulnerability management for Amazon EC2 and Amazon ECR\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2021-11-29\nAmazon Inspector\nAutomated and continual vulnerability management for Amazon EC2 and Amazon ECR\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(4)>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[4]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2021-11-29\nAmazon Inspector\nAutomated and continual vulnerability management for Amazon EC2 and Amazon ECR\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2021-11-29\nAmazon Inspector\nAutomated and continual vulnerability management for Amazon EC2 and Amazon ECR\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0079",
+      "tag": "a",
+      "display_text": "2015-07-09\nAWS Service Catalog\nCreate and use standardized products\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2015-07-09\nAWS Service Catalog\nCreate and use standardized products\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2015-07-09\nAWS Service Catalog\nCreate and use standardized products\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(5)>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2015-07-09\nAWS Service Catalog\nCreate and use standardized products\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2015-07-09\nAWS Service Catalog\nCreate and use standardized products\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "navigate_products"
+      ]
+    },
+    {
+      "locator_id": "LOC-0080",
+      "tag": "a",
+      "display_text": "2019-12-03\nAmazon Detective\nInvestigate potential security issues\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2019-12-03\nAmazon Detective\nInvestigate potential security issues\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2019-12-03\nAmazon Detective\nInvestigate potential security issues\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(6)>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[6]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2019-12-03\nAmazon Detective\nInvestigate potential security issues\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2019-12-03\nAmazon Detective\nInvestigate potential security issues\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0081",
+      "tag": "a",
+      "display_text": "2021-04-08\nAmazon Nimble Studio\nAccelerate content creation in the cloud\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2021-04-08\nAmazon Nimble Studio\nAccelerate content creation in the cloud\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2021-04-08\nAmazon Nimble Studio\nAccelerate content creation in the cloud\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(7)>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[7]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2021-04-08\nAmazon Nimble Studio\nAccelerate content creation in the cloud\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2021-04-08\nAmazon Nimble Studio\nAccelerate content creation in the cloud\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0082",
+      "tag": "a",
+      "display_text": "2017-06-07\nAWS IoT Greengrass\nLocal compute, messaging, and sync for devices\nLearn more",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "2017-06-07\nAWS IoT Greengrass\nLocal compute, messaging, and sync for devices\nLearn more"
+        },
+        "get_by_text": {
+          "text": "2017-06-07\nAWS IoT Greengrass\nLocal compute, messaging, and sync for devices\nLearn more"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div:nth-of-type(2)>div>div>div:nth-of-type(2)>div:nth-of-type(8)>div>div>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[8]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "2017-06-07\nAWS IoT Greengrass\nLocal compute, messaging, and sync for devices\nLearn more"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "2017-06-07\nAWS IoT Greengrass\nLocal compute, messaging, and sync for devices\nLearn more"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0083",
+      "tag": "a",
+      "display_text": "Start using the AWS Pricing Calculator",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Start using the AWS Pricing Calculator: Calculate your savings",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Start using the AWS Pricing Calculator"
+        },
+        "get_by_text": {
+          "text": "Start using the AWS Pricing Calculator"
+        }
+      },
+      "technical_locators": {
+        "css": "div>div>div>div:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[3]/main[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Start using the AWS Pricing Calculator"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Start using the AWS Pricing Calculator"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0084",
+      "tag": "a",
+      "display_text": "Create an AWS account",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "footer-create-account-button",
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Create an AWS account"
+        },
+        "get_by_text": {
+          "text": "Create an AWS account"
+        },
+        "get_by_testid": {
+          "testid": "footer-create-account-button"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "footer-create-account-button"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "footer-create-account-button"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Create an AWS account"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0085",
+      "tag": "a",
+      "display_text": "What Is AWS?",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "What Is AWS?"
+        },
+        "get_by_text": {
+          "text": "What Is AWS?"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "What Is AWS?"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "What Is AWS?"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0086",
+      "tag": "a",
+      "display_text": "What Is Cloud Computing?",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "What Is Cloud Computing?"
+        },
+        "get_by_text": {
+          "text": "What Is Cloud Computing?"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "What Is Cloud Computing?"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "What Is Cloud Computing?"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0087",
+      "tag": "a",
+      "display_text": "What Is Agentic AI?",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "What Is Agentic AI?"
+        },
+        "get_by_text": {
+          "text": "What Is Agentic AI?"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "What Is Agentic AI?"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "What Is Agentic AI?"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0088",
+      "tag": "a",
+      "display_text": "Cloud Computing Concepts Hub",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Cloud Computing Concepts Hub"
+        },
+        "get_by_text": {
+          "text": "Cloud Computing Concepts Hub"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li:nth-of-type(4)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[4]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Cloud Computing Concepts Hub"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Cloud Computing Concepts Hub"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0089",
+      "tag": "a",
+      "display_text": "AWS Cloud Security",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Cloud Security"
+        },
+        "get_by_text": {
+          "text": "AWS Cloud Security"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li:nth-of-type(5)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[5]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Cloud Security"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Cloud Security"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0090",
+      "tag": "a",
+      "display_text": "What's New",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "What's New"
+        },
+        "get_by_text": {
+          "text": "What's New"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li:nth-of-type(6)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[6]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "What's New"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "What's New"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0091",
+      "tag": "a",
+      "display_text": "Blogs",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Blogs"
+        },
+        "get_by_text": {
+          "text": "Blogs"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li:nth-of-type(7)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[7]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Blogs"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Blogs"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0092",
+      "tag": "a",
+      "display_text": "Press Releases",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Press Releases"
+        },
+        "get_by_text": {
+          "text": "Press Releases"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(2)>ul>li:nth-of-type(8)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/ul[1]/li[8]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Press Releases"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Press Releases"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0093",
+      "tag": "a",
+      "display_text": "Getting Started",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Getting Started"
+        },
+        "get_by_text": {
+          "text": "Getting Started"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Getting Started"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Getting Started"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0094",
+      "tag": "a",
+      "display_text": "Training",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Training"
+        },
+        "get_by_text": {
+          "text": "Training"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Training"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Training"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0095",
+      "tag": "a",
+      "display_text": "AWS Trust Center",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Trust Center"
+        },
+        "get_by_text": {
+          "text": "AWS Trust Center"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Trust Center"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Trust Center"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0096",
+      "tag": "a",
+      "display_text": "AWS Solutions Library",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Solutions Library"
+        },
+        "get_by_text": {
+          "text": "AWS Solutions Library"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li:nth-of-type(4)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[4]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Solutions Library"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Solutions Library"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0097",
+      "tag": "a",
+      "display_text": "Architecture Center",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Architecture Center"
+        },
+        "get_by_text": {
+          "text": "Architecture Center"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li:nth-of-type(5)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[5]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Architecture Center"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Architecture Center"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0098",
+      "tag": "a",
+      "display_text": "Product and Technical FAQs",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Product and Technical FAQs"
+        },
+        "get_by_text": {
+          "text": "Product and Technical FAQs"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li:nth-of-type(6)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[6]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Product and Technical FAQs"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Product and Technical FAQs"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "navigate_products"
+      ]
+    },
+    {
+      "locator_id": "LOC-0099",
+      "tag": "a",
+      "display_text": "Analyst Reports",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Analyst Reports"
+        },
+        "get_by_text": {
+          "text": "Analyst Reports"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li:nth-of-type(7)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[7]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Analyst Reports"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Analyst Reports"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0100",
+      "tag": "a",
+      "display_text": "AWS Partners",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Partners"
+        },
+        "get_by_text": {
+          "text": "AWS Partners"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(3)>ul>li:nth-of-type(8)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/li[8]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Partners"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Partners"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0101",
+      "tag": "a",
+      "display_text": "Builder Center",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Builder Center"
+        },
+        "get_by_text": {
+          "text": "Builder Center"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(4)>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Builder Center"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Builder Center"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0102",
+      "tag": "a",
+      "display_text": "SDKs & Tools",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "SDKs & Tools"
+        },
+        "get_by_text": {
+          "text": "SDKs & Tools"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(4)>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "SDKs & Tools"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "SDKs & Tools"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0103",
+      "tag": "a",
+      "display_text": ".NET on AWS",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": ".NET on AWS"
+        },
+        "get_by_text": {
+          "text": ".NET on AWS"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(4)>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": ".NET on AWS"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": ".NET on AWS"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0104",
+      "tag": "a",
+      "display_text": "Python on AWS",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Python on AWS"
+        },
+        "get_by_text": {
+          "text": "Python on AWS"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(4)>ul>li:nth-of-type(4)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/ul[1]/li[4]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Python on AWS"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Python on AWS"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0105",
+      "tag": "a",
+      "display_text": "Java on AWS",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Java on AWS"
+        },
+        "get_by_text": {
+          "text": "Java on AWS"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(4)>ul>li:nth-of-type(5)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/ul[1]/li[5]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Java on AWS"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Java on AWS"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0106",
+      "tag": "a",
+      "display_text": "PHP on AWS",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "PHP on AWS"
+        },
+        "get_by_text": {
+          "text": "PHP on AWS"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(4)>ul>li:nth-of-type(6)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/ul[1]/li[6]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "PHP on AWS"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "PHP on AWS"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0107",
+      "tag": "a",
+      "display_text": "JavaScript on AWS",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "JavaScript on AWS"
+        },
+        "get_by_text": {
+          "text": "JavaScript on AWS"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(4)>ul>li:nth-of-type(7)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/ul[1]/li[7]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "JavaScript on AWS"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "JavaScript on AWS"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0108",
+      "tag": "a",
+      "display_text": "Contact Us",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Contact Us"
+        },
+        "get_by_text": {
+          "text": "Contact Us"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Contact Us"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Contact Us"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0109",
+      "tag": "a",
+      "display_text": "File a Support Ticket",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "File a Support Ticket"
+        },
+        "get_by_text": {
+          "text": "File a Support Ticket"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "File a Support Ticket"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "File a Support Ticket"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0110",
+      "tag": "a",
+      "display_text": "AWS re:Post",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS re:Post"
+        },
+        "get_by_text": {
+          "text": "AWS re:Post"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS re:Post"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS re:Post"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0111",
+      "tag": "a",
+      "display_text": "Knowledge Center",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Knowledge Center"
+        },
+        "get_by_text": {
+          "text": "Knowledge Center"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(4)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[4]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Knowledge Center"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Knowledge Center"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0112",
+      "tag": "a",
+      "display_text": "AWS Support Overview",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Support Overview"
+        },
+        "get_by_text": {
+          "text": "AWS Support Overview"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(5)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[5]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Support Overview"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Support Overview"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0113",
+      "tag": "a",
+      "display_text": "AWS Accessibility",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "AWS Accessibility"
+        },
+        "get_by_text": {
+          "text": "AWS Accessibility"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(6)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[6]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "AWS Accessibility"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "AWS Accessibility"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0114",
+      "tag": "a",
+      "display_text": "Legal",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Legal"
+        },
+        "get_by_text": {
+          "text": "Legal"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(7)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[7]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Legal"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Legal"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0115",
+      "tag": "a",
+      "display_text": "Event Code of Conduct",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Event Code of Conduct"
+        },
+        "get_by_text": {
+          "text": "Event Code of Conduct"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(8)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[8]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Event Code of Conduct"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Event Code of Conduct"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0116",
+      "tag": "a",
+      "display_text": "Event Terms & Conditions",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Event Terms & Conditions"
+        },
+        "get_by_text": {
+          "text": "Event Terms & Conditions"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(5)>ul>li:nth-of-type(9)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/li[9]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Event Terms & Conditions"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Event Terms & Conditions"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0117",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "X",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0118",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Facebook",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[2]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(2)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0119",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Linkedin",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(3)",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[3]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(3)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0120",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Instagram",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(4)",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[4]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(4)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0121",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Twitch",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(5)",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[5]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(5)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0122",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Youtube",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(6)",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[6]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(6)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0123",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Podcasts",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(7)",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[7]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(7)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0124",
+      "tag": "a",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": "Email",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(8)",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[9]/div[1]/a[8]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(9)>div>a:nth-of-type(8)"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0125",
+      "tag": "a",
+      "display_text": "Privacy",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Privacy"
+        },
+        "get_by_text": {
+          "text": "Privacy"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(10)>ul>li>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[10]/ul[1]/li[1]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Privacy"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Privacy"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0126",
+      "tag": "a",
+      "display_text": "Site terms",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Site terms"
+        },
+        "get_by_text": {
+          "text": "Site terms"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(10)>ul>li:nth-of-type(2)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[10]/ul[1]/li[2]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Site terms"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Site terms"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0127",
+      "tag": "a",
+      "display_text": "Cookie Preferences",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Cookie Preferences"
+        },
+        "get_by_text": {
+          "text": "Cookie Preferences"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(4)>div>div>div>div>div>div>footer>div>div>div>div>div>div>div>div>div:nth-of-type(10)>ul>li:nth-of-type(3)>a",
+        "xpath": "/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/footer[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[10]/ul[1]/li[3]/a[1]"
+      },
+      "recommended_locator": {
+        "type": "role",
+        "value": {
+          "role": "link",
+          "name": "Cookie Preferences"
+        },
+        "score": 110,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Cookie Preferences"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "suite_id": "smoke",
+  "name": "Smoke Tests",
+  "description": "Quick sanity check: 1 positive scenario per module",
+  "type": "smoke",
+  "scope": "cross_module",
+  "scenarios": [
+    "SC-001",
+    "SC-002",
+    "SC-003"
+  ],
+  "all_modules": false,
+  "modules": [],
+  "execution": {
+    "headless": true,
+    "retries": 1,
+    "timeout": 60000,
+    "parallel": 3
+  },
+  "metadata": {
+    "owner": "QA Team",
+    "estimated_runtime_sec": 180
+  }
+}

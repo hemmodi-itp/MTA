@@ -1,0 +1,2153 @@
+{
+  "url": "https://alterdomus.com/services/investor-management/",
+  "project": "alterDomusInvest",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": "Search here",
+        "aria_label": "When autocomplete results are available use up and down arrows to review and enter to go to the desired page. Touch device users, explore by touch or with swipe gestures.",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": "s",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_placeholder": {
+          "placeholder": "Search here"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(2)>div>header>div>div>div>div>form>div>input",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/header[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/input[1]"
+      },
+      "recommended_locator": {
+        "type": "placeholder",
+        "value": {
+          "placeholder": "Search here"
+        },
+        "score": 120,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "placeholder",
+          "value": {
+            "placeholder": "Search here"
+          },
+          "score": 120,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "s"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "searchsubmit",
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#searchsubmit",
+        "xpath": "//*[@id=\"searchsubmit\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "searchsubmit"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "searchsubmit"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": "Search here",
+        "aria_label": "When autocomplete results are available use up and down arrows to review and enter to go to the desired page. Touch device users, explore by touch or with swipe gestures.",
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": "s",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_placeholder": {
+          "placeholder": "Search here"
+        }
+      },
+      "technical_locators": {
+        "css": "body>div:nth-of-type(2)>div>header>div>div>div:nth-of-type(2)>form>div>input",
+        "xpath": "/html[1]/body[1]/div[2]/div[1]/header[1]/div[1]/div[1]/div[2]/form[1]/div[1]/input[1]"
+      },
+      "recommended_locator": {
+        "type": "placeholder",
+        "value": {
+          "placeholder": "Search here"
+        },
+        "score": 120,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "placeholder",
+          "value": {
+            "placeholder": "Search here"
+          },
+          "score": 120,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "s"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": null,
+        "type": "hidden"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "form>input",
+        "xpath": "/html[1]/body[1]/div[2]/div[2]/main[1]/div[6]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/input[1]"
+      },
+      "recommended_locator": {
+        "type": "css",
+        "value": {
+          "css": "form>input"
+        },
+        "score": 0,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0005",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Instagram",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_278879",
+        "name": "input_278879",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Instagram"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_278879",
+        "xpath": "//*[@id=\"input_34_278879\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_278879"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_278879"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Instagram"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_278879"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0006",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "First",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_8_3",
+        "name": "input_8.3",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "First"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_8_3",
+        "xpath": "//*[@id=\"input_34_8_3\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_8_3"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_8_3"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "First"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_8.3"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0007",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Last",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_8_6",
+        "name": "input_8.6",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Last"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_8_6",
+        "xpath": "//*[@id=\"input_34_8_6\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_8_6"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_8_6"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Last"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_8.6"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0008",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Company*",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_3",
+        "name": "input_3",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Company*"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_3",
+        "xpath": "//*[@id=\"input_34_3\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_3"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_3"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Company*"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_3"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0009",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Email*",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_4",
+        "name": "input_4",
+        "type": "email"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Email*"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_4",
+        "xpath": "//*[@id=\"input_34_4\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_4"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_4"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Email*"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_4"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0010",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Phone number",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_5",
+        "name": "input_5",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Phone number"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_5",
+        "xpath": "//*[@id=\"input_34_5\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_5"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_5"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Phone number"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_5"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0011",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "City",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_10_3",
+        "name": "input_10.3",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "City"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_10_3",
+        "xpath": "//*[@id=\"input_34_10_3\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_10_3"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_10_3"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "City"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_10.3"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0012",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_10_4",
+        "name": "input_10.4",
+        "type": "hidden"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_10_4",
+        "xpath": "//*[@id=\"input_34_10_4\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_10_4"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_10_4"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_10.4"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0013",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Less than $250M",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_14_0",
+        "name": "input_14",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Less than $250M"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_14_0",
+        "xpath": "//*[@id=\"choice_34_14_0\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_14_0"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_14_0"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Less than $250M"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_14"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0014",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "$250M-$500M",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_14_1",
+        "name": "input_14",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "$250M-$500M"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_14_1",
+        "xpath": "//*[@id=\"choice_34_14_1\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_14_1"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_14_1"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "$250M-$500M"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_14"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0015",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "$500M-$1B",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_14_2",
+        "name": "input_14",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "$500M-$1B"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_14_2",
+        "xpath": "//*[@id=\"choice_34_14_2\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_14_2"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_14_2"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "$500M-$1B"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_14"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0016",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "$1B-$5B",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_14_3",
+        "name": "input_14",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "$1B-$5B"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_14_3",
+        "xpath": "//*[@id=\"choice_34_14_3\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_14_3"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_14_3"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "$1B-$5B"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_14"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0017",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "More than $5B",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_14_4",
+        "name": "input_14",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "More than $5B"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_14_4",
+        "xpath": "//*[@id=\"choice_34_14_4\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_14_4"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_14_4"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "More than $5B"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_14"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0018",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Private Equity",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_18_0",
+        "name": "input_18",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Private Equity"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_18_0",
+        "xpath": "//*[@id=\"choice_34_18_0\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_18_0"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_18_0"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Private Equity"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_18"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0019",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Venture Capital",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_18_1",
+        "name": "input_18",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Venture Capital"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_18_1",
+        "xpath": "//*[@id=\"choice_34_18_1\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_18_1"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_18_1"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Venture Capital"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_18"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0020",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Private Credit",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_18_2",
+        "name": "input_18",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Private Credit"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_18_2",
+        "xpath": "//*[@id=\"choice_34_18_2\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_18_2"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_18_2"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Private Credit"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_18"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0021",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Real Estate",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_18_3",
+        "name": "input_18",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Real Estate"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_18_3",
+        "xpath": "//*[@id=\"choice_34_18_3\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_18_3"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_18_3"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Real Estate"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_18"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0022",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Infrastructure",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_18_4",
+        "name": "input_18",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Infrastructure"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_18_4",
+        "xpath": "//*[@id=\"choice_34_18_4\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_18_4"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_18_4"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Infrastructure"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_18"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0023",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Other",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "choice_34_18_5",
+        "name": "input_18",
+        "type": "radio"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "Other"
+        }
+      },
+      "technical_locators": {
+        "css": "#choice_34_18_5",
+        "xpath": "//*[@id=\"choice_34_18_5\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "choice_34_18_5"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "choice_34_18_5"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Other"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_18"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0024",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "I consent to the processing of my personal data for the purposes of treating my request. Privacy notice.*",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_7_1",
+        "name": "input_7.1",
+        "type": "checkbox"
+      },
+      "playwright_locators": {
+        "get_by_label": {
+          "label": "I consent to the processing of my personal data for the purposes of treating my request. Privacy notice.*"
+        }
+      },
+      "technical_locators": {
+        "css": "#input_34_7_1",
+        "xpath": "//*[@id=\"input_34_7_1\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_7_1"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_7_1"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "I consent to the processing of my personal data for the purposes of treating my request. Privacy notice.*"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_7.1"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0025",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": "input_7.2",
+        "type": "hidden"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "fieldset:nth-of-type(5)>div>input:nth-of-type(2)",
+        "xpath": "/html[1]/body[1]/div[2]/div[2]/main[1]/div[6]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[1]/div[1]/fieldset[5]/div[1]/input[2]"
+      },
+      "recommended_locator": {
+        "type": "name",
+        "value": {
+          "name": "input_7.2"
+        },
+        "score": 100,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "name",
+          "value": {
+            "name": "input_7.2"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0026",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": null,
+        "name": "input_7.3",
+        "type": "hidden"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "fieldset:nth-of-type(5)>div>input:nth-of-type(3)",
+        "xpath": "/html[1]/body[1]/div[2]/div[2]/main[1]/div[6]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[1]/div[1]/fieldset[5]/div[1]/input[3]"
+      },
+      "recommended_locator": {
+        "type": "name",
+        "value": {
+          "name": "input_7.3"
+        },
+        "score": 100,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "name",
+          "value": {
+            "name": "input_7.3"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0027",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_9",
+        "name": "input_9",
+        "type": "hidden"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_9",
+        "xpath": "//*[@id=\"input_34_9\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_9"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_9"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_9"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0028",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_15",
+        "name": "input_15",
+        "type": "hidden"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_15",
+        "xpath": "//*[@id=\"input_34_15\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_15"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_15"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_15"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0029",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_278870",
+        "name": "input_278870",
+        "type": "text"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_278870",
+        "xpath": "//*[@id=\"input_34_278870\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_278870"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_278870"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_278870"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0030",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_278871",
+        "name": "input_278871",
+        "type": "text"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_278871",
+        "xpath": "//*[@id=\"input_34_278871\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_278871"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_278871"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_278871"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0031",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_278872",
+        "name": "input_278872",
+        "type": "text"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_278872",
+        "xpath": "//*[@id=\"input_34_278872\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_278872"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_278872"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_278872"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0032",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_278873",
+        "name": "input_278873",
+        "type": "text"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_278873",
+        "xpath": "//*[@id=\"input_34_278873\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_278873"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_278873"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_278873"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0033",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_278874",
+        "name": "input_278874",
+        "type": "text"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_278874",
+        "xpath": "//*[@id=\"input_34_278874\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_278874"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_278874"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_278874"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    },
+    {
+      "locator_id": "LOC-0034",
+      "tag": "input",
+      "display_text": "",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": null,
+        "id": "input_34_278875",
+        "name": "input_278875",
+        "type": "text"
+      },
+      "playwright_locators": {},
+      "technical_locators": {
+        "css": "#input_34_278875",
+        "xpath": "//*[@id=\"input_34_278875\"]"
+      },
+      "recommended_locator": {
+        "type": "id",
+        "value": {
+          "id": "input_34_278875"
+        },
+        "score": 140,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "id",
+          "value": {
+            "id": "input_34_278875"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "input_278875"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": false,
+        "enabled": true
+      },
+      "intent_hints": []
+    }
+  ]
+}

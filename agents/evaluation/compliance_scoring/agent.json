@@ -1,0 +1,29 @@
+{
+  "name": "ComplianceScoringAgent",
+  "registry_key": "compliance_scoring",
+  "category": "evaluation",
+  "module_path": "agents.evaluation.compliance_scoring.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Pure, versioned scoring: evidence-weighted BRD Compliance Score with bootstrap confidence band, verification depth, quality scorecard, pass/warn/block gates and recommendations.",
+  "inputs": [
+    { "name": "requirements", "type": "array", "required": true, "description": "Requirements with origin, priority, verifiability and criteria" },
+    { "name": "criterion_verdicts", "type": "array", "required": true, "description": "From RequirementTraceabilityAgent" },
+    { "name": "findings", "type": "array", "required": false, "description": "From RepositoryReviewAgent" },
+    { "name": "scorecard", "type": "object", "required": false, "description": "From RepositoryReviewAgent" },
+    { "name": "test_cases", "type": "array", "required": false, "description": "For passed/failed counts" },
+    { "name": "execution_results", "type": "array", "required": false, "description": "For passed/failed counts" },
+    { "name": "mode", "type": "string", "required": true, "description": "Submission mode" },
+    { "name": "live_reachable", "type": "boolean", "required": false, "description": "Whether runtime verification was possible" }
+  ],
+  "outputs": [
+    { "name": "score", "type": "object", "description": "Compliance, CI, verification depth, kind, gates, scorecard, risk and legacy fields" },
+    { "name": "recommendations", "type": "array", "description": "Prioritised actions from verdicts and findings" },
+    { "name": "summary", "type": "string", "description": "One-paragraph result" }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

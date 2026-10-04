@@ -1,0 +1,228 @@
+{
+  "project": "App_Compliance_with_docs",
+  "schema_version": "1.0",
+  "last_updated": "2026-09-24T10:56:52.696246+00:00",
+  "last_run_id": "e3741282-9f24-49a2-9fff-270fbb0fb688",
+  "discovery": {
+    "dom_fingerprint": "sha256:ccec2512b7dae22bd1e5db275b96f96bb95ab76c99c409755b41f2399d95a950",
+    "brd_fingerprint": "",
+    "last_discovered": "2026-09-23T10:32:56.221259+00:00",
+    "cached_output": {
+      "status": "success",
+      "intents_path": "application_assets\\projects\\App_Compliance_with_docs\\test_creation\\intents.yaml",
+      "dom_status": "success",
+      "dom_intents_count": 7,
+      "dom_intents_path": "application_assets\\projects\\App_Compliance_with_docs\\test_comprehension\\dom_intents.json",
+      "dom_elements_path": "application_assets\\projects\\App_Compliance_with_docs\\test_comprehension\\dom_elements.json",
+      "dom_intents_raw": [
+        {
+          "intent_id": "DOM_INT_001",
+          "intent_name": "click_switch_to_dark_mode",
+          "action": "click",
+          "locator_id": "LOC-0001",
+          "value": null,
+          "expected_result": "switch_to_dark_mode_opened"
+        },
+        {
+          "intent_id": "DOM_INT_002",
+          "intent_name": "click_open_the_demo_project",
+          "action": "click",
+          "locator_id": "LOC-0002",
+          "value": null,
+          "expected_result": "open_the_demo_project_opened"
+        },
+        {
+          "intent_id": "DOM_INT_003",
+          "intent_name": "click_brd_compliance_criterionlevel",
+          "action": "click",
+          "locator_id": "LOC-0003",
+          "value": null,
+          "expected_result": "brd_compliance_criterionlevel_opened"
+        },
+        {
+          "intent_id": "DOM_INT_004",
+          "intent_name": "click_new_project",
+          "action": "click",
+          "locator_id": "LOC-0004",
+          "value": null,
+          "expected_result": "new_project_opened"
+        },
+        {
+          "intent_id": "DOM_INT_005",
+          "intent_name": "click_delete",
+          "action": "click",
+          "locator_id": "LOC-0005",
+          "value": null,
+          "expected_result": "delete_opened"
+        },
+        {
+          "intent_id": "DOM_INT_006",
+          "intent_name": "click_shopflow_demo",
+          "action": "click",
+          "locator_id": "LOC-0006",
+          "value": null,
+          "expected_result": "shopflow_demo_opened"
+        },
+        {
+          "intent_id": "DOM_INT_007",
+          "intent_name": "click_open",
+          "action": "click",
+          "locator_id": "LOC-0007",
+          "value": null,
+          "expected_result": "open_opened"
+        }
+      ],
+      "comprehension_status": "success",
+      "scenarios_count": 3,
+      "business_scenarios_path": "application_assets\\projects\\App_Compliance_with_docs\\test_comprehension\\business_scenarios.json",
+      "comprehension_source": "ui_scanner",
+      "mode": "url_only",
+      "module": "discovery"
+    }
+  },
+  "summary": {
+    "total_scenarios": 0,
+    "total_test_cases": 11,
+    "grounded_intents": 0,
+    "passing_tests": 0,
+    "failing_tests": 7
+  },
+  "business_scenarios": {},
+  "test_cases": {
+    "GEN_BS_001": {
+      "name": "Toggle Application Theme using Dark Mode Switch",
+      "scenario": "GEN_BS_001",
+      "suite": "M01",
+      "status": "pending",
+      "test_data_hash": "sha256:18c1f9e22f12e3420ffc8b42f58f289184adcc89621ad8ea4fad36d609b477dc",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "GEN_BS_002": {
+      "name": "Open Demo Project",
+      "scenario": "GEN_BS_002",
+      "suite": "M01",
+      "status": "pending",
+      "test_data_hash": "sha256:1480314b43c880361331846d95373c607dccdcb45f00b58749acb94c0c2087c7",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "GEN_BS_003": {
+      "name": "Access BRD Compliance Criterion Level View",
+      "scenario": "GEN_BS_003",
+      "suite": "M01",
+      "status": "pending",
+      "test_data_hash": "sha256:e2eb2e2168613bf9ddd57851b581215e7576725c3b8f12d24a3fc7e13323521f",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M01_BS_001": {
+      "name": "Switch Application Theme to Dark Mode",
+      "scenario": "M01_BS_001",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:fdd86a00d856a448b6f276034753ee67d6850ab848d39a877177802d6b12eca5",
+      "last_run": "2026-09-23",
+      "last_run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263"
+    },
+    "M01_BS_002": {
+      "name": "Open Demo Project",
+      "scenario": "M01_BS_002",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:bd2b0a6ea077dc9ff0da936938b612849eb746cb1eb520ea573d25490f2ccf14",
+      "last_run": "2026-09-23",
+      "last_run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263"
+    },
+    "M01_BS_003": {
+      "name": "Access BRD Compliance Criterion Level View",
+      "scenario": "M01_BS_003",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:abd9495b798bad88e1f18211a1d6938643884b36d77cc551795946833dfefd0f",
+      "last_run": "2026-09-23",
+      "last_run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263"
+    },
+    "GEN_BS_004": {
+      "name": "Create a New Project",
+      "scenario": "GEN_BS_004",
+      "suite": "M01",
+      "status": "pending",
+      "test_data_hash": "sha256:77feaf15f05b7124e1dde42a1c68f2795be038fcf35064b1c4d1677e6a12e636",
+      "last_run": "",
+      "last_run_id": ""
+    },
+    "M01_BS_004": {
+      "name": "Create New Project",
+      "scenario": "M01_BS_004",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:ade3d01ad569acdc9d423c86c08d0ba6579fbdafc103409241981610765e0817",
+      "last_run": "2026-09-23",
+      "last_run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263"
+    },
+    "M01_BS_005": {
+      "name": "Delete Item or Resource",
+      "scenario": "M01_BS_005",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:2d4f9a15e7d76deb45a1f6752463ff7fd479b5d074b05e8b800fc3f90173afe6",
+      "last_run": "2026-09-23",
+      "last_run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263"
+    },
+    "M01_BS_006": {
+      "name": "Access Shopflow Demo",
+      "scenario": "M01_BS_006",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:5acff82846e68913a1e8f0ced4d14088b276e4da1800a13be6f094469c5c3879",
+      "last_run": "2026-09-23",
+      "last_run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263"
+    },
+    "M01_BS_007": {
+      "name": "Execute Open Action",
+      "scenario": "M01_BS_007",
+      "suite": "M01",
+      "status": "failing",
+      "test_data_hash": "sha256:cd46349cf9f97ac098feb69198797f858affd9cb962db67f1f59b06bcb85836c",
+      "last_run": "2026-09-23",
+      "last_run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263"
+    }
+  },
+  "new_additions": [
+    "GEN_BS_001",
+    "GEN_BS_002",
+    "GEN_BS_003",
+    "M01_BS_001",
+    "M01_BS_002",
+    "GEN_BS_004",
+    "M01_BS_004",
+    "M01_BS_005",
+    "M01_BS_006",
+    "M01_BS_007"
+  ],
+  "gaps": {
+    "uncovered_scenarios": [],
+    "ungrounded_intents": []
+  },
+  "run_history": [
+    {
+      "run_id": "af15aa97-b844-459a-bf7f-f71d4ed7e263",
+      "timestamp": "2026-09-23T10:45:45.489265+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 3,
+      "failed": 13,
+      "total": 16
+    },
+    {
+      "run_id": "02768e72-dc9a-472b-9ea0-9d55c641e102",
+      "timestamp": "2026-09-17T14:10:10.058642+00:00",
+      "workflow": "",
+      "status": "success",
+      "passed": 0,
+      "failed": 10,
+      "total": 10
+    }
+  ]
+}

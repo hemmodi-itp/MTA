@@ -1,0 +1,26 @@
+# healing_only.yaml — test_execution category, standalone
+#
+# Step 1: healing   — heal failing test() blocks from an already-existing execution report
+# Step 2: reporting — Playwright JSON + test_suite.json → HTML + JSON reports
+#
+# Assumes ui_execution has already run and produced test_execution/reports/json/{ts}_results.json for
+# this project — this workflow re-heals against the most recent report without re-running tests.
+
+steps:
+  - name: healing
+    description: "Heal failing test() blocks — root cause + blast radius + block-level patch"
+    # Inputs:   test_execution/reports/json/{ts}_results.json
+    #           comprehension/dom_elements.json
+    #           test_creation/test_scripts/*.spec.ts
+    # Outputs:  patched .spec.ts files
+    #           test_creation/test_suite.json → status "healed"
+
+  - name: reporting
+    description: "Aggregate Playwright results + test_suite.json → HTML + JSON reports"
+    always_run: true
+    depends_on: [healing]
+    # Inputs:   test_execution/reports/json/{ts}_results.json
+    #           test_creation/test_suite.json
+    # Outputs:  test_execution/reports/html/{ts}_{project}.html
+    #           test_execution/reports/json/{ts}_{project}.json
+    #           test_execution/reports/index.json

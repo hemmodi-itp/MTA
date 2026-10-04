@@ -1,0 +1,13 @@
+project:
+  name: alterDomusInvest
+  application_name: Alter Domus Investing
+  url: https://alterdomus.com/services/investor-management/
+  browser: chromium
+  headless: false
+
+input:
+  # Directory OR single file path — ComprehensionAgent handles both
+  brd_dir: application_assets/projects/alterDomusInvest/inputs/
+
+test_execution:
+  suite: alterDomusInvest

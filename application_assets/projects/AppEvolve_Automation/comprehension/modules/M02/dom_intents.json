@@ -1,0 +1,36 @@
+{
+  "url": "https://pt-dev.appevolve.intuitive.ai/appevolve/dashboard",
+  "project": "AppEvolve_Automation",
+  "scan_mode": "interactive",
+  "pages": [
+    {
+      "page_id": "PAGE-001",
+      "page_name": "appevolve_dashboard",
+      "path": "/appevolve/dashboard",
+      "intent_count": 1,
+      "intents": [
+        {
+          "intent_id": "INT-001",
+          "intent_name": "click_finish_recording",
+          "action": "click",
+          "locator_id": "LOC-0001",
+          "page_id": "PAGE-001",
+          "value": null,
+          "expected_result": "finish_recording_opened"
+        }
+      ]
+    }
+  ],
+  "intent_count": 1,
+  "intents": [
+    {
+      "intent_id": "INT-001",
+      "intent_name": "click_finish_recording",
+      "action": "click",
+      "locator_id": "LOC-0001",
+      "page_id": "PAGE-001",
+      "value": null,
+      "expected_result": "finish_recording_opened"
+    }
+  ]
+}

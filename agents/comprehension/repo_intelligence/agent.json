@@ -1,0 +1,62 @@
+{
+  "name": "RepoIntelligenceAgent",
+  "registry_key": "repo_intelligence",
+  "category": "comprehension",
+  "module_path": "agents.comprehension.repo_intelligence.agent",
+  "version": "2.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": false,
+  "description": "Deterministically indexes every fetched source language into a knowledge graph (routes, handlers, pages, forms, API calls, agents, prompts, config, tests, dependencies) plus code chunks, with coverage (indexed by language, skipped by reason); cached per commit in Postgres (not cached without a commit SHA).",
+  "inputs": [
+    {
+      "name": "repo_dir",
+      "type": "string",
+      "required": true,
+      "description": "Fetched repository root"
+    },
+    {
+      "name": "repo_tree",
+      "type": "array",
+      "required": false,
+      "description": "Full file list of the branch"
+    },
+    {
+      "name": "repo_full_name",
+      "type": "string",
+      "required": true,
+      "description": "owner/repo (cache key)"
+    },
+    {
+      "name": "commit_sha",
+      "type": "string",
+      "required": false,
+      "description": "Commit (cache key)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "snapshot_id",
+      "type": "string|null",
+      "description": "RepoSnapshot id actually used (null when not cached: no SHA or no database)"
+    },
+    {
+      "name": "repo_graph",
+      "type": "object",
+      "description": "In-memory knowledge graph for this run"
+    },
+    {
+      "name": "code_chunks",
+      "type": "array",
+      "description": "Symbol-sized code chunks for retrieval"
+    },
+    {
+      "name": "repo_model",
+      "type": "object",
+      "description": "Counts, routes, pages, models, env vars, build plan, risk signals and coverage (files_indexed, by_language, skipped, unfetched/unindexed source)"
+    }
+  ],
+  "dependencies": [],
+  "skills": [],
+  "doc": "agent.md"
+}

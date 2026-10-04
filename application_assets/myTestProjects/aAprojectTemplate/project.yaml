@@ -1,0 +1,79 @@
+project:
+  name: AWS_Test                  # matches folder name under application_assets/projects/
+  application_name: Your Application     # human-readable app name (used in reports and LLM prompts)
+  browser: chromium                       # chromium | firefox | webkit
+  headless: false                        # false = visible browser; true = background (CI)
+  interactive_scan: false                 # false = automated headless/headed crawl (no user input needed)
+                                          # true  = user-guided session — you navigate, scanner records
+                                          #         (start with: python main.py --project YourProjectName --record)
+
+input:
+  # Directory containing per-module BRD files.
+  # Each module entry below references a brd_file relative to this directory.
+  brd_dir: application_assets/projects/YourProjectName/inputs
+
+# ── Auth — leave enabled: false if login is tested AS a module scenario ─────
+# (that's the recommended default — see modules[].setup below for the usual
+# way to get past a login screen before scanning/testing a page that sits
+# behind it). Only enable this top-level block if you need a *pipeline-wide*
+# authenticated session reused across every module via a saved storageState.
+# After enabling, run:  python main.py --project YourProjectName --auth-setup
+auth:
+  enabled: false
+  strategy: storageState                  # storageState = reuse saved session across runs
+                                          # live_login   = re-authenticate on every pipeline run
+  storage_state_path: application_assets/projects/YourProjectName/.auth/auth.json
+
+
+modules:
+  - id: M01
+    name: Module One Name           # e.g. Login, Dashboard, Search, Checkout
+    url: https://yourapp.com/       # URL discovery scans and every generated spec in this module navigates to
+    brd_file: module_01_name.md     # BRD file inside inputs/ for this module
+
+  - id: M02
+    name: Module Two Name
+    url: https://yourapp.com/page2
+    brd_file: module_02_name.md
+    # setup: a sequence of goto/fill/click/wait steps run BEFORE both (1) the
+    # discovery DOM scan of `url` above, and (2) every generated .spec.ts file
+    # for this module (injected as a shared test.beforeAll hook) — the one
+    # place to describe "how do I get to a usable state" (typically a login)
+    # once, and have it apply everywhere this module is used.
+    #
+    # fill supports either a literal `value`, or `value_env` to pull a secret
+    # from an environment variable (.env) — never commit real credentials
+    # into project.yaml or generated test scripts.
+    #
+    # setup:
+    #   - goto: https://yourapp.com/login
+    #   - fill:
+    #       selector: "#username"
+    #       value_env: YOURPROJECT_USERNAME
+    #   - fill:
+    #       selector: "#password"
+    #       value_env: YOURPROJECT_PASSWORD
+    #   - click: "#login-button"
+    #   - wait: 2000
+
+  # Add more modules as your coverage grows:
+  # - id: M03
+  #   name: Module Three Name
+  #   url: https://yourapp.com/page3
+  #   brd_file: module_03_name.md
+
+
+test_generation:
+  max_negative_cases: 1     # 0 disables negative-case generation entirely
+  max_boundary_cases: 1     # 0 disables boundary-case generation entirely
+  max_data_iterations: 3    # alternate value sets tried within each negative/boundary test
+
+test_execution:
+  suite: YourProjectName
+
+# ── Suites (optional) — named scenario groupings for `--suite` ──────────────
+# Define suites under test_suites/*.json (see test_suites/test_suites.md),
+# then run one with:
+#   python main.py --project YourProjectName --suite smoke
+# Suite scenario lists accept any spec_id scheme the pipeline has produced —
+# legacy hyphenated ("BS-001") or the current module-scoped ("M03_BS_006").
