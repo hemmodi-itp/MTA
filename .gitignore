@@ -90,7 +90,8 @@ Thumbs.db
 
 # Logs and workflow
 *.log
-logs/
+# root-anchored: an unanchored logs/ also swallowed frontend/src/app/api/runs/[runId]/logs/
+/logs/
 workflow_runs/
 
 # Test
