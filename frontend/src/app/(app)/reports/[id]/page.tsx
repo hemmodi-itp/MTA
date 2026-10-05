@@ -1,7 +1,8 @@
 "use client";
 
-import { use } from "react";
-import { Download } from "lucide-react";
+import { use, useState } from "react";
+import { Download, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,15 +18,40 @@ const RISK_COPY: Record<string, string> = {
   high: "Critical issues found — review before relying on this build.",
 };
 
+/** Fetches the server-rendered PDF (the evaluation service renders it, which takes a few seconds) and saves it. */
+async function downloadReportPdf(runId: string) {
+  const res = await fetch(`/api/runs/${runId}/report?format=pdf`);
+  if (!res.ok) {
+    const body = (await res.json().catch(() => null)) as { error?: string } | null;
+    throw new Error(body?.error ?? (res.status === 404 ? "This run has no final report to download." : "The PDF could not be downloaded."));
+  }
+  const name = /filename="([^"]+)"/.exec(res.headers.get("Content-Disposition") ?? "")?.[1] ?? `mta-report-${runId}.pdf`;
+  const url = URL.createObjectURL(await res.blob());
+  const a = Object.assign(document.createElement("a"), { href: url, download: name });
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function ReportDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const run = useRun(id);
   const recommendations = useRecommendations(id);
+  const [downloading, setDownloading] = useState(false);
 
   if (run.isLoading) return <Skeleton className="h-96 rounded-lg" />;
   if (run.isError || !run.data) return <ErrorState message="Report not found." onRetry={run.refetch} />;
 
   const data = run.data;
+  const onDownload = async () => {
+    setDownloading(true);
+    try {
+      await downloadReportPdf(id);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "The PDF could not be downloaded.");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -34,9 +60,9 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
           <h1 className="text-xl font-semibold">Quality Report</h1>
           <p className="text-sm text-muted-foreground">{data.projectName} · run {data.id}</p>
         </div>
-        <Button className="gap-2">
-          <Download className="size-4" />
-          Download PDF
+        <Button className="gap-2" onClick={onDownload} disabled={downloading}>
+          {downloading ? <Loader2 className="size-4 animate-spin" /> : <Download className="size-4" />}
+          {downloading ? "Preparing PDF…" : "Download PDF"}
         </Button>
       </div>
 

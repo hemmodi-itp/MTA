@@ -23,6 +23,7 @@ AQP_ARTIFACT_RETENTION_DAYS (default 30), AQP_ALLOW_PRIVATE_TARGETS (local dev o
 """
 
 import hmac
+import json
 import logging
 import os
 import shutil
@@ -34,7 +35,7 @@ from typing import Dict, List, Optional, Set
 
 import yaml
 from dotenv import dotenv_values, load_dotenv
-from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi import FastAPI, Header, HTTPException, Request, Response
 from pydantic import BaseModel, Field
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -79,6 +80,7 @@ _configure_service_logging(SETTINGS)
 
 from agents.registry_setup import build_default_registry  # noqa: E402
 from api.pipeline import HEARTBEAT_S, SERVICE_STOPPING, AgentEvaluationPipeline  # noqa: E402
+from engines.report.pdf import html_to_pdf  # noqa: E402
 from engines.runtime.paths import artifact_root  # noqa: E402
 from tools.agent_eval.copilot import answer as copilot_answer  # noqa: E402
 from tools.agent_eval.run_store import RunStore  # noqa: E402
@@ -284,6 +286,25 @@ def start_run(run_id: str, request: Request, x_aqp_token: Optional[str] = Header
     started = _submit(run_id)
     return {"run_id": run_id, "started": started, "status": "cloning" if started else "queued",
             **({} if started else {"detail": f"waiting for a free worker ({MAX_RUNS} runs at a time)"})}
+
+
+@app.get("/runs/{run_id}/report.pdf")
+def report_pdf(run_id: str, request: Request, x_aqp_token: Optional[str] = Header(default=None)) -> Response:
+    """The run's Final Evaluation Report as a PDF (the web app checks the user's access before calling this)."""
+    _check_token(x_aqp_token, request)
+    row = store.load_run(run_id)
+    report = (row or {}).get("finalReport")
+    if isinstance(report, str):
+        report = json.loads(report)
+    html = (report or {}).get("html") if isinstance(report, dict) else None
+    if not html:
+        raise HTTPException(status_code=404, detail="this run has no final report")
+    try:
+        pdf = html_to_pdf(html)
+    except Exception as exc:
+        logger.warning(f"Report PDF for run {run_id} failed: {type(exc).__name__}: {exc}")
+        raise HTTPException(status_code=502, detail="The PDF could not be generated.")
+    return Response(content=pdf, media_type="application/pdf")
 
 
 @app.post("/runs/{run_id}/cancel", status_code=202)

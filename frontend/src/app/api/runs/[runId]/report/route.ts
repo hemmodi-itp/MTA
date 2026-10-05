@@ -1,12 +1,13 @@
 import { prisma } from "@/lib/db";
 import { notFound, requireUser, visibleRuns } from "@/lib/api/server/access";
+import { BACKEND_URL, backendHeaders } from "@/lib/api/server/evaluation";
 
 type StoredReport = { data: Record<string, unknown>; markdown: string; html: string };
 
 /**
  * The run's Final Evaluation Report (engines/report/final.py), stored in Run.finalReport.
  *   ?format=html (default)  the printable page, inline but sandboxed: no scripts, links open in a new tab
- *   ?format=md | json       downloads
+ *   ?format=md | json | pdf downloads (the PDF is rendered by the evaluation service)
  */
 export async function GET(request: Request, { params }: { params: Promise<{ runId: string }> }) {
   const { user, response } = await requireUser();
@@ -24,6 +25,23 @@ export async function GET(request: Request, { params }: { params: Promise<{ runI
   if (format === "md") {
     return new Response(report.markdown, {
       headers: { "Content-Type": "text/markdown; charset=utf-8", "Content-Disposition": `attachment; filename="${base}.md"` },
+    });
+  }
+  if (format === "pdf") {
+    // rendered by the evaluation service (Chromium); the access check above is the only gate
+    let res: Response;
+    try {
+      res = await fetch(`${BACKEND_URL}/runs/${run.id}/report.pdf`, {
+        headers: backendHeaders(), cache: "no-store", signal: AbortSignal.timeout(90_000),
+      });
+    } catch {
+      return Response.json({ error: "The MTA evaluation service is not reachable, so the PDF can't be made right now." }, { status: 503 });
+    }
+    if (!res.ok || !res.body) {
+      return Response.json({ error: "The PDF could not be generated. Try again, or open the report and print it." }, { status: 502 });
+    }
+    return new Response(res.body, {
+      headers: { "Content-Type": "application/pdf", "Content-Disposition": `attachment; filename="${base}.pdf"`, "Cache-Control": "private, no-store" },
     });
   }
   if (format === "json") {
