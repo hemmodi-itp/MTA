@@ -16,16 +16,15 @@ import { StatusOverview } from "@/components/dashboard/status-overview";
 import { PerformanceMatrix } from "@/components/dashboard/performance-matrix";
 import { ErrorState } from "@/components/shared/error-state";
 import { stagger } from "@/lib/motion";
-import { brief, inScope, insights, portfolioKpis, projectHealth, sparkline } from "@/lib/insights";
+import { brief, insights, portfolioKpis, projectHealth, sparkline } from "@/lib/insights";
 import { useProjects, useRuns } from "@/lib/query/hooks";
-import { useUIStore } from "@/lib/stores/ui-store";
 
 function DashboardSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="shimmer h-56 rounded-2xl" />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="shimmer h-36 rounded-2xl" />)}</div>
       <div className="grid gap-4 xl:grid-cols-3"><div className="shimmer h-80 rounded-2xl xl:col-span-2" /><div className="shimmer h-80 rounded-2xl" /></div>
+      <div className="shimmer h-56 rounded-2xl" />
     </div>
   );
 }
@@ -38,7 +37,7 @@ function EmptyPortfolio() {
         <Radar className="size-8" />
       </motion.div>
       <div>
-        <p className="text-lg font-semibold">No completed evaluations in this workspace yet</p>
+        <p className="text-lg font-semibold">No completed evaluations yet</p>
         <p className="mt-1 max-w-md text-sm text-muted-foreground">Submit a repository with its BRD and live URL. MTA traces every requirement to code, tests the live app and scores compliance.</p>
       </div>
       <Link href="/projects/new" className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-violet px-4 text-sm font-semibold text-white shadow-lg shadow-primary/25">
@@ -51,14 +50,14 @@ function EmptyPortfolio() {
 export default function DashboardPage() {
   const projectsQ = useProjects();
   const runsQ = useRuns();
-  const workspace = useUIStore((s) => s.workspace);
 
   const view = useMemo(() => {
-    const { runs, projects } = inScope(runsQ.data ?? [], projectsQ.data ?? [], workspace);
+    const runs = runsQ.data ?? [];
+    const projects = projectsQ.data ?? [];
     const health = projectHealth(runs);
     const kpis = portfolioKpis(runs, health);
     return { runs, projects, health, kpis, trend: sparkline(runs), insights: insights(runs, health), brief: brief(runs, health, kpis) };
-  }, [runsQ.data, projectsQ.data, workspace]);
+  }, [runsQ.data, projectsQ.data]);
 
   if (projectsQ.isError || runsQ.isError) return <ErrorState onRetry={() => { projectsQ.refetch(); runsQ.refetch(); }} />;
   if (projectsQ.isLoading || runsQ.isLoading) return <DashboardSkeleton />;
@@ -73,8 +72,6 @@ export default function DashboardPage() {
 
   return (
     <motion.div variants={stagger(0.07)} initial="hidden" animate="show" className="space-y-6">
-      <BriefHero headline={view.brief.headline} lines={view.brief.lines} generatedAt={new Date()} chips={chips} />
-
       {health.length === 0 ? <EmptyPortfolio /> : (
         <>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -110,7 +107,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="grid gap-4 xl:grid-cols-12">
-            <Section title="Status overview" hint="All runs in this workspace by outcome." className="xl:col-span-3">
+            <Section title="Status overview" hint="All your runs by outcome." className="xl:col-span-3">
               <StatusOverview runs={view.runs} />
             </Section>
             <Section title="Performance matrix" hint="Latest run per project: compliance, runtime test outcomes, verification depth and duration." className="xl:col-span-5">
@@ -124,6 +121,8 @@ export default function DashboardPage() {
           </div>
         </>
       )}
+
+      <BriefHero headline={view.brief.headline} lines={view.brief.lines} chips={chips} />
     </motion.div>
   );
 }

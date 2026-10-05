@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   type ColumnDef,
   flexRender,
@@ -41,11 +40,7 @@ const columns: ColumnDef<TestCase>[] = [
   {
     accessorKey: "scenarioTitle",
     header: "Scenario",
-    cell: ({ row }) => (
-      <Link href={`/test-cases/${row.original.id}`} className="font-medium hover:underline">
-        {row.original.scenarioTitle}
-      </Link>
-    ),
+    cell: ({ row }) => <span className="font-medium">{row.original.scenarioTitle}</span>,
   },
   { accessorKey: "module", header: "Module" },
   { accessorKey: "variantType", header: "Variant" },

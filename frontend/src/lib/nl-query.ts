@@ -86,13 +86,7 @@ export function parseQuery(raw: string, projects: Project[], runs: Run[]): Inten
   const below = t.match(/\b(below|under|less than|<)\s*(\d{1,3})\b/);
   const above = t.match(/\b(above|over|more than|>)\s*(\d{1,3})\b/);
   const blocked = /\bblock(ed|ing)?\b|\bgates?\b/.test(t);
-  const wantsTests = /\btests?( cases?)?\b/.test(t) && !/\b(runs?|evaluations?)\b/.test(t);
 
-  if (wantsTests && status) {
-    const map: Record<string, string> = { failed: "failed", completed: "passed", running: "all", queued: "all" };
-    intents.push({ kind: "navigate", label: `Show ${status[2] === "completed" ? "passed" : status[2]} test cases`,
-      description: "Test cases across your evaluations", href: `/test-cases?status=${map[status[1]]}` });
-  }
   if (status || window || below || above || blocked || (project && /\bruns?|evaluations?|history\b/.test(t))) {
     const q = new URLSearchParams();
     const parts: string[] = [];

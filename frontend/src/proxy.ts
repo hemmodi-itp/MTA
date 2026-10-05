@@ -7,7 +7,7 @@ import { NextResponse, type NextRequest } from "next/server";
 // Prisma/node:crypto out of the proxy bundle.
 const SESSION_COOKIE = "aqp_session";
 
-const PROTECTED = ["/dashboard", "/projects", "/reports", "/runs", "/settings", "/test-cases"];
+const PROTECTED = ["/dashboard", "/projects", "/reports", "/runs", "/settings"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

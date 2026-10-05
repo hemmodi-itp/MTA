@@ -2,8 +2,7 @@
  * Portfolio analytics for the dashboard — derived only from the runs the user can see (no mock data).
  * Deterministic: the "AI brief" and insights are rules over real numbers, so they can be trusted and explained.
  */
-import type { Project, Run } from "@/lib/types";
-import type { WorkspaceScope } from "@/lib/stores/ui-store";
+import type { Run } from "@/lib/types";
 import { ACTIVE_RUN_STATUSES, isActiveStatus } from "@/lib/run-status";
 
 export const ACTIVE_STATUSES = ACTIVE_RUN_STATUSES;
@@ -25,11 +24,6 @@ export const scoreOf = (r: Run): number | null => {
 export const formatScore = (score: number | null | undefined) => (score == null ? "—" : String(Math.round(score)));
 export type Band = "good" | "warn" | "bad" | "none";
 export const band = (v: number | null | undefined): Band => (v == null ? "none" : v >= 75 ? "good" : v >= 50 ? "warn" : "bad");
-
-export function inScope(runs: Run[], projects: Project[], scope: WorkspaceScope) {
-  const keep = (sample: boolean) => scope === "all" || (scope === "samples" ? sample : !sample);
-  return { runs: runs.filter((r) => keep(r.projectIsSample)), projects: projects.filter((p) => keep(p.isSample)) };
-}
 
 export interface ProjectHealth {
   projectId: string;

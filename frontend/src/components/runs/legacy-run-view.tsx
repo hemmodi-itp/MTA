@@ -69,14 +69,11 @@ export function LegacyRunView({ run: data }: { run: Run }) {
 
       {data.stats.failed > 0 && (
         <Card className="border-critical/40 bg-critical/5">
-          <CardContent className="flex items-center justify-between">
+          <CardContent>
             <p className="text-sm">
               <span className="font-medium">{data.stats.criticalDefects} critical failure(s)</span> need review before this
               is production-ready.
             </p>
-            <Button asChild size="sm" variant="outline">
-              <Link href="/test-cases">View failed tests</Link>
-            </Button>
           </CardContent>
         </Card>
       )}

@@ -8,8 +8,8 @@ import { useUIStore } from "@/lib/stores/ui-store";
 import { fadeUp, stagger } from "@/lib/motion";
 
 /** Hero: the MTA brief — one headline and the few facts behind it, written from the live portfolio numbers. */
-export function BriefHero({ headline, lines, generatedAt, chips }: {
-  headline: string; lines: string[]; generatedAt: Date; chips: { label: string; href: string }[];
+export function BriefHero({ headline, lines, chips }: {
+  headline: string; lines: string[]; chips: { label: string; href: string }[];
 }) {
   const askCopilot = useUIStore((s) => s.askCopilot);
   return (
@@ -22,8 +22,7 @@ export function BriefHero({ headline, lines, generatedAt, chips }: {
 
       <motion.div variants={stagger(0.08)} initial="hidden" animate="show" className="relative max-w-4xl space-y-4">
         <motion.p variants={fadeUp} className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
-          <Sparkles className="size-3.5" /> MTA brief · {generatedAt.toLocaleDateString([], { weekday: "long" })} ·{" "}
-          {generatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          <Sparkles className="size-3.5" /> MTA brief
         </motion.p>
         <motion.h2 variants={fadeUp} className="text-gradient text-2xl font-bold leading-tight tracking-tight sm:text-[32px] sm:leading-[1.15]">
           {headline}

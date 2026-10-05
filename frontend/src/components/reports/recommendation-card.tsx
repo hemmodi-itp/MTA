@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { AlertOctagon, TrendingDown, ShieldAlert, FlaskConical, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Recommendation } from "@/lib/types";
@@ -33,15 +32,5 @@ export function RecommendationCard({ recommendation }: { recommendation: Recomme
     SEVERITY_CLASS[recommendation.severity]
   );
 
-  // Only test cases have a detail page today — a scenario-evidenced recommendation
-  // renders as a plain (non-clickable) card instead of linking somewhere that 404s.
-  if (recommendation.evidenceType !== "test_case") {
-    return <div className={className}>{body}</div>;
-  }
-
-  return (
-    <Link href={`/test-cases/${recommendation.evidenceRef}`} className={cn(className, "transition-colors hover:bg-muted/50")}>
-      {body}
-    </Link>
-  );
+  return <div className={className}>{body}</div>;
 }

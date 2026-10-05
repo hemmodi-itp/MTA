@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProjects, fetchProject, createProject, deleteLiveAuth, rerunProject, type CreateProjectInput } from "@/lib/api/projects";
 import {
   cancelRun,
@@ -12,7 +12,7 @@ import {
   fetchRuns,
   LogCursorError,
 } from "@/lib/api/runs";
-import { fetchTestCases, fetchTestCasePage, fetchTestCase, fetchScenarios, fetchRecommendations } from "@/lib/api/test-cases";
+import { fetchTestCases, fetchScenarios, fetchRecommendations } from "@/lib/api/test-cases";
 import { isActiveStatus } from "@/lib/run-status";
 import type { RunLogs, RunStatus } from "@/lib/types";
 
@@ -165,20 +165,6 @@ export function useTestCases(runId: string, status?: RunStatus) {
     enabled: !!runId,
     refetchInterval: isActiveStatus(status) ? 5000 : false,
   });
-}
-
-/** Every visible test case, 200 at a time (Test cases page). */
-export function useAllTestCases() {
-  return useInfiniteQuery({
-    queryKey: ["test-cases", "all"],
-    queryFn: ({ pageParam }) => fetchTestCasePage(pageParam),
-    initialPageParam: undefined as string | undefined,
-    getNextPageParam: (last) => last.nextCursor ?? undefined,
-  });
-}
-
-export function useTestCase(id: string) {
-  return useQuery({ queryKey: ["test-cases", "detail", id], queryFn: () => fetchTestCase(id), enabled: !!id });
 }
 
 export function useScenarios(runId?: string) {

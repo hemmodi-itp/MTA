@@ -14,19 +14,6 @@ export async function fetchTestCases(runId: string): Promise<TestCase[]> {
   return json(await fetch(withRunId("/api/test-cases", runId), { cache: "no-store" }));
 }
 
-/** One page of every visible test case; `nextCursor` is null on the last page. */
-export async function fetchTestCasePage(cursor?: string): Promise<{ rows: TestCase[]; nextCursor: string | null }> {
-  const res = await fetch(`/api/test-cases?limit=200${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ""}`, { cache: "no-store" });
-  const rows = await json<TestCase[]>(res);
-  return { rows, nextCursor: res.headers.get("X-Next-Cursor") };
-}
-
-export async function fetchTestCase(id: string): Promise<TestCase | undefined> {
-  const res = await fetch(`/api/test-cases/${id}`, { cache: "no-store" });
-  if (res.status === 404) return undefined;
-  return json(res);
-}
-
 export async function fetchScenarios(runId?: string): Promise<Scenario[]> {
   return json(await fetch(withRunId("/api/scenarios", runId), { cache: "no-store" }));
 }

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const fontSans = Plus_Jakarta_Sans({
+// Inter: a UI face with even word spacing at every size (globals.css turns on its cv11 / ss01 alternates)
+const fontSans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const fontMono = IBM_Plex_Mono({

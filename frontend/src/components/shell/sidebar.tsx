@@ -3,16 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronLeft, ChevronsUpDown, Command, LogOut, Plus, Sparkles, X } from "lucide-react";
-import { useMemo } from "react";
+import { Check, ChevronLeft, Command, Laptop, LogOut, Moon, Plus, Sparkles, Sun, X } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useSyncExternalStore } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
-import { isActiveStatus, useProjects, useRuns } from "@/lib/query/hooks";
-import { useUIStore, type WorkspaceScope } from "@/lib/stores/ui-store";
+import { isActiveStatus, useRuns } from "@/lib/query/hooks";
+import { useUIStore } from "@/lib/stores/ui-store";
 import { logout } from "@/app/actions/auth";
 import type { CurrentUser } from "@/lib/auth/session";
 import { NAV, SETTINGS_NAV, type NavItem } from "./nav";
@@ -25,11 +26,7 @@ export function initials(user: CurrentUser) {
   return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase() || "?";
 }
 
-const SCOPES: { value: WorkspaceScope; label: string; hint: string }[] = [
-  { value: "all", label: "All projects", hint: "Yours and the shared samples" },
-  { value: "mine", label: "My projects", hint: "Only repos you submitted" },
-  { value: "samples", label: "Samples", hint: "Shared demo evaluations" },
-];
+const THEMES = [["light", Sun, "Light"], ["dark", Moon, "Dark"], ["system", Laptop, "System"]] as const;
 
 function Reveal({ show, children, className }: { show: boolean; children: React.ReactNode; className?: string }) {
   return (
@@ -90,17 +87,47 @@ function NavLink({ item, active, open, badge, onNavigate }: { item: NavItem; act
   );
 }
 
+/** Appearance: light / dark / follow the OS. Shows the current choice when the sidebar is open. */
+function ThemeSwitch({ open }: { open: boolean }) {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  // true only on the client: the theme is unknown during SSR, so render a neutral icon until hydrated
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
+  const Icon = !mounted ? Sun : theme === "system" ? Laptop : resolvedTheme === "dark" ? Moon : Sun;
+  const current = THEMES.find(([v]) => v === theme)?.[2] ?? "System";
+  const trigger = (
+    <DropdownMenuTrigger aria-label="Theme"
+      className={cn("group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground outline-none transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
+        !open && "justify-center px-0")}>
+      <motion.span key={mounted ? `${theme}-${resolvedTheme}` : "ssr"} initial={{ rotate: -40, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}>
+        <Icon className="size-[18px] shrink-0 transition-transform group-hover:scale-110" />
+      </motion.span>
+      <Reveal show={open} className="flex-1 text-left">Theme</Reveal>
+      {open && mounted && <span className="text-xs text-muted-foreground">{current}</span>}
+    </DropdownMenuTrigger>
+  );
+  return (
+    <DropdownMenu>
+      {open ? trigger : (
+        <Tooltip><TooltipTrigger asChild>{trigger}</TooltipTrigger><TooltipContent side="right">Theme</TooltipContent></Tooltip>
+      )}
+      <DropdownMenuContent side="right" align="end" className="w-40 rounded-xl">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">Appearance</DropdownMenuLabel>
+        {THEMES.map(([v, I, l]) => (
+          <DropdownMenuItem key={v} onSelect={() => setTheme(v)} className={cn("gap-2", theme === v && "text-primary")}>
+            <I className="size-3.5" /> {l}
+            {theme === v && <Check className="ml-auto size-3.5" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function SidebarBody({ user, open, onNavigate }: { user: CurrentUser; open: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
   const runs = useRuns();
-  const projects = useProjects();
-  const { workspace, setWorkspace, setCopilotOpen, setCommandPaletteOpen } = useUIStore();
+  const { setCopilotOpen, setCommandPaletteOpen } = useUIStore();
   const active = (runs.data ?? []).filter((r) => isActiveStatus(r.status)).length;
-  const counts = useMemo(() => {
-    const list = projects.data ?? [];
-    return { all: list.length, mine: list.filter((p) => !p.isSample).length, samples: list.filter((p) => p.isSample).length };
-  }, [projects.data]);
-  const scope = SCOPES.find((s) => s.value === workspace) ?? SCOPES[0];
 
   const quick = [
     { label: "Ask Copilot", icon: Sparkles, kbd: "⌘J", onClick: () => { setCopilotOpen(true); onNavigate?.(); } },
@@ -120,36 +147,6 @@ function SidebarBody({ user, open, onNavigate }: { user: CurrentUser; open: bool
           <span className="text-[11px] font-medium text-muted-foreground">Master Testing Agent</span>
         </Reveal>
       </div>
-
-      {/* workspace switcher */}
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          className={cn("flex h-11 items-center gap-2.5 rounded-xl border border-border bg-muted/40 px-2.5 text-left text-sm outline-none transition-colors hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/60",
-            !open && "justify-center px-0")}
-          aria-label="Switch workspace scope"
-        >
-          <span className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-success/80 to-primary/80 text-[11px] font-bold text-white">
-            {scope.label[0]}
-          </span>
-          <Reveal show={open} className="flex min-w-0 flex-1 flex-col leading-tight">
-            <span className="truncate font-medium">{scope.label}</span>
-            <span className="text-[11px] text-muted-foreground">{counts[scope.value]} project{counts[scope.value] === 1 ? "" : "s"}</span>
-          </Reveal>
-          {open && <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />}
-        </DropdownMenuTrigger>
-        <DropdownMenuContent side="right" align="start" className="w-64 rounded-xl">
-          <DropdownMenuLabel className="text-xs text-muted-foreground">Workspace scope</DropdownMenuLabel>
-          {SCOPES.map((s) => (
-            <DropdownMenuItem key={s.value} onSelect={() => setWorkspace(s.value)} className="gap-2.5 py-2">
-              <div className="flex-1">
-                <p className="text-sm font-medium">{s.label} <span className="text-muted-foreground">· {counts[s.value]}</span></p>
-                <p className="text-xs text-muted-foreground">{s.hint}</p>
-              </div>
-              {workspace === s.value && <Check className="size-4 text-primary" />}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
 
       {/* navigation */}
       <nav className="flex flex-col gap-1" aria-label="Main">
@@ -192,6 +189,7 @@ function SidebarBody({ user, open, onNavigate }: { user: CurrentUser; open: bool
 
       {/* profile */}
       <div className="mt-auto flex flex-col gap-1">
+        <ThemeSwitch open={open} />
         <NavLink item={SETTINGS_NAV} open={open} active={pathname.startsWith("/settings")} onNavigate={onNavigate} />
         <DropdownMenu>
           <DropdownMenuTrigger className={cn("flex items-center gap-3 rounded-xl border border-border bg-muted/30 p-2 text-left outline-none transition-colors hover:bg-muted/60",
