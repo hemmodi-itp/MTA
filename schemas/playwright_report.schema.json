@@ -1,0 +1,43 @@
+{
+  "$id": "mta://schemas/playwright_report.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "Playwright's own JSON reporter output — a third-party format, checked loosely.",
+  "properties": {
+    "config": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config"
+    },
+    "stats": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Stats"
+    },
+    "suites": {
+      "items": {},
+      "title": "Suites",
+      "type": "array"
+    }
+  },
+  "title": "PlaywrightReportLoose",
+  "type": "object",
+  "x-mta-artifact": "playwright_report",
+  "x-mta-kind": "plain"
+}

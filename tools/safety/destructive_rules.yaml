@@ -1,0 +1,80 @@
+# Action-safety classifier rules (tools/safety/action_classifier.py).
+#
+# Matching is case-insensitive on whole words against the target's accessible
+# name (plus words split out of the locator key / id / test-id). A `safe` phrase
+# found in the text overrides every destructive match — it lists common UI
+# controls whose wording overlaps a destructive verb but changes no data.
+#
+# Edit this file (not the code) to tune the classifier; every change must keep
+# tests/unit/test_safety_action_classifier.py green.
+
+destructive:
+  delete:
+    - delete
+    - remove
+    - destroy
+    - erase
+    - purge
+    - wipe
+    - trash
+    - discard
+  payment:
+    - pay
+    - pay now
+    - purchase
+    - buy
+    - buy now
+    - place order
+    - confirm order
+    - complete order
+    - submit order
+    - confirm payment
+    - submit payment
+    - complete purchase
+  send:
+    - send
+  transfer:
+    - transfer
+    - withdraw
+    - wire
+  account:
+    - deactivate
+    - close account
+    - close my account
+    - disable account
+    - terminate
+    - unsubscribe
+    - cancel subscription
+    - cancel order
+    - cancel plan
+    - cancel membership
+    - cancel account
+    - revoke
+  reset:
+    - reset
+
+# Phrases that make an otherwise-matching control non-destructive.
+safe:
+  - remove filter
+  - remove filters
+  - remove all filters
+  - remove sort
+  - reset filter
+  - reset filters
+  - reset form
+  - reset search
+  - reset sort
+  - reset view
+  - reset zoom
+  - delete filter
+  - send code          # one-time-passcode / verification code request
+  - send verification
+  - resend
+  - buy box            # product-detail heading on marketplace pages
+
+# URL / href patterns (regular expressions, case-insensitive) that mark a
+# navigation or link click as destructive regardless of its visible name.
+url_patterns:
+  - '/(delete|remove|destroy|purge|deactivate|unsubscribe|revoke)(/|$|\?|-|_)'
+  - '[?&](action|op|cmd)=(delete|remove|destroy|purge)'
+  - '/(pay|payment/confirm|place-?order|confirm-?order)(/|$|\?)'

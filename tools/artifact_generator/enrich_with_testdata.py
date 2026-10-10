@@ -24,10 +24,8 @@ def load_test_data(project_assets_dir: str) -> List[dict]:
     Returns empty list if file is not found.
     """
     path = os.path.join(project_assets_dir, "test_creation", "test_data", "test_data.json")
-    if not os.path.exists(path):
-        return []
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
+    from contracts.artifacts import load_records
+    return load_records(path)  # v1 list or v2 envelope; [] when missing
 
 
 def _normalize(name: str) -> str:

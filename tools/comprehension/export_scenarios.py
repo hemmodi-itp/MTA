@@ -157,8 +157,8 @@ def export_scenarios(
     }
     if merged_module_ids:
         payload["modules"] = merged_module_ids
-    with open(json_path, "w", encoding="utf-8") as fh:
-        json.dump(payload, fh, indent=2, ensure_ascii=False)
+    from contracts.artifacts import save_artifact
+    save_artifact("business_scenarios", json_path, payload)
 
     # --- Markdown ---
     md_lines = [

@@ -1,6 +1,7 @@
 import path from 'path';
 import { test as base, Page } from '@playwright/test';
-import { ActionEngine } from '../ActionEngine';
+import { ActionEngine, RuntimeSafety } from '../ActionEngine';
+import { allowedHostsFromEnv, isUrlAllowed } from '../safety';
 
 type PageRegistry = Record<string, new (page: Page) => Record<string, unknown>>;
 
@@ -51,6 +52,16 @@ export const test = base.extend<Fixtures>({
         const pageErrors: string[] = [];
         page.on('pageerror', (err) => pageErrors.push(err.message));
 
+        // Phase 0 safety rail: a top-level navigation (redirect, link click)
+        // to a host outside MTA_ALLOWED_HOSTS is recorded, and ActionEngine
+        // fails the next action. Sub-resources (CDN, analytics) are unaffected.
+        const safety: RuntimeSafety = { allowedHosts: allowedHostsFromEnv(), violations: [] };
+        page.on('framenavigated', (frame) => {
+            if (frame === page.mainFrame() && !isUrlAllowed(frame.url(), safety.allowedHosts)) {
+                safety.violations.push(frame.url());
+            }
+        });
+
         const moduleId = extractModuleId(testInfo.file);
         const registry = loadPageRegistry();
         // pages.ts keys its PAGE_REGISTRY by each locator's _module_id, which
@@ -70,7 +81,7 @@ export const test = base.extend<Fixtures>({
         }
         const pageObject = new PageClass(page) as Record<string, any>;
 
-        await use(new ActionEngine(page, pageObject, pageErrors));
+        await use(new ActionEngine(page, pageObject, pageErrors, safety));
     }
 });
 

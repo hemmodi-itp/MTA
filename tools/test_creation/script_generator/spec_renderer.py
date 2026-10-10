@@ -47,6 +47,8 @@ import json
 import os
 from typing import Dict, List, Optional
 
+from tools.safety.hosts import is_absolute_web_url as _is_absolute_web_url
+
 
 def _ts_str(value) -> str:
     """JSON string-literal syntax is valid TS/JS double-quoted string syntax."""
@@ -336,6 +338,11 @@ def render_spec_from_plan(
             raise ValueError("render_spec_from_plan: plan uses a flow but no `project` was given")
         flows_import = _import_path_to_flows_module(spec_rel_path, project)
         lines.append(f"import * as flows from '{flows_import}';")
+
+    # Phase 0.6: pin the spec to its own module's URL, so a run spanning several
+    # modules can never send this spec to another module's (or a default) URL.
+    if _is_absolute_web_url(base_url):
+        lines += ["", f"test.use({{ baseURL: {_ts_str(base_url)} }});"]
 
     lines += [
         "",

@@ -57,3 +57,22 @@ so a step's module is imported only when that step first runs.
 - A step returning `status: failed` with `blocking: True` stops the entire workflow immediately.
 - All exceptions are swallowed at the orchestrator level — `run()` itself never raises; the caller
   (`main.py`) always gets a result dict with a `status` field.
+
+## Artifact contract validation (Phase 0.7)
+
+Right after each step returns (`_check_contracts`, also on the cached-discovery skip
+path), the artifacts that step produces (`contracts/artifacts/boundary.py::STEP_ARTIFACTS`)
+are validated against their Pydantic contracts. Mode is `project.yaml`
+`contracts.enforce`:
+
+- `warn` (default) — violations are added to the step's `partial_reasons` and a `success`
+  step becomes `partial`; the run continues.
+- `block` — the step becomes `status: failed, blocking: True` and the run stops through the
+  normal blocking-failure path.
+
+Every result carries `contract_checks: {checked, failed, mode, violations}`. A missing
+artifact is not a violation. The validator never raises into the step loop.
+
+`load_project_manifest` now also resolves `environment`, `safety` (the full
+`SafetyPolicy`, including derived `allowed_hosts`) and `contracts` into the request; a
+manifest without `environment:` logs a warning and is gated like prod.

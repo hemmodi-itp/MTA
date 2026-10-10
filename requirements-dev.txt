@@ -1,0 +1,4 @@
+# Test / development dependencies (not needed to run MTA or the evaluation service).
+-r requirements.txt
+pytest>=8.0
+httpx>=0.27          # fastapi.testclient (benchmark app tests)

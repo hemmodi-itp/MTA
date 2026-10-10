@@ -15,6 +15,7 @@ from tools.state import project_state_manager as psm
 from exceptions import AgentExecutionError
 
 from tools.constants import PROJECTS_BASE as _PROJECTS_DIR
+from contracts.artifacts.boundary import apply_enforcement, validate_step_outputs
 from tools.project_manifest import load_project_manifest, narrow_to_module
 
 
@@ -69,6 +70,33 @@ class OrchestratorAgent:
             f"ns_base_url={flat.get('ns_base_url')}"
         )
         return flat
+
+    def _check_contracts(self, step: str, result, project_name: str, request: dict):
+        """Validate the artifacts *step* produced (contracts.enforce: warn | block).
+        Never raises — a validator crash is logged and the result returned as is."""
+        if not isinstance(result, dict) or result.get("status") == "failed":
+            return result
+        mode = (request.get("contracts") or {}).get("enforce", "warn")
+        try:
+            safe = re.sub(r"[^A-Za-z0-9_-]", "_", project_name).strip("_") or "project"
+            reports = validate_step_outputs(os.path.join(_PROJECTS_DIR, safe), step, result)
+        except Exception as exc:
+            self.logger.warning(f"Contract validation for step '{step}' could not run: {exc}")
+            return result
+        if result.get("status") == "skipped":
+            for r in reports:
+                if not r.ok:
+                    self.logger.warning(f"  Contract violation (cached {step}): {r.artifact} {r.path}: {r.errors[:3]}")
+            return result
+        checked = apply_enforcement(result, reports, mode)
+        failed = checked["contract_checks"]["failed"]
+        if failed:
+            self.logger.warning(
+                f"Step {step}: {failed} artifact(s) failed their contract (mode={mode})"
+            )
+        elif reports:
+            self.logger.info(f"Step {step}: {len(reports)} artifact(s) passed contract validation")
+        return checked
 
     def run(self, request: dict, workflow: object) -> dict:
         self.state.workflow_id = request.get("workflow", workflow.workflow_id)
@@ -154,6 +182,8 @@ class OrchestratorAgent:
                         self.state.start_step(step)
                         self.state.update_step(step, {**cached, "module": "discovery", "status": "skipped", "reason": "fingerprint_unchanged"})
                         self.state.finish_step(step, status="skipped")
+                        # Cached artifacts are still checked (logged only — nothing ran).
+                        self._check_contracts(step, {"status": "skipped"}, project_name, request)
                         continue
 
             self.logger.info(f"Starting step {step}")
@@ -189,6 +219,8 @@ class OrchestratorAgent:
 
             try:
                 result = self._try_with_fallbacks(step, request)
+                # Phase 0.7 — validate this step's artifacts at the boundary.
+                result = self._check_contracts(step, result, project_name, request)
 
                 self.state.update_step(step, result)
                 step_status = result.get("status", "success") if isinstance(result, dict) else "success"

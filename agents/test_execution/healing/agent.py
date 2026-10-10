@@ -193,8 +193,16 @@ async def _drive_loop(loop_agent, app_name: str) -> None:
         role="user",
         parts=[genai_types.Part(text="Begin healing. Call read_failure_report first.")],
     )
-    async for _event in runner.run_async(user_id=user_id, session_id=session_id, new_message=kickoff):
-        pass
+    from connectors.llm import usage as usage_log
+
+    # Phase 0.3 benchmark metric — best-effort token accounting for the ADK loop
+    # (model-turn events carry usage_metadata in Gemini's shape; tool turns don't).
+    model = getattr(loop_agent.sub_agents[0], "model", None) if loop_agent.sub_agents else None
+    model_name = model if isinstance(model, str) else getattr(model, "model", None) or "adk-model"
+    async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=kickoff):
+        meta = getattr(event, "usage_metadata", None)
+        if meta is not None:
+            usage_log.record_gemini(model_name, meta, source="healing_adk")
 
 
 # ── Loaders ────────────────────────────────────────────────────────────────────
@@ -236,15 +244,9 @@ def _load_project_urls(safe_project: str) -> "tuple[Dict[str, str], str]":
 
 def _load_test_data_map(path: str) -> Dict[str, Any]:
     """Return {scenario_id: test_data_record} from test_data.json."""
-    if not os.path.exists(path):
-        return {}
-    with open(path, encoding="utf-8") as f:
-        raw = json.load(f)
-    if isinstance(raw, list):
-        return {r.get("scenario_id", ""): r for r in raw if r.get("scenario_id")}
-    if isinstance(raw, dict):
-        return raw
-    return {}
+    # v1 list, v2 envelope or a legacy id-map — contracts.artifacts handles all three.
+    from contracts.artifacts import load_records
+    return {r.get("scenario_id", ""): r for r in load_records(path) if isinstance(r, dict) and r.get("scenario_id")}
 
 
 def _load_json_or_empty(path: str) -> dict:
@@ -280,8 +282,8 @@ def _update_suite_status(suite_path: str, healed_files: List[str], status: str) 
             if spec.get("file") in healed_set:
                 spec["status"] = status
                 spec["healed_at"] = datetime.now(timezone.utc).isoformat()
-        with open(suite_path, "w", encoding="utf-8") as f:
-            json.dump(suite, f, indent=2, ensure_ascii=False)
+        from contracts.artifacts import save_artifact
+        save_artifact("test_suite", suite_path, suite)
     except Exception:
         pass
 

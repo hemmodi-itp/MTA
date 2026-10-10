@@ -242,8 +242,8 @@ def save_dom_scan(
         elements_doc["scan_mode"] = "interactive"
         elements_doc["total_element_count"] = scan_data.get("total_element_count", len(elements))
         elements_doc["pages"] = pages
-    with open(elements_path, "w", encoding="utf-8") as f:
-        json.dump(elements_doc, f, indent=2, ensure_ascii=False)
+    from contracts.artifacts import save_artifact
+    save_artifact("dom_elements", elements_path, elements_doc)
 
     if drift["added"] or drift["updated"] or drift["possibly_removed"]:
         from tools.state.review_queue import record_locator_drift

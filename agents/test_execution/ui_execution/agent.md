@@ -55,3 +55,27 @@ derived from `spec_file` via the `BS-\d+` pattern.
 
 No tiered fallback — infrastructure failures (missing scripts dir, Playwright not installed, process
 launch failure) return `status: failed` directly.
+
+## Base URL resolution (Phase 0.6) — fail fast, no default
+
+`_run_playwright` resolves the target with `tools/base_url.py`: `request["url"]` →
+`project.url` → the URL of the targeted module(s) → the single distinct module URL. If
+nothing resolves it returns `status: failed, blocking: True` without starting Playwright
+(the old silent `localhost:3000` fallback is gone). A run whose specs span modules with
+**different** URLs is split into one Playwright run per module, each with its own
+`BASE_URL`, and the results are merged (`_merge_runs`; a failed sub-run's error is kept in
+`run_errors`).
+
+## Safety rails (Phase 0.5)
+
+`MTA_ALLOWED_HOSTS` is always set from the project's `SafetyPolicy` (`safety.allowed_hosts`,
+or the hosts of the project's own URLs). The shared runtime (`ActionEngine.navigate` and the
+fixture's main-frame `framenavigated` guard, `application_assets/_shared/runtime/safety.ts`)
+fails the step when the page goes to a host outside that list. A base URL whose host is not
+allowed is logged as a warning.
+
+## Normalised run record (Phase 0.7)
+
+Every completed run also writes `test_execution/reports/mta/{ts}.execution_results.json`
+(contract `execution_results` v2: counts, base URL, per-test results). It lives outside
+`reports/json/`, which HealingAgent scans for the latest Playwright report.

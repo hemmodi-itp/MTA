@@ -145,8 +145,8 @@ def stamp_execution_results(project_dir: str, results: List[Dict[str, Any]]) -> 
         updated += 1
 
     if updated:
-        with open(suite_path, "w", encoding="utf-8") as f:
-            json.dump(suite, f, indent=2, ensure_ascii=False)
+        from contracts.artifacts import save_artifact
+        save_artifact("test_suite", suite_path, suite)
     return updated
 
 

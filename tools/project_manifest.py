@@ -13,6 +13,7 @@ from typing import Optional
 import yaml
 
 from tools.constants import PROJECTS_BASE as _PROJECTS_DIR
+from tools.safety.policy import SafetyPolicy, warn_if_unspecified
 
 
 def load_project_manifest(project_name: str) -> dict:
@@ -38,7 +39,23 @@ def load_project_manifest(project_name: str) -> dict:
     auth = raw.get("auth")
     if auth and auth.get("enabled"):
         flat["auth"] = auth
+    # Phase 0 safety rails — `environment:` + `safety:` (see tools/safety/policy.py).
+    # Always present, so every agent sees the same resolved policy; a manifest
+    # without `environment:` resolves to "unspecified" (gated like prod) + a warning.
+    policy = SafetyPolicy.from_project_config(raw)
+    warn_if_unspecified(policy, project_name)
+    flat["environment"] = policy.environment
+    flat["safety"] = policy.to_request()
+    # Phase 0 artifact contracts — boundary-validation mode (warn | block).
+    flat["contracts"] = resolve_contracts_config(raw)
     return {k: v for k, v in flat.items() if v is not None}
+
+
+def resolve_contracts_config(raw: dict) -> dict:
+    """project.yaml `contracts:` block -> {"enforce": "warn"|"block"} (default warn)."""
+    block = raw.get("contracts") if isinstance(raw.get("contracts"), dict) else {}
+    enforce = str(block.get("enforce", "warn")).strip().lower()
+    return {"enforce": enforce if enforce in ("warn", "block") else "warn"}
 
 
 def narrow_to_module(flat: dict, module_filter: Optional[str], project_name: str) -> dict:

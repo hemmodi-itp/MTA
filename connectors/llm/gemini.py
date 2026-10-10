@@ -25,7 +25,7 @@ import threading
 import time
 from typing import Any, Dict, Iterable, List, Optional
 
-from connectors.llm import call_policy
+from connectors.llm import call_policy, usage as usage_log
 from connectors.llm.base import LLMBlockedError, LLMConnector, LLMTimeoutError, LLMTruncatedError
 from connectors.llm.call_policy import llm_stats  # noqa: F401 — re-exported for api /health
 
@@ -127,8 +127,10 @@ class GeminiConnector(LLMConnector):
         """Join streamed chunks, enforcing the overall deadline and checking finish / block reasons."""
         parts: List[str] = []
         finish = block = ""
+        usage_meta = None
         try:
             for chunk in chunks:
+                usage_meta = getattr(chunk, "usage_metadata", None) or usage_meta
                 text = getattr(chunk, "text", None)
                 if text:
                     parts.append(text)
@@ -147,6 +149,7 @@ class GeminiConnector(LLMConnector):
                 except Exception:
                     pass
         text = "".join(parts)
+        usage_log.record_gemini(self.model, usage_meta, source=what)
         self._check_reasons(finish, block, len(text), what)
         return text
 
@@ -171,6 +174,7 @@ class GeminiConnector(LLMConnector):
             hit = cache.get(cache_key)
             if hit is not None:
                 call_policy.record(cache_hits=1)
+                usage_log.record("gemini", self.model, 0, 0, cached=True, source=what)
                 _log.debug(f"{what}: cache hit ({prompt_chars:,} prompt chars, model {self.model})")
                 return hit
 
@@ -206,6 +210,7 @@ class GeminiConnector(LLMConnector):
 
         def attempt(deadline: float) -> str:
             response = client.models.generate_content(model=self.model, contents=prompt, config=self._config())
+            usage_log.record_gemini(self.model, getattr(response, "usage_metadata", None), source="Gemini generate")
             block = _reason(getattr(getattr(response, "prompt_feedback", None), "block_reason", None))
             cands = getattr(response, "candidates", None) or []
             finish = _reason(getattr(cands[0], "finish_reason", None)) if cands else ""

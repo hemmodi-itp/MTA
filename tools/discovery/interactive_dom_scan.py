@@ -180,16 +180,17 @@ def save_dom_scan_interactive(
     )
 
     # ── dom_elements.json ────────────────────────────────────────────
+    from contracts.artifacts import stamp
     with open(elements_path, "w", encoding="utf-8") as f:
         json.dump(
-            {
+            stamp("dom_elements", {
                 "url": url,
                 "project": project_name,
                 "scan_mode": "interactive",
                 "total_element_count": sum(len(p.get("elements", [])) for p in pages) or len(elements),
                 "elements": elements,   # backward-compat: first page elements
                 "pages": pages,
-            },
+            }),
             f,
             indent=2,
             ensure_ascii=False,

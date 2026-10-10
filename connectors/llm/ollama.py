@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Optional
 
+from connectors.llm import usage as usage_log
 from connectors.llm.base import LLMConnector
 
 _log = logging.getLogger("workflow.llm")
@@ -35,4 +36,5 @@ class OllamaConnector(LLMConnector):
         response.raise_for_status()
         data = response.json()
         _log.info(f"[tokens] model={self.model}  eval_count={data.get('eval_count', '?')}")
+        usage_log.record("ollama", self.model, data.get("prompt_eval_count"), data.get("eval_count"))
         return data.get("response", "")

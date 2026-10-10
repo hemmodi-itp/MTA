@@ -91,3 +91,13 @@ patched block.
 No CSS-based or other deterministic fallback exists for this agent. If Gemini/ADK is genuinely
 unavailable (missing `GOOGLE_API_KEY`, ADK import/runtime error), `execute()` returns
 `status: "failed"` with a clear error rather than silently degrading to a weaker healing strategy.
+
+## Phase 0 notes
+
+- `test_data.json` is read through `contracts.artifacts.load_records` (v1 or v2);
+  `test_suite.json` status stamps are written as schema_version 2 documents.
+- Token usage of the ADK loop is recorded (best effort, from event `usage_metadata`) by
+  `connectors/llm/usage.py` for the benchmark's cost metric.
+- Known gaps recorded in `docs/audit/current_state.md` (not changed in Phase 0):
+  `apply_patch` does not restrict assertion values inside a block; `repair_named_locator`
+  heals are not counted in `tests_healed`.

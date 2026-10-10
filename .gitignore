@@ -290,3 +290,7 @@ __marimo__/
 
 # Node dependencies (root Playwright runner and frontend/)
 node_modules/
+
+# Benchmark (Phase 0): generated MTA projects for benchmark apps are rebuilt by
+# `python -m tools.benchmark.run`; only benchmarks/results/ is committed.
+application_assets/projects/bench_*/

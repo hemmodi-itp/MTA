@@ -45,3 +45,22 @@ get an assertion/navigation-oriented positive dataset instead of form-field valu
 `_llm_pipeline` also returns `coverage_pct`/`coverage_warning` — the percentage of scenarios in the
 batch that got a usable positive dataset (or legitimately needed none, e.g. read-only scenarios with
 no negative variants either). Logs a warning below 50%.
+
+## Security-probe payloads (Phase 0.5)
+
+Unless the project's `SafetyPolicy` allows security probes (`safety.allow_security_probes:
+true` **and** `environment` local/dev/staging — prod and an undeclared environment always
+refuse), negative/boundary iterations whose values carry an active attack payload (XSS,
+SQL/NoSQL injection, path traversal, template/command injection —
+`tools/safety/payloads.py`) are removed after generation; a variant left with no
+iterations is removed too. Positive datasets are never altered (a payload there is
+reported only). Every removal is returned as `security_probe_drops` and written to
+`human_review_queue.json` (`kind: "safety_drop"`).
+
+## Artifact contract (Phase 0.7)
+
+`test_data.json` is written as a schema_version 2 envelope —
+`{"schema_version": 2, "artifact": "test_data", "datasets": [...]}` — by both the LLM path
+and the Python fallback (whose old shape is canonicalised by the v1→v2 migration). Readers
+use `contracts.artifacts.load_records`, which accepts v1 lists, v2 envelopes and legacy
+id-maps.

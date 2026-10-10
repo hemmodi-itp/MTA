@@ -67,6 +67,7 @@ class HeadlessSwitchWithNestedModulePathsTests(unittest.TestCase):
             project_name="demo", safe="demo",
             scripts_dir=self.scripts_dir, reports_dir=self.reports_dir,
             ts_files=ts_files, headless=False,
+            base_url="https://demo.example.com",
         )
 
         # The headed run + the headless retry — retry must actually fire, not no-op.
@@ -101,6 +102,7 @@ class HeadlessSwitchWithNestedModulePathsTests(unittest.TestCase):
             project_name="demo", safe="demo",
             scripts_dir=self.scripts_dir, reports_dir=self.reports_dir,
             ts_files=ts_files, headless=False,
+            base_url="https://demo.example.com",
         )
 
         # Only the original headed run — no retry triggered below the threshold.

@@ -2,37 +2,21 @@ import { defineConfig, devices } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
-// Resolve the base URL Playwright navigates to. Priority:
-//   1. BASE_URL env var — set by ui_execution/agent.py from request["url"],
-//      which the orchestrator has already resolved to the *active module's*
-//      url (project.yaml modules[].url, narrowed by --module). This is the
-//      only path that can tell modules apart.
-//   2. project.yaml regex-scrape (set via PW_PROJECT env var) — best-effort
-//      fallback for running `npx playwright test` directly without going
-//      through main.py; grabs the FIRST `url:` field in the file, so it's
-//      only correct for single-module projects.
-//   3. Hardcoded localhost:3000 default for local dev servers.
-// Uses a regex instead of a YAML library so there are no extra npm dependencies.
-function loadBaseUrl(): string {
-  if (process.env.BASE_URL) return process.env.BASE_URL;
+import { resolveBaseUrl } from './application_assets/_shared/runtime/baseUrl';
 
-  const projectName = process.env.PW_PROJECT || '';
-  if (projectName) {
-    const yamlPath = path.join(
-      'application_assets', 'projects', projectName, 'project.yaml'
-    );
-    if (fs.existsSync(yamlPath)) {
-      try {
-        const content = fs.readFileSync(yamlPath, 'utf8');
-        // Leading whitespace allowed — project.yaml nests url: under modules[].
-        const match = content.match(/^\s*url:\s*(.+)$/m);
-        if (match) return match[1].trim().replace(/^['"]|['"]$/g, '');
-      } catch {
-        // fall through to default
-      }
-    }
-  }
-  return 'http://localhost:3000';
+// Resolve the base URL Playwright navigates to (Phase 0.6 — fail fast, no default):
+//   1. BASE_URL env var — always set by ui_execution/agent.py (per module when a
+//      run spans modules with different URLs) and by tools/suite_orchestrator.py.
+//   2. PW_PROJECT's project.yaml: `project.url`, else the single distinct
+//      `modules[].url` (several distinct module URLs are ambiguous -> error).
+//   3. Otherwise an error naming what to set. The old silent
+//      'http://localhost:3000' fallback is gone: it pointed tests at whatever
+//      listened there (often MTA's own web app).
+function loadBaseUrl(): string {
+  return resolveBaseUrl(process.env, (projectName) => {
+    const yamlPath = path.join('application_assets', 'projects', projectName, 'project.yaml');
+    return fs.existsSync(yamlPath) ? fs.readFileSync(yamlPath, 'utf8') : null;
+  });
 }
 
 const BASE_URL = loadBaseUrl();
@@ -46,7 +30,8 @@ export default defineConfig({
   // Fail the build on CI if any test.only() is left accidentally
   forbidOnly: !!process.env.CI,
 
-  // Retry once on failure before marking as failed
+  // No retries (so Playwright never reports "flaky"; video/trace 'on-first-retry'
+  // therefore never record). Retry/flaky handling is Phase 4.7 of the v3 plan.
   retries: 0,
 
   // Parallel workers

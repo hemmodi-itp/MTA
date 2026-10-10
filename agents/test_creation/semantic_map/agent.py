@@ -318,6 +318,6 @@ def _enrich_locator_exprs(
 def _write_map(scenario_map: Dict[str, Any], output_dir: str) -> str:
     os.makedirs(output_dir, exist_ok=True)
     out_path = os.path.join(output_dir, "scenario_element_map.json")
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(scenario_map, f, indent=2, ensure_ascii=False)
+    from contracts.artifacts import save_artifact
+    save_artifact("scenario_element_map", out_path, scenario_map)
     return out_path

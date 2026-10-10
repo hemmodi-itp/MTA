@@ -1,0 +1,139 @@
+{
+  "$defs": {
+    "PlanStep": {
+      "additionalProperties": true,
+      "properties": {
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "locator_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator Key"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        },
+        "value": {
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "title": "PlanStep",
+      "type": "object"
+    },
+    "PlanTest": {
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/PlanStep"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "PlanTest",
+      "type": "object"
+    },
+    "TestPlan": {
+      "additionalProperties": true,
+      "properties": {
+        "dropped_for_safety": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Dropped For Safety",
+          "type": "array"
+        },
+        "missing_actions": {
+          "items": {},
+          "title": "Missing Actions",
+          "type": "array"
+        },
+        "missing_locators": {
+          "items": {},
+          "title": "Missing Locators",
+          "type": "array"
+        },
+        "tests": {
+          "items": {
+            "$ref": "#/$defs/PlanTest"
+          },
+          "title": "Tests",
+          "type": "array"
+        }
+      },
+      "title": "TestPlan",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/test_plans.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact": {
+      "const": "test_plans",
+      "default": "test_plans",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "plans": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TestPlan"
+      },
+      "title": "Plans",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "title": "TestPlansV2",
+  "type": "object",
+  "x-mta-artifact": "test_plans",
+  "x-mta-kind": "map"
+}

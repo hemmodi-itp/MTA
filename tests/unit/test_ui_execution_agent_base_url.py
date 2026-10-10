@@ -36,11 +36,15 @@ class RunPlaywrightBaseUrlTests(unittest.TestCase):
 
     @patch("agents.test_execution.ui_execution.agent._playwright_package_installed", return_value=True)
     @patch("agents.test_execution.ui_execution.agent._stream_proc")
-    def test_no_base_url_leaves_env_unset(self, mock_stream_proc, _mock_installed):
+    def test_no_base_url_fails_fast_instead_of_localhost(self, mock_stream_proc, _mock_installed):
+        # Phase 0.6 replaced the old behaviour (BASE_URL left unset ->
+        # playwright.config.ts silently fell back to http://localhost:3000):
+        # with no request URL and no project.yaml URL the run now fails fast,
+        # blocking, and Playwright is never started.
         mock_stream_proc.return_value = ("", "", False, 0)
         agent = UIExecutionAgent()
 
-        agent._run_playwright(
+        result = agent._run_playwright(
             project_name="demo",
             safe="demo",
             scripts_dir="application_assets/projects/demo/test_creation/test_scripts",
@@ -49,8 +53,10 @@ class RunPlaywrightBaseUrlTests(unittest.TestCase):
             headless=True,
         )
 
-        env = mock_stream_proc.call_args.kwargs["env"]
-        self.assertNotIn("BASE_URL", env)
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(result["blocking"])
+        self.assertIn("base URL unresolved", result["error"])
+        mock_stream_proc.assert_not_called()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,206 @@
+{
+  "$defs": {
+    "TestResult": {
+      "additionalProperties": true,
+      "properties": {
+        "duration_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "errors": {
+          "items": {},
+          "title": "Errors",
+          "type": "array"
+        },
+        "flaky": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flaky"
+        },
+        "spec_file": {
+          "title": "Spec File",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "test_title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Title"
+        }
+      },
+      "required": [
+        "spec_file",
+        "status"
+      ],
+      "title": "TestResult",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/execution_results.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact": {
+      "const": "execution_results",
+      "default": "execution_results",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "base_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Base Url"
+    },
+    "failed": {
+      "default": 0,
+      "title": "Failed",
+      "type": "integer"
+    },
+    "finished_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Finished At"
+    },
+    "mode": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Mode"
+    },
+    "passed": {
+      "default": 0,
+      "title": "Passed",
+      "type": "integer"
+    },
+    "project": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project"
+    },
+    "report_json": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Report Json"
+    },
+    "results": {
+      "items": {
+        "$ref": "#/$defs/TestResult"
+      },
+      "title": "Results",
+      "type": "array"
+    },
+    "returncode": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Returncode"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "skipped": {
+      "default": 0,
+      "title": "Skipped",
+      "type": "integer"
+    },
+    "started_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Started At"
+    },
+    "status": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Status"
+    }
+  },
+  "title": "ExecutionResultsV2",
+  "type": "object",
+  "x-mta-artifact": "execution_results",
+  "x-mta-kind": "dict"
+}

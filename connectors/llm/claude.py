@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Optional
 
+from connectors.llm import usage
 from connectors.llm.base import LLMConnector
 
 _log = logging.getLogger("workflow.llm")
@@ -39,4 +40,5 @@ class ClaudeConnector(LLMConnector):
             f"input={u.input_tokens}  output={u.output_tokens}  "
             f"total={u.input_tokens + u.output_tokens}"
         )
+        usage.record("claude", self.model, u.input_tokens, u.output_tokens)
         return message.content[0].text

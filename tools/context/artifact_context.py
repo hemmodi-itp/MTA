@@ -166,8 +166,8 @@ def _load_test_data(path: str):
     if not os.path.exists(path):
         return {}, set()
     try:
-        with open(path, encoding="utf-8") as f:
-            records = json.load(f)
+        from contracts.artifacts import load_records
+        records = load_records(path)  # v1 list or v2 envelope
         by_scenario: Dict = {}
         covered: Set[str] = set()
         for r in records:

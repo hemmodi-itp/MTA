@@ -25,7 +25,10 @@ from agents.test_creation.testdata.tools import (
 from connectors.connector_registry import ConnectorRegistry
 from tools.config.test_generation_config import load_test_generation_config
 from tools.context import ProjectArtifactContext
+from tools.safety.policy import SafetyPolicy, load_safety_policy
+from tools.safety.testdata_filter import drop_security_payloads
 from tools.shared import get_logger
+from tools.state.review_queue import flag_safety_drops
 from tools.constants import PROJECTS_BASE as _ASSETS_BASE
 
 _MAX_WORKERS = 4
@@ -118,8 +121,10 @@ class TestDataAgent(BaseAgent):
 
         os.makedirs(output_dir, exist_ok=True)
         out_path = os.path.join(output_dir, "test_data.json")
-        with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(fallback_data, f, indent=2, ensure_ascii=False)
+        from contracts.artifacts import save_artifact, upgrade
+        # fallback_core emits the old fallback shape; the v1->v2 migration
+        # canonicalises it into the field/iteration shape every reader expects.
+        save_artifact("test_data", out_path, upgrade("test_data", fallback_data))
 
         self._log(
             f"Python fallback wrote {len(fallback_data)} dataset(s) (3 variants each) → {out_path}"
@@ -308,6 +313,31 @@ class TestDataAgent(BaseAgent):
                 level="warning",
             )
 
+        # Step 2.6 — Phase 0 safety rail: no active security-probe payloads in
+        # test data unless safety.allow_security_probes is on (never on prod or an
+        # undeclared environment). Every removal is reported, never silent.
+        policy = (
+            SafetyPolicy.from_request(request["safety"]) if isinstance(request.get("safety"), dict)
+            else load_safety_policy(safe, warn=False)
+        )
+        probe_drops: List[dict] = []
+        if not policy.security_probes_allowed:
+            new_datasets, probe_drops = drop_security_payloads(new_datasets)
+            by_scenario: Dict[str, List[dict]] = {}
+            for d in probe_drops:
+                by_scenario.setdefault(d["scenario_id"], []).append(d)
+            for sid, drops in by_scenario.items():
+                flag_safety_drops(
+                    project_name, sid, drops, policy.environment,
+                    output_dir=os.path.join(_ASSETS_BASE, safe),
+                )
+            if probe_drops:
+                self._log(
+                    f"Safety: removed {len(probe_drops)} security-probe payload item(s) "
+                    f"(allow_security_probes is off for environment '{policy.environment}')",
+                    level="warning",
+                )
+
         # Step 3 — Validate
         valid_new, warnings = validate_test_data(new_datasets)
         for w in warnings:
@@ -335,6 +365,7 @@ class TestDataAgent(BaseAgent):
             "coverage_pct": coverage_pct,
             "coverage_warning": coverage_warning,
             "validation_warnings": warnings,
+            "security_probe_drops": probe_drops,
             "output": paths,
         }
 

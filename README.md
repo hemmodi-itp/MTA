@@ -85,18 +85,33 @@ Outputs (under `application_assets/projects/<project>/`):
 project:
   name: myapp
   application_name: My Application
-  url: https://myapp.example.com      # required for execution; enables DOM scan
+  url: https://myapp.example.com      # optional when every module has its own url
   browser: chromium
   headless: true
   interactive_scan: false             # true → require a human-recorded session instead of a live scan
 
+environment: dev                      # local | dev | staging | prod — missing = treated like prod (warning)
+safety:                               # Phase 0 safety rails — see "Safety Rails" below
+  allow_destructive: false
+  allow_security_probes: false
+  # allowed_hosts: [myapp.example.com] # default: the hosts of this file's own URLs
+contracts:
+  enforce: warn                       # warn (default) | block — artifact contract violations at step boundaries
+
 input:
   brd_dir: application_assets/projects/myapp/inputs/   # optional — enables LLM comprehension
 
+modules:                              # the usual layout — one entry per page/area
+  - id: M01
+    name: Login
+    url: https://myapp.example.com/login
+    brd_file: login.md                # inside brd_dir
+    # setup: [{goto: ...}, {fill: {selector: ..., value_env: ...}}, {click: ...}, {wait: 500}]
+
 test_generation:
-  max_negative_cases: 1               # hard ceiling per scenario — never scaled up by cluster count
+  max_negative_cases: 1               # TestData enforces these in code; ScriptGeneration only prompts them
   max_boundary_cases: 1
-  max_data_iterations: 1
+  max_data_iterations: 3              # code default is 3
 
 test_execution:
   suite: myapp
@@ -104,6 +119,12 @@ test_execution:
 ns_config:
   base_url: http://localhost:8000     # optional — per-project NeuroStack override
 ```
+
+Modular projects are run **one module at a time** (`--module M01`): without it and without a
+`project.url`, discovery has no URL and runs BRD-only (`docs/audit/current_state.md` A13).
+
+> The README describes the intended design. Where it and the code disagree, the code audit
+> in [`docs/audit/current_state.md`](docs/audit/current_state.md) is authoritative.
 
 ---
 
@@ -187,7 +208,13 @@ Specs that ran through the Python fallback are marked `status: "degraded_fallbac
 
 ## Test Data — Variant Taxonomy
 
-`TestDataAgent` reads `business_scenarios.json` and generates test data variants per scenario. Coverage is intentionally minimal by default (`project.yaml`'s `test_generation:` block caps how many negative/boundary variants actually get used) — the table below is the full taxonomy the prompt draws from, not a fixed count generated every run.
+`TestDataAgent` reads `business_scenarios.json` and generates test data variants per scenario. Coverage is intentionally minimal by default (`project.yaml`'s `test_generation:` block caps how many negative/boundary variants actually get used).
+
+> **Audit correction:** the live prompt and validator accept only two `variant_type`s,
+> `negative` and `boundary`. The table below is the documented taxonomy the LLM may draw
+> *values* from inside those two types, not ten distinct variant types (Phase 3 builds a
+> real, data-driven taxonomy). Attack payloads (XSS/SQLi/…) are removed from generated data
+> unless `safety.allow_security_probes` allows them — see Safety Rails.
 
 | Variant | Description | Example |
 |---------|-------------|---------|
@@ -330,7 +357,12 @@ npx playwright test <targets> --config playwright.config.ts --project=chromium
 | `KeyboardInterrupt` mid-run | Partial-results summary, not a crash |
 | Browser closed with no interaction (headed mode), 3× in a row | Auto-switches remaining specs to headless and re-runs them |
 | Browser-close error on an individual test | Reclassified as `"skipped"`, not `"failed"` |
-| Playwright's own `"flaky"` status (failed then passed on retry) | Counted as a pass |
+| Playwright's own `"flaky"` status (failed then passed on retry) | Counted as a pass (unreachable while `retries: 0`) |
+| Base URL cannot be resolved | Fails fast (`blocking: True`) before Playwright starts — no default URL |
+| Specs span modules with different URLs | Split into one Playwright run per module, each with its own `BASE_URL`; results merged |
+
+Every run also writes a normalised record, `test_execution/reports/mta/{ts}.execution_results.json`
+(contract `execution_results` v2), and passes `MTA_ALLOWED_HOSTS` to the runtime host guard.
 
 Also supports suite-scoped runs and direct `spec_files` targeting — used by HealingAgent's `run_tests` tool to re-verify just the patched specs without re-running the whole project.
 
@@ -339,13 +371,13 @@ Also supports suite-scoped runs and direct `spec_files` targeting — used by He
 | Setting | Value |
 |---------|-------|
 | `testMatch` | `**/test_scripts/**/*.spec.ts` |
-| `retries` | 1 (2 on CI) |
+| `retries` | 0 — so Playwright never reports `flaky`, and `on-first-retry` video/trace never record (retry/flaky handling is Phase 4.7) |
 | `workers` | 2 (1 on CI) |
 | `timeout` | 60s per test; `expect.timeout` 10s; `actionTimeout` 15s; `navigationTimeout` 30s |
 | `testIdAttribute` | `data-test` (not Playwright's default `data-testid`) |
 | `screenshot` | on failure only |
 | `video` / `trace` | on first retry |
-| `baseURL` | `BASE_URL` env → scraped from the active project's `project.yaml` via `PW_PROJECT` → `http://localhost:3000` |
+| `baseURL` | `BASE_URL` env → `PW_PROJECT`'s `project.yaml` (`project.url`, else the single distinct module URL) → **error** (no `localhost:3000` fallback since Phase 0.6). New specs also pin their module URL with `test.use({ baseURL })` |
 | `storageState` | `PW_STORAGE_STATE` env, if present (auth) |
 | reporters | `list`, `json`, `html` (`open: 'never'`) |
 
@@ -371,6 +403,66 @@ Also supports suite-scoped runs and direct `spec_files` targeting — used by He
 | `status` | `new` (Tier 0), `degraded_fallback` (Tier 2, Python raw-TS), `healed` (HealingAgent patched it) |
 | `tier_used` | `0` = primary LLM, `1` = NS/alt-model, `2` = Python fallback |
 | `generation_mode` | `"action_library"` for a plan-rendered spec, `null` for a raw-TS fallback spec — tells HealingAgent whether a locator fix should patch `locator_map.json` or the `.spec.ts` directly |
+
+---
+
+## Safety Rails (Phase 0)
+
+Configured per project (`environment:` + `safety:` in `project.yaml`), resolved once by
+`tools/safety/policy.py::SafetyPolicy` and carried to every agent in `request["safety"]`.
+
+| Rail | Default | Rule |
+|---|---|---|
+| `environment` | missing → `unspecified` | `local` / `dev` / `staging` / `prod`. `unspecified` is gated **like prod** and logs a warning. |
+| Destructive actions | `allow_destructive: false` | A generated test that clicks/submits something destructive (delete, remove, pay, purchase, place order, send, transfer, deactivate, unsubscribe, reset … — deterministic classifier `tools/safety/action_classifier.py`, rules in `destructive_rules.yaml`) is **dropped whole** before rendering, unless `allow_destructive: true` **and** the environment is not prod/unspecified. Steps inside `useFlow` flows are checked too. |
+| Security probes | `allow_security_probes: false` | XSS/SQLi/NoSQLi/traversal/template/command-injection payloads (`tools/safety/payloads.py`) are removed from generated test data unless allowed **and** non-prod. Prod always refuses, whatever the flags say. |
+| Host allow-list | hosts of the project's own URLs | A plan `navigate` to an absolute URL outside `safety.allowed_hosts` drops the test at generation time; at run time `ActionEngine` and the fixture's top-level navigation guard fail the step (`application_assets/_shared/runtime/safety.ts`, driven by `MTA_ALLOWED_HOSTS`). Sub-resources (CDNs) are not blocked. |
+
+Every drop is recorded — in the plan's `dropped_for_safety[]` (`test_plans.json`), the agent's
+result, and `human_review_queue.json` (`kind: "safety_drop"`). Nothing is dropped silently.
+
+## Artifact Contracts (Phase 0)
+
+Every pipeline artifact has a Pydantic v2 contract (`contracts/artifacts/models.py`) and an
+exported JSON Schema (`schemas/*.schema.json`; regenerate with
+`python -m contracts.artifacts.export_schemas`, CI-check with `--check`).
+
+- **Versioned (`schema_version: 2`).** `dom_elements`, `business_scenarios`, `test_suite` and
+  the new `execution_results` keep their v1 keys and gain `schema_version` + `artifact`.
+  `test_data` (`datasets`), `scenario_element_map` (`scenarios`) and `test_plans` (`plans`) move
+  their v1 body under one key. `locator_map.json` keeps its v1 shape (the TS runtime reads it).
+- **Backward compatible.** All readers go through `contracts.artifacts.load_payload` /
+  `load_records`, which accept v1 and v2 and migrate in memory. Files become v2 when MTA next
+  rewrites them; nothing is upgraded on disk behind your back.
+- **Boundary validation.** The orchestrator validates each step's artifacts after the step
+  (`contracts.enforce`: `warn` = partial + reasons, `block` = blocking failure).
+- **Migration CLI.**
+  ```bash
+  python -m contracts.artifacts.migrate --all                     # dry run over every project
+  python -m contracts.artifacts.migrate --project X --write        # upgrade to v2 (keeps *.v1.bak)
+  python -m contracts.artifacts.migrate --project X --write --to 1 # downgrade for external v1 consumers
+  ```
+
+## Benchmark (Phase 0)
+
+`benchmarks/apps/buggy_shop/` is a local FastAPI shop with **22 seeded bugs**, each behind its
+own env flag (`BUG_07=1`; ground truth in `bugs.yaml`, requirements in `brd.md`).
+`benchmarks/agents/buggy_bot/` is a rule-based chatbot with 4 seeded weaknesses (used from
+Phase 9).
+
+```bash
+python -m tools.benchmark.run --app buggy_shop                           # full run (uses the LLM)
+python -m tools.benchmark.run --app buggy_shop --skip-generate --no-healing  # re-score the existing suite, no LLM
+python -m tools.benchmark.run --app buggy_shop --rescore benchmarks/results/<file>.json  # recompute a saved result (e.g. after pricing)
+```
+
+The runner generates the suite with the unchanged pipeline (module by module), runs it on the
+bug-free app (`--repeat` times) and once per bug, optionally heal-probes each caught bug, and
+writes `benchmarks/results/<date>_<app>[_<label>].{json,md}`. Metrics: AC coverage, seeded-bug
+detection rate (caught = passed on every bug-free run, failed with the bug on), false-failure
+rate, flaky rate, heal precision (a heal that turns a bug-catching test green is wrong), runtime,
+and LLM tokens/cost (recorded by `connectors/llm/usage.py`; prices from
+`benchmarks/pricing.yaml`, `null` when unpriced — never guessed).
 
 ---
 
@@ -785,7 +877,7 @@ agents:
 
 ```bash
 python tools/scaffold_agent.py --name <agent_name> \
-    --category <comprehension|test_creation|test_execution|orchestrator> \
+    --category <comprehension|test_creation|test_execution|evaluation|orchestrator> \
     [--has-llm] [--has-tools] [--has-server] [--dry-run]
 ```
 
@@ -868,7 +960,8 @@ All code changes made by Claude in this project must include unit tests. The rul
 Run the project's test suites:
 
 ```bash
-pytest                        # Python unit tests
-npm run test:unit             # TypeScript/vitest unit tests
-npx playwright test           # Playwright integration / E2E tests
+pip install -r requirements-dev.txt   # pytest + httpx (not in requirements.txt)
+python -m pytest tests/unit           # Python unit tests
+npm run test:unit                     # TypeScript/vitest unit tests (application_assets/_shared/runtime/**/*.test.ts)
+npx playwright test                   # Playwright integration / E2E tests (needs BASE_URL or PW_PROJECT)
 ```

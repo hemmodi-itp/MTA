@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "Scenario": {
+      "additionalProperties": true,
+      "properties": {
+        "module_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Id"
+        },
+        "scenario_id": {
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "steps": {
+          "items": {},
+          "title": "Steps",
+          "type": "array"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        }
+      },
+      "required": [
+        "scenario_id"
+      ],
+      "title": "Scenario",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/business_scenarios.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact": {
+      "const": "business_scenarios",
+      "default": "business_scenarios",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "modules": {
+      "anyOf": [
+        {},
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Modules"
+    },
+    "project": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project"
+    },
+    "scenarios": {
+      "items": {
+        "$ref": "#/$defs/Scenario"
+      },
+      "title": "Scenarios",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "total_scenarios": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Total Scenarios"
+    }
+  },
+  "title": "BusinessScenariosV2",
+  "type": "object",
+  "x-mta-artifact": "business_scenarios",
+  "x-mta-kind": "dict"
+}

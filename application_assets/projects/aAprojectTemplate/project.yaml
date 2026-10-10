@@ -8,6 +8,25 @@ project:
                                           # true  = user-guided session — you navigate, scanner records
                                           #         (start with: python main.py --project YourProjectName --record)
 
+# ── Target environment + safety rails (Phase 0) ─────────────────────────────
+# environment is how safe it is to act on the target: local | dev | staging | prod.
+# Leaving it out is allowed but treated like prod (a warning is logged).
+environment: dev
+
+safety:
+  allow_destructive: false       # delete / pay / send / transfer / deactivate / reset ... steps are
+                                 # dropped (whole test, reported) unless true AND environment != prod
+  allow_security_probes: false   # XSS / SQLi / traversal payloads in test data are dropped unless
+                                 # true AND environment != prod (prod always refuses)
+  # allowed_hosts: [yourapp.com, api.yourapp.com]
+                                 # omit to allow only the hosts of this file's own URLs
+                                 # (modules[].url, setup goto, auth URLs); navigation elsewhere fails the step
+
+# ── Artifact contracts (Phase 0) ────────────────────────────────────────────
+contracts:
+  enforce: block                 # warn (default when omitted) | block — what a step's artifact
+                                 # that breaks its schema does to the run
+
 input:
   # Directory containing per-module BRD files.
   # Each module entry below references a brd_file relative to this directory.

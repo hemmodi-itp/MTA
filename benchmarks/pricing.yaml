@@ -1,0 +1,13 @@
+# LLM prices used by tools/benchmark/score.py to turn token counts into cost.
+#
+# Deliberately empty: MTA does not guess prices. Fill in the USD price per
+# million tokens your account pays for each model id that appears in a
+# benchmark's llm_usage (e.g. the value of workflows/settings.yaml llm.gemini_model).
+# An unpriced model makes the run's cost `null` ("unpriced") — token counts are
+# always reported.
+#
+# models:
+#   gemini-3.6-flash:
+#     input_per_mtok: 0.00
+#     output_per_mtok: 0.00
+models: {}

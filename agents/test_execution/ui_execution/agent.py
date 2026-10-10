@@ -48,6 +48,16 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 from agents.base_agent import BaseAgent
+from tools.base_url import (
+    BaseUrlUnresolved,
+    load_project_yaml,
+    module_ids_of_targets,
+    module_urls,
+    resolve_execution_base_url,
+    resolve_project_base_url,
+)
+from tools.safety.hosts import url_allowed
+from tools.safety.policy import SafetyPolicy, hosts_env_value
 from tools.shared import get_logger
 from tools.constants import PROJECTS_BASE as _ASSETS_BASE
 
@@ -139,6 +149,8 @@ class UIExecutionAgent(BaseAgent):
         # as BASE_URL so playwright.config.ts doesn't have to re-derive it by
         # regex-scraping project.yaml (which can't tell modules apart anyway).
         base_url = request.get("url")
+        # Phase 0 safety rails — forwarded to the TS runtime as MTA_ALLOWED_HOSTS.
+        self._safety = request.get("safety") if isinstance(request.get("safety"), dict) else None
 
         self._log(f"Starting — project='{project_name}' headless={headless}")
 
@@ -296,27 +308,7 @@ class UIExecutionAgent(BaseAgent):
                 spec_files=sf, grep_pattern=entry["grep"],
             ))
 
-        if len(runs) == 1:
-            return runs[0]
-
-        # Merge multiple runs into one result
-        merged: List[Dict] = []
-        passed = failed = skipped = 0
-        for r in runs:
-            merged.extend(r.get("results", []))
-            passed += r.get("passed", 0)
-            failed += r.get("failed", 0)
-            skipped += r.get("skipped", 0)
-
-        last = runs[-1]
-        return {
-            **last,
-            "results": merged,
-            "passed": passed,
-            "failed": failed,
-            "skipped": skipped,
-            "scenarios_executed": passed + failed + skipped,
-        }
+        return _merge_runs(runs)
 
     # ── TypeScript / Playwright ────────────────────────────────────────────────
 
@@ -346,6 +338,48 @@ class UIExecutionAgent(BaseAgent):
             )
             self._log(msg, level="error")
             return {"module": "ui_execution", "status": "failed", "error": msg}
+
+        # Phase 0.6 — the base URL is resolved explicitly or the run fails fast;
+        # there is no localhost default anywhere any more. A run whose specs span
+        # modules with different URLs is split into one Playwright run per module
+        # (each with its own BASE_URL) instead of sending every module's specs to
+        # whichever URL happens to come first.
+        project_cfg = load_project_yaml(_ASSETS_BASE, safe)
+        abs_targets = (
+            [p.replace(os.sep, "/") for p in spec_files] if spec_files
+            else [os.path.join(scripts_dir, f).replace(os.sep, "/") for f in ts_files]
+        )
+        if not base_url and not resolve_project_base_url(
+            {"project": project_cfg.get("project"), "url": project_cfg.get("url")}
+        ):
+            groups = _group_targets_by_module(abs_targets)
+            by_module = module_urls(project_cfg)
+            if (len(groups) > 1 and all(by_module.get(m) for m in groups)
+                    and len({by_module[m] for m in groups}) > 1):
+                return self._run_per_module(
+                    groups, by_module, project_name=project_name, safe=safe,
+                    scripts_dir=scripts_dir, reports_dir=reports_dir, headless=headless,
+                    auth_config=auth_config, auth_storage_state=auth_storage_state,
+                    grep_pattern=grep_pattern,
+                )
+        try:
+            base_url, url_source = resolve_execution_base_url(
+                base_url, project_cfg, module_ids_of_targets(abs_targets)
+            )
+        except BaseUrlUnresolved as exc:
+            msg = str(exc)
+            self._log(msg, level="error")
+            return {"module": "ui_execution", "status": "failed", "blocking": True, "error": msg}
+        self._log(f"Base URL: {base_url} (from {url_source})")
+
+        safety = getattr(self, "_safety", None)
+        policy = SafetyPolicy.from_request(safety) if safety else SafetyPolicy.from_project_config(project_cfg)
+        if not url_allowed(base_url, policy.allowed_hosts):
+            self._log(
+                f"Base URL host of '{base_url}' is not in safety.allowed_hosts "
+                f"{policy.allowed_hosts} — every navigation will be refused by the runtime",
+                level="warning",
+            )
 
         # Report paths
         ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -384,12 +418,10 @@ class UIExecutionAgent(BaseAgent):
             "PW_JSON_REPORT": json_report_path,
             "PW_HTML_REPORT": html_report_dir,
         }
-        if base_url:
-            # Already resolved by the orchestrator for the active module — takes
-            # priority over playwright.config.ts's own project.yaml regex-scrape,
-            # which can't tell modules apart and silently falls back to
-            # localhost:3000 when it can't find a match.
-            env["BASE_URL"] = base_url
+        # Always set: resolved above (request -> project.url -> module URL), so
+        # playwright.config.ts never has to guess.
+        env["BASE_URL"] = base_url
+        env["MTA_ALLOWED_HOSTS"] = hosts_env_value(policy.allowed_hosts)
         if auth_config and auth_config.get("strategy") == "live_login":
             fresh_state = self._capture_live_auth(auth_config)
             if fresh_state:
@@ -510,6 +542,11 @@ class UIExecutionAgent(BaseAgent):
         passed, failed, skipped = _count_results(results)
         _update_report_index(reports_dir, ts, json_report_path, html_report_dir, passed, failed)
         self._log(f"Done — passed={passed} failed={failed} skipped={skipped}")
+        _write_execution_results(
+            reports_dir, ts, project=safe, base_url=base_url, results=results,
+            passed=passed, failed=failed, skipped=skipped, returncode=returncode,
+            report_json=json_report_path, logger=self.logger,
+        )
         return {
             "module": "ui_execution",
             "status": "success",
@@ -524,6 +561,34 @@ class UIExecutionAgent(BaseAgent):
             "report_json": json_report_path,
             "report_html": html_report_dir,
         }
+
+    # ── Per-module split (Phase 0.6) ──────────────────────────────────────────
+
+    def _run_per_module(
+        self,
+        groups: Dict[str, List[str]],
+        by_module: Dict[str, str],
+        project_name: str,
+        safe: str,
+        scripts_dir: str,
+        reports_dir: str,
+        headless: bool,
+        auth_config: Optional[dict] = None,
+        auth_storage_state: str = "",
+        grep_pattern: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        runs: List[Dict[str, Any]] = []
+        for module_id, targets in groups.items():
+            self._log(f"Module {module_id}: {len(targets)} spec(s) against {by_module[module_id]}")
+            runs.append(self._run_playwright(
+                project_name=project_name, safe=safe,
+                scripts_dir=scripts_dir, reports_dir=reports_dir,
+                ts_files=[os.path.basename(t) for t in targets], headless=headless,
+                auth_config=auth_config, auth_storage_state=auth_storage_state,
+                spec_files=targets, grep_pattern=grep_pattern,
+                base_url=by_module[module_id],
+            ))
+        return _merge_runs(runs)
 
     # ── Fix 2: interrupted partial summary ────────────────────────────────────
 
@@ -710,6 +775,73 @@ class UIExecutionAgent(BaseAgent):
 # "SC-001") and the current module-scoped scheme script_generation names
 # specs with ("M03_BS_006").
 _SPEC_ID_RE = re.compile(r"([A-Za-z]+\d+_BS_\d+|BS-\d+|SC-\d+)")
+
+
+def _write_execution_results(reports_dir: str, ts: str, *, project: str, base_url: str,
+                             results: List[Dict], passed: int, failed: int, skipped: int,
+                             returncode: int, report_json: str, logger=None) -> Optional[str]:
+    """Phase 0.7 — the MTA-normalised run record (contracts: execution_results v2),
+    written to reports/mta/ (never reports/json/, which healing scans for the latest
+    Playwright report). A write failure never fails the run."""
+    try:
+        from contracts.artifacts import save_artifact
+
+        path = os.path.join(reports_dir, "mta", f"{ts}.execution_results.json")
+        return save_artifact("execution_results", path, {
+            "project": project, "status": "success", "mode": "playwright", "base_url": base_url,
+            "finished_at": datetime.now(timezone.utc).isoformat(),
+            "passed": passed, "failed": failed, "skipped": skipped, "returncode": returncode,
+            "report_json": report_json,
+            "results": [
+                {**r, "spec_file": str(r.get("spec_file", "")), "status": str(r.get("status", ""))}
+                for r in results
+            ],
+        })
+    except Exception as exc:  # pragma: no cover — defensive
+        if logger:
+            logger.warning(f"[ui_execution] could not write execution_results: {exc}")
+        return None
+
+
+def _group_targets_by_module(targets: List[str]) -> Dict[str, List[str]]:
+    """{module_id: [spec paths]} for paths shaped .../test_scripts/<module>/<spec>;
+    a path with no module segment groups under ''."""
+    groups: Dict[str, List[str]] = {}
+    for t in targets:
+        mids = module_ids_of_targets([t])
+        groups.setdefault(mids[0] if mids else "", []).append(t)
+    return groups
+
+
+def _merge_runs(runs: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Merge several _run_playwright results into one (suite/grep runs and the
+    per-module split). A failed sub-run's error is kept in `run_errors`."""
+    if len(runs) == 1:
+        return runs[0]
+    merged: List[Dict] = []
+    passed = failed = skipped = 0
+    errors = []
+    for r in runs:
+        merged.extend(r.get("results", []))
+        passed += r.get("passed", 0)
+        failed += r.get("failed", 0)
+        skipped += r.get("skipped", 0)
+        if r.get("status") == "failed" and r.get("error"):
+            errors.append(r["error"])
+    if errors and all(r.get("status") == "failed" for r in runs):
+        return {**runs[0], "error": "; ".join(errors)}
+    ok = [r for r in runs if r.get("status") != "failed"]
+    out = {
+        **ok[-1],
+        "results": merged,
+        "passed": passed,
+        "failed": failed,
+        "skipped": skipped,
+        "scenarios_executed": passed + failed + skipped,
+    }
+    if errors:
+        out["run_errors"] = errors
+    return out
 
 
 def _extract_test_case_id(spec_file: str) -> str:

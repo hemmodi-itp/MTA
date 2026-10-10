@@ -1,0 +1,47 @@
+{
+  "$defs": {},
+  "$id": "mta://schemas/locator_map.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {
+    "additionalProperties": true,
+    "properties": {
+      "locator": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Locator"
+      },
+      "name": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Name"
+      },
+      "type": {
+        "title": "Type",
+        "type": "string"
+      }
+    },
+    "required": [
+      "type"
+    ],
+    "title": "LocatorEntry",
+    "type": "object"
+  },
+  "title": "LocatorMap",
+  "type": "object",
+  "x-mta-artifact": "locator_map",
+  "x-mta-kind": "plain"
+}

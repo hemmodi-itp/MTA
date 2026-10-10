@@ -8,6 +8,7 @@ Level 4 : workflow              (multi-step spec in test_scripts/workflows/)
 """
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -247,14 +248,38 @@ class SuiteOrchestrator:
 
     @staticmethod
     def _playwright_cmd(targets: str, workers: int, headless: bool) -> str:
-        cmd = f"npx playwright test {targets} --workers={workers}"
+        cmd = f"npx playwright test {targets} --config playwright.config.ts --workers={workers}"
         if not headless:
             cmd += " --headed"
         return cmd
 
-    @staticmethod
-    def _run(cmd: str, level: int, key: str, value: str) -> Dict[str, Any]:
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    def _playwright_env(self, targets: str) -> Dict[str, str]:
+        """PW_PROJECT + BASE_URL + MTA_ALLOWED_HOSTS for a direct Playwright run
+        (Phase 0.6: no localhost default — raises BaseUrlUnresolved instead)."""
+        from tools.base_url import load_project_yaml, module_ids_of_targets, resolve_execution_base_url
+        from tools.safety.policy import SafetyPolicy, hosts_env_value
+
+        project = self.project_dir.name
+        cfg = load_project_yaml(str(self.project_dir.parent), project)
+        url, _source = resolve_execution_base_url(
+            os.environ.get("BASE_URL"), cfg, module_ids_of_targets(targets.split())
+        )
+        policy = SafetyPolicy.from_project_config(cfg)
+        return {
+            **os.environ,
+            "PW_PROJECT": project,
+            "BASE_URL": url,
+            "MTA_ALLOWED_HOSTS": hosts_env_value(policy.allowed_hosts),
+        }
+
+    def _run(self, cmd: str, level: int, key: str, value: str) -> Dict[str, Any]:
+        from tools.base_url import BaseUrlUnresolved
+
+        try:
+            env = self._playwright_env(cmd)
+        except BaseUrlUnresolved as exc:
+            return {"level": level, key: value, "status": "error", "error": str(exc)}
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, env=env)
         return {
             "level": level,
             key: value,

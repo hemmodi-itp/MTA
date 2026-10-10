@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Optional
 
+from connectors.llm import usage as usage_log
 from connectors.llm.base import LLMConnector
 
 _log = logging.getLogger("workflow.llm")
@@ -38,4 +39,5 @@ class OpenAIConnector(LLMConnector):
                 f"input={usage.prompt_tokens}  output={usage.completion_tokens}  "
                 f"total={usage.total_tokens}"
             )
+            usage_log.record("openai", self.model, usage.prompt_tokens, usage.completion_tokens)
         return response.choices[0].message.content or ""

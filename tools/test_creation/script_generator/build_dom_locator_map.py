@@ -282,6 +282,11 @@ def _best_locator_entry(el: dict) -> Optional[dict]:
     return None
 
 
+def _entry_module(entry: dict) -> str:
+    """The module a locator_map entry belongs to ("_default" for flat projects)."""
+    return entry.get("_module_id") or "_default"
+
+
 def _locator_value_key(entry: dict) -> Tuple[str, str, str]:
     """A hashable fingerprint of the resolved locator itself (ignoring key
     name/description) — used to detect the same element re-appearing under a
@@ -372,13 +377,18 @@ def build_named_locator_map(
     result_map = dict(existing_map)
     used_keys = set(existing_map.keys())
 
+    # Matching is scoped to the module (Phase 0 fix): every module's DOM scan
+    # numbers its elements from LOC-0001, so a bare locator id — or an identical
+    # locator value such as a shared header link — names a *different* element
+    # in another module. Matching across modules used to overwrite M01's entries
+    # with M02's elements and move them to M02's Page class.
     existing_by_source_id = {
-        entry.get("_source_locator_id"): key
+        (_entry_module(entry), entry.get("_source_locator_id")): key
         for key, entry in existing_map.items()
         if entry.get("_source_locator_id")
     }
     existing_by_locator_value = {
-        _locator_value_key(entry): key for key, entry in existing_map.items()
+        (_entry_module(entry), _locator_value_key(entry)): key for key, entry in existing_map.items()
     }
 
     added: List[str] = []
@@ -393,7 +403,7 @@ def build_named_locator_map(
                 continue
             loc_id = el.get("locator_id", "")
 
-            source_key = existing_by_source_id.get(loc_id)
+            source_key = existing_by_source_id.get((module_id, loc_id))
             if source_key:
                 claimed_existing_keys.add(source_key)
                 if not _locator_fields_equal(result_map[source_key], entry):
@@ -404,7 +414,7 @@ def build_named_locator_map(
                 continue
 
             value_key = _locator_value_key(entry)
-            dup_key = existing_by_locator_value.get(value_key)
+            dup_key = existing_by_locator_value.get((module_id, value_key))
             if dup_key and dup_key not in claimed_existing_keys:
                 claimed_existing_keys.add(dup_key)
                 result_map[dup_key] = _apply_locator_update(
@@ -421,19 +431,25 @@ def build_named_locator_map(
         if key not in claimed_existing_keys
     ]
 
-    reused_by_loc_id: Dict[str, str] = {}
+    # Reconciliation is per module too: a removed M01 entry can only be
+    # "the same element under a new locator" for a new M01 element.
+    reused_by_module: Dict[str, Dict[str, str]] = {}
     if unmatched_new and removed_candidates and llm_reconcile:
-        try:
-            reused_by_loc_id = llm_reconcile(
-                [el for _m, el, _e in unmatched_new], removed_candidates
-            ) or {}
-        except Exception:
-            reused_by_loc_id = {}
+        for mod in sorted({m for m, _el, _e in unmatched_new}):
+            new_els = [el for m, el, _e in unmatched_new if m == mod]
+            candidates = [c for c in removed_candidates if _entry_module(c) == mod]
+            if not new_els or not candidates:
+                continue
+            try:
+                reused_by_module[mod] = llm_reconcile(new_els, candidates) or {}
+            except Exception:
+                reused_by_module[mod] = {}
 
     for module_id, el, entry in unmatched_new:
         loc_id = el.get("locator_id", "")
-        reused_key = reused_by_loc_id.get(loc_id)
-        if reused_key and reused_key in result_map and reused_key not in claimed_existing_keys:
+        reused_key = reused_by_module.get(module_id, {}).get(loc_id)
+        if (reused_key and reused_key in result_map and reused_key not in claimed_existing_keys
+                and _entry_module(result_map[reused_key]) == module_id):
             claimed_existing_keys.add(reused_key)
             result_map[reused_key] = _apply_locator_update(
                 result_map[reused_key], entry, loc_id, module_id

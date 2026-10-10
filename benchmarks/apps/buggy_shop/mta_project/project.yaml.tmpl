@@ -1,0 +1,120 @@
+# MTA project manifest for the Buggy Shop benchmark app.
+# Rendered by the benchmark runner: {{BASE_URL}} (e.g. http://127.0.0.1:8765) and
+# {{PROJECT_NAME}} are substituted, then written to
+# application_assets/projects/{{PROJECT_NAME}}/project.yaml alongside inputs/brd_<module>.md
+# (one BRD per module, split from brd.md by tools/benchmark/materialize.py — each module's
+# comprehension then sees only its own requirements).
+project:
+  name: {{PROJECT_NAME}}
+  application_name: Buggy Shop
+  browser: chromium
+  headless: true
+  interactive_scan: false
+  discovery_timeout_s: 180
+
+input:
+  brd_dir: application_assets/projects/{{PROJECT_NAME}}/inputs
+
+environment: local
+
+safety:
+  allow_destructive: true
+  allow_security_probes: true
+  allowed_hosts:
+    - 127.0.0.1
+    - localhost
+
+contracts:
+  enforce: block
+
+auth:
+  enabled: false
+
+modules:
+  - id: M01
+    name: Login
+    url: {{BASE_URL}}/login
+    brd_file: brd_M01.md
+
+  - id: M02
+    name: Products
+    url: {{BASE_URL}}/products
+    brd_file: brd_M02.md
+    setup:
+      - goto: {{BASE_URL}}/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M03
+    name: Product Form
+    url: {{BASE_URL}}/products/new
+    brd_file: brd_M03.md
+    setup:
+      - goto: {{BASE_URL}}/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M04
+    name: Cart & Checkout
+    url: {{BASE_URL}}/cart
+    brd_file: brd_M04.md
+    setup:
+      - goto: {{BASE_URL}}/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M05
+    name: Upload
+    url: {{BASE_URL}}/upload
+    brd_file: brd_M05.md
+    setup:
+      - goto: {{BASE_URL}}/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M06
+    name: Admin
+    url: {{BASE_URL}}/admin
+    brd_file: brd_M06.md
+    setup:
+      - goto: {{BASE_URL}}/login
+      - fill:
+          selector: "#username"
+          value: admin
+      - fill:
+          selector: "#password"
+          value: admin-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+test_generation:
+  max_negative_cases: 1
+  max_boundary_cases: 1
+  max_data_iterations: 1
+
+test_execution:
+  suite: {{PROJECT_NAME}}

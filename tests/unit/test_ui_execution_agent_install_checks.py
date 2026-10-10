@@ -49,6 +49,7 @@ class ChromiumBinaryMissingTests(unittest.TestCase):
             reports_dir="application_assets/projects/demo/test_execution/reports",
             ts_files=["test_BS-001_example.spec.ts"],
             headless=True,
+            base_url="https://demo.example.com",
         )
 
         self.assertEqual(result["module"], "ui_execution")

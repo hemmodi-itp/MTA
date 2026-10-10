@@ -78,6 +78,31 @@ def flag_missing_capability(
     })
 
 
+def flag_safety_drops(
+    project_name: str,
+    scenario_id: str,
+    dropped: List[Dict[str, Any]],
+    environment: str,
+    output_dir: str = ".",
+) -> None:
+    """Append one entry when the P0 safety rails dropped generated tests
+    (destructive action not allowed, or navigation outside allowed_hosts).
+    Never fires when nothing was dropped."""
+    if not dropped:
+        return
+    _append_queue_entry(output_dir, {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "kind": "safety_drop",
+        "project": project_name,
+        "scenario_id": scenario_id,
+        "environment": environment,
+        "dropped": dropped,
+        "action": "Tests were dropped by the safety rails. If they are intended, set "
+                   "`safety.allow_destructive: true` (non-prod environments only) or add "
+                   "the host to `safety.allowed_hosts` in project.yaml, then regenerate",
+    })
+
+
 def record_locator_drift(
     project_name: str,
     module_id: str,

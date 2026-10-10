@@ -196,6 +196,12 @@ def fallback_generate_script(
     sid = scenario.get("scenario_id", "BS-000")
     title = scenario.get("title", scenario.get("scenario_name", sid))
     steps = scenario.get("steps", [])
+    if not base_url:
+        # Phase 0.6 — no silent localhost:3000 default for the target URL.
+        from agents.common.failure_classifier import MissingInputError
+        raise MissingInputError(
+            f"fallback_generate_script: no base URL for {sid} — set project.url or modules[].url"
+        )
 
     skips = []
     for i, step in enumerate(steps, start=1):
@@ -212,7 +218,7 @@ def fallback_generate_script(
         ))
 
     return _TS_FALLBACK_TEMPLATE.format(
-        base_url=base_url or "http://localhost:3000",
+        base_url=base_url,
         scenario_title=title.replace("'", "\\'"),
         scenario_id=sid,
         skips="\n".join(skips),

@@ -88,3 +88,10 @@ itself, it just reads whatever discovery already produced:
 - **FALLBACK** → `fallback_core.fallback_semantic_map()` — keyword overlap scoring (no LLM); top-5
   elements per scenario. Still goes through the same intent-clustering/confidence/backlink enrichment
   afterward, so a fallback-tier run isn't left permanently thinner than a primary-tier one.
+
+## Artifact contract (Phase 0.7)
+
+`scenario_element_map.json` is written as a schema_version 2 envelope —
+`{"schema_version": 2, "artifact": "scenario_element_map", "scenarios": {<id>: ...}}` —
+via `contracts.artifacts.save_artifact`. Readers use `contracts.artifacts.load_payload`,
+which returns the same `{scenario_id: entry}` map for v1 and v2 files.

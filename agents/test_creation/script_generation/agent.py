@@ -45,7 +45,11 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 from agents.base_agent import BaseAgent
-from tools.state.review_queue import flag_missing_capability, record_locator_drift
+from contracts.artifacts import load_payload, load_records, save_artifact
+from tools.base_url import resolve_project_base_url
+from tools.safety.plan_filter import filter_plan
+from tools.safety.policy import SafetyPolicy, load_safety_policy
+from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
 from agents.test_creation.script_generation.prompt import ACTION_LIBRARY_PROMPT, LOCATOR_RECONCILE_PROMPT
 from agents.test_creation.script_generation.tools import (
     LOCATOR_FIRST_ACTIONS,
@@ -77,6 +81,12 @@ ALLOWED_ACTIONS = frozenset({
     "verifyChecked", "verifyCount", "verifyUrl", "verifyUrlContains", "verifyTitle",
     "verifyTitleContains", "takeScreenshot", "goBack", "reload", "verifyNoPageErrors", "useFlow",
 })
+
+
+_UNKNOWN_BASE_URL_NOTE = (
+    "(unknown — no URL is configured for this module; use \"navigate\" with no value "
+    "and never invent an absolute URL)"
+)
 
 
 class ScriptGenerationAgent(BaseAgent):
@@ -124,7 +134,7 @@ class ScriptGenerationAgent(BaseAgent):
                 raise MissingInputError(f"{label} not found: {path}")
 
         scenarios = _load_scenarios(scenarios_path)
-        scenario_map = _load_json_or_empty(sem_map_path)
+        scenario_map = load_payload("scenario_element_map", sem_map_path, {}) or {}
         test_data_map = _load_test_data_map(test_data_path)
 
         drift_warning = _test_data_drift_warning(scenarios, test_data_map)
@@ -220,7 +230,11 @@ class ScriptGenerationAgent(BaseAgent):
         os.makedirs(scripts_dir, exist_ok=True)
         generated = []
         warnings = []
-        test_plans = _load_json_or_empty(test_plans_path)
+        test_plans = load_payload("test_plans", test_plans_path, {}) or {}
+        safety_policy = (
+            SafetyPolicy.from_request(request["safety"]) if isinstance(request.get("safety"), dict)
+            else load_safety_policy(safe)
+        )
 
         for scenario in uncovered:
             sid = scenario.get("scenario_id", "")
@@ -242,7 +256,8 @@ class ScriptGenerationAgent(BaseAgent):
             elements = _get_elements_for_scenario(sid, scenario_map)
             test_data = test_data_map.get(sid, {})
             allowed_locators = _allowed_locator_entries_for_scenario(
-                elements, reverse_locator_index, locator_map, unresolvable_keys
+                elements, reverse_locator_index, locator_map, unresolvable_keys,
+                module_id=module_id,
             )
 
             effective_url = module_url_map.get(module_id, url)
@@ -291,6 +306,28 @@ class ScriptGenerationAgent(BaseAgent):
                     if not plan.get("tests"):
                         self._log(f"{sid}: plan has no tests the action library can express — skipping", level="warning")
                         warnings.append(f"{sid}: no expressible tests (see human_review_queue.json)")
+                        continue
+
+                    # Phase 0 safety rails — the one choke point every plan tier
+                    # passes through. Drops whole tests (never a lone step) and
+                    # reports each drop; never silent.
+                    plan, safety_dropped = filter_plan(plan, safety_policy, locator_map, flows)
+                    if safety_dropped:
+                        flag_safety_drops(
+                            project_name, sid, safety_dropped, safety_policy.environment,
+                            output_dir=project_dir,
+                        )
+                        for d in safety_dropped:
+                            self._log(
+                                f"{sid}: dropped test '{d.get('test')}' — {d.get('reason')} "
+                                f"({d.get('rule')}: {d.get('detail')})",
+                                level="warning",
+                            )
+                    if not plan.get("tests"):
+                        self._log(f"{sid}: every test was dropped by the safety rails — skipping", level="warning")
+                        warnings.append(f"{sid}: all tests dropped by safety rails (see human_review_queue.json)")
+                        test_plans[sid] = plan
+                        _write_test_plans(test_plans, test_plans_path)
                         continue
 
                     spec_content = render_spec_from_plan(
@@ -504,7 +541,9 @@ class ScriptGenerationAgent(BaseAgent):
         prompt = ACTION_LIBRARY_PROMPT.safe_substitute(
             scenario_json=json.dumps(scenario, ensure_ascii=False, indent=2),
             test_data_json=json.dumps(test_data, ensure_ascii=False, indent=2),
-            base_url=base_url or "http://localhost:3000",
+            # No silent localhost fallback (Phase 0.6): an unknown base URL is said
+            # so explicitly, and the plan then navigates with no value (= baseURL).
+            base_url=base_url or _UNKNOWN_BASE_URL_NOTE,
             valid_actions_json=json.dumps(sorted(ALLOWED_ACTIONS), ensure_ascii=False, indent=2),
             valid_locators_json=json.dumps(allowed_locators, ensure_ascii=False, indent=2),
             valid_flows_json=json.dumps(flows_summary, ensure_ascii=False, indent=2),
@@ -768,15 +807,8 @@ def _load_json_or_empty(path: str) -> dict:
 
 def _load_test_data_map(path: str) -> Dict[str, Any]:
     """Return {scenario_id: test_data_record} from test_data.json."""
-    if not os.path.exists(path):
-        return {}
-    with open(path, encoding="utf-8") as f:
-        raw = json.load(f)
-    if isinstance(raw, list):
-        return {r.get("scenario_id", ""): r for r in raw if r.get("scenario_id")}
-    if isinstance(raw, dict):
-        return raw
-    return {}
+    # v1 list, v2 envelope or a legacy id-map — contracts.artifacts handles all three.
+    return {r.get("scenario_id", ""): r for r in load_records(path) if isinstance(r, dict) and r.get("scenario_id")}
 
 
 def _test_data_drift_warning(
@@ -861,13 +893,24 @@ def _resolve_target_module_id(scenario_module_id: Optional[str], request: dict) 
 # prompt needs the human-readable locator_map.json key instead, so the LLM can
 # reference a name a human/renderer both understand.
 
-def _reverse_locator_index(locator_map: dict) -> Dict[str, str]:
-    """Map each locator_map.json entry's _source_locator_id back to its key."""
-    return {
-        entry.get("_source_locator_id"): key
-        for key, entry in locator_map.items()
-        if entry.get("_source_locator_id")
-    }
+def _reverse_locator_index(locator_map: dict) -> Dict[Any, str]:
+    """Map each locator_map.json entry's _source_locator_id back to its key.
+
+    Keyed by (module_id, source_id) — every module's scan numbers from LOC-0001,
+    so a bare id is ambiguous across modules. A bare source_id key is also kept
+    when it is unambiguous (single-module / flat projects, older callers)."""
+    index: Dict[Any, str] = {}
+    bare: Dict[str, set] = {}
+    for key, entry in locator_map.items():
+        sid = entry.get("_source_locator_id")
+        if not sid:
+            continue
+        index[(entry.get("_module_id") or "_default", sid)] = key
+        bare.setdefault(sid, set()).add(key)
+    for sid, keys in bare.items():
+        if len(keys) == 1:
+            index[sid] = next(iter(keys))
+    return index
 
 
 def _allowed_locator_entries_for_scenario(
@@ -875,6 +918,7 @@ def _allowed_locator_entries_for_scenario(
     reverse_index: Dict[str, str],
     locator_map: dict,
     unresolvable_keys: Optional[set] = None,
+    module_id: Optional[str] = None,
 ) -> List[Dict[str, str]]:
     """Return [{key, description, ...}] for this scenario's relevant
     elements, restricted to keys that actually exist in locator_map.json and
@@ -892,7 +936,11 @@ def _allowed_locator_entries_for_scenario(
     seen = set()
     for el in elements:
         loc_id = el.get("locator_id")
-        key = reverse_index.get(loc_id)
+        key = (
+            (reverse_index.get((module_id, loc_id)) if module_id else None)
+            or reverse_index.get(("_default", loc_id))
+            or reverse_index.get(loc_id)
+        )
         if key and key not in seen and key not in unresolvable_keys:
             seen.add(key)
             entry = {"key": key, "description": locator_map.get(key, {}).get("description", "")}
@@ -910,7 +958,9 @@ def _get_elements_for_scenario(sid: str, scenario_map: dict) -> List[Dict[str, A
 
 
 def _load_base_url(safe_project: str) -> str:
-    """Try to read URL from project.yaml."""
+    """Resolve the project's base URL from project.yaml: `project.url`, else the
+    single distinct `modules[].url` (several distinct module URLs -> "" — the caller
+    uses the per-module URL instead). Never invents a default."""
     import yaml
     yaml_path = os.path.join(_ASSETS_BASE, safe_project, "project.yaml")
     if not os.path.exists(yaml_path):
@@ -918,9 +968,9 @@ def _load_base_url(safe_project: str) -> str:
     try:
         with open(yaml_path, encoding="utf-8") as f:
             cfg = yaml.safe_load(f) or {}
-        return cfg.get("url", "")
     except Exception:
         return ""
+    return resolve_project_base_url(cfg)
 
 
 def _parse_plan_json(raw: str, scenario_id: str) -> dict:
@@ -1254,10 +1304,8 @@ def _write_suite(suite: dict, suite_path: str, project_name: str) -> None:
     suite["new_additions"] = [
         s["file"] for s in suite.get("specs", []) if s.get("status") == "new"
     ]
-    with open(suite_path, "w", encoding="utf-8") as f:
-        json.dump(suite, f, indent=2, ensure_ascii=False)
+    save_artifact("test_suite", suite_path, suite)
 
 
 def _write_test_plans(test_plans: dict, test_plans_path: str) -> None:
-    with open(test_plans_path, "w", encoding="utf-8") as f:
-        json.dump(test_plans, f, indent=2, ensure_ascii=False)
+    save_artifact("test_plans", test_plans_path, test_plans)

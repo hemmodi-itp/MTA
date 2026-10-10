@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Optional
 
+from connectors.llm import usage as usage_log
 from connectors.llm.base import LLMConnector
 
 _log = logging.getLogger("workflow.llm")
@@ -91,4 +92,5 @@ class BedrockConnector(LLMConnector):
             f"output={usage.get('outputTokens', '?')}  "
             f"total={usage.get('inputTokens', 0) + usage.get('outputTokens', 0)}"
         )
+        usage_log.record("bedrock", self.model, usage.get("inputTokens"), usage.get("outputTokens"))
         return response["output"]["message"]["content"][0]["text"]

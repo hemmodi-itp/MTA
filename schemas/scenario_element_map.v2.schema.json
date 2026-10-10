@@ -1,0 +1,113 @@
+{
+  "$defs": {
+    "MappedElement": {
+      "additionalProperties": true,
+      "properties": {
+        "cluster": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cluster"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "locator_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator Id"
+        },
+        "playwright_expr": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Playwright Expr"
+        }
+      },
+      "title": "MappedElement",
+      "type": "object"
+    },
+    "ScenarioMapEntry": {
+      "additionalProperties": true,
+      "properties": {
+        "relevant_elements": {
+          "items": {
+            "$ref": "#/$defs/MappedElement"
+          },
+          "title": "Relevant Elements",
+          "type": "array"
+        },
+        "scenario_title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario Title"
+        }
+      },
+      "title": "ScenarioMapEntry",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/scenario_element_map.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact": {
+      "const": "scenario_element_map",
+      "default": "scenario_element_map",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "scenarios": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ScenarioMapEntry"
+      },
+      "title": "Scenarios",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "title": "ScenarioElementMapV2",
+  "type": "object",
+  "x-mta-artifact": "scenario_element_map",
+  "x-mta-kind": "map"
+}

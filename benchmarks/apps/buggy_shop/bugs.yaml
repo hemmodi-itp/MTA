@@ -1,0 +1,158 @@
+# Ground truth for the Buggy Shop benchmark (docs/phases/phase-0-design.md §3.1).
+# Every bug is OFF by default; set its `flag` env var to 1 (or BUGS=all) to enable it.
+# Fields: id, flag, title, category, severity (critical|high|medium|low), affected_ac, how_detectable.
+bugs:
+  - id: BUG_01
+    flag: BUG_01
+    title: Product name max length enforced as < 50, so exactly 50 characters is rejected
+    category: validation_boundary
+    severity: medium
+    affected_ac: AC-03.2
+    how_detectable: UI boundary-value analysis (name of exactly 50 characters)
+  - id: BUG_02
+    flag: BUG_02
+    title: Server accepts a negative price that client-side validation rejects
+    category: server_client_mismatch
+    severity: high
+    affected_ac: AC-03.3
+    how_detectable: API only (POST /api/products with price -1)
+  - id: BUG_03
+    flag: BUG_03
+    title: Cart totals truncate to 2 decimals instead of rounding half up
+    category: calculation
+    severity: high
+    affected_ac: AC-05.2
+    how_detectable: UI exact total assertion (1 x Gel Pen should total 1.01)
+  - id: BUG_04
+    flag: BUG_04
+    title: Orders page and API have no ownership check (IDOR)
+    category: authorization_idor
+    severity: critical
+    affected_ac: AC-06.2
+    how_detectable: Role / URL tampering (alice opens /orders/1)
+  - id: BUG_05
+    flag: BUG_05
+    title: Product description rendered unescaped on the detail page (stored XSS)
+    category: security_xss
+    severity: critical
+    affected_ac: AC-03.5
+    how_detectable: Security probe (script/img payload in description)
+  - id: BUG_06
+    flag: BUG_06
+    title: Footer Help link points to /helpp and returns 404
+    category: navigation
+    severity: low
+    affected_ac: AC-08.1
+    how_detectable: Link check
+  - id: BUG_07
+    flag: BUG_07
+    title: Search text containing % causes HTTP 500
+    category: error_handling
+    severity: high
+    affected_ac: AC-02.4
+    how_detectable: Edge-case input (search for %)
+  - id: BUG_08
+    flag: BUG_08
+    title: Login password field has no associated label (no accessible name)
+    category: accessibility
+    severity: medium
+    affected_ac: AC-01.4
+    how_detectable: Accessibility scan (label / accessible name check)
+  - id: BUG_09
+    flag: BUG_09
+    title: Product list (page and API) takes 3.5 seconds to load
+    category: performance
+    severity: medium
+    affected_ac: AC-02.6
+    how_detectable: Timing budget (2 s)
+  - id: BUG_10
+    flag: BUG_10
+    title: Checkout with an empty cart places an order
+    category: state_machine
+    severity: high
+    affected_ac: AC-05.4
+    how_detectable: Invalid state transition (checkout with empty cart)
+  - id: BUG_11
+    flag: BUG_11
+    title: Logout does not invalidate the server-side session
+    category: session
+    severity: critical
+    affected_ac: AC-01.3
+    how_detectable: Reuse old session cookie / back button after logout
+  - id: BUG_12
+    flag: BUG_12
+    title: Double submit of the product form creates duplicate products
+    category: concurrency
+    severity: medium
+    affected_ac: AC-03.6
+    how_detectable: Double click / repeated submit
+  - id: BUG_13
+    flag: BUG_13
+    title: Wrong password shows "Unknown user" instead of the generic message (user enumeration)
+    category: wrong_message
+    severity: medium
+    affected_ac: AC-01.2
+    how_detectable: Exact error text assertion
+  - id: BUG_14
+    flag: BUG_14
+    title: Sort by price is not stable (products with equal prices come out reversed)
+    category: sorting
+    severity: low
+    affected_ac: AC-02.3
+    how_detectable: Order assertion on equal-price products
+  - id: BUG_15
+    flag: BUG_15
+    title: Pagination Next link drops the active category filter
+    category: pagination
+    severity: medium
+    affected_ac: AC-02.5
+    how_detectable: Filter then paginate
+  - id: BUG_16
+    flag: BUG_16
+    title: Admin page reachable by a regular user
+    category: authorization_role
+    severity: critical
+    affected_ac: AC-07.1
+    how_detectable: Role matrix (user opens /admin)
+  - id: BUG_17
+    flag: BUG_17
+    title: Server accepts an .exe upload
+    category: upload_validation
+    severity: high
+    affected_ac: AC-04.2
+    how_detectable: Disallowed file type upload
+  - id: BUG_18
+    flag: BUG_18
+    title: Empty product name accepted (client and server)
+    category: required_validation
+    severity: medium
+    affected_ac: AC-03.1
+    how_detectable: Negative equivalence partition (empty name)
+  - id: BUG_19
+    flag: BUG_19
+    title: Product search is case-sensitive
+    category: search
+    severity: low
+    affected_ac: AC-02.2
+    how_detectable: Equivalence partition on letter case
+  - id: BUG_20
+    flag: BUG_20
+    title: Delete shows success but the product is still there after reload
+    category: persistence
+    severity: high
+    affected_ac: AC-03.7
+    how_detectable: Reload check after delete
+  - id: BUG_21
+    flag: BUG_21
+    title: Cart quantity accepts 0 and negative numbers
+    category: validation_numeric
+    severity: high
+    affected_ac: AC-05.1
+    how_detectable: Boundary-value analysis (quantity 0 / -1)
+  - id: BUG_22
+    flag: BUG_22
+    title: Discount code can be applied twice
+    category: business_rule
+    severity: high
+    affected_ac: AC-05.3
+    how_detectable: Repeat action (apply SAVE10 twice)

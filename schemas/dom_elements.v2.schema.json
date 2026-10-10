@@ -1,0 +1,217 @@
+{
+  "$defs": {
+    "DomElement": {
+      "additionalProperties": true,
+      "properties": {
+        "attribute_locators": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribute Locators"
+        },
+        "display_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Display Text"
+        },
+        "locator_candidates": {
+          "anyOf": [
+            {
+              "items": {},
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator Candidates"
+        },
+        "locator_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator Id"
+        },
+        "quality": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quality"
+        },
+        "recommended_locator": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommended Locator"
+        },
+        "semantic_locators": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantic Locators"
+        },
+        "tag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tag"
+        }
+      },
+      "title": "DomElement",
+      "type": "object"
+    },
+    "DomPage": {
+      "additionalProperties": true,
+      "properties": {
+        "elements": {
+          "items": {
+            "$ref": "#/$defs/DomElement"
+          },
+          "title": "Elements",
+          "type": "array"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "title": "DomPage",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/dom_elements.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact": {
+      "const": "dom_elements",
+      "default": "dom_elements",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "elements": {
+      "items": {
+        "$ref": "#/$defs/DomElement"
+      },
+      "title": "Elements",
+      "type": "array"
+    },
+    "pages": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/DomPage"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Pages"
+    },
+    "project": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Url"
+    }
+  },
+  "title": "DomElementsV2",
+  "type": "object",
+  "x-mta-artifact": "dom_elements",
+  "x-mta-kind": "dict"
+}

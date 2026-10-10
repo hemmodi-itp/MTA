@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "DataField": {
+      "additionalProperties": true,
+      "properties": {
+        "field_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field Name"
+        },
+        "field_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field Type"
+        },
+        "value": {
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "title": "DataField",
+      "type": "object"
+    },
+    "DataIteration": {
+      "additionalProperties": true,
+      "properties": {
+        "expected_error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Error"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/DataField"
+          },
+          "title": "Fields",
+          "type": "array"
+        }
+      },
+      "title": "DataIteration",
+      "type": "object"
+    },
+    "NegativeVariant": {
+      "additionalProperties": true,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "iterations": {
+          "items": {
+            "$ref": "#/$defs/DataIteration"
+          },
+          "title": "Iterations",
+          "type": "array"
+        },
+        "variant_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variant Id"
+        },
+        "variant_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variant Type"
+        }
+      },
+      "title": "NegativeVariant",
+      "type": "object"
+    },
+    "ScenarioDataset": {
+      "additionalProperties": true,
+      "properties": {
+        "negative_variants": {
+          "items": {
+            "$ref": "#/$defs/NegativeVariant"
+          },
+          "title": "Negative Variants",
+          "type": "array"
+        },
+        "positive_dataset": {
+          "items": {
+            "$ref": "#/$defs/DataField"
+          },
+          "title": "Positive Dataset",
+          "type": "array"
+        },
+        "scenario_id": {
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "scenario_title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario Title"
+        },
+        "testdata_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Testdata Id"
+        }
+      },
+      "required": [
+        "scenario_id"
+      ],
+      "title": "ScenarioDataset",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/test_data.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact": {
+      "const": "test_data",
+      "default": "test_data",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "datasets": {
+      "items": {
+        "$ref": "#/$defs/ScenarioDataset"
+      },
+      "title": "Datasets",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "title": "TestDataV2",
+  "type": "object",
+  "x-mta-artifact": "test_data",
+  "x-mta-kind": "list"
+}

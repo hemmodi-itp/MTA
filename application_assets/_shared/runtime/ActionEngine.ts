@@ -1,9 +1,21 @@
 import * as fs from 'fs';
 import { expect, Locator, Page } from '@playwright/test';
 import { Logger } from './Logger';
+import { allowedHostsFromEnv, assertUrlAllowed, SafetyError } from './safety';
 
 export interface VerifyOptions {
     soft?: boolean;
+}
+
+/**
+ * Phase 0 safety rails at run time. `allowedHosts` comes from MTA_ALLOWED_HOSTS
+ * (null = not enforced); `violations` is filled by the test fixture when the
+ * top-level page lands on a host outside the list (redirect, link click) — the
+ * next action then fails instead of carrying on against a foreign site.
+ */
+export interface RuntimeSafety {
+    allowedHosts: string[] | null;
+    violations: string[];
 }
 
 export class ActionEngine {
@@ -11,7 +23,8 @@ export class ActionEngine {
     constructor(
         private readonly page: Page,
         private readonly pageObject: Record<string, Locator>,
-        private readonly pageErrors: string[] = []
+        private readonly pageErrors: string[] = [],
+        private readonly safety: RuntimeSafety = { allowedHosts: allowedHostsFromEnv(), violations: [] }
     ) { }
 
     /**
@@ -42,6 +55,13 @@ export class ActionEngine {
 
         Logger.step(action, locatorName ?? undefined, value);
 
+        if (this.safety.violations.length) {
+            throw new SafetyError(
+                `page left safety.allowed_hosts [${(this.safety.allowedHosts ?? []).join(', ')}]: ` +
+                this.safety.violations.join(', ')
+            );
+        }
+
         try {
             const result = await fn();
             Logger.success(
@@ -58,6 +78,9 @@ export class ActionEngine {
 
     async navigate(url?: string): Promise<void> {
         await this.run(null, 'Navigate', url, async () => {
+            // Phase 0 safety rail: an absolute URL outside safety.allowed_hosts
+            // fails the step (relative URLs resolve against the allow-listed baseURL).
+            assertUrlAllowed(url, this.safety.allowedHosts);
             // '' (not '/') as the no-arg default: per WHATWG URL resolution,
             // goto('/') against a baseURL with its own path (e.g.
             // https://aws.amazon.com/partners/) discards that path and lands

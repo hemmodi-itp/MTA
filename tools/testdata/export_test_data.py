@@ -31,8 +31,8 @@ def export_test_data(
 
 def _write_json(datasets: List[ScenarioTestData], path: str) -> None:
     payload = [ds.model_dump() for ds in datasets]
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2, ensure_ascii=False)
+    from contracts.artifacts import save_artifact
+    save_artifact("test_data", path, payload)  # v2 envelope: {"schema_version": 2, "datasets": [...]}
 
 
 # ---------------------------------------------------------------------------

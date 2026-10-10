@@ -204,3 +204,34 @@ this field to decide whether a locator failure should be fixed by patching `loca
 inserted right after `test.describe(...)` opens (current action-library specs, which use a per-test
 `{ action }` fixture rather than a shared page) — deterministic, not LLM-prompted, so it applies
 regardless of which tier produced the test bodies.
+
+## Safety rails (Phase 0)
+
+Right before `render_spec_from_plan` — the one point every plan tier (LLM, NS/alt-model)
+passes through — `tools/safety/plan_filter.py::filter_plan` applies the project's
+`SafetyPolicy` (`project.yaml` `environment:` + `safety:`, carried in `request["safety"]`):
+
+- a test whose steps (including steps inside a `useFlow` flow, which plan validation never
+  sees) **click / submit / select something destructive** — delete, remove, pay, purchase,
+  place order, send, transfer, deactivate, unsubscribe, reset … (deterministic classifier,
+  `tools/safety/action_classifier.py` + `destructive_rules.yaml`) — is **dropped whole**
+  unless `safety.allow_destructive: true` **and** `environment` is local/dev/staging;
+- a test with a `navigate` to an absolute URL outside `safety.allowed_hosts` is dropped.
+
+The whole test goes (never one step), so no later assertion runs against a state that
+never happened. Every drop is recorded in the plan's `dropped_for_safety[]`
+(`test_plans.json`), in `human_review_queue.json` (`kind: "safety_drop"`) and the log. A
+scenario whose every test is dropped gets no spec (warning, like an empty plan).
+
+## Base URL (Phase 0.6)
+
+No `http://localhost:3000` fallback any more. `_load_base_url` reads `project.url`, else the
+single distinct `modules[].url` (never a guess); with no URL the plan prompt says the URL is
+unknown and the LLM must use `navigate` with no value. New specs carry
+`test.use({ baseURL: "<module url>" })`, pinning each spec to its own module's URL.
+
+## Artifact contracts (Phase 0.7)
+
+`test_plans.json` and `test_suite.json` are written as schema_version 2 documents via
+`contracts.artifacts.save_artifact` (atomic). `scenario_element_map.json`, `test_data.json`
+and `test_plans.json` are read through `contracts.artifacts` loaders, which accept v1 and v2.
