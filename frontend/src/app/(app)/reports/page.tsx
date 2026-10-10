@@ -17,7 +17,6 @@ export default function ReportsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold">Reports</h1>
-        <p className="text-sm text-muted-foreground">Quality reports generated per run.</p>
       </div>
 
       {isError ? (

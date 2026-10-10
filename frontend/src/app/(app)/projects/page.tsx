@@ -19,7 +19,6 @@ export default function ProjectsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold">Projects</h1>
-          <p className="text-sm text-muted-foreground">Your agents, plus sample projects to explore.</p>
         </div>
         <Button asChild className="gap-1.5">
           <Link href="/projects/new">

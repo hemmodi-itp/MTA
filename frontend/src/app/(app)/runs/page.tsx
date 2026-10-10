@@ -162,7 +162,6 @@ export default function RunsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold">Runs</h1>
-        <p className="text-sm text-muted-foreground">Every evaluation across every project.</p>
       </div>
       <Suspense fallback={<div className="shimmer h-72 rounded-2xl" />}>
         <Runs />

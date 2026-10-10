@@ -18,11 +18,11 @@ export function RiskHeatmap({ items }: { items: ProjectHealth[] }) {
   const rows = items.slice(0, 8);
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-[620px]">
-        <div className="grid gap-1.5" style={{ gridTemplateColumns: `minmax(120px,1.2fr) repeat(${HEAT_DIMENSIONS.length}, minmax(52px,1fr))` }}>
+      <div className="w-max min-w-full">
+        <div className="grid gap-1.5" style={{ gridTemplateColumns: `minmax(120px,1.2fr) repeat(${HEAT_DIMENSIONS.length}, minmax(max-content,1fr))` }}>
           <span />
           {HEAT_DIMENSIONS.map((d) => (
-            <span key={d.key} className="truncate pb-1 text-center text-[10px] font-semibold uppercase tracking-wide text-muted-foreground" title={d.label}>
+            <span key={d.key} className="whitespace-nowrap px-1 pb-1 text-center text-[11px] font-semibold text-muted-foreground">
               {d.label}
             </span>
           ))}

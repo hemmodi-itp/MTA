@@ -16,11 +16,3 @@ export const NAV: NavItem[] = [
 ];
 
 export const SETTINGS_NAV: NavItem = { href: "/settings", label: "Settings", icon: Settings, hint: "Workspace and account" };
-
-export function titleFor(pathname: string): string {
-  if (pathname.startsWith("/runs/")) return "Run";
-  if (pathname.startsWith("/projects/new")) return "New evaluation";
-  if (pathname.startsWith("/projects/")) return "Project";
-  if (pathname.startsWith("/reports/")) return "Report";
-  return [...NAV, SETTINGS_NAV].find((n) => pathname.startsWith(n.href))?.label ?? "MTA";
-}
