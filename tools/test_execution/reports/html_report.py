@@ -542,6 +542,61 @@ def _healing_section(hr: dict) -> str:
 </div>"""
 
 
+def _traceability_section(tr: dict) -> str:
+    """Phase 1.2: requirement coverage — every AC, its tests and latest result; zero-test ACs with the reason."""
+    if not tr:
+        return ""
+    s = tr.get("summary") or {}
+    pct = s.get("coverage_pct")
+    pct_html = f"{pct}%" if pct is not None else "N/A"
+
+    rows = []
+    for a in tr.get("acs") or []:
+        tests = a.get("tests") or []
+        tests_html = "<br>".join(
+            f'{_esc(t.get("tc_id"))} {_chip(t.get("status") or "not_run")} '
+            f'<span style="color:#64748b">{_esc(t.get("link"))}</span>' for t in tests) or "—"
+        reason = a.get("uncovered_reason") or {}
+        reason_html = (f'<strong>{_esc(reason.get("code"))}</strong> {_esc(reason.get("detail"))}'
+                       if reason else "")
+        indent = "padding-left:22px" if a.get("parent_id") else ""
+        rows.append(
+            f'<tr><td style="{indent}"><strong>{_esc(a.get("id"))}</strong></td>'
+            f'<td>{_esc(a.get("priority"))}</td><td>{_esc(a.get("testability"))}</td>'
+            f'<td>{_esc(a.get("statement"))}</td><td>{_esc(a.get("status"))}</td>'
+            f'<td>{tests_html}</td><td>{reason_html}</td></tr>')
+
+    unlinked = tr.get("unlinked_tests") or []
+    unlinked_html = ""
+    if unlinked:
+        items = "".join(f'<div class="step-row"><div class="s-col">{_esc(u.get("tc_id"))} — '
+                        f'{_esc(u.get("title"))} <span class="s-err">{_esc(u.get("spec_file"))}</span>'
+                        f'</div></div>' for u in unlinked)
+        unlinked_html = (f'<div class="tc-inner" style="margin:0 24px 20px"><div style="font-weight:700;'
+                         f'color:#dc2626;margin-bottom:8px">Tests linked to no acceptance criterion '
+                         f'({len(unlinked)})</div>{items}</div>')
+
+    by_reason = s.get("by_reason") or {}
+    reasons_html = ", ".join(f"{_esc(k)}: {v}" for k, v in by_reason.items()) or "none"
+    return f"""<div class="section">
+  <div class="sec-title">📋 Requirements Traceability <span class="sec-cnt">{len(tr.get("uncovered") or [])} AC(s) with no test</span></div>
+  <div class="suite-bar">
+    <div class="stat-block"><div class="num" style="color:#4361ee">{pct_html}</div><div class="lbl">AC Coverage (automatable)</div></div>
+    <div class="stat-block"><div class="num ntot">{s.get("acs_covered", 0)}/{s.get("acs_automatable", 0)}</div><div class="lbl">Covered</div></div>
+    <div class="stat-block"><div class="num npass">{s.get("acs_passing", 0)}</div><div class="lbl">ACs Passing</div></div>
+    <div class="stat-block"><div class="num nfail">{s.get("acs_failing", 0)}</div><div class="lbl">ACs Failing</div></div>
+  </div>
+  <div style="padding:8px 24px;color:#475569;font-size:0.85rem">Not tested, by reason: {reasons_html}</div>
+  <table>
+    <thead><tr><th>AC</th><th>Priority</th><th>Testability</th><th>Criterion</th><th>Status</th><th>Tests (latest result)</th><th>Why untested</th></tr></thead>
+    <tbody>
+{chr(10).join(rows)}
+    </tbody>
+  </table>
+{unlinked_html}
+</div>"""
+
+
 def _errors_section(ev: dict) -> str:
     errors   = ev.get("errors", [])
     warnings = ev.get("warnings", [])
@@ -585,6 +640,7 @@ def build_html_report(report: dict) -> str:
     ag    = report.get("artifacts_generated", {})
     ter   = report.get("test_execution_report", {})
     hr    = report.get("healing_report")
+    tr    = report.get("traceability")
     ev    = report.get("errors_and_validation", {})
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -600,6 +656,7 @@ def build_html_report(report: dict) -> str:
 {_artifacts_section(ag)}
 {_test_section(ter)}
 {_healing_section(hr)}
+{_traceability_section(tr)}
 {_errors_section(ev)}
 {_JS}
 </body>

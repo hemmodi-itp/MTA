@@ -13,6 +13,7 @@ from typing import Optional
 import yaml
 
 from tools.constants import PROJECTS_BASE as _PROJECTS_DIR
+from tools.requirements.config import resolve_requirements_config
 from tools.safety.policy import SafetyPolicy, warn_if_unspecified
 
 
@@ -48,6 +49,8 @@ def load_project_manifest(project_name: str) -> dict:
     flat["safety"] = policy.to_request()
     # Phase 0 artifact contracts — boundary-validation mode (warn | block).
     flat["contracts"] = resolve_contracts_config(raw)
+    # Phase 1 requirements & traceability — opt-in (`requirements.enabled`, default false).
+    flat["requirements"] = resolve_requirements_config(raw)
     return {k: v for k, v in flat.items() if v is not None}
 
 

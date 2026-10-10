@@ -287,13 +287,57 @@ def _render_step(
     return f"{indent}await action.{action}({', '.join(args)});"
 
 
-def _render_test(test: dict, flows_meta: Optional[Dict[str, List[str]]]) -> str:
-    tag = _TAG_BY_TYPE.get(test.get("type", ""), "")
+def _has_trace(test: dict) -> bool:
+    """Phase 1: plan tests carry a tc_id only when project.yaml `requirements.enabled` is on."""
+    return bool(test.get("tc_id"))
+
+
+def render_test_title(test: dict) -> str:
+    """The exact title a plan test is rendered with (traceability matches results on it).
+
+    Traced tests (Phase 1): the primary AC id prefixes the title and the @smoke/@regression tag moves into
+    the details object. Untraced tests keep the original "<name> @smoke" form, byte for byte.
+    """
     name = test["name"]
+    if _has_trace(test):
+        primary = (test.get("ac_ids") or [None])[0]
+        return f"{primary} {name}" if primary and primary not in name else name
+    tag = _TAG_BY_TYPE.get(test.get("type", ""), "")
     if tag and tag not in name:
         name = f"{name} {tag}"
-    name_ts = _ts_str(name)
-    lines = [f"  test({name_ts}, async ({{ action }}) => {{"]
+    return name
+
+
+def render_test_details(test: dict, scenario_id: str = "") -> str:
+    """Playwright details object for a traced test, as ONE line: healing's block regex
+    (agents/test_execution/healing/tools.py::_extract_test_block) needs the whole test( header on one line."""
+    tags: List[str] = []
+    if test.get("priority"):
+        tags.append(f"@{test['priority']}")
+    if test.get("type") in _TAG_BY_TYPE:
+        tags.append(f"@{test['type']}")
+        tags.append(_TAG_BY_TYPE[test["type"]])
+    tags += [f"@{r}" for r in test.get("req_ids") or []]
+    tags += [f"@{a}" for a in test.get("ac_ids") or []]
+    tags = list(dict.fromkeys(tags))
+    annotations = [{"type": "ac", "description": a} for a in test.get("ac_ids") or []]
+    annotations.append({"type": "tc", "description": test["tc_id"]})
+    if scenario_id:
+        annotations.append({"type": "scenario", "description": scenario_id})
+    if test.get("ac_link") in ("inherited", "similarity"):
+        annotations.append({"type": "ac_link", "description": test["ac_link"]})
+    tag_ts = ", ".join(_ts_str(t) for t in tags)
+    ann_ts = ", ".join(
+        f"{{ type: {_ts_str(a['type'])}, description: {_ts_str(a['description'])} }}" for a in annotations)
+    return f"{{ tag: [{tag_ts}], annotation: [{ann_ts}] }}"
+
+
+def _render_test(test: dict, flows_meta: Optional[Dict[str, List[str]]], scenario_id: str = "") -> str:
+    name_ts = _ts_str(render_test_title(test))
+    if _has_trace(test):
+        lines = [f"  test({name_ts}, {render_test_details(test, scenario_id)}, async ({{ action }}) => {{"]
+    else:
+        lines = [f"  test({name_ts}, async ({{ action }}) => {{"]
     for step in test["steps"]:
         lines.append(_render_step(step, flows_meta=flows_meta))
     lines.append("  });")
@@ -351,7 +395,7 @@ def render_spec_from_plan(
     ]
 
     for test in plan.get("tests", []):
-        lines.append(_render_test(test, flows_meta))
+        lines.append(_render_test(test, flows_meta, scenario_id))
         lines.append("")
 
     lines.append("});")

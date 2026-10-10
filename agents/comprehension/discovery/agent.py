@@ -523,7 +523,8 @@ class DiscoveryAgent(BaseAgent):
             output_dir=comp_dir,
             user_flows=user_flows if user_flows else None,
         )
-        synth_request = {**request, "brd_dir": synthetic_path}
+        # requirements_source: Phase 1 marks requirements read from a DOM-synthesised BRD as dom_inferred.
+        synth_request = {**request, "brd_dir": synthetic_path, "requirements_source": "dom_inferred"}
         self.logger.info("  [2/2] ComprehensionAgent (LLM) processing synthetic BRD")
         comp_result = self._run_comprehension(synth_request, state)
 

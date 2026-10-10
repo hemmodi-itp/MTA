@@ -122,16 +122,60 @@ def test_inventory(project_dir: str, results: List[Dict[str, Any]]) -> List[Dict
     if scen_path:
         for sc in (load_payload("business_scenarios", scen_path, {}) or {}).get("scenarios", []):
             scenarios[sc.get("scenario_id")] = sc
+    trace = _trace_links(project_dir)
     inv = []
     for r in results:
-        sid = spec_to_sid.get(os.path.basename(str(r.get("spec_file", ""))))
+        spec_base = os.path.basename(str(r.get("spec_file", "")))
+        sid = spec_to_sid.get(spec_base)
         sc = scenarios.get(sid, {})
+        # Phase 1: per-test links from traceability.json (by tc annotation, then spec + title); else the
+        # result's own ac annotations; else the scenario's ac_ids (inherited).
+        link = trace.get(r.get("tc_id")) or trace.get((spec_base, r.get("test_title")))
+        if link:
+            ac_ids, ac_link = link
+        elif r.get("ac_ids"):
+            ac_ids, ac_link = list(r["ac_ids"]), "direct"
+        else:
+            ac_ids, ac_link = sc.get("ac_ids") or [], ("inherited" if sc.get("ac_ids") else None)
         inv.append({
             "id": _test_id(r), "spec_file": r.get("spec_file"), "title": r.get("test_title"),
-            "scenario_id": sid, "ac_ids": sc.get("ac_ids") or [],
+            "scenario_id": sid, "ac_ids": ac_ids, "ac_link": ac_link, "tc_id": r.get("tc_id"),
             "text": " ".join(str(x) for x in (sc.get("title"), sc.get("traceability"), r.get("test_title")) if x),
         })
     return inv
+
+
+def _trace_links(project_dir: str) -> Dict[Any, Tuple[List[str], Optional[str]]]:
+    """{tc_id | (spec basename, title): (ac_ids, link)} from test_creation/traceability.json, if present."""
+    from contracts.artifacts import load_payload
+
+    path = os.path.join(project_dir, "test_creation", "traceability.json")
+    if not os.path.exists(path):
+        return {}
+    out: Dict[Any, Tuple[List[str], Optional[str]]] = {}
+    for tc_id, t in ((load_payload("traceability", path, {}) or {}).get("tests") or {}).items():
+        value = (list(t.get("ac_ids") or []), t.get("link"))
+        out[tc_id] = value
+        out[(os.path.basename(t.get("spec_file") or ""), t.get("test_title"))] = value
+    return out
+
+
+def ac_extraction(app: BenchmarkApp, project_dir: str) -> Optional[Dict[str, Any]]:
+    """Phase 1: recall of the pipeline's own requirements.json against the app's hand-labelled acs.yaml."""
+    from contracts.artifacts import artifact_path, load_payload
+    from tools.benchmark.ac_recall import score_recall
+    from tools.benchmark.apps import load_ac_truth
+
+    truth = load_ac_truth(app)
+    path = artifact_path(project_dir, "requirements", existing_only=True)
+    if not truth or not path:
+        return None
+    extracted: Dict[str, List[Dict[str, Any]]] = {}
+    for req in (load_payload("requirements", path, {}) or {}).get("requirements") or []:
+        extracted.setdefault(req.get("module_id"), []).extend(req.get("acceptance_criteria") or [])
+    result = score_recall(truth, extracted)
+    result.pop("rows", None)
+    return result
 
 
 # ── heal probe ────────────────────────────────────────────────────────────────
@@ -263,6 +307,7 @@ def main(argv=None) -> int:
             last_results = results or last_results
             _log(f"bug-free run {i + 1}: {sum(s == 'passed' for s in statuses.values())}/{len(statuses)} passed")
     record["tests"] = test_inventory(project_dir, last_results)
+    record["ac_extraction"] = ac_extraction(app, project_dir)
 
     if not record["tests"]:
         notes.append("No tests were executed — detection cannot be measured.")

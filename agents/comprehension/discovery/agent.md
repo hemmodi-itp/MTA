@@ -219,3 +219,9 @@ application_assets/{project}/
 ## interaction_catalog.json — docs only
 
 `interaction_catalog.json` is produced by DiscoveryAgent from `dom_elements.json`. It is a human-readable catalog of "what can be clicked, filled, or selected" on the page — the successor to `intents.yaml` for visibility purposes. It is **NOT** wired into the locator resolution chain; ScriptGenerationAgent reads locators from `dom_elements.json` via `scenario_element_map.json`, not from this file.
+
+## Requirements source (Phase 1)
+
+In URL-only mode the synthesised-BRD comprehension request carries `requirements_source: "dom_inferred"`, so any
+requirements extracted from it (with `requirements.enabled`) are marked `source: dom_inferred` (confidence ≤ 0.6)
+instead of passing as BRD requirements. `requirements` is part of this step's contract check.

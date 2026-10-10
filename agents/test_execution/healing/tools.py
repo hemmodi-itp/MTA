@@ -256,6 +256,17 @@ def _read_test_block(ctx: HealingRunContext, spec_file: str, test_name: str) -> 
     return block or None
 
 
+# The renderer emits a traced test's details object on its test(...) header line (spec_renderer.render_test_details).
+_DETAILS_RE = re.compile(r"\{\s*tag\s*:\s*\[[^\n]*?\]\s*,\s*annotation\s*:\s*\[[^\n]*?\]\s*\}")
+
+
+def _header_details(block: str) -> Optional[str]:
+    """The { tag, annotation } object on a test block's header line (whitespace-normalised), or None."""
+    header = next((ln for ln in (block or "").splitlines() if re.search(r"test(?:\.skip|\.fixme)?\(", ln)), "")
+    m = _DETAILS_RE.search(header)
+    return re.sub(r"\s+", " ", m.group(0)) if m else None
+
+
 def _structurally_valid_block(block: str) -> bool:
     if not block or not block.strip():
         return False
@@ -706,6 +717,16 @@ def _apply_patch(ctx: HealingRunContext, spec_file: str, test_name: str, new_blo
     old_block = _extract_test_block(content, test_name)
     if not old_block:
         return {"applied": False, "reason": f"could not locate existing test block '{test_name}' in {spec_file}"}
+
+    # Phase 1 traceability guard: a test's { tag, annotation } details object links it to its acceptance
+    # criteria and test-case id. A patch may change the body (or turn the test into test.skip), never that link.
+    old_details = _header_details(old_block)
+    if old_details is not None and _header_details(new_block) != old_details:
+        return {
+            "applied": False,
+            "reason": "new_block must keep the test's { tag: [...], annotation: [...] } object unchanged, on the "
+                      f"test(...) line — copy it exactly: {old_details}",
+        }
 
     new_content = content.replace(old_block, new_block, 1)
     if new_content == content:

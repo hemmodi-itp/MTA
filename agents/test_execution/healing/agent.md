@@ -101,3 +101,12 @@ unavailable (missing `GOOGLE_API_KEY`, ADK import/runtime error), `execute()` re
 - Known gaps recorded in `docs/audit/current_state.md` (not changed in Phase 0):
   `apply_patch` does not restrict assertion values inside a block; `repair_named_locator`
   heals are not counted in `tests_healed`.
+
+## Traceability guard (Phase 1)
+
+A traced test's `test(` line carries a `{ tag: [...], annotation: [...] }` object linking it to its acceptance
+criteria and test-case id. `apply_patch` rejects a new block whose header does not carry the **identical**
+object (whitespace-normalised) — the patch may change the body or turn the test into `test.skip(...)`, never the
+link. The rejection message quotes the object to keep; the supervisor prompt says the same. Specs without a
+details object (generated before Phase 1, or with `requirements.enabled` off) are unaffected. This only adds a
+guard; the existing tool-surface boundary is unchanged.

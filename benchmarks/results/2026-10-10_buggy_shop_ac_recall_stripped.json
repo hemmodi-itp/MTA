@@ -1,0 +1,1592 @@
+{
+  "total": 27,
+  "extracted": 27,
+  "recall": 1.0,
+  "missed": [],
+  "agreement": {
+    "testability": 0.963,
+    "priority": 0.481,
+    "atomic": 0.778,
+    "risk_tags_jaccard": 0.87
+  },
+  "criteria_extracted": 81,
+  "unmatched_extractions": 15,
+  "unmatched_statements": [
+    "Only the login page, the help page and the health check are available without signing in; any other page redirects to the login page.",
+    "Errors are announced with role=\"alert\".",
+    "All API endpoints except /api/health require a signed-in session (otherwise HTTP 401).",
+    "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`.",
+    "HTML must be semantic with labelled form controls.",
+    "Errors must be announced with `role=\"alert\"`.",
+    "Security: output encoding for all user content , server-side authorization on every request , , session invalidation on logout .",
+    "Output encoding must be performed for all user content.",
+    "Server-side authorization must be enforced on every request.",
+    "Session invalidation must occur on logout.",
+    "GET `/api/health` is public and returns `{\"status\": \"ok\"}`.",
+    "Accessibility rules require semantic HTML, labelled form controls, and error announcements with role=\"alert\".",
+    "semantic HTML",
+    "labelled form controls",
+    "errors announced with `role=\"alert\"`"
+  ],
+  "rows": [
+    {
+      "id": "AC-01.1",
+      "module": "M01",
+      "extracted": true,
+      "matched_id": "AC-001.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P0",
+        "P0"
+      ],
+      "risk_tags": [
+        [
+          "auth"
+        ],
+        [
+          "auth"
+        ]
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-01.2",
+      "module": "M01",
+      "extracted": true,
+      "matched_id": "AC-001.2.2",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P0"
+      ],
+      "risk_tags": [
+        [
+          "auth"
+        ],
+        [
+          "auth"
+        ]
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-01.3",
+      "module": "M01",
+      "extracted": true,
+      "matched_id": "AC-001.3",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P0"
+      ],
+      "risk_tags": [
+        [
+          "auth"
+        ],
+        [
+          "auth"
+        ]
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-01.4",
+      "module": "M01",
+      "extracted": true,
+      "matched_id": "AC-001.4",
+      "testability": [
+        "non_functional",
+        "non_functional"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "compliance"
+        ],
+        [
+          "auth",
+          "compliance"
+        ]
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-02.1",
+      "module": "M02",
+      "extracted": true,
+      "matched_id": "AC-004.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        false
+      ]
+    },
+    {
+      "id": "AC-02.2",
+      "module": "M02",
+      "extracted": true,
+      "matched_id": "AC-004.4",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-02.3",
+      "module": "M02",
+      "extracted": true,
+      "matched_id": "AC-004.5",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-02.4",
+      "module": "M02",
+      "extracted": true,
+      "matched_id": "AC-004.6",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P2"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        false
+      ]
+    },
+    {
+      "id": "AC-02.5",
+      "module": "M02",
+      "extracted": true,
+      "matched_id": "AC-004.7",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P2"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-02.6",
+      "module": "M02",
+      "extracted": true,
+      "matched_id": "AC-004.8.2",
+      "testability": [
+        "non_functional",
+        "non_functional"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-03.1",
+      "module": "M03",
+      "extracted": true,
+      "matched_id": "AC-008.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-03.2",
+      "module": "M03",
+      "extracted": true,
+      "matched_id": "AC-008.2",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-03.3",
+      "module": "M03",
+      "extracted": true,
+      "matched_id": "AC-008.3",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "payment"
+        ],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-03.4",
+      "module": "M03",
+      "extracted": true,
+      "matched_id": "AC-008.4",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P2"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-03.5",
+      "module": "M03",
+      "extracted": true,
+      "matched_id": "AC-008.5",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P0"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-03.6",
+      "module": "M03",
+      "extracted": true,
+      "matched_id": "AC-008.6",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        true,
+        false
+      ]
+    },
+    {
+      "id": "AC-03.7",
+      "module": "M03",
+      "extracted": true,
+      "matched_id": "AC-008.7",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "data-loss"
+        ],
+        [
+          "data-loss"
+        ]
+      ],
+      "atomic": [
+        true,
+        false
+      ]
+    },
+    {
+      "id": "AC-04.1",
+      "module": "M05",
+      "extracted": true,
+      "matched_id": "AC-015.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-04.2",
+      "module": "M05",
+      "extracted": true,
+      "matched_id": "AC-015.2",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P2",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        []
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-05.1",
+      "module": "M04",
+      "extracted": true,
+      "matched_id": "AC-011.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "payment"
+        ],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-05.2",
+      "module": "M04",
+      "extracted": true,
+      "matched_id": "AC-011.3",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "payment"
+        ],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-05.3",
+      "module": "M04",
+      "extracted": true,
+      "matched_id": "AC-011.4",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "payment"
+        ],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-05.4",
+      "module": "M04",
+      "extracted": true,
+      "matched_id": "AC-011.5",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "payment"
+        ],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        true,
+        false
+      ]
+    },
+    {
+      "id": "AC-06.1",
+      "module": "M04",
+      "extracted": true,
+      "matched_id": "AC-012.1.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P0"
+      ],
+      "risk_tags": [
+        [
+          "payment"
+        ],
+        [
+          "payment"
+        ]
+      ],
+      "atomic": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "AC-06.2",
+      "module": "M04",
+      "extracted": true,
+      "matched_id": "AC-012.3",
+      "testability": [
+        "ui",
+        "api"
+      ],
+      "priority": [
+        "P1",
+        "P0"
+      ],
+      "risk_tags": [
+        [
+          "auth"
+        ],
+        [
+          "auth"
+        ]
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-07.1",
+      "module": "M06",
+      "extracted": true,
+      "matched_id": "AC-018.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P1",
+        "P1"
+      ],
+      "risk_tags": [
+        [
+          "auth"
+        ],
+        [
+          "auth"
+        ]
+      ],
+      "atomic": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": "AC-08.1",
+      "module": "M02",
+      "extracted": true,
+      "matched_id": "AC-005.1",
+      "testability": [
+        "ui",
+        "ui"
+      ],
+      "priority": [
+        "P3",
+        "P1"
+      ],
+      "risk_tags": [
+        [],
+        [
+          "auth"
+        ]
+      ],
+      "atomic": [
+        true,
+        false
+      ]
+    }
+  ],
+  "app": "buggy_shop",
+  "date": "2026-10-10",
+  "strip_ids": true,
+  "llm": true,
+  "modules": {
+    "M01": {
+      "status": "ok",
+      "rejected": 0,
+      "warnings": 0,
+      "limitations": []
+    },
+    "M02": {
+      "status": "ok",
+      "rejected": 0,
+      "warnings": 2,
+      "limitations": []
+    },
+    "M03": {
+      "status": "ok",
+      "rejected": 0,
+      "warnings": 5,
+      "limitations": []
+    },
+    "M04": {
+      "status": "ok",
+      "rejected": 0,
+      "warnings": 5,
+      "limitations": []
+    },
+    "M05": {
+      "status": "ok",
+      "rejected": 0,
+      "warnings": 4,
+      "limitations": []
+    },
+    "M06": {
+      "status": "ok",
+      "rejected": 0,
+      "warnings": 4,
+      "limitations": []
+    }
+  },
+  "extracted_criteria": {
+    "M01": [
+      {
+        "id": "AC-001.1",
+        "parent_id": null,
+        "statement": "Given valid credentials, when the user submits the login form, then they land on the Products page.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Given valid credentials (for example `alice` / `alice-pass-1`), when the user submits the login form, then they land on the Products page."
+      },
+      {
+        "id": "AC-001.2",
+        "parent_id": null,
+        "statement": "Given a wrong password or an unknown username, when the user submits the login form, then the page shows exactly \"Invalid username or password\" and does not reveal which part was wrong.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Given a wrong password or an unknown username, when the user submits the login form, then the page shows exactly \"Invalid username or password\" and does not reveal which part was wrong."
+      },
+      {
+        "id": "AC-001.2.1",
+        "parent_id": "AC-001.2",
+        "statement": "Given a wrong password, when the user submits the login form, then the page shows exactly \"Invalid username or password\" and does not reveal which part was wrong.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Given a wrong password or an unknown username, when the user submits the login form, then the page shows exactly \"Invalid username or password\" and does not reveal which part was wrong."
+      },
+      {
+        "id": "AC-001.2.2",
+        "parent_id": "AC-001.2",
+        "statement": "Given an unknown username, when the user submits the login form, then the page shows exactly \"Invalid username or password\" and does not reveal which part was wrong.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Given a wrong password or an unknown username, when the user submits the login form, then the page shows exactly \"Invalid username or password\" and does not reveal which part was wrong."
+      },
+      {
+        "id": "AC-001.3",
+        "parent_id": null,
+        "statement": "When the user logs out, the session is invalidated on the server: afterwards every protected page redirects to the login page, even if the old session cookie is sent again.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "When the user logs out, the session is invalidated on the server: afterwards every protected page redirects to the login page, even if the old session cookie is sent again."
+      },
+      {
+        "id": "AC-001.4",
+        "parent_id": null,
+        "statement": "Every field on the login form (Username, Password) has a visible label that is programmatically associated with its input (accessible name).",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Every field on the login form (Username, Password) has a visible label that is programmatically associated with its input (accessible name)."
+      },
+      {
+        "id": "AC-001.5",
+        "parent_id": null,
+        "statement": "Only the login page, the help page and the health check are available without signing in; any other page redirects to the login page.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Only the login page, the help page and the health check are available without signing in; any other page redirects to the login page."
+      },
+      {
+        "id": "AC-002.1",
+        "parent_id": null,
+        "statement": "Errors are announced with role=\"alert\".",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      },
+      {
+        "id": "AC-003.1",
+        "parent_id": null,
+        "statement": "All API endpoints except /api/health require a signed-in session (otherwise HTTP 401).",
+        "testability": "api",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "All API endpoints except `/api/health` require a signed-in session (otherwise HTTP 401)."
+      }
+    ],
+    "M02": [
+      {
+        "id": "AC-004.1",
+        "parent_id": null,
+        "statement": "The product list is paginated with 5 products per page, with Previous/Next links and a \"Page N of M\" indicator.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "The product list is paginated with 5 products per page, with Previous/Next links and a \"Page N of M\" indicator."
+      },
+      {
+        "id": "AC-004.1.1",
+        "parent_id": "AC-004.1",
+        "statement": "The product list is paginated with 5 products per page.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "The product list is paginated with 5 products per page, with Previous/Next links and a \"Page N of M\" indicator."
+      },
+      {
+        "id": "AC-004.1.2",
+        "parent_id": "AC-004.1",
+        "statement": "The product list includes Previous/Next links.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "The product list is paginated with 5 products per page, with Previous/Next links and a \"Page N of M\" indicator."
+      },
+      {
+        "id": "AC-004.1.3",
+        "parent_id": "AC-004.1",
+        "statement": "The product list displays a \"Page N of M\" indicator.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "The product list is paginated with 5 products per page, with Previous/Next links and a \"Page N of M\" indicator."
+      },
+      {
+        "id": "AC-004.4",
+        "parent_id": null,
+        "statement": "Search matches any product whose name contains the search text, ignoring upper/lower case (for example \"mouse\" finds \"wireless Mouse\").",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Search matches any product whose name contains the search text, ignoring upper/lower case (for example \"mouse\" finds \"wireless Mouse\")."
+      },
+      {
+        "id": "AC-004.5",
+        "parent_id": null,
+        "statement": "Sorting by price (low to high, or high to low) is stable: products with the same price keep their catalogue order (product id order, which is also their name order).",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Sorting by price (low to high, or high to low) is stable: products with the same price keep their catalogue order (product id order, which is also their name order)."
+      },
+      {
+        "id": "AC-004.6",
+        "parent_id": null,
+        "statement": "A search containing any characters, including `%`, `_`, quotes or symbols, never causes an error; it simply returns the matching products or \"No products found\".",
+        "testability": "ui",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "A search containing any characters, including `%`, `_`, quotes or symbols, never causes an error; it simply returns the matching products or \"No products found\"."
+      },
+      {
+        "id": "AC-004.6.1",
+        "parent_id": "AC-004.6",
+        "statement": "A search containing special characters, quotes, or symbols never causes an error.",
+        "testability": "ui",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "A search containing any characters, including `%`, `_`, quotes or symbols, never causes an error; it simply returns the matching products or \"No products found\"."
+      },
+      {
+        "id": "AC-004.6.2",
+        "parent_id": "AC-004.6",
+        "statement": "A search containing special characters returns matching products or \"No products found\".",
+        "testability": "ui",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "A search containing any characters, including `%`, `_`, quotes or symbols, never causes an error; it simply returns the matching products or \"No products found\"."
+      },
+      {
+        "id": "AC-004.7",
+        "parent_id": null,
+        "statement": "When a category filter (or search or sort) is active, the pagination links keep it, so page 2 still shows only the filtered products.",
+        "testability": "ui",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "When a category filter (or search or sort) is active, the pagination links keep it, so page 2 still shows only the filtered products."
+      },
+      {
+        "id": "AC-004.8",
+        "parent_id": null,
+        "statement": "The product list (page and API) loads within 2 seconds.",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "The product list (page and API) loads within 2 seconds."
+      },
+      {
+        "id": "AC-004.8.1",
+        "parent_id": "AC-004.8",
+        "statement": "The product list page loads within 2 seconds.",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "The product list (page and API) loads within 2 seconds."
+      },
+      {
+        "id": "AC-004.8.2",
+        "parent_id": "AC-004.8",
+        "statement": "The product list API loads within 2 seconds.",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "The product list (page and API) loads within 2 seconds."
+      },
+      {
+        "id": "AC-005.1",
+        "parent_id": null,
+        "statement": "Every page has a \"Help\" link in the footer that opens the Help page (`/help`), which is available without signing in.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Every page has a \"Help\" link in the footer that opens the Help page (`/help`), which is available without signing in."
+      },
+      {
+        "id": "AC-005.1.1",
+        "parent_id": "AC-005.1",
+        "statement": "Every page has a \"Help\" link in the footer that opens `/help`.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Every page has a \"Help\" link in the footer that opens the Help page (`/help`), which is available without signing in."
+      },
+      {
+        "id": "AC-005.1.2",
+        "parent_id": "AC-005.1",
+        "statement": "The Help page (`/help`) is accessible without signing in.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Every page has a \"Help\" link in the footer that opens the Help page (`/help`), which is available without signing in."
+      },
+      {
+        "id": "AC-006.1",
+        "parent_id": null,
+        "statement": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`.",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      },
+      {
+        "id": "AC-006.1.1",
+        "parent_id": "AC-006.1",
+        "statement": "HTML must be semantic with labelled form controls.",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      },
+      {
+        "id": "AC-006.1.2",
+        "parent_id": "AC-006.1",
+        "statement": "Errors must be announced with `role=\"alert\"`.",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      },
+      {
+        "id": "AC-006.3",
+        "parent_id": null,
+        "statement": "Security: output encoding for all user content , server-side authorization on every request , , session invalidation on logout .",
+        "testability": "non_functional",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Security: output encoding for all user content , server-side authorization on every request , , session invalidation on logout ."
+      },
+      {
+        "id": "AC-006.3.1",
+        "parent_id": "AC-006.3",
+        "statement": "Output encoding must be performed for all user content.",
+        "testability": "non_functional",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Security: output encoding for all user content , server-side authorization on every request , , session invalidation on logout ."
+      },
+      {
+        "id": "AC-006.3.2",
+        "parent_id": "AC-006.3",
+        "statement": "Server-side authorization must be enforced on every request.",
+        "testability": "non_functional",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Security: output encoding for all user content , server-side authorization on every request , , session invalidation on logout ."
+      },
+      {
+        "id": "AC-006.3.3",
+        "parent_id": "AC-006.3",
+        "statement": "Session invalidation must occur on logout.",
+        "testability": "non_functional",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Security: output encoding for all user content , server-side authorization on every request , , session invalidation on logout ."
+      }
+    ],
+    "M03": [
+      {
+        "id": "AC-008.1",
+        "parent_id": null,
+        "statement": "Name is required; an empty or blank name is rejected with \"Name is required\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Name is required; an empty or blank name is rejected with \"Name is required\"."
+      },
+      {
+        "id": "AC-008.2",
+        "parent_id": null,
+        "statement": "Name must be 1–50 characters; a name of exactly 50 characters is accepted and 51 or more is rejected with \"Name must be at most 50 characters\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Name must be 1–50 characters; a name of exactly 50 characters is accepted and 51 or more is rejected with \"Name must be at most 50 characters\"."
+      },
+      {
+        "id": "AC-008.2.1",
+        "parent_id": "AC-008.2",
+        "statement": "A name of exactly 50 characters is accepted.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Name must be 1–50 characters; a name of exactly 50 characters is accepted and 51 or more is rejected with \"Name must be at most 50 characters\"."
+      },
+      {
+        "id": "AC-008.2.2",
+        "parent_id": "AC-008.2",
+        "statement": "A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Name must be 1–50 characters; a name of exactly 50 characters is accepted and 51 or more is rejected with \"Name must be at most 50 characters\"."
+      },
+      {
+        "id": "AC-008.3",
+        "parent_id": null,
+        "statement": "Price is required, numeric with at most 2 decimals, and must be zero or more; a negative price is rejected with \"Price must be zero or more\". The server enforces this too, including POST /api/products.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Price is required, numeric with at most 2 decimals, and must be zero or more; a negative price is rejected with \"Price must be zero or more\". The server enforces this too, including POST /api/products."
+      },
+      {
+        "id": "AC-008.3.1",
+        "parent_id": "AC-008.3",
+        "statement": "Price is required, numeric with at most 2 decimals, and must be zero or more.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Price is required, numeric with at most 2 decimals, and must be zero or more; a negative price is rejected with \"Price must be zero or more\". The server enforces this too, including POST /api/products."
+      },
+      {
+        "id": "AC-008.3.2",
+        "parent_id": "AC-008.3",
+        "statement": "A negative price is rejected with \"Price must be zero or more\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Price is required, numeric with at most 2 decimals, and must be zero or more; a negative price is rejected with \"Price must be zero or more\". The server enforces this too, including POST /api/products."
+      },
+      {
+        "id": "AC-008.3.3",
+        "parent_id": "AC-008.3",
+        "statement": "Price validation is enforced on the server, including POST /api/products.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Price is required, numeric with at most 2 decimals, and must be zero or more; a negative price is rejected with \"Price must be zero or more\". The server enforces this too, including POST /api/products."
+      },
+      {
+        "id": "AC-008.4",
+        "parent_id": null,
+        "statement": "Category must be one of Books, Electronics or Home (\"Please choose a category\"); Description is optional and at most 500 characters (\"Description must be at most 500 characters\").",
+        "testability": "ui",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "Category must be one of Books, Electronics or Home (\"Please choose a category\"); Description is optional and at most 500 characters (\"Description must be at most 500 characters\")."
+      },
+      {
+        "id": "AC-008.4.1",
+        "parent_id": "AC-008.4",
+        "statement": "Category must be one of Books, Electronics or Home (\"Please choose a category\").",
+        "testability": "ui",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "Category must be one of Books, Electronics or Home (\"Please choose a category\"); Description is optional and at most 500 characters (\"Description must be at most 500 characters\")."
+      },
+      {
+        "id": "AC-008.4.2",
+        "parent_id": "AC-008.4",
+        "statement": "Description is optional and at most 500 characters (\"Description must be at most 500 characters\").",
+        "testability": "ui",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "Category must be one of Books, Electronics or Home (\"Please choose a category\"); Description is optional and at most 500 characters (\"Description must be at most 500 characters\")."
+      },
+      {
+        "id": "AC-008.5",
+        "parent_id": null,
+        "statement": "The product description is shown on the product detail page as plain text: any HTML or script in it is displayed literally and never executed.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [],
+        "source_quote": "The product description is shown on the product detail page as plain text: any HTML or script in it is displayed literally and never executed."
+      },
+      {
+        "id": "AC-008.6",
+        "parent_id": null,
+        "statement": "Submitting the same product twice in quick succession (double click, or the same name and price within 5 seconds) creates only one product; the Save button is disabled while saving.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Submitting the same product twice in quick succession (double click, or the same name and price within 5 seconds) creates only one product; the Save button is disabled while saving."
+      },
+      {
+        "id": "AC-008.6.1",
+        "parent_id": "AC-008.6",
+        "statement": "Submitting the same product twice in quick succession creates only one product.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Submitting the same product twice in quick succession (double click, or the same name and price within 5 seconds) creates only one product; the Save button is disabled while saving."
+      },
+      {
+        "id": "AC-008.6.2",
+        "parent_id": "AC-008.6",
+        "statement": "The Save button is disabled while saving.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Submitting the same product twice in quick succession (double click, or the same name and price within 5 seconds) creates only one product; the Save button is disabled while saving."
+      },
+      {
+        "id": "AC-008.7",
+        "parent_id": null,
+        "statement": "When a product is deleted, the page confirms \"Product deleted\" and the product disappears permanently: it no longer appears in the list or search, and its detail page returns \"Product not found\", even after a reload.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "data-loss"
+        ],
+        "source_quote": "When a product is deleted, the page confirms \"Product deleted\" and the product disappears permanently: it no longer appears in the list or search, and its detail page returns \"Product not found\", even after a reload."
+      },
+      {
+        "id": "AC-008.7.1",
+        "parent_id": "AC-008.7",
+        "statement": "When a product is deleted, the page confirms \"Product deleted\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "data-loss"
+        ],
+        "source_quote": "When a product is deleted, the page confirms \"Product deleted\" and the product disappears permanently: it no longer appears in the list or search, and its detail page returns \"Product not found\", even after a reload."
+      },
+      {
+        "id": "AC-008.7.2",
+        "parent_id": "AC-008.7",
+        "statement": "When a product is deleted, it disappears permanently from product list and search.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "data-loss"
+        ],
+        "source_quote": "When a product is deleted, the page confirms \"Product deleted\" and the product disappears permanently: it no longer appears in the list or search, and its detail page returns \"Product not found\", even after a reload."
+      },
+      {
+        "id": "AC-008.7.3",
+        "parent_id": "AC-008.7",
+        "statement": "When a product is deleted, its detail page returns \"Product not found\", even after a reload.",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "data-loss"
+        ],
+        "source_quote": "When a product is deleted, the page confirms \"Product deleted\" and the product disappears permanently: it no longer appears in the list or search, and its detail page returns \"Product not found\", even after a reload."
+      }
+    ],
+    "M04": [
+      {
+        "id": "AC-011.1",
+        "parent_id": null,
+        "statement": "Quantity must be a whole number from 1 to 99, both when adding from the product page and when updating the cart; anything else (0, negative, 100 or more, text) is rejected with \"Quantity must be between 1 and 99\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Quantity must be a whole number from 1 to 99, both when adding from the product page and when updating the cart; anything else (0, negative, 100 or more, text) is rejected with \"Quantity must be between 1 and 99\"."
+      },
+      {
+        "id": "AC-011.1.1",
+        "parent_id": "AC-011.1",
+        "statement": "Quantity must be a whole number from 1 to 99, both when adding from the product page and when updating the cart",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Quantity must be a whole number from 1 to 99, both when adding from the product page and when updating the cart; anything else (0, negative, 100 or more, text) is rejected with \"Quantity must be between 1 and 99\"."
+      },
+      {
+        "id": "AC-011.1.2",
+        "parent_id": "AC-011.1",
+        "statement": "Anything else (0, negative, 100 or more, text) is rejected with \"Quantity must be between 1 and 99\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Quantity must be a whole number from 1 to 99, both when adding from the product page and when updating the cart; anything else (0, negative, 100 or more, text) is rejected with \"Quantity must be between 1 and 99\"."
+      },
+      {
+        "id": "AC-011.3",
+        "parent_id": null,
+        "statement": "Line totals, subtotal, discount and total are calculated from exact amounts and rounded half up to 2 decimals. Examples: 1 × Gel Pen at 1.005 gives a total of 1.01; 3 × Gel Pen gives 3.02; 1 × Atlas of Maps (19.95) with SAVE10 gives a total of 17.96 (17.955 rounded half up).",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Line totals, subtotal, discount and total are calculated from exact amounts and rounded half up to 2 decimals. Examples: 1 × Gel Pen at 1.005 gives a total of 1.01; 3 × Gel Pen gives 3.02; 1 × Atlas of Maps (19.95) with SAVE10 gives a total of 17.96 (17.955 rounded half up)."
+      },
+      {
+        "id": "AC-011.4",
+        "parent_id": null,
+        "statement": "Discount code SAVE10 gives 10% off the cart and can be applied only once per cart; applying it again shows \"Discount already applied\" and the total does not change. Unknown codes show \"Invalid discount code\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Discount code SAVE10 gives 10% off the cart and can be applied only once per cart; applying it again shows \"Discount already applied\" and the total does not change. Unknown codes show \"Invalid discount code\"."
+      },
+      {
+        "id": "AC-011.4.1",
+        "parent_id": "AC-011.4",
+        "statement": "Discount code SAVE10 gives 10% off the cart and can be applied only once per cart",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Discount code SAVE10 gives 10% off the cart and can be applied only once per cart; applying it again shows \"Discount already applied\" and the total does not change. Unknown codes show \"Invalid discount code\"."
+      },
+      {
+        "id": "AC-011.4.2",
+        "parent_id": "AC-011.4",
+        "statement": "Applying SAVE10 again shows \"Discount already applied\" and the total does not change",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Discount code SAVE10 gives 10% off the cart and can be applied only once per cart; applying it again shows \"Discount already applied\" and the total does not change. Unknown codes show \"Invalid discount code\"."
+      },
+      {
+        "id": "AC-011.4.3",
+        "parent_id": "AC-011.4",
+        "statement": "Unknown discount codes show \"Invalid discount code\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Discount code SAVE10 gives 10% off the cart and can be applied only once per cart; applying it again shows \"Discount already applied\" and the total does not change. Unknown codes show \"Invalid discount code\"."
+      },
+      {
+        "id": "AC-011.5",
+        "parent_id": null,
+        "statement": "Checkout with an empty cart does not create an order; the checkout page shows \"Your cart is empty\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Checkout with an empty cart does not create an order; the checkout page shows \"Your cart is empty\"."
+      },
+      {
+        "id": "AC-011.5.1",
+        "parent_id": "AC-011.5",
+        "statement": "Checkout with an empty cart does not create an order",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Checkout with an empty cart does not create an order; the checkout page shows \"Your cart is empty\"."
+      },
+      {
+        "id": "AC-011.5.2",
+        "parent_id": "AC-011.5",
+        "statement": "The checkout page shows \"Your cart is empty\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Checkout with an empty cart does not create an order; the checkout page shows \"Your cart is empty\"."
+      },
+      {
+        "id": "AC-012.1",
+        "parent_id": null,
+        "statement": "Placing an order from a non-empty cart opens the order confirmation page for the new order, showing \"Order #<id>\", the message \"Thank you! Your order #<id> has been placed.\", its lines and total; the cart is then empty.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Placing an order from a non-empty cart opens the order confirmation page for the new order, showing \"Order #<id>\", the message \"Thank you! Your order #<id> has been placed.\", its lines and total; the cart is then empty."
+      },
+      {
+        "id": "AC-012.1.1",
+        "parent_id": "AC-012.1",
+        "statement": "Placing an order from a non-empty cart opens the order confirmation page for the new order, showing \"Order #<id>\", the message \"Thank you! Your order #<id> has been placed.\", its lines and total",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Placing an order from a non-empty cart opens the order confirmation page for the new order, showing \"Order #<id>\", the message \"Thank you! Your order #<id> has been placed.\", its lines and total; the cart is then empty."
+      },
+      {
+        "id": "AC-012.1.2",
+        "parent_id": "AC-012.1",
+        "statement": "After placing an order, the cart is then empty.",
+        "testability": "ui",
+        "priority": "P0",
+        "risk_tags": [
+          "payment"
+        ],
+        "source_quote": "Placing an order from a non-empty cart opens the order confirmation page for the new order, showing \"Order #<id>\", the message \"Thank you! Your order #<id> has been placed.\", its lines and total; the cart is then empty."
+      },
+      {
+        "id": "AC-012.3",
+        "parent_id": null,
+        "statement": "Customers can see only their own orders. Opening another user's order (page `/orders/<id>` or `GET /api/orders/<id>`) returns HTTP 403 with \"Access denied\". Administrators can see every order.",
+        "testability": "api",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Customers can see only their own orders. Opening another user's order (page `/orders/<id>` or `GET /api/orders/<id>`) returns HTTP 403 with \"Access denied\". Administrators can see every order."
+      },
+      {
+        "id": "AC-012.3.1",
+        "parent_id": "AC-012.3",
+        "statement": "Customers can see only their own orders.",
+        "testability": "api",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Customers can see only their own orders. Opening another user's order (page `/orders/<id>` or `GET /api/orders/<id>`) returns HTTP 403 with \"Access denied\". Administrators can see every order."
+      },
+      {
+        "id": "AC-012.3.2",
+        "parent_id": "AC-012.3",
+        "statement": "Opening another user's order (page `/orders/<id>` or `GET /api/orders/<id>`) returns HTTP 403 with \"Access denied\".",
+        "testability": "api",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Customers can see only their own orders. Opening another user's order (page `/orders/<id>` or `GET /api/orders/<id>`) returns HTTP 403 with \"Access denied\". Administrators can see every order."
+      },
+      {
+        "id": "AC-012.3.3",
+        "parent_id": "AC-012.3",
+        "statement": "Administrators can see every order.",
+        "testability": "api",
+        "priority": "P0",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "Customers can see only their own orders. Opening another user's order (page `/orders/<id>` or `GET /api/orders/<id>`) returns HTTP 403 with \"Access denied\". Administrators can see every order."
+      }
+    ],
+    "M05": [
+      {
+        "id": "AC-015.1",
+        "parent_id": null,
+        "statement": "Uploading a CSV or PNG file of at most 1 MB succeeds and shows \"Uploaded <file name>\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Uploading a CSV or PNG file of at most 1 MB succeeds and shows \"Uploaded <file name>\"."
+      },
+      {
+        "id": "AC-015.2",
+        "parent_id": null,
+        "statement": "Any other file type (for example `.exe`, `.txt`, `.pdf`) is rejected by the server with \"Only CSV or PNG files are allowed\"; files over 1 MB are rejected with \"File must be 1 MB or smaller\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Any other file type (for example `.exe`, `.txt`, `.pdf`) is rejected by the server with \"Only CSV or PNG files are allowed\"; files over 1 MB are rejected with \"File must be 1 MB or smaller\"."
+      },
+      {
+        "id": "AC-015.2.1",
+        "parent_id": "AC-015.2",
+        "statement": "Any other file type (for example `.exe`, `.txt`, `.pdf`) is rejected by the server with \"Only CSV or PNG files are allowed\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Any other file type (for example `.exe`, `.txt`, `.pdf`) is rejected by the server with \"Only CSV or PNG files are allowed\"; files over 1 MB are rejected with \"File must be 1 MB or smaller\"."
+      },
+      {
+        "id": "AC-015.2.2",
+        "parent_id": "AC-015.2",
+        "statement": "Files over 1 MB are rejected with \"File must be 1 MB or smaller\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [],
+        "source_quote": "Any other file type (for example `.exe`, `.txt`, `.pdf`) is rejected by the server with \"Only CSV or PNG files are allowed\"; files over 1 MB are rejected with \"File must be 1 MB or smaller\"."
+      },
+      {
+        "id": "AC-017.1",
+        "parent_id": null,
+        "statement": "GET `/api/health` is public and returns `{\"status\": \"ok\"}`.",
+        "testability": "api",
+        "priority": "P2",
+        "risk_tags": [],
+        "source_quote": "| GET | `/api/health` | Public. `{\"status\": \"ok\"}` |"
+      }
+    ],
+    "M06": [
+      {
+        "id": "AC-018.1",
+        "parent_id": null,
+        "statement": "The Admin page (/admin, listing users and roles) is available only to administrators, while any other signed-in user gets HTTP 403 with \"Access denied\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "The Admin page (`/admin`, listing users and roles) is available only to administrators; any other signed-in user gets HTTP 403 with \"Access denied\"."
+      },
+      {
+        "id": "AC-018.1.1",
+        "parent_id": "AC-018.1",
+        "statement": "The Admin page (`/admin`, listing users and roles) is available only to administrators",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "The Admin page (`/admin`, listing users and roles) is available only to administrators; any other signed-in user gets HTTP 403 with \"Access denied\"."
+      },
+      {
+        "id": "AC-018.1.2",
+        "parent_id": "AC-018.1",
+        "statement": "any other signed-in user gets HTTP 403 with \"Access denied\".",
+        "testability": "ui",
+        "priority": "P1",
+        "risk_tags": [
+          "auth"
+        ],
+        "source_quote": "The Admin page (`/admin`, listing users and roles) is available only to administrators; any other signed-in user gets HTTP 403 with \"Access denied\"."
+      },
+      {
+        "id": "AC-020.1",
+        "parent_id": null,
+        "statement": "Accessibility rules require semantic HTML, labelled form controls, and error announcements with role=\"alert\".",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      },
+      {
+        "id": "AC-020.1.1",
+        "parent_id": "AC-020.1",
+        "statement": "semantic HTML",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      },
+      {
+        "id": "AC-020.1.2",
+        "parent_id": "AC-020.1",
+        "statement": "labelled form controls",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      },
+      {
+        "id": "AC-020.1.3",
+        "parent_id": "AC-020.1",
+        "statement": "errors announced with `role=\"alert\"`",
+        "testability": "non_functional",
+        "priority": "P1",
+        "risk_tags": [
+          "auth",
+          "compliance"
+        ],
+        "source_quote": "Accessibility: semantic HTML, labelled form controls, errors announced with `role=\"alert\"`."
+      }
+    ]
+  }
+}

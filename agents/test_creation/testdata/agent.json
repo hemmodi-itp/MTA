@@ -3,11 +3,11 @@
   "registry_key": "testdata",
   "category": "test_creation",
   "module_path": "agents.test_creation.testdata.agent",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "status": "active",
   "base_class": "BaseAgent",
   "llm_calls": true,
-  "description": "Reads business scenarios and generates positive/negative/boundary test data variants per scenario, in parallel, with a 3-tier fallback (NS HTTP, alt model, deterministic Python). Phase 0: removes active security-probe payloads from negative/boundary data unless the safety policy allows probes (never on prod/unspecified), reporting each removal; writes test_data.json as a schema_version 2 envelope.",
+  "description": "Reads business scenarios and generates positive/negative/boundary test data variants per scenario, in parallel, with a 3-tier fallback (NS HTTP, alt model, deterministic Python). Phase 0: removes active security-probe payloads from negative/boundary data unless the safety policy allows probes (never on prod/unspecified), reporting each removal; writes test_data.json as a schema_version 2 envelope. Phase 1: variants removed by the test_generation caps are counted per scenario in capped_variants (traceability reason 'budget').",
   "inputs": [
     {
       "name": "project_name",

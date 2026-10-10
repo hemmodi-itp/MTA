@@ -1,0 +1,425 @@
+{
+  "$defs": {
+    "LatestResult": {
+      "additionalProperties": true,
+      "properties": {
+        "at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "At"
+        },
+        "last_failure": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Failure"
+        },
+        "pw_status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pw Status"
+        },
+        "run": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run"
+        },
+        "status": {
+          "default": "not_run",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped",
+            "not_run"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "title": "LatestResult",
+      "type": "object"
+    },
+    "TraceAC": {
+      "additionalProperties": true,
+      "properties": {
+        "children": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "defect_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Defect Ids",
+          "type": "array"
+        },
+        "module_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Id"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Id"
+        },
+        "priority": {
+          "anyOf": [
+            {
+              "enum": [
+                "P0",
+                "P1",
+                "P2",
+                "P3"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Priority"
+        },
+        "req_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Req Id"
+        },
+        "result": {
+          "default": "not_run",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped",
+            "not_run",
+            "mixed"
+          ],
+          "title": "Result",
+          "type": "string"
+        },
+        "risk_tags": {
+          "default": [],
+          "items": {
+            "enum": [
+              "auth",
+              "payment",
+              "data-loss",
+              "PII",
+              "compliance"
+            ],
+            "type": "string"
+          },
+          "title": "Risk Tags",
+          "type": "array"
+        },
+        "statement": {
+          "default": "",
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "default": "not_covered",
+          "enum": [
+            "covered",
+            "partial",
+            "not_covered"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tc_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Tc Ids",
+          "type": "array"
+        },
+        "testability": {
+          "anyOf": [
+            {
+              "enum": [
+                "ui",
+                "api",
+                "non_functional",
+                "manual_only",
+                "not_testable"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Testability"
+        },
+        "uncovered_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UncoveredReason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "TraceAC",
+      "type": "object"
+    },
+    "TraceTest": {
+      "additionalProperties": true,
+      "properties": {
+        "ac_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ac Ids",
+          "type": "array"
+        },
+        "defect_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Defect Ids",
+          "type": "array"
+        },
+        "latest_result": {
+          "$ref": "#/$defs/LatestResult",
+          "default": {
+            "at": null,
+            "last_failure": null,
+            "pw_status": null,
+            "run": null,
+            "status": "not_run"
+          }
+        },
+        "link": {
+          "default": "direct",
+          "enum": [
+            "direct",
+            "similarity",
+            "inherited",
+            "legacy"
+          ],
+          "title": "Link",
+          "type": "string"
+        },
+        "module_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Id"
+        },
+        "scenario_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario Id"
+        },
+        "spec_file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Spec File"
+        },
+        "test_title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Title"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type"
+        }
+      },
+      "title": "TraceTest",
+      "type": "object"
+    },
+    "UncoveredReason": {
+      "additionalProperties": true,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "UncoveredReason",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/traceability.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "acs": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TraceAC"
+      },
+      "default": {},
+      "title": "Acs",
+      "type": "object"
+    },
+    "artifact": {
+      "const": "traceability",
+      "default": "traceability",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "project": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "summary": {
+      "additionalProperties": true,
+      "default": {},
+      "title": "Summary",
+      "type": "object"
+    },
+    "tests": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TraceTest"
+      },
+      "default": {},
+      "title": "Tests",
+      "type": "object"
+    },
+    "unlinked_tests": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Unlinked Tests",
+      "type": "array"
+    },
+    "updated_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated At"
+    }
+  },
+  "title": "TraceabilityDoc",
+  "type": "object",
+  "x-mta-artifact": "traceability",
+  "x-mta-kind": "dict"
+}

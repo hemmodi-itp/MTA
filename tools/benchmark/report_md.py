@@ -23,6 +23,8 @@ def render_markdown(metrics: Dict[str, Any], meta: Dict[str, Any]) -> str:
         "| KPI | Value |",
         "|---|---|",
         f"| Requirement (AC) coverage | {_pct(cov['pct'])} ({len(cov['covered'])}/{cov['total_acs']}) |",
+        f"| AC coverage, direct links only | {_pct(cov.get('direct_pct'))} "
+        f"({len(cov.get('covered_direct') or [])}/{cov['total_acs']}) |",
         f"| **Seeded-bug detection rate** | **{_pct(det['rate'])}** ({det['caught']}/{det['evaluated']} evaluated, {det['enabled']} seeded) |",
         f"| False-failure rate (bug-free build) | {_pct(metrics['false_failure']['rate'])} |",
         f"| Flaky rate ({metrics['flaky']['clean_runs']} bug-free runs) | {_pct(metrics['flaky']['rate'])} |",
@@ -33,6 +35,10 @@ def render_markdown(metrics: Dict[str, Any], meta: Dict[str, Any]) -> str:
         f"| LLM calls / cache hits | {llm['calls']} / {llm['cache_hits']} |",
         f"| LLM tokens in / out | {llm['input_tokens']:,} / {llm['output_tokens']:,} |",
         f"| LLM cost | {cost} |",
+    ]
+    if metrics.get("ac_extraction_recall") is not None:
+        lines.append(f"| AC extraction recall (vs acs.yaml) | {_pct(metrics['ac_extraction_recall'])} |")
+    lines += [
         "",
     ]
     if cov.get("note"):

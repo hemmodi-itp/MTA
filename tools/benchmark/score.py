@@ -57,10 +57,22 @@ def _ratio(num: int, den: int) -> Optional[float]:
     return round(num / den, 4) if den else None
 
 
-def ac_links(test: Dict[str, Any]) -> List[str]:
+def _ac_root(ac_id: str) -> str:
+    """'AC-03.2.1' (an atomic child, Phase 1) counts toward its BRD criterion 'AC-03.2'."""
+    m = _AC_RE.match(ac_id)
+    return m.group(0) if m else ac_id
+
+
+def ac_links(test: Dict[str, Any], direct_only: bool = False) -> List[str]:
+    """AC ids a test covers: explicit ac_ids (Phase 1 traceability) first, else ids in its text.
+    direct_only: only links the generator made for this test (not inherited from its scenario)."""
+    if direct_only and test.get("ac_link") not in ("direct", "similarity"):
+        return []
     ids = [a for a in (test.get("ac_ids") or []) if isinstance(a, str)]
     if ids:
-        return sorted(set(ids))
+        return sorted({_ac_root(a) for a in ids})
+    if direct_only:
+        return []
     text = " ".join(str(test.get(k) or "") for k in ("title", "text", "scenario_title", "traceability"))
     return sorted(set(_AC_RE.findall(text)))
 
@@ -153,8 +165,10 @@ def score(run: Dict[str, Any], bugs: Iterable[Dict[str, Any]], acs: Iterable[str
 
     # ── AC coverage ──
     covered = set()
+    covered_direct = set()
     for tid in executed:
         covered.update(a for a in ac_links(tests.get(tid, {"title": tid})) if a in acs)
+        covered_direct.update(a for a in ac_links(tests.get(tid, {"title": tid}), direct_only=True) if a in acs)
     uncovered = [a for a in acs if a not in covered]
 
     # ── heals ──
@@ -167,11 +181,14 @@ def score(run: Dict[str, Any], bugs: Iterable[Dict[str, Any]], acs: Iterable[str
 
     return {
         "app": run.get("app"),
+        "ac_extraction_recall": (run.get("ac_extraction") or {}).get("recall"),
         "tests_total": len(tests) or len(first),
         "tests_executed": len(executed),
         "requirement_coverage": {
             "pct": _ratio(len(covered), len(acs)), "covered": sorted(covered),
             "uncovered": uncovered, "total_acs": len(acs),
+            # Phase 1: only links made for the test itself (direct / similarity), not inherited from its scenario
+            "direct_pct": _ratio(len(covered_direct), len(acs)), "covered_direct": sorted(covered_direct),
             "note": None if covered or not executed else "no executed test links to an AC id (v1 artifacts carry no AC links)",
         },
         "seeded_bug_detection": {

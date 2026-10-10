@@ -3,11 +3,11 @@
   "registry_key": "brd_builder",
   "category": "comprehension",
   "module_path": "agents.comprehension.brd_builder.agent",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "status": "active",
   "base_class": "BaseAgent",
   "llm_calls": true,
-  "description": "Uses exactly the BRD the user points to (path or GitHub link; scanned PDFs read visually by Gemini), otherwise the repo document Gemini confirms describes this agent (only previews are read for the choice), otherwise generates one from the live app (RuntimeDiscoveryAgent's authenticated runtime_profile, or its own crawl) or from code; extracts requirements machine-verified to quote the BRD, with per-criterion verifiability and grounding, and reports every cap as a limitation.",
+  "description": "Uses exactly the BRD the user points to (path or GitHub link; scanned PDFs read visually by Gemini), otherwise the repo document Gemini confirms describes this agent (only previews are read for the choice), otherwise generates one from the live app (RuntimeDiscoveryAgent's authenticated runtime_profile, or its own crawl) or from code; extracts requirements machine-verified to quote the BRD, with per-criterion verifiability and grounding, and reports every cap as a limitation. Phase 1.4: BrdIndex and normalize_requirements live in the shared tools/requirements core (re-exported here); requirement and criterion rows gain deterministic, additive risk_tags, priority_p (P0–P3) and atomicity flags — no score, gate or DB change.",
   "inputs": [
     {
       "name": "mode",

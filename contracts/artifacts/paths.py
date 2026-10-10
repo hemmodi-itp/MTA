@@ -18,10 +18,12 @@ _FIXED = {
     "test_plans": os.path.join("test_creation", "test_plans.json"),
     "test_suite": os.path.join("test_creation", "test_suite.json"),
     "locator_map": os.path.join("test_creation", "locator_map.json"),
+    "traceability": os.path.join("test_creation", "traceability.json"),
 }
 _COMPREHENSION = {
     "dom_elements": "dom_elements.json",
     "business_scenarios": "business_scenarios.json",
+    "requirements": "requirements.json",
 }
 REPORTS_JSON = os.path.join("test_execution", "reports", "json")
 # MTA-normalised run records live apart from Playwright's JSON: HealingAgent and

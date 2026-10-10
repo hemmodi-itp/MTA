@@ -1,0 +1,471 @@
+{
+  "$defs": {
+    "AcceptanceCriterion": {
+      "additionalProperties": true,
+      "properties": {
+        "atomic": {
+          "default": true,
+          "title": "Atomic",
+          "type": "boolean"
+        },
+        "atomicity_issues": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Atomicity Issues",
+          "type": "array"
+        },
+        "children": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "classification_source": {
+          "default": "heuristic",
+          "enum": [
+            "llm",
+            "heuristic"
+          ],
+          "title": "Classification Source",
+          "type": "string"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Doc Id"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Id"
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "title": "Priority",
+          "type": "string"
+        },
+        "priority_source": {
+          "default": "default",
+          "enum": [
+            "brd",
+            "llm",
+            "rule",
+            "default"
+          ],
+          "title": "Priority Source",
+          "type": "string"
+        },
+        "quote_match": {
+          "default": "none",
+          "enum": [
+            "exact",
+            "fuzzy",
+            "none"
+          ],
+          "title": "Quote Match",
+          "type": "string"
+        },
+        "quote_verified": {
+          "default": false,
+          "title": "Quote Verified",
+          "type": "boolean"
+        },
+        "risk_tags": {
+          "default": [],
+          "items": {
+            "enum": [
+              "auth",
+              "payment",
+              "data-loss",
+              "PII",
+              "compliance"
+            ],
+            "type": "string"
+          },
+          "title": "Risk Tags",
+          "type": "array"
+        },
+        "source": {
+          "default": "brd",
+          "enum": [
+            "brd",
+            "dom_inferred"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "source_quote": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Quote"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "support": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Support",
+          "type": "number"
+        },
+        "testability": {
+          "enum": [
+            "ui",
+            "api",
+            "non_functional",
+            "manual_only",
+            "not_testable"
+          ],
+          "title": "Testability",
+          "type": "string"
+        },
+        "testability_reason": {
+          "minLength": 1,
+          "title": "Testability Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "statement",
+        "testability",
+        "testability_reason",
+        "priority"
+      ],
+      "title": "AcceptanceCriterion",
+      "type": "object"
+    },
+    "ModuleStatus": {
+      "additionalProperties": true,
+      "properties": {
+        "brd_file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brd File"
+        },
+        "extracted_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extracted At"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "status": {
+          "default": "ok",
+          "enum": [
+            "ok",
+            "degraded",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "title": "ModuleStatus",
+      "type": "object"
+    },
+    "Rejected": {
+      "additionalProperties": true,
+      "properties": {
+        "module_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Id"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "statement",
+        "reason"
+      ],
+      "title": "Rejected",
+      "type": "object"
+    },
+    "ReqWarning": {
+      "additionalProperties": true,
+      "properties": {
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "module_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Id"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "ReqWarning",
+      "type": "object"
+    },
+    "Requirement": {
+      "additionalProperties": true,
+      "properties": {
+        "acceptance_criteria": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/AcceptanceCriterion"
+          },
+          "title": "Acceptance Criteria",
+          "type": "array"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Doc Id"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "module_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Id"
+        },
+        "quote_match": {
+          "default": "none",
+          "enum": [
+            "exact",
+            "fuzzy",
+            "none"
+          ],
+          "title": "Quote Match",
+          "type": "string"
+        },
+        "source": {
+          "default": "brd",
+          "enum": [
+            "brd",
+            "dom_inferred"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "source_quote": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Quote"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ],
+      "title": "Requirement",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/requirements.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact": {
+      "const": "requirements",
+      "default": "requirements",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "modules": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ModuleStatus"
+      },
+      "default": {},
+      "title": "Modules",
+      "type": "object"
+    },
+    "project": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project"
+    },
+    "rejected": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Rejected"
+      },
+      "title": "Rejected",
+      "type": "array"
+    },
+    "requirements": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Requirement"
+      },
+      "title": "Requirements",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "updated_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated At"
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ReqWarning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "title": "RequirementsDoc",
+  "type": "object",
+  "x-mta-artifact": "requirements",
+  "x-mta-kind": "dict"
+}

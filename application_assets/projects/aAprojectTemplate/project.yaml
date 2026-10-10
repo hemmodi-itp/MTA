@@ -27,6 +27,12 @@ contracts:
   enforce: block                 # warn (default when omitted) | block — what a step's artifact
                                  # that breaks its schema does to the run
 
+# ── Requirements & traceability (Phase 1) ───────────────────────────────────
+requirements:
+  enabled: true                  # false when omitted. On: BRD → requirements.json (REQ → atomic AC),
+                                 # scenarios + tests linked to AC ids, Playwright tags (@P1 @AC-01.2 …),
+                                 # test_creation/traceability.json and a traceability section in the report
+
 input:
   # Directory containing per-module BRD files.
   # Each module entry below references a brd_file relative to this directory.

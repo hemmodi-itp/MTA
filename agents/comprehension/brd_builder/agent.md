@@ -60,3 +60,18 @@ All untrusted text (documents, code, README, live evidence, code-analysis summar
 ## Failure mode
 `status: failed, blocking: true` for a bad or missing explicit path, an unreadable BRD, a failed generation, or
 no traceable requirement. `limitations` is returned on failures too.
+
+## Shared requirements core (Phase 1.4)
+
+`BrdIndex` (quote / criterion grounding) and `normalize_requirements` now live in the shared package
+`tools/requirements/` (`brd_index.py`, `normalize.py`) that the legacy test pipeline also imports. Both names
+are re-exported from their old locations (`tools.agent_eval.brd_source`, this agent module), so callers,
+tests and monkeypatch targets are unchanged.
+
+Additive, deterministic enrichment of every requirement row (design decision D3) — no existing field, score,
+gate or DB column changes:
+
+| Row | New fields |
+|---|---|
+| requirement | `risk_tags` (auth / payment / data-loss / PII / compliance, from `tools/requirements/risk_rules.yaml`), `priority_p` (P0–P3, mapped from `priority` + risk floor) |
+| criterion | `risk_tags`, `priority_p`, `atomic`, `atomicity_issues` (deterministic one-behaviour check) |

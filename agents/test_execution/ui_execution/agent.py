@@ -547,6 +547,7 @@ class UIExecutionAgent(BaseAgent):
             passed=passed, failed=failed, skipped=skipped, returncode=returncode,
             report_json=json_report_path, logger=self.logger,
         )
+        _apply_traceability(safe, results, ts, logger=self.logger)
         return {
             "module": "ui_execution",
             "status": "success",
@@ -803,6 +804,22 @@ def _write_execution_results(reports_dir: str, ts: str, *, project: str, base_ur
         return None
 
 
+def _apply_traceability(safe: str, results: List[Dict], ts: str, logger=None) -> None:
+    """Phase 1.2: fold this run's results into traceability.json (no-op unless requirements.enabled).
+    Runs for every Playwright run, including healing's re-runs. A failure never fails the run."""
+    try:
+        from tools.requirements.traceability import apply_results_for_project
+
+        trace = apply_results_for_project(safe, results, run=ts)   # flag read from project.yaml
+        if trace is not None and logger:
+            s = trace.summary
+            logger.info(f"[ui_execution] traceability: {s.get('acs_passing')} AC(s) passing, "
+                        f"{s.get('acs_failing')} failing, {s.get('unmatched_results', 0)} unmatched result(s)")
+    except Exception as exc:
+        if logger:
+            logger.warning(f"[ui_execution] traceability update failed (non-fatal): {exc}")
+
+
 def _group_targets_by_module(targets: List[str]) -> Dict[str, List[str]]:
     """{module_id: [spec paths]} for paths shaped .../test_scripts/<module>/<spec>;
     a path with no module segment groups under ''."""
@@ -893,6 +910,7 @@ def _parse_playwright_json(
                 ]
                 # First-attempt duration used for "no-interaction" browser-close detection
                 first_attempt_ms = test_results[0].get("duration", 0) if test_results else 0
+                trace_fields = _trace_fields(spec, test)
 
                 results.append({
                     "spec_file": spec_file,
@@ -906,9 +924,28 @@ def _parse_playwright_json(
                     "errors": errors,
                     "comment": "",
                     "no_interaction_close": False,
+                    **trace_fields,
                 })
 
     return results, passed, failed
+
+
+def _trace_fields(spec: dict, test: dict) -> Dict:
+    """Phase 1.3: Playwright's raw status plus the test's tags/annotations (tc / ac ids for traceability).
+    pw_status is recorded beside `status` because `status` maps "skipped" to "failed" (design D6)."""
+    annotations = [
+        {"type": str(a.get("type", "")), "description": str(a.get("description", ""))}
+        for a in (test.get("annotations") or []) if isinstance(a, dict)
+    ]
+    fields: Dict = {"pw_status": test.get("status", ""), "tags": list(spec.get("tags") or []),
+                    "annotations": annotations}
+    tc = [a["description"] for a in annotations if a["type"] == "tc"]
+    if tc:
+        fields["tc_id"] = tc[0]
+    acs = [a["description"] for a in annotations if a["type"] == "ac"]
+    if acs:
+        fields["ac_ids"] = acs
+    return fields
 
 
 def _iter_suites(suites: list):

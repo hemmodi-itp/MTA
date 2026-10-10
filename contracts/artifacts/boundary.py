@@ -21,15 +21,15 @@ from contracts.artifacts.io import ValidationReport, validate_file
 from contracts.artifacts.paths import COMPREHENSION_DIRS, REPORTS_MTA, artifact_path
 
 STEP_ARTIFACTS: Dict[str, List[str]] = {
-    "discovery": ["business_scenarios", "dom_elements"],
-    "comprehension": ["business_scenarios"],
+    "discovery": ["business_scenarios", "dom_elements", "requirements"],
+    "comprehension": ["business_scenarios", "requirements"],
     "testdata": ["test_data"],
     "semantic_map": ["scenario_element_map"],
-    "script_generation": ["test_plans", "test_suite", "locator_map"],
-    "ui_execution": ["execution_results", "playwright_report"],
-    "execution": ["execution_results", "playwright_report"],
-    "healing": ["test_suite", "locator_map"],
-    "reporting": ["test_suite"],
+    "script_generation": ["test_plans", "test_suite", "locator_map", "traceability"],
+    "ui_execution": ["execution_results", "playwright_report", "traceability"],
+    "execution": ["execution_results", "playwright_report", "traceability"],
+    "healing": ["test_suite", "locator_map", "traceability"],
+    "reporting": ["test_suite", "traceability"],
 }
 
 

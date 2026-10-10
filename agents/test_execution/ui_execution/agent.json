@@ -3,11 +3,11 @@
   "registry_key": "ui_execution",
   "category": "test_execution",
   "module_path": "agents.test_execution.ui_execution.agent",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "active",
   "base_class": "BaseAgent",
   "llm_calls": false,
-  "description": "Runs generated TypeScript Playwright .spec.ts files (or legacy pytest .py files) via subprocess, streams progress, handles browser-close/headless-switch heuristics, and returns a flat per-test results list. Phase 0: base URL resolved explicitly or the run fails fast (blocking) — no localhost fallback; runs spanning modules with different URLs are split per module; MTA_ALLOWED_HOSTS is passed to the runtime host guard; a normalised execution_results v2 record is written to reports/mta/.",
+  "description": "Runs generated TypeScript Playwright .spec.ts files (or legacy pytest .py files) via subprocess, streams progress, handles browser-close/headless-switch heuristics, and returns a flat per-test results list. Phase 0: base URL resolved explicitly or the run fails fast (blocking) — no localhost fallback; runs spanning modules with different URLs are split per module; MTA_ALLOWED_HOSTS is passed to the runtime host guard; a normalised execution_results v2 record is written to reports/mta/. Phase 1: each result records Playwright's raw pw_status, tags and annotations (tc_id / ac_ids); every run (including healing re-runs) is folded into test_creation/traceability.json when requirements.enabled is on — never fatal.",
   "inputs": [
     {
       "name": "project_name",
@@ -35,6 +35,7 @@
     }
   ],
   "outputs": [
+    { "name": "traceability_json", "type": "file", "description": "test_creation/traceability.json latest_result per test case (requirements.enabled only)" },
     {
       "name": "passed",
       "type": "integer",

@@ -12,6 +12,7 @@ Envelope rules (docs/phases/phase-0-design.md §7.2):
   * list/map artifacts move their v1 body under one key:
       test_data -> "datasets", scenario_element_map -> "scenarios", test_plans -> "plans".
   * locator_map.json is read by the TS runtime and keeps its v1 shape (validated only).
+  * requirements / traceability (Phase 1) are new dict artifacts, strict (see the bottom of this file).
 """
 
 from typing import Any, Dict, List, Literal, Optional, Union
@@ -221,3 +222,12 @@ class LocatorEntry(Lenient):
     type: str
     locator: Optional[str] = None
     name: Optional[str] = None
+
+
+# ── requirements.json / traceability.json (Phase 1) ──────────────────────────
+# New artifacts with no v1 variants on disk, so their contracts are the strict producer models from the
+# shared requirements core (tools/requirements/models.py) rather than lenient copies.
+
+from tools.requirements.models import RequirementsDoc as RequirementsV2  # noqa: E402
+from tools.requirements.models import TraceabilityDoc as TraceabilityV2  # noqa: E402
+

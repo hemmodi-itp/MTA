@@ -1,5 +1,5 @@
-from typing import Any, List, Optional
-from pydantic import BaseModel, model_validator
+from typing import Any, Dict, List, Optional
+from pydantic import BaseModel, model_serializer, model_validator
 
 
 class TestDataField(BaseModel):
@@ -47,3 +47,13 @@ class ScenarioTestData(BaseModel):
     actor: str
     positive_dataset: List[TestDataField]
     negative_variants: List[NegativeVariant]
+    # Phase 1: variants the LLM proposed but test_generation caps removed ({"negative": n, "boundary": m}),
+    # so the traceability report can say an AC went untested for "budget". Serialised only when non-empty.
+    capped_variants: Dict[str, int] = {}
+
+    @model_serializer(mode="wrap")
+    def _omit_empty_capped(self, handler):
+        data = handler(self)
+        if not data.get("capped_variants"):
+            data.pop("capped_variants", None)
+        return data

@@ -1,0 +1,112 @@
+# Risk-tag catalog for acceptance criteria (Phase 1.1). Data, not code: tools/requirements/classify.py
+# matches each phrase on word boundaries (case-insensitive) against the AC statement + its requirement title.
+# A phrase ending in "*" is a prefix match ("accessib*" matches accessible / accessibility).
+# Tags are a closed set; the LLM's suggested tags are filtered to these keys.
+
+auth:
+  - login
+  - log in
+  - logs in
+  - sign in
+  - signed in
+  - signing in
+  - logout
+  - log out
+  - logs out
+  - sign out
+  - password*
+  - credential*
+  - session*
+  - token*
+  - authenticat*
+  - authoriz*
+  - authoris*
+  - permission*
+  - role*
+  - administrator*
+  - admin
+  - access denied
+  - unauthori*
+  - forbidden
+  - "401"
+  - "403"
+  - 2fa
+  - mfa
+  - otp
+
+payment:
+  - pay
+  - pays
+  - payment*
+  - checkout
+  - check out
+  - purchase*
+  # "order" alone is ambiguous (sort order, catalogue order) — only purchase phrases count
+  - place an order
+  - places an order
+  - placing an order
+  - order placed
+  - placing orders
+  - order confirmation
+  - order total
+  - price*
+  - pricing
+  - total*
+  - subtotal*
+  - discount*
+  - coupon*
+  - invoice*
+  - refund*
+  - billing
+  - card number*
+  - credit card*
+  - currency
+  - tax
+  - taxes
+
+data-loss:
+  - delete*
+  - deletion
+  - remove*
+  - removal
+  - destroy*
+  - erase*
+  - purge*
+  - overwrite*
+  - permanent*
+  - persist*
+  - discard*
+  - lost
+  - data loss
+
+PII:
+  - email address*
+  - e-mail address*
+  - phone number*
+  - telephone
+  - home address
+  - postal address
+  - date of birth
+  - birth date
+  - social security
+  - ssn
+  - passport
+  - national id
+  - personal data
+  - personal information
+  - pii
+
+compliance:
+  - gdpr
+  - hipaa
+  - pci
+  - sox
+  - wcag
+  - accessib*
+  - screen reader*
+  - audit*
+  - retention
+  - consent
+  - regulat*
+  - complian*
+  - legal

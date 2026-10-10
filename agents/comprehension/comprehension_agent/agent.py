@@ -2,11 +2,14 @@
 ComprehensionAgent — orchestrates the five-step comprehension pipeline.
 
     parse_all_documents
+        → [Phase 1, requirements.enabled] tools.requirements: REQ → atomic AC, quote-verified
+              → test_comprehension/requirements.json (per-module upsert)
         → extract_requirements   (LLM, per document)
-        → generate_business_scenarios  (LLM, combined)
+        → generate_business_scenarios  (LLM, combined; told the module's ACs when enabled)
         → validate_business_scenarios
+        → [Phase 1] link scenarios to ac_ids (validated; similarity backfill)
         → export_scenarios
-            → application_assets/projects/<project>/comprehension/
+            → application_assets/projects/<project>/test_comprehension/
                 business_scenarios.json
                 business_scenarios.md
 """
@@ -25,6 +28,14 @@ from agents.comprehension.comprehension_agent.tools import (
 )
 from connectors.connector_registry import ConnectorRegistry
 from tools.comprehension.models import Actor, BusinessRule, Requirement, Workflow
+from tools.requirements.config import requirements_enabled
+from tools.requirements.service import (
+    criteria_for_prompt,
+    document_source,
+    extract_for_module,
+    link_scenario_models,
+    relink_project_scenarios,
+)
 from tools.shared import get_logger
 from tools.state.artifact_registry import ArtifactRegistry
 
@@ -83,6 +94,7 @@ class ComprehensionAgent(BaseAgent):
         skipped_modules: List[Dict[str, str]] = []
         module_ids = [m["id"] for m in modules]
         existing_titles_by_module = load_existing_titles_by_module(output_dir)
+        requirements_summary: Dict[str, dict] = {}
 
         for mod in modules:
             mod_id = mod["id"]
@@ -135,6 +147,12 @@ class ComprehensionAgent(BaseAgent):
             total_actors += len(mod_actors)
             total_workflows += len(mod_workflows)
 
+            # Phase 1 — requirements.json for this module (never fails comprehension).
+            req_doc, req_summary = self._requirements_step(
+                request, project_name, documents, llm, mod_id, f"{mod_id} {mod_name}", brd_file)
+            if req_summary:
+                requirements_summary[mod_id] = req_summary
+
             # Generate — stamped with module_id and module_name.
             # existing_titles_by_module tells the LLM what's already covered
             # for this module so a re-run on an edited BRD doesn't re-propose
@@ -152,6 +170,7 @@ class ComprehensionAgent(BaseAgent):
                     module_name=mod_name,
                     registry=artifact_registry,
                     existing_scenarios=existing_for_module,
+                    acceptance_criteria=criteria_for_prompt(req_doc, mod_id) or None,
                 )
                 artifact_registry.save()
             except ValueError as exc:
@@ -163,6 +182,7 @@ class ComprehensionAgent(BaseAgent):
 
             # Validate
             valid, warnings = validate_business_scenarios(scenarios)
+            valid = link_scenario_models(valid, req_doc, mod_id)
             for w in warnings:
                 self.logger.warning(f"Module {mod_id} validation: {w}")
             all_warnings.extend(warnings)
@@ -194,6 +214,8 @@ class ComprehensionAgent(BaseAgent):
         paths = export_scenarios(all_valid_scenarios, output_dir, project_name, module_ids=module_ids)
         for p in (paths or {}).values():
             self.logger.info(f"[ComprehensionAgent] Written: {p}")
+        if requirements_summary:
+            self._relink_unlinked(project_name)
         self.logger.info(f"[ComprehensionAgent] Done — {len(all_valid_scenarios)} scenarios exported across {len(modules)} module(s)")
 
         status = "partial" if skipped_modules else "success"
@@ -213,6 +235,8 @@ class ComprehensionAgent(BaseAgent):
             "validation_warnings": all_warnings,
             "output": paths,
         }
+        if requirements_summary:
+            result["requirements"] = requirements_summary
         if skipped_modules:
             result["skipped_modules"] = skipped_modules
             result["error"] = (
@@ -270,6 +294,9 @@ class ComprehensionAgent(BaseAgent):
             f"{len(all_workflows)} workflows"
         )
 
+        # Phase 1 — requirements.json (never fails comprehension)
+        req_doc, req_summary = self._requirements_step(request, project_name, documents, llm, None, "", None)
+
         # Step 3 — Generate
         self.logger.info("Generating business scenarios")
         try:
@@ -281,6 +308,7 @@ class ComprehensionAgent(BaseAgent):
                 workflows=all_workflows,
                 llm_provider=llm,
                 registry=artifact_registry,
+                acceptance_criteria=criteria_for_prompt(req_doc) or None,
             )
             artifact_registry.save()
         except ValueError as exc:
@@ -296,6 +324,7 @@ class ComprehensionAgent(BaseAgent):
 
         # Step 4 — Validate
         valid_scenarios, warnings = validate_business_scenarios(scenarios)
+        valid_scenarios = link_scenario_models(valid_scenarios, req_doc)
         for w in warnings:
             self.logger.warning(f"Validation: {w}")
 
@@ -303,9 +332,11 @@ class ComprehensionAgent(BaseAgent):
         paths = export_scenarios(valid_scenarios, output_dir, project_name)
         for p in (paths or {}).values():
             self.logger.info(f"[ComprehensionAgent] Written: {p}")
+        if req_summary:
+            self._relink_unlinked(project_name)
         self.logger.info(f"[ComprehensionAgent] Done — {len(valid_scenarios)} scenarios exported")
 
-        return {
+        result = {
             "module": "comprehension",
             "status": "success",
             "project": project_name,
@@ -319,6 +350,47 @@ class ComprehensionAgent(BaseAgent):
             "validation_warnings": warnings,
             "output": paths,
         }
+        if req_summary:
+            result["requirements"] = req_summary
+        return result
+
+    # ------------------------------------------------------------------
+
+    def _relink_unlinked(self, project_name: str) -> None:
+        """Phase 1: scenarios linked before a later module's criteria existed (or from shared BRD sections) get a
+        project-wide, deterministic second chance once this run's requirements are on disk. Never fatal."""
+        try:
+            linked = relink_project_scenarios(_safe_name(project_name), only_unlinked=True)
+            self.logger.info(f"[ComprehensionAgent] {linked} scenario(s) now linked to acceptance criteria")
+        except Exception as exc:
+            self.logger.warning(f"[ComprehensionAgent] scenario re-link failed (non-fatal): {exc}")
+
+    def _requirements_step(self, request: dict, project_name: str, documents: list, llm,
+                           module_id: Optional[str], module_label: str, brd_file: Optional[str]):
+        """Phase 1: extract this module's requirements. Returns (RequirementsDoc | None, summary | None).
+
+        Off unless project.yaml `requirements.enabled`. Any failure is logged and reported in the summary;
+        scenario generation then proceeds exactly as without the feature.
+        """
+        safe = _safe_name(project_name)
+        if not requirements_enabled(safe, request):
+            return None, None
+        try:
+            text = "\n\n".join(d.content for d in documents if getattr(d, "content", ""))
+            doc, res = extract_for_module(
+                safe, text, llm, module_id=module_id, module_label=module_label, brd_file=brd_file,
+                source=document_source(documents, request), logger=self.logger)
+            return doc, {
+                "status": res.status,
+                "requirements": len(res.requirements),
+                "criteria": sum(len(r.acceptance_criteria) for r in res.requirements),
+                "rejected": len(res.rejected),
+                "limitations": res.limitations,
+            }
+        except Exception as exc:
+            self.logger.warning(f"[ComprehensionAgent] requirements extraction failed for "
+                                f"{module_id or 'project'} (non-fatal): {exc}")
+            return None, {"status": "failed", "error": str(exc)}
 
 
 def _safe_name(name: str) -> str:

@@ -76,3 +76,11 @@ artifact is not a violation. The validator never raises into the step loop.
 `load_project_manifest` now also resolves `environment`, `safety` (the full
 `SafetyPolicy`, including derived `allowed_hosts`) and `contracts` into the request; a
 manifest without `environment:` logs a warning and is gated like prod.
+
+## Requirements hint on cached discovery (Phase 1)
+
+Cached discovery (fingerprints unchanged) skips comprehension, so turning `requirements.enabled` on for an
+existing project would silently produce no `requirements.json`. `_hint_missing_requirements` logs how to build
+it (`python -m tools.requirements.build --project X`, or `--force-rediscover`). Boundary validation now also
+covers `requirements` (discovery / comprehension) and `traceability` (script_generation, ui_execution, healing,
+reporting).

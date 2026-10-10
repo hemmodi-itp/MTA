@@ -34,6 +34,8 @@ ARTIFACTS: Dict[str, ArtifactSpec] = {
         ArtifactSpec("execution_results", m.ExecutionResultsV2, "execution_results.json", "dict"),
         ArtifactSpec("playwright_report", m.PlaywrightReportLoose, "_results.json", "plain"),
         ArtifactSpec("locator_map", m.LocatorEntry, "locator_map.json", "plain"),
+        ArtifactSpec("requirements", m.RequirementsV2, "requirements.json", "dict"),
+        ArtifactSpec("traceability", m.TraceabilityV2, "traceability.json", "dict"),
     ]
 }
 

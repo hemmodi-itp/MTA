@@ -4,6 +4,7 @@ from the extracted requirements, rules, actors, and workflows.
 """
 
 import json
+from string import Template
 from typing import Any, Dict, List, Optional
 
 from tools.shared.llm_response_validator import parse_llm_json
@@ -15,7 +16,7 @@ from tools.comprehension.models import (
     TraceabilityReference,
     Workflow,
 )
-from tools.comprehension.prompts import SCENARIO_GENERATION_PROMPT
+from tools.comprehension.prompts import ACCEPTANCE_CRITERIA_BLOCK, SCENARIO_GENERATION_PROMPT
 from tools.state.artifact_registry import ArtifactRegistry
 
 
@@ -53,6 +54,7 @@ def generate_business_scenarios(
     module_name: Optional[str] = None,
     registry: Optional[ArtifactRegistry] = None,
     existing_scenarios: Optional[List[dict]] = None,
+    acceptance_criteria: Optional[List[dict]] = None,
 ) -> List[BusinessScenario]:
     """
     Use the LLM to generate Business Scenarios from extracted data.
@@ -73,6 +75,9 @@ def generate_business_scenarios(
                         generated for this module in a prior run — passed
                         into the prompt so the LLM steers away from
                         re-proposing scenarios that already exist.
+        acceptance_criteria: Phase 1 — [{"id": "AC-01.2", "statement": ...}, ...] for
+                        this module; the LLM tags each scenario with the ids it
+                        exercises (validated afterwards by tools.requirements.linking).
 
     Returns:
         List of BusinessScenario objects.
@@ -92,6 +97,7 @@ def generate_business_scenarios(
             [w.model_dump() for w in workflows], indent=2
         ),
         existing_scenarios_json=json.dumps(existing_scenarios or [], indent=2),
+        acceptance_criteria_block=_acceptance_criteria_block(acceptance_criteria),
     )
 
     raw = llm_provider.generate(prompt)
@@ -132,6 +138,15 @@ def generate_business_scenarios(
                 module_id=module_id,
                 module_name=module_name,
                 content_hash=content_hash,
+                ac_ids=[str(a).strip() for a in (s.get("ac_ids") or []) if str(a).strip()]
+                if acceptance_criteria else [],
             )
         )
     return scenarios
+
+
+def _acceptance_criteria_block(criteria: Optional[List[dict]]) -> str:
+    if not criteria:
+        return ""
+    lines = "\n".join(f"- {c['id']}: {c['statement']}" for c in criteria)
+    return Template(ACCEPTANCE_CRITERIA_BLOCK).safe_substitute(criteria=lines)

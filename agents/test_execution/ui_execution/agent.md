@@ -79,3 +79,20 @@ allowed is logged as a warning.
 Every completed run also writes `test_execution/reports/mta/{ts}.execution_results.json`
 (contract `execution_results` v2: counts, base URL, per-test results). It lives outside
 `reports/json/`, which HealingAgent scans for the latest Playwright report.
+
+## Traceability fields (Phase 1)
+
+Each per-test result (and the `execution_results` v2 record) gains, additively:
+
+| Field | From |
+|---|---|
+| `pw_status` | Playwright's raw test status (`expected`, `unexpected`, `skipped`, `flaky`, …) |
+| `tags` | the spec's tags (`P1`, `AC-01.2`, …) |
+| `annotations` | `[{type, description}]` — `ac`, `tc`, `scenario`, `ac_link` |
+| `tc_id`, `ac_ids` | from the `tc` / `ac` annotations, when present |
+
+`status` itself is unchanged — Playwright `skipped` still maps to `failed` there (design D6; revisit with P4.7);
+traceability uses `pw_status`, so a skipped test is recorded as skipped. After every Playwright run (including
+HealingAgent's `run_tests` re-runs and per-module split runs) the results are folded into
+`test_creation/traceability.json` when `requirements.enabled` is on; a traceability failure is logged and never
+fails the run.

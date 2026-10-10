@@ -170,7 +170,7 @@ $workflows_json
 $existing_scenarios_json
 (scenarios already generated for this module in a previous run — if the
 requirements above still describe one of these, do not emit it again; only
-emit scenarios that are genuinely new or not already represented above)
+emit scenarios that are genuinely new or not already represented above)$acceptance_criteria_block
 
 Generate a complete and non-overlapping set of Business Scenarios. Each scenario must:
 1. Be directly traceable to one or more requirements above.
@@ -222,4 +222,13 @@ Rules:
 """
 )
 
-__all__ = ["EXTRACTION_PROMPT", "SOURCE_CODE_PROMPT", "SCENARIO_GENERATION_PROMPT"]
+# Phase 1 (requirements.enabled): appended right after the "Already Covered" block. Empty when the feature is
+# off, so the prompt is then byte-identical to before.
+ACCEPTANCE_CRITERIA_BLOCK = """
+
+== Acceptance criteria (requirements.json) ==
+$criteria
+For EVERY scenario add "ac_ids": the ids from this list that the scenario exercises (at least one when any
+applies; use only ids listed here, never invent one)."""
+
+__all__ = ["EXTRACTION_PROMPT", "SOURCE_CODE_PROMPT", "SCENARIO_GENERATION_PROMPT", "ACCEPTANCE_CRITERIA_BLOCK"]

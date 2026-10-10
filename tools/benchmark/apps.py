@@ -34,6 +34,11 @@ class BenchmarkApp:
         return os.path.join(self.app_dir, "brd.md")
 
     @property
+    def acs_yaml(self) -> str:
+        """Hand-labelled acceptance-criteria ground truth (Phase 1)."""
+        return os.path.join(self.app_dir, "acs.yaml")
+
+    @property
     def template_path(self) -> str:
         return os.path.join(self.app_dir, "mta_project", "project.yaml.tmpl")
 
@@ -70,3 +75,11 @@ def load_acs(app: BenchmarkApp) -> List[str]:
     """Every acceptance-criterion id declared in the app's BRD (`- AC-xx.y: ...`)."""
     with open(app.brd_path, encoding="utf-8") as f:
         return sorted(set(_AC_LINE.findall(f.read())))
+
+
+def load_ac_truth(app: BenchmarkApp) -> List[dict]:
+    """The app's hand-labelled acceptance criteria (acs.yaml); [] when the app has none."""
+    if not os.path.exists(app.acs_yaml):
+        return []
+    with open(app.acs_yaml, encoding="utf-8") as f:
+        return (yaml.safe_load(f) or {}).get("acceptance_criteria", [])

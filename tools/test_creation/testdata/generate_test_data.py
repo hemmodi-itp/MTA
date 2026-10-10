@@ -103,6 +103,7 @@ def _build_model(
     negative_count = 0
     boundary_count = 0
     negative_variants: List[NegativeVariant] = []
+    capped: dict = {}   # recorded, never silent (Phase 1 traceability reason "budget")
 
     for i, nv in enumerate(parsed.get("negative_variants", []), start=1):
         variant_type = nv.get("variant_type", "negative")
@@ -113,10 +114,12 @@ def _build_model(
         # "max N negative + max M boundary cases per scenario".
         if is_boundary:
             if boundary_count >= max_boundary_cases:
+                capped["boundary"] = capped.get("boundary", 0) + 1
                 continue
             boundary_count += 1
         else:
             if negative_count >= max_negative_cases:
+                capped["negative"] = capped.get("negative", 0) + 1
                 continue
             negative_count += 1
 
@@ -149,4 +152,5 @@ def _build_model(
         actor=scenario.actor,
         positive_dataset=positive_dataset,
         negative_variants=negative_variants,
+        capped_variants=capped,
     )

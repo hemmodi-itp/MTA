@@ -34,3 +34,15 @@ architecture).
 
 ## Fallback behaviour
 - **FALLBACK** → `fallback_core.fallback_report()` — minimal `report_fallback.json` with pass/fail counts and list of failing test names (no HTML).
+
+## Requirements traceability section (Phase 1)
+
+When `requirements.enabled` is on and `requirements.json` exists, ReportingAgent (always runs, after healing)
+rebuilds `test_creation/traceability.json` and adds `report["traceability"]`
+(`tools.requirements.traceability.report_section`): the summary (AC coverage of automatable criteria, ACs
+passing / failing, reasons), every AC with its tests and latest result, **every AC with zero tests and why**
+(`not_testable`, `manual_only`, `not_supported:api`, `not_supported:non_functional`, `no_url`,
+`module_not_generated`, `no_scenario`, `dropped_for_safety`, `missing_locator`, `missing_action`,
+`placeholder_negative_dropped`, `locator_type_mismatch`, `budget`, `generation_failed`, `no_test_targets_ac`),
+and the tests linked to no AC. The HTML report renders it as "Requirements Traceability". A failure here is
+logged; reporting continues.

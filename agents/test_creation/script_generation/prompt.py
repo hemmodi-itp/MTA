@@ -60,7 +60,7 @@ project won't. Absence of these fields changes nothing about which keys are
 allowed.)
 
 == Allowed reusable flows (use ONLY these in a "useFlow" step's "flow") ==
-$valid_flows_json
+$valid_flows_json$acceptance_criteria_block
 
 == Output format ==
 

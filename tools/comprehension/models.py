@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_serializer
 
 
 class TraceabilityReference(BaseModel):
@@ -58,3 +58,17 @@ class BusinessScenario(BaseModel):
     module_id: Optional[str] = None
     module_name: Optional[str] = None
     content_hash: Optional[str] = None
+    # Phase 1: acceptance criteria this scenario covers (requirements.json ids) and how the link was made
+    # ("llm" | "similarity"). Serialised only when set, so projects without requirements are unchanged.
+    ac_ids: List[str] = []
+    ac_link_source: Optional[str] = None
+
+    @model_serializer(mode="wrap")
+    def _omit_empty_ac_links(self, handler):
+        data = handler(self)
+        if not data.get("ac_ids"):
+            data.pop("ac_ids", None)
+            data.pop("ac_link_source", None)
+        elif data.get("ac_link_source") is None:
+            data.pop("ac_link_source", None)
+        return data

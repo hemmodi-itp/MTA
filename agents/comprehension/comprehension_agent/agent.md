@@ -5,11 +5,14 @@ pipeline:
 
 ```
 parse_all_documents (or parse_document, per-module)
+    → [requirements.enabled] tools.requirements.service.extract_for_module   (1 LLM call per BRD)
+        → test_comprehension/requirements.json   (per-module upsert)
     → extract_requirements   (LLM, per document)
-    → generate_business_scenarios  (LLM, combined)
+    → generate_business_scenarios  (LLM, combined; told the module's ACs when enabled)
     → validate_business_scenarios
+    → [requirements.enabled] link scenarios to ac_ids
     → export_scenarios
-        → application_assets/projects/<project>/comprehension/
+        → application_assets/projects/<project>/test_comprehension/
             business_scenarios.json
             business_scenarios.md
 ```
@@ -33,8 +36,9 @@ called as an NS fallback tier before DOM-synthesis when the local LLM call fails
 - `modules` (optional — list of module dicts; presence switches to modular mode)
 
 ## Outputs
-- `comprehension/business_scenarios.json`
-- `comprehension/business_scenarios.md`
+- `test_comprehension/business_scenarios.json` (older projects: `comprehension/`)
+- `test_comprehension/business_scenarios.md`
+- `test_comprehension/requirements.json` — only with `requirements.enabled` (Phase 1)
 - Writes through an `ArtifactRegistry` for the project directory (persists artifact provenance)
 
 ## Failure mode
@@ -51,3 +55,27 @@ itself.
 `workflows/agent_registry.yaml` (disabled by default). It makes no LLM/HTTP call and writes nothing: it
 returns `status: success`, `stub: true`, `scenarios_count: 0` so the run completes with the gap visible.
 It is not registered in `agents/registry_setup.py` — the orchestrator imports it from the YAML entry.
+
+## Requirements & traceability (Phase 1, `requirements.enabled`)
+
+Off by default (`project.yaml` → `requirements.enabled: true` to opt in). When on, before scenario generation:
+
+1. `tools.requirements.service.extract_for_module()` runs the shared extraction pipeline on the module's BRD
+   text (`tools/requirements/extract.py`): criteria the document declares (`REQ-01` / `AC-01.2`) are parsed
+   deterministically and kept with their own ids and exact quotes; **one** LLM call classifies them
+   (testability + reason, P0–P3, risk tags), splits compound ones into atomic children (`AC-03.2.1`) and adds
+   undeclared ones. Every quote is verified (`BrdIndex`); unverifiable additions are rejected and listed, and a
+   criterion another module already holds is not re-added. The LLM can add criteria, never drop declared ones.
+   Result: a per-module upsert into `test_comprehension/requirements.json`.
+2. The scenario prompt gets the module's leaf ACs — plus the criteria its BRD also states but another module
+   already holds (shared BRD sections are de-duplicated at extraction) — and returns `ac_ids` per scenario.
+3. `link_scenario_models()` keeps only known ids (a split parent expands to its children) and backfills
+   unlinked scenarios by word-overlap similarity (`ac_link_source: llm | similarity`).
+4. After the final export, every scenario of the project that is still unlinked is re-linked project-wide
+   (`relink_project_scenarios(only_unlinked=True)`): a scenario generated before a later module's criteria
+   existed gets a second chance. Existing links are never changed.
+
+A BRD that MTA synthesised from the DOM (URL-only discovery) yields `source: dom_inferred` criteria
+(confidence ≤ 0.6). Any failure here is logged and reported under `result["requirements"][<module>]`
+(`status: failed`); scenario generation then proceeds exactly as without the feature. With the flag off the
+prompts, `business_scenarios.json` and the result are byte-for-byte what they were before Phase 1.

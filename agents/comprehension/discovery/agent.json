@@ -3,11 +3,11 @@
   "registry_key": "discovery",
   "category": "comprehension",
   "module_path": "agents.comprehension.discovery.agent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "active",
   "base_class": "BaseAgent",
   "llm_calls": false,
-  "description": "Mandatory gateway step for every QA workflow. Runs DOM scan and/or BRD comprehension depending on project.yaml inputs (url/brd_dir), and blocks the workflow if mandatory outputs are missing.",
+  "description": "Mandatory gateway step for every QA workflow. Runs DOM scan and/or BRD comprehension depending on project.yaml inputs (url/brd_dir), and blocks the workflow if mandatory outputs are missing. Phase 1: requirements extracted from a DOM-synthesised BRD (URL-only mode) are marked source dom_inferred.",
   "inputs": [
     { "name": "project_name", "type": "string", "required": true, "description": "Used to derive output paths" },
     { "name": "url", "type": "string", "required": false, "description": "Target application URL; triggers DOM scan" },

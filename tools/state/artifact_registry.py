@@ -26,7 +26,7 @@ import json
 import os
 import re
 import threading
-from typing import Dict, Tuple
+from typing import Dict, Iterable, Tuple
 
 _REGISTRY_FILENAME = "artifact_registry.json"
 _LOCK = threading.Lock()
@@ -106,3 +106,31 @@ class ArtifactRegistry:
         artifact_id = f"{module_id}_{artifact_type}_{next_n:03d}"
         self._data["content_index"][index_key] = artifact_id
         return artifact_id, True, content_hash
+
+    def get_or_create_sequence_number(
+        self,
+        scope: str,
+        *content_parts: str,
+        taken: Iterable[int] = (),
+    ) -> Tuple[int, bool]:
+        """
+        Project-wide (not module-namespaced) counterpart of get_or_create_id:
+        returns a stable integer for this content within `scope` (e.g. "REQ",
+        "AC:REQ-03"), advancing the scope's counter only for new content and
+        skipping any number in `taken` (numbers the source document already
+        uses). The caller formats the ID ("REQ-007", "AC-03.5").
+        """
+        content_hash = content_signature(*content_parts)
+        index_key = f"__seq__:{scope}:{content_hash}"
+        existing = self._data["content_index"].get(index_key)
+        if existing is not None:
+            return int(existing), False
+
+        taken_set = set(taken)
+        seq_counters: Dict[str, int] = self._data["counters"].setdefault("__seq__", {})
+        next_n = seq_counters.get(scope, 0) + 1
+        while next_n in taken_set:
+            next_n += 1
+        seq_counters[scope] = next_n
+        self._data["content_index"][index_key] = next_n
+        return next_n, True

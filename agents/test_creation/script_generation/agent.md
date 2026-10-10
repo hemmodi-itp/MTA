@@ -235,3 +235,26 @@ unknown and the LLM must use `navigate` with no value. New specs carry
 `test_plans.json` and `test_suite.json` are written as schema_version 2 documents via
 `contracts.artifacts.save_artifact` (atomic). `scenario_element_map.json`, `test_data.json`
 and `test_plans.json` are read through `contracts.artifacts` loaders, which accept v1 and v2.
+
+## Requirements traceability (Phase 1, `requirements.enabled`)
+
+When the project opts in and `requirements.json` exists, a `PlanTracer` (`tools/requirements/tracing.py`) is
+active for the run:
+
+- **Prompt** — the scenario's acceptance criteria are appended to the plan prompt (`$acceptance_criteria_block`,
+  empty when untraced, so the prompt is otherwise unchanged) and the plan may give each test `ac_ids`.
+- **Annotation** (after the safety filter, before rendering) — every plan test gets `tc_id` (stable,
+  content-keyed `M01_TC_003` from `artifact_registry.json`), `ac_ids` + `ac_link` (`direct` = the plan's ids
+  restricted to the scenario's ACs, `similarity`, `inherited` = the scenario's ACs, or none → reported as
+  unlinked), `req_ids`, `priority` (highest of its ACs) and `title`.
+- **Rendering** — `spec_renderer` emits a Playwright details object **on the `test(` line** (healing's block
+  regex needs a one-line header): `test("AC-01.2 …", { tag: ["@P1", "@negative", "@regression", "@REQ-01",
+  "@AC-01.2"], annotation: [{ type: "ac", … }, { type: "tc", … }, { type: "scenario", … }] }, async …`.
+  `@smoke`/`@regression` move from the title into `tag`, so `--grep @smoke` keeps working.
+- **Drops recorded** — tests removed by `_drop_placeholder_negative_tests` / `_flag_action_locator_type_mismatches`
+  are listed in the plan's `dropped_tests[]` (reasons for the traceability report). Neither guard changed.
+- **traceability.json** — rebuilt after every run of this agent (also when every scenario already has a spec).
+
+The Python fallback spec (tier 2, off by default) tags its `describe` with the scenario's ACs plus `@degraded`;
+it is not counted as coverage (it only asserts a page title). Untraced plans (flag off) render byte-for-byte as
+before.

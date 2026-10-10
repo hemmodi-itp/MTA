@@ -3,11 +3,11 @@
   "registry_key": null,
   "category": "orchestrator",
   "module_path": "agents.orchestrator.agent",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "active",
   "base_class": "none",
   "llm_calls": true,
-  "description": "The workflow driver — constructed directly in main.py, not registered in AgentRegistry. Makes one LLM pre-flight call (a 'ping' health check) before any step, then loads the project manifest, runs each workflow step with fallback-tier dispatch (workflows/agent_registry.yaml), merges outputs into persistent project state, and builds the final report. Phase 0: validates each step's artifacts against the Pydantic contracts at the step boundary (contracts.enforce warn|block) and carries the resolved safety policy, environment and contracts config in the request.",
+  "description": "The workflow driver — constructed directly in main.py, not registered in AgentRegistry. Makes one LLM pre-flight call (a 'ping' health check) before any step, then loads the project manifest, runs each workflow step with fallback-tier dispatch (workflows/agent_registry.yaml), merges outputs into persistent project state, and builds the final report. Phase 0: validates each step's artifacts against the Pydantic contracts at the step boundary (contracts.enforce warn|block) and carries the resolved safety policy, environment and contracts config in the request. Phase 1: carries the resolved requirements block in the request, validates requirements / traceability at step boundaries, and logs how to build requirements.json when cached discovery skips comprehension.",
   "inputs": [
     {
       "name": "request",

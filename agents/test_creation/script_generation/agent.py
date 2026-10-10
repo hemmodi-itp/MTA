@@ -65,6 +65,8 @@ from connectors.connector_registry import ConnectorRegistry
 from tools.config.agent_registry_config import fallback_enabled, python_stub_fallback_enabled
 from tools.config.test_generation_config import DEFAULT_TEST_GENERATION_CONFIG, load_test_generation_config
 from tools.constants import PROJECTS_BASE as _ASSETS_BASE
+from tools.requirements.traceability import refresh_project as refresh_traceability
+from tools.requirements.tracing import PlanTracer, record_drops
 from tools.shared import get_logger
 from tools.shared.llm_response_validator import parse_llm_json
 
@@ -96,6 +98,8 @@ class ScriptGenerationAgent(BaseAgent):
         self.settings = settings or {}
         self._registry = ConnectorRegistry(self.settings)
         self.logger = get_logger("agent.script_generation")
+        # Phase 1: set per execute() when requirements.enabled + requirements.json exist; None = untraced.
+        self._tracer: Optional[PlanTracer] = None
 
     # ── Public entry point ─────────────────────────────────────────────────────
 
@@ -215,7 +219,11 @@ class ScriptGenerationAgent(BaseAgent):
             f"{len(uncovered)} to generate"
         )
 
+        # Phase 1 — requirements traceability (tc_id / ac_ids / tags); None when disabled.
+        self._tracer = PlanTracer.for_project(safe, request, logger=self.logger)
+
         if not uncovered:
+            self._refresh_traceability(safe, request)
             return {
                 "module": "script_generation",
                 "status": "success",
@@ -306,6 +314,10 @@ class ScriptGenerationAgent(BaseAgent):
                     if not plan.get("tests"):
                         self._log(f"{sid}: plan has no tests the action library can express — skipping", level="warning")
                         warnings.append(f"{sid}: no expressible tests (see human_review_queue.json)")
+                        if self._tracer is not None:
+                            # keep missing_actions / missing_locators so traceability can say why its ACs are untested
+                            test_plans[sid] = plan
+                            _write_test_plans(test_plans, test_plans_path)
                         continue
 
                     # Phase 0 safety rails — the one choke point every plan tier
@@ -330,6 +342,9 @@ class ScriptGenerationAgent(BaseAgent):
                         _write_test_plans(test_plans, test_plans_path)
                         continue
 
+                    if self._tracer is not None:
+                        plan = self._tracer.annotate(plan, scenario, module_id)
+                        self._tracer.save()   # persist tc_id assignments with the plan that uses them
                     spec_content = render_spec_from_plan(
                         plan, scenario, effective_url, spec_rel_path,
                         project=safe, flows_meta=flows_meta,
@@ -374,6 +389,10 @@ class ScriptGenerationAgent(BaseAgent):
                 continue
 
         self._log(f"Done — {len(generated)} spec(s) written, {len(warnings)} failure(s)")
+
+        if self._tracer is not None:
+            self._tracer.save()
+        self._refresh_traceability(safe, request)
 
         # Refresh the human-readable catalog (test_catalog.csv/.md) from the
         # updated business_scenarios.json + test_suite.json. A catalog-write
@@ -447,6 +466,8 @@ class ScriptGenerationAgent(BaseAgent):
                             f"action/locator-type mismatch(es) ({'; '.join(mismatched)})",
                             level="warning",
                         )
+                    if self._tracer is not None:
+                        plan = record_drops(plan, dropped, mismatched)
                     return "plan", plan, 1, None
                 elif current_model is not None:
                     plan = self._plan_via_llm(
@@ -551,6 +572,8 @@ class ScriptGenerationAgent(BaseAgent):
             max_boundary_cases=gen_config["max_boundary_cases"],
             max_data_iterations=gen_config["max_data_iterations"],
             distinct_cluster_count=cluster_count,
+            # Phase 1: the scenario's acceptance criteria (empty when untraced → prompt unchanged).
+            acceptance_criteria_block=self._tracer.prompt_block(scenario) if self._tracer is not None else "",
         )
 
         raw = llm.generate(prompt)
@@ -571,6 +594,8 @@ class ScriptGenerationAgent(BaseAgent):
                 f"({'; '.join(mismatched)})",
                 level="warning",
             )
+        if self._tracer is not None:
+            plan = record_drops(plan, dropped, mismatched)
         return plan
 
     def _plan_via_ns(
@@ -629,6 +654,18 @@ class ScriptGenerationAgent(BaseAgent):
         }
 
     # ── Helpers ────────────────────────────────────────────────────────────────
+
+    def _refresh_traceability(self, safe: str, request: dict) -> None:
+        """Phase 1.2: rebuild traceability.json after generation. A failure is logged, never fatal."""
+        try:
+            trace = refresh_traceability(safe, request)
+        except Exception as exc:
+            self._log(f"Traceability update failed (non-fatal): {exc}", level="warning")
+            return
+        if trace is not None:
+            s = trace.summary
+            self._log(f"Traceability: {s.get('acs_covered')}/{s.get('acs_automatable')} automatable AC(s) "
+                      f"covered, {s.get('tests_unlinked')} unlinked test(s)")
 
     def _flag_for_human_review(self, request: dict, exc: Exception) -> None:
         from tools.state.review_queue import flag_for_human_review

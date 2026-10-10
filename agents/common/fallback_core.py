@@ -161,7 +161,7 @@ import {{ test, expect }} from '@playwright/test';
 
 const BASE_URL = process.env.BASE_URL || '{base_url}';
 
-test.describe('{scenario_title} ({scenario_id}) [degraded fallback]', () => {{
+test.describe('{scenario_title} ({scenario_id}) [degraded fallback]', {describe_details}() => {{
 
   test('positive — navigate to page and verify title is non-empty', async ({{ page }}) => {{
     await page.goto(BASE_URL);
@@ -221,8 +221,21 @@ def fallback_generate_script(
         base_url=base_url,
         scenario_title=title.replace("'", "\\'"),
         scenario_id=sid,
+        describe_details=_describe_details(scenario),
         skips="\n".join(skips),
     )
+
+
+def _describe_details(scenario: Dict[str, Any]) -> str:
+    """Phase 1.3: when the scenario is linked to acceptance criteria (requirements.enabled), tag the describe
+    block so `--grep @AC-…` finds it. The "degraded" annotation marks it as NOT counting as coverage — it
+    only asserts a page title. Untraced scenarios render exactly as before (empty string)."""
+    ac_ids = [str(a) for a in scenario.get("ac_ids") or []]
+    if not ac_ids:
+        return ""
+    tags = ", ".join(json.dumps(f"@{a}") for a in ["degraded"] + ac_ids)
+    note = json.dumps("python fallback - not counted as coverage")
+    return f'{{ tag: [{tags}], annotation: [{{ type: "degraded", description: {note} }}] }}, '
 
 
 def fallback_generate_script_filename(scenario_id: str, title: str) -> str:

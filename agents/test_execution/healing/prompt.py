@@ -66,6 +66,9 @@ You are a QA engineer healing failing Playwright TypeScript tests, one test at a
   string as its second argument.
 - If no valid locator can be found for a step, use
   test.skip('no locator for: <description>') rather than guessing.
+- If the test(...) line carries a { tag: [...], annotation: [...] } object, keep it
+  exactly as it is, on the test(...) line — also when converting to test.skip(...).
+  It links the test to its requirement; apply_patch rejects a block without it.
 
 Keep going until read_failure_report's failures are all either passing
 (confirmed via run_tests) or explicitly marked not_healable.

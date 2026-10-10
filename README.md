@@ -97,6 +97,8 @@ safety:                               # Phase 0 safety rails — see "Safety Rai
   # allowed_hosts: [myapp.example.com] # default: the hosts of this file's own URLs
 contracts:
   enforce: warn                       # warn (default) | block — artifact contract violations at step boundaries
+requirements:                         # Phase 1 — see "Requirements & Traceability" below
+  enabled: false                      # default false; true → requirements.json, AC-tagged tests, traceability.json
 
 input:
   brd_dir: application_assets/projects/myapp/inputs/   # optional — enables LLM comprehension
@@ -421,6 +423,80 @@ Configured per project (`environment:` + `safety:` in `project.yaml`), resolved 
 Every drop is recorded — in the plan's `dropped_for_safety[]` (`test_plans.json`), the agent's
 result, and `human_review_queue.json` (`kind: "safety_drop"`). Nothing is dropped silently.
 
+## Requirements & Traceability (Phase 1)
+
+Opt in per project with `requirements.enabled: true` (default `false`; the project template and the benchmark
+project turn it on). With the flag off, prompts, artifacts and generated specs are byte-for-byte unchanged.
+All logic lives in the shared package `tools/requirements/`, which both the legacy pipeline and the
+Agent-Evaluation DAG import.
+
+**1. `test_comprehension/requirements.json`: every requirement and acceptance criterion has an id.**
+ComprehensionAgent runs this per module BRD, before scenario generation:
+
+- Criteria the BRD declares (`### REQ-03 …`, `- AC-03.2: …`) are parsed deterministically. They keep the
+  document's ids and exact text.
+- One LLM call (schema-validated, one repair retry) classifies each criterion:
+  - `testability`: `ui` | `api` | `non_functional` | `manual_only` | `not_testable`, with a reason
+  - `priority`: P0–P3
+  - `risk_tags`: auth, payment, data-loss, PII, compliance
+- The same call splits compound criteria into atomic children (`AC-03.2.1`) and adds criteria the BRD states
+  without ids. The LLM can add criteria, never drop declared ones.
+- Every quote is checked against the BRD (`BrdIndex`; `quote_match: exact | fuzzy | none`). An addition whose
+  quote cannot be found is rejected and listed in `rejected[]`.
+- A deterministic atomicity check flags criteria that bundle several behaviours.
+- Rules decide priority (BRD > MoSCoW > LLM > P2; auth/payment/data-loss raise it to at least P1) and risk tags
+  (keyword catalog `risk_rules.yaml`).
+- Generated ids for criteria without one are stable across runs (`REQ-007`, `AC-007.2`). A BRD that MTA
+  synthesised from the DOM yields `source: dom_inferred`.
+
+**Scenario links.** Scenarios in `business_scenarios.json` gain `ac_ids`. Unknown ids are dropped. Scenarios
+the LLM left unlinked get a word-overlap match (`ac_link_source: llm | similarity`). Modules run one at a
+time, so a scenario can be generated before the criteria it exercises exist. Scenarios still unlinked are
+therefore re-linked project-wide after each comprehension run, and again, in memory, when tests are traced.
+
+**2. Tagged tests.** ScriptGenerationAgent gives each test:
+
+- a stable `tc_id`
+- `ac_ids`, restricted to its scenario's criteria. The link is `direct`, `similarity`, or `inherited` from the
+  scenario. A test with no possible link is reported as unlinked; no link is ever invented.
+
+The renderer puts the Playwright details object on the `test(` line:
+
+```ts
+test("AC-01.2 negative — wrong password", { tag: ["@P1", "@negative", "@regression", "@REQ-01", "@AC-01.2"],
+  annotation: [{ type: "ac", description: "AC-01.2" }, { type: "tc", description: "M01_TC_002" }, …] }, async ({ action }) => {
+```
+
+In the generated spec all of this is on one line. `npx playwright test --grep @AC-01.2` or `--grep @P0` selects
+tests by requirement or priority. HealingAgent's `apply_patch` rejects any patch that drops or changes this
+object.
+
+**3. `test_creation/traceability.json`: AC → test cases → spec + title → latest result → defect ids.**
+
+- Rebuilt after script generation and after every Playwright run. UIExecutionAgent records `pw_status`, tags
+  and annotations; a skipped test stays `skipped`.
+- Finalised by ReportingAgent.
+- `defect_ids` stays empty until the defect phases (P6/P11).
+
+The JSON/HTML report gains a **Requirements Traceability** section:
+
+- AC coverage of automatable criteria, and ACs passing / failing.
+- Every AC with its tests and latest result.
+- **Every AC with zero tests and why**: `not_testable`, `manual_only`, `not_supported:api`,
+  `not_supported:non_functional`, `no_url`, `module_not_generated`, `no_scenario`, `dropped_for_safety`,
+  `missing_locator`, `missing_action`, `placeholder_negative_dropped`, `locator_type_mismatch`, `budget`,
+  `generation_failed`, `no_test_targets_ac`.
+- Tests linked to no AC.
+
+**Existing projects.** Cached discovery skips comprehension. After turning the flag on, build the requirements
+without a DOM scan, then regenerate scripts:
+
+```bash
+python -m tools.requirements.build --project <name> [--module M01] [--no-llm]
+```
+
+Specs generated before the flag was on are traced through their scenario (`link: legacy`).
+
 ## Artifact Contracts (Phase 0)
 
 Every pipeline artifact has a Pydantic v2 contract (`contracts/artifacts/models.py`) and an
@@ -454,6 +530,7 @@ Phase 9).
 python -m tools.benchmark.run --app buggy_shop                           # full run (uses the LLM)
 python -m tools.benchmark.run --app buggy_shop --skip-generate --no-healing  # re-score the existing suite, no LLM
 python -m tools.benchmark.run --app buggy_shop --rescore benchmarks/results/<file>.json  # recompute a saved result (e.g. after pricing)
+python -m tools.benchmark.ac_recall --app buggy_shop [--strip-ids] [--no-llm]   # Phase 1: AC extraction recall vs acs.yaml
 ```
 
 The runner generates the suite with the unchanged pipeline (module by module), runs it on the
@@ -462,7 +539,12 @@ writes `benchmarks/results/<date>_<app>[_<label>].{json,md}`. Metrics: AC covera
 detection rate (caught = passed on every bug-free run, failed with the bug on), false-failure
 rate, flaky rate, heal precision (a heal that turns a bug-catching test green is wrong), runtime,
 and LLM tokens/cost (recorded by `connectors/llm/usage.py`; prices from
-`benchmarks/pricing.yaml`, `null` when unpriced — never guessed).
+`benchmarks/pricing.yaml`, `null` when unpriced — never guessed). Since Phase 1, AC coverage reads each
+test's links from `traceability.json` (atomic children such as `AC-03.2.1` count toward `AC-03.2`), is also
+reported for direct links only (not inherited from the scenario), and the run records the AC-extraction recall
+of the pipeline's own `requirements.json` against the hand-labelled `benchmarks/apps/buggy_shop/acs.yaml`.
+`ac_recall` measures extraction alone — on the BRD as written and, with `--strip-ids`, with every REQ/AC id
+removed so the LLM must find the criteria itself (matching is by text, never by id).
 
 ---
 
@@ -521,7 +603,8 @@ execution:
 URL + BRD
   └─ DiscoveryAgent
         ├─ comprehension/dom_elements.json       ← locator source of truth
-        ├─ comprehension/business_scenarios.json ← scenario source of truth
+        ├─ comprehension/business_scenarios.json ← scenario source of truth (+ ac_ids, Phase 1)
+        ├─ comprehension/requirements.json       ← REQ → atomic AC (Phase 1, requirements.enabled)
         ├─ comprehension/interaction_catalog.json ← docs only; human-readable UI catalog
         └─ test_creation/intents.yaml            ← ui_scanner-sourced intent list
 
@@ -535,8 +618,10 @@ URL + BRD
         ├─ test_creation/locator_map.json          ← the one place a locator gets fixed
         ├─ test_creation/pages.ts                  ← generated Page Object Model
         ├─ test_creation/test_plans.json            ← validated JSON action-plan per scenario
-        ├─ test_creation/test_scripts/{module}/test_*.spec.ts
-        └─ test_creation/test_suite.json
+        ├─ test_creation/test_scripts/{module}/test_*.spec.ts   (tests tagged @P1 @AC-01.2 … when traced)
+        ├─ test_creation/test_suite.json
+        └─ test_creation/traceability.json         ← AC ↔ test case ↔ result (Phase 1; also updated by
+                                                     UIExecutionAgent after every run and by ReportingAgent)
 
   └─ UIExecutionAgent
         └─ test_execution/reports/json/{ts}_results.json
@@ -552,6 +637,8 @@ URL + BRD
 |----------|-------------|-------------|
 | `dom_elements.json` | DiscoveryAgent | SemanticMapAgent, ScriptGenerationAgent, HealingAgent |
 | `business_scenarios.json` | ComprehensionAgent | TestDataAgent, SemanticMapAgent, ScriptGenerationAgent |
+| `requirements.json` | ComprehensionAgent (Phase 1) | ScriptGenerationAgent (tracing), traceability, ReportingAgent |
+| `traceability.json` | ScriptGenerationAgent, UIExecutionAgent, ReportingAgent (Phase 1) | ReportingAgent, benchmark scorer |
 | `test_data.json` | TestDataAgent | ScriptGenerationAgent |
 | `scenario_element_map.json` | SemanticMapAgent | ScriptGenerationAgent |
 | `locator_map.json` / `pages.ts` | ScriptGenerationAgent | UIExecutionAgent (runtime), HealingAgent |
@@ -588,6 +675,7 @@ application_assets/projects/{project}/
 ├── comprehension/
 │   ├── dom_elements.json                   ← locator source of truth
 │   ├── business_scenarios.json             ← scenario source of truth
+│   ├── requirements.json                   ← REQ → atomic AC (Phase 1)
 │   ├── interaction_catalog.json            ← docs-only UI catalog
 │   └── modules/{module_id}/                ← per-module scan/scenario outputs (modular projects)
 │
@@ -598,6 +686,7 @@ application_assets/projects/{project}/
 │   ├── scenario_element_map.json           ← scenario → relevant elements + clusters
 │   ├── test_plans.json                     ← validated action-plan JSON per scenario
 │   ├── test_suite.json                     ← suite manifest + per-spec status
+│   ├── traceability.json                   ← AC ↔ test case ↔ latest result (Phase 1)
 │   ├── test_data/
 │   │   ├── test_data.json
 │   │   └── test_data.md
@@ -667,6 +756,7 @@ agents/
 └── registry_setup.py              ← build_default_registry(): every registered agent's wiring
 
 tools/
+├── requirements/                  ← Phase 1 shared core: BrdIndex, extraction, linking, traceability, build CLI
 ├── suite_orchestrator.py          ← 4-level test execution tool (individual/module/suite/workflow)
 ├── playwright_scanner.py          ← the DOM scanner behind Discovery/LocatorAgent
 ├── scaffold_agent.py              ← generates a new agent's 7-file skeleton

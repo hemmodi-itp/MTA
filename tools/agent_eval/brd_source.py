@@ -12,18 +12,17 @@ brd_source.py — read the BRD reliably and keep everything derived from it trac
 
 import re
 import urllib.parse
-from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Callable, List, Optional, Tuple
 
 from tools.comprehension.parse_document import parse_document
+# Grounding lives in the shared requirements package (Phase 1.4); re-exported for existing importers.
+from tools.requirements.brd_index import CRITERION_SUPPORT, BrdIndex, _STOP, _norm, _stem  # noqa: F401
 
 # Below this many characters per page, a PDF's text layer is treated as unusable.
 MIN_CHARS_PER_PAGE = 150
 MIN_BRD_CHARS = 200
 MAX_BRD_CHARS = 150_000
-# share of a criterion's content words that must occur in the BRD for it to count as grounded
-CRITERION_SUPPORT = 0.7
 
 _TRANSCRIBE_INSTRUCTION = (
     "Transcribe this document to Markdown faithfully and completely. Keep every heading, "
@@ -145,80 +144,3 @@ def read_brd_preview(path: Path, llm, emit: Callable[[str, str], None] = lambda 
     if len(text) < 40:
         raise ValueError(f"{path.name} could not be read, even visually.")
     return text[:chars], False
-
-
-# ── grounding ────────────────────────────────────────────────────────────────
-
-def _norm(s: str) -> str:
-    s = s.lower().replace("-\n", "")
-    s = re.sub(r"[`*_#>|]", " ", s)  # markdown noise from transcriptions
-    s = re.sub(r"[^\w%$.,:/+]+", " ", s)
-    return re.sub(r"\s+", " ", s).strip(" .,:")
-
-
-class BrdIndex:
-    """Normalised BRD text for fast repeated quote checks."""
-
-    def __init__(self, brd_text: str) -> None:
-        self.text = _norm(brd_text)
-        self.words = self.text.split()
-        self._stems: Optional[set] = None
-
-    def grounded(self, quote: Optional[str], min_ratio: float = 0.85) -> bool:
-        q = _norm(quote or "")
-        if len(q) < 12:
-            return False
-        if q in self.text:
-            return True
-        # Tolerate small transcription / paraphrase-of-punctuation differences: slide a
-        # window of the quote's length over the BRD and look for a near match.
-        qwords = q.split()
-        n = len(qwords)
-        if n < 3 or n > 120:
-            return False
-        # Anchor on the quote's rarest-looking (longest) word, then compare equal-length
-        # word windows that could contain the quote around each occurrence of it.
-        anchor_pos, anchor = max(enumerate(qwords), key=lambda iw: len(iw[1]))
-        for i, w in enumerate(self.words):
-            if w != anchor:
-                continue
-            for shift in (-2, -1, 0, 1, 2):
-                start = i - anchor_pos + shift
-                if start < 0:
-                    continue
-                window = " ".join(self.words[start:start + n])
-                if SequenceMatcher(None, q, window, autojunk=False).ratio() >= min_ratio:
-                    return True
-        return False
-
-    def support(self, statement: Optional[str]) -> float:
-        """Share (0-1) of a statement's content words that occur in the BRD (fuzzy token-overlap grounding).
-
-        Acceptance criteria are often restated rather than quoted ("split X and Y into two"), so they can't be
-        held to the verbatim test of grounded(); a restated criterion still uses the document's own words.
-        Simple plural / -ed / -ing variants count as the same word.
-        """
-        if self.grounded(statement):
-            return 1.0
-        words = [w for w in _norm(statement or "").split() if len(w) > 2 and w not in _STOP]
-        if not words:
-            return 0.0
-        if self._stems is None:
-            self._stems = {_stem(w) for w in self.words}
-        return sum(1 for w in words if _stem(w) in self._stems) / len(words)
-
-    def criterion_grounded(self, statement: Optional[str], threshold: float = CRITERION_SUPPORT) -> bool:
-        return self.support(statement) >= threshold
-
-
-_STOP = set("the and for with that this from are was were has have had not but any all can will shall must should "
-            "may its their them they then than when what which who whom into onto upon each per via also only such "
-            "able user users system app application".split())
-
-
-def _stem(word: str) -> str:
-    w = word.strip(".,:/+")
-    for suffix in ("ies", "ing", "ed", "es", "s"):
-        if len(w) > len(suffix) + 3 and w.endswith(suffix):
-            return w[: -len(suffix)] + ("y" if suffix == "ies" else "")
-    return w

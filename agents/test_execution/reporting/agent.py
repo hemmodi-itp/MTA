@@ -22,6 +22,8 @@ from agents.test_execution.reporting.tools import build_html_report, update_inde
 from tools.test_execution.reports.report_writer import build_failures_log_text
 from tools.catalog.catalog_manager import stamp_execution_results, update_catalog
 from tools.logger_config import get_logger
+from tools.requirements.traceability import refresh_project as refresh_traceability
+from tools.requirements.traceability import report_section as traceability_report_section
 
 from tools.constants import PROJECTS_BASE as _ASSETS_BASE
 
@@ -60,6 +62,21 @@ class ReportingAgent(BaseAgent):
 
         # ── Determine output paths ────────────────────────────────
         safe        = _safe_name(project_name)
+
+        # ── Phase 1.2: requirements traceability (rebuilt from artifacts; keeps
+        # the latest per-test results UIExecutionAgent folded in). Omitted when
+        # requirements.enabled is off; a failure never fails reporting.
+        try:
+            trace = refresh_traceability(safe, request)
+            if trace is not None:
+                report["traceability"] = traceability_report_section(trace)
+                s = trace.summary
+                self.logger.info(
+                    f"[ReportingAgent] Traceability — {s.get('acs_covered')}/{s.get('acs_automatable')} "
+                    f"automatable AC(s) covered, {len(report['traceability']['uncovered'])} with no test, "
+                    f"{s.get('tests_unlinked')} unlinked test(s)")
+        except Exception as exc:
+            self.logger.warning(f"[ReportingAgent] Traceability section failed (non-fatal): {exc}")
 
         # ── Stamp real per-test results back onto test_suite.json + refresh
         # the human-readable catalog. ReportingAgent runs unconditionally

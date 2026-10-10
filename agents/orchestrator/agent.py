@@ -71,6 +71,21 @@ class OrchestratorAgent:
         )
         return flat
 
+    def _hint_missing_requirements(self, project_name: str, request: dict) -> None:
+        """Phase 1: cached discovery skips comprehension, so turning `requirements.enabled` on for an existing
+        project produces no requirements.json. Say how to build it instead of silently doing nothing."""
+        if not (request.get("requirements") or {}).get("enabled"):
+            return
+        safe = re.sub(r"[^A-Za-z0-9_-]", "_", project_name).strip("_") or "project"
+        from contracts.artifacts.paths import artifact_path
+        if artifact_path(os.path.join(_PROJECTS_DIR, safe), "requirements", existing_only=True):
+            return
+        self.logger.warning(
+            "requirements.enabled is on but requirements.json does not exist and discovery was skipped "
+            f"(cached). Build it with: python -m tools.requirements.build --project {project_name} "
+            "(or re-run with --force-rediscover)."
+        )
+
     def _check_contracts(self, step: str, result, project_name: str, request: dict):
         """Validate the artifacts *step* produced (contracts.enforce: warn | block).
         Never raises — a validator crash is logged and the result returned as is."""
@@ -184,6 +199,7 @@ class OrchestratorAgent:
                         self.state.finish_step(step, status="skipped")
                         # Cached artifacts are still checked (logged only — nothing ran).
                         self._check_contracts(step, {"status": "skipped"}, project_name, request)
+                        self._hint_missing_requirements(project_name, request)
                         continue
 
             self.logger.info(f"Starting step {step}")

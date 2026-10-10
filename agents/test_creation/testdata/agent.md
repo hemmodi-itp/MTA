@@ -64,3 +64,9 @@ reported only). Every removal is returned as `security_probe_drops` and written 
 and the Python fallback (whose old shape is canonicalised by the v1→v2 migration). Readers
 use `contracts.artifacts.load_records`, which accepts v1 lists, v2 envelopes and legacy
 id-maps.
+
+## Capped variants are recorded (Phase 1)
+
+Variants the LLM proposed but `test_generation` caps removed are counted per scenario in
+`capped_variants: {"negative": n, "boundary": m}` (serialised only when non-zero). The traceability report uses
+it to say an acceptance criterion went untested for `budget`. The caps themselves are unchanged.
