@@ -1,16 +1,21 @@
 "use client";
 
 import { use, useState } from "react";
-import { Download, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { format } from "date-fns";
+import { Download, ExternalLink, Lightbulb, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/shared/empty-state";
+import { PageHeader, PageHeaderSkeleton } from "@/components/shared/page-header";
+import { SectionCard } from "@/components/shared/section-card";
+import { CardSkeleton } from "@/components/shared/skeletons";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { ErrorState } from "@/components/shared/error-state";
 import { QualityScoreCard } from "@/components/reports/quality-score-card";
 import { RecommendationCard } from "@/components/reports/recommendation-card";
 import { useRun, useRecommendations } from "@/lib/query/hooks";
-import { scoreOf } from "@/lib/insights";
+import { scoreOf, shortName } from "@/lib/insights";
 
 const RISK_COPY: Record<string, string> = {
   low: "This run looks safe to ship — no critical issues found.",
@@ -38,8 +43,17 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   const recommendations = useRecommendations(id);
   const [downloading, setDownloading] = useState(false);
 
-  if (run.isLoading) return <Skeleton className="h-96 rounded-lg" />;
-  if (run.isError || !run.data) return <ErrorState message="Report not found." onRetry={run.refetch} />;
+  if (run.isLoading) {
+    return (
+      <>
+        <PageHeaderSkeleton actions />
+        <div className="max-w-3xl space-y-6"><CardSkeleton className="h-56" /><CardSkeleton className="h-32" /></div>
+      </>
+    );
+  }
+  if (run.isError || !run.data) {
+    return <ErrorState title="Report not found" message="The run may have been removed, or it belongs to another account." onRetry={run.refetch} />;
+  }
 
   const data = run.data;
   const onDownload = async () => {
@@ -53,48 +67,58 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
     }
   };
 
+  const recs = recommendations.data ?? [];
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-xl font-semibold">Quality Report</h1>
-          <p className="text-sm text-muted-foreground">{data.projectName} · run {data.id}</p>
-        </div>
-        <Button className="gap-2" onClick={onDownload} disabled={downloading}>
-          {downloading ? <Loader2 className="size-4 animate-spin" /> : <Download className="size-4" />}
-          {downloading ? "Preparing PDF…" : "Download PDF"}
-        </Button>
-      </div>
-
-      <QualityScoreCard
-        score={scoreOf(data)}
-        breakdown={data.qualityBreakdown}
-        healingPenalty={4}
-        riskLevel={data.stats.riskLevel}
-        criticalDefects={data.stats.criticalDefects}
+    <>
+      <PageHeader
+        breadcrumb={[{ label: "Reports", href: "/reports" }, { label: shortName(data.projectName) }]}
+        title="Quality report"
+        description={<>{data.projectName} · evaluated {format(new Date(data.startedAt), "d MMM yyyy")}</>}
+        actions={
+          <>
+            <Button asChild variant="outline" className="gap-1.5">
+              <Link href={`/runs/${data.id}`}><ExternalLink aria-hidden className="size-3.5" /> Open run</Link>
+            </Button>
+            <Button className="gap-2" onClick={onDownload} disabled={downloading}>
+              {downloading ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <Download aria-hidden className="size-4" />}
+              {downloading ? "Preparing PDF…" : "Download PDF"}
+            </Button>
+          </>
+        }
       />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm font-medium text-muted-foreground">Plain-language summary</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm leading-relaxed">
-          <p>
+      <div className="max-w-3xl space-y-6">
+        <QualityScoreCard
+          score={scoreOf(data)}
+          breakdown={data.qualityBreakdown}
+          healingPenalty={4}
+          riskLevel={data.stats.riskLevel}
+          criticalDefects={data.stats.criticalDefects}
+        />
+
+        <SectionCard title="Plain-language summary">
+          <p className="text-sm leading-relaxed text-pretty">
             {data.stats.passed} of {data.stats.passed + data.stats.failed} test cases passed
             ({Math.round((data.stats.passed / (data.stats.passed + data.stats.failed || 1)) * 100)}%). {data.stats.healed} were
             automatically fixed. {RISK_COPY[data.stats.riskLevel]}
           </p>
-        </CardContent>
-      </Card>
+        </SectionCard>
 
-      <div>
-        <h2 className="mb-2 text-sm font-medium text-muted-foreground">Suggestions &amp; improvements</h2>
-        <div className="space-y-2">
-          {(recommendations.data ?? []).map((r) => (
-            <RecommendationCard key={r.id} recommendation={r} />
-          ))}
-        </div>
+        <section className="space-y-3">
+          <h2 className="type-section-title">Suggestions &amp; improvements</h2>
+          {recommendations.isLoading ? (
+            <CardSkeleton className="h-24" />
+          ) : recs.length ? (
+            <Stagger className="space-y-2">
+              {recs.map((r, i) => (
+                <StaggerItem key={r.id} index={i}><RecommendationCard recommendation={r} /></StaggerItem>
+              ))}
+            </Stagger>
+          ) : (
+            <EmptyState size="inline" icon={Lightbulb} title="No suggestions" description="This run produced no recommendations." />
+          )}
+        </section>
       </div>
-    </div>
+    </>
   );
 }

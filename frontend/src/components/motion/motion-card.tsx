@@ -1,13 +1,16 @@
 "use client";
 
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { m, type HTMLMotionProps } from "framer-motion";
 import { useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { fadeUp, spring } from "@/lib/motion";
+import { fadeUp, transition } from "@/lib/motion";
+
+const LIFT = { y: -2, transition: transition.micro };
 
 /**
- * The interactive surface of the redesign: enters with fade-up, lifts 2px on hover, and shows a cursor-following
- * glow (.spotlight reads --mx/--my). `highlight` adds the primary→violet gradient border for hero cards.
+ * The card surface of the app. Inside a <Stagger> it fades up with its siblings. `interactive` cards (ones you can
+ * click) lift 2 px on hover with a stronger shadow (an opacity fade on a pseudo-element) and a cursor-following glow
+ * (.spotlight reads --mx/--my). `highlight` adds the primary→violet gradient border for hero cards.
  */
 export function MotionCard({
   className,
@@ -23,20 +26,20 @@ export function MotionCard({
   }, []);
 
   return (
-    <motion.div
+    <m.div
       variants={fadeUp}
-      whileHover={interactive ? { y: -2 } : undefined}
-      transition={spring.snappy}
+      // framer owns this element's transform (entrance), so the hover lift goes through framer too, not CSS
+      whileHover={interactive ? LIFT : undefined}
       onMouseMove={interactive ? onMove : undefined}
       className={cn(
-        "spotlight rounded-2xl text-card-foreground shadow-[0_1px_0_0_rgb(255_255_255/0.04)_inset,0_8px_24px_-12px_rgb(2_6_23/0.25)] transition-shadow",
-        interactive && "hover:shadow-[0_1px_0_0_rgb(255_255_255/0.06)_inset,0_18px_40px_-16px_var(--glow)]",
+        "spotlight rounded-2xl text-card-foreground shadow-card",
+        interactive && "card-elevate",
         highlight ? "gradient-border" : "surface-card border border-border",
         className
       )}
       {...props}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

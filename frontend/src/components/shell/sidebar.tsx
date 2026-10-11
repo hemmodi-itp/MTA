@@ -2,23 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronLeft, Command, Laptop, LogOut, Moon, Plus, Sparkles, Sun, X } from "lucide-react";
+import { m } from "framer-motion";
+import { Check, ChevronLeft, Command, Laptop, LogOut, Moon, Plus, Sparkles, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet";
+import { Indicator, IndicatorGroup } from "@/components/motion/sliding-indicator";
 import { cn } from "@/lib/utils";
-import { spring } from "@/lib/motion";
+import { transition } from "@/lib/motion";
 import { isActiveStatus, useRuns } from "@/lib/query/hooks";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { logout } from "@/app/actions/auth";
 import type { CurrentUser } from "@/lib/auth/session";
 import { NAV, SETTINGS_NAV, type NavItem } from "./nav";
-
-export const SIDEBAR_WIDTH = { open: 252, closed: 76 } as const;
 
 export function initials(user: CurrentUser) {
   const source = user.name?.trim() || user.email;
@@ -28,92 +28,91 @@ export function initials(user: CurrentUser) {
 
 const THEMES = [["light", Sun, "Light"], ["dark", Moon, "Dark"], ["system", Laptop, "System"]] as const;
 
-function Reveal({ show, children, className }: { show: boolean; children: React.ReactNode; className?: string }) {
-  return (
-    <AnimatePresence initial={false}>
-      {show && (
-        <motion.span
-          initial={{ opacity: 0, x: -6 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.06, duration: 0.18 } }}
-          exit={{ opacity: 0, x: -6, transition: { duration: 0.1 } }}
-          className={cn("truncate", className)}
-        >
-          {children}
-        </motion.span>
-      )}
-    </AnimatePresence>
-  );
+/*
+ * The collapsed desktop rail is pure CSS: <html data-sidebar="collapsed"> (set before first paint) narrows the aside
+ * and the `rail:` variant hides labels and re-centres icons. Server and client render identical markup either way,
+ * so collapsing never shifts layout on load. The mobile drawer reuses the same body, always expanded.
+ */
+type Variant = "desktop" | "drawer";
+
+/** Text that disappears in the collapsed rail and fades back in when it expands. */
+function Label({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <span className={cn("rail-label truncate rail:hidden", className)}>{children}</span>;
 }
 
-function NavLink({ item, active, open, badge, onNavigate }: { item: NavItem; active: boolean; open: boolean; badge?: number;
-  onNavigate?: () => void }) {
-  const link = (
-    <Link
-      href={item.href}
-      onClick={onNavigate}
-      className={cn(
-        "group relative flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium outline-none transition-colors",
-        "focus-visible:ring-2 focus-visible:ring-ring/60",
-        active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-      )}
-    >
-      {active && (
-        <motion.span layoutId="nav-active" transition={spring.layout}
-          className="absolute inset-0 rounded-xl border border-primary/25 bg-gradient-to-r from-primary/15 via-primary/8 to-transparent">
-          <span className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-primary" />
-        </motion.span>
-      )}
-      {!active && <span className="absolute inset-0 rounded-xl bg-muted/0 transition-colors group-hover:bg-muted/60" />}
-      <item.icon className={cn("relative size-[18px] shrink-0 transition-transform group-hover:scale-110", active && "text-primary")} />
-      <Reveal show={open} className="relative flex-1">{item.label}</Reveal>
-      {badge ? (
-        open ? (
-          <span className="relative rounded-full bg-primary/15 px-1.5 text-[11px] font-semibold tabular-nums text-primary">{badge}</span>
-        ) : (
-          <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-primary ring-2 ring-background" />
-        )
-      ) : null}
-    </Link>
-  );
-  if (open) return link;
+/** Tooltip that only shows while the desktop rail is collapsed (labels are hidden then). */
+function RailTooltip({ variant, label, hint, children }: { variant: Variant; label: string; hint?: string; children: React.ReactElement }) {
+  const collapsed = useUIStore((s) => s.sidebarCollapsed);
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>{link}</TooltipTrigger>
+    <Tooltip open={variant === "desktop" && collapsed ? undefined : false}>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent side="right" className="max-w-56">
-        <p className="font-medium">{item.label}</p>
-        <p className="text-xs opacity-80">{item.hint}</p>
+        <p className="font-medium">{label}</p>
+        {hint && <p className="text-xs opacity-80">{hint}</p>}
       </TooltipContent>
     </Tooltip>
   );
 }
 
+function NavLink({ item, active, badge, variant, onNavigate }: {
+  item: NavItem; active: boolean; badge?: number; variant: Variant; onNavigate?: () => void;
+}) {
+  return (
+    <RailTooltip variant={variant} label={item.label} hint={item.hint}>
+      <Link
+        href={item.href}
+        onClick={onNavigate}
+        aria-current={active ? "page" : undefined}
+        className={cn(
+          "group relative flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors duration-(--dur-micro) rail:justify-center rail:px-0",
+          active ? "text-foreground" : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+        )}
+      >
+        {active && (
+          <Indicator className="rounded-xl border border-primary/25 bg-gradient-to-r from-primary/15 via-primary/8 to-transparent before:absolute before:inset-y-2 before:left-0 before:w-0.5 before:rounded-full before:bg-primary" />
+        )}
+        <item.icon aria-hidden className={cn("relative size-[18px] shrink-0", active && "text-primary")} />
+        <Label className="relative flex-1">{item.label}</Label>
+        {badge ? (
+          <>
+            <span className="relative rounded-full bg-primary/12 px-1.5 text-2xs font-semibold tabular-nums text-info-fg rail:hidden">
+              {badge}
+              <span className="sr-only"> running</span>
+            </span>
+            <span aria-hidden className="absolute top-1.5 right-1.5 hidden size-2 rounded-full bg-primary ring-2 ring-background rail:block" />
+          </>
+        ) : null}
+      </Link>
+    </RailTooltip>
+  );
+}
+
 /** Appearance: light / dark / follow the OS. Shows the current choice when the sidebar is open. */
-function ThemeSwitch({ open }: { open: boolean }) {
+function ThemeSwitch({ variant }: { variant: Variant }) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   // true only on the client: the theme is unknown during SSR, so render a neutral icon until hydrated
   const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
   const Icon = !mounted ? Sun : theme === "system" ? Laptop : resolvedTheme === "dark" ? Moon : Sun;
   const current = THEMES.find(([v]) => v === theme)?.[2] ?? "System";
-  const trigger = (
-    <DropdownMenuTrigger aria-label="Theme"
-      className={cn("group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground outline-none transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
-        !open && "justify-center px-0")}>
-      <motion.span key={mounted ? `${theme}-${resolvedTheme}` : "ssr"} initial={{ rotate: -40, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}>
-        <Icon className="size-[18px] shrink-0 transition-transform group-hover:scale-110" />
-      </motion.span>
-      <Reveal show={open} className="flex-1 text-left">Theme</Reveal>
-      {open && mounted && <span className="text-xs text-muted-foreground">{current}</span>}
-    </DropdownMenuTrigger>
-  );
   return (
     <DropdownMenu>
-      {open ? trigger : (
-        <Tooltip><TooltipTrigger asChild>{trigger}</TooltipTrigger><TooltipContent side="right">Theme</TooltipContent></Tooltip>
-      )}
+      <RailTooltip variant={variant} label="Theme" hint={mounted ? current : undefined}>
+        <DropdownMenuTrigger
+          aria-label="Theme"
+          className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors duration-(--dur-micro) hover:bg-muted/60 hover:text-foreground rail:justify-center rail:px-0"
+        >
+          {/* the icon turns in when the theme changes: it explains what just happened */}
+          <m.span key={mounted ? `${theme}-${resolvedTheme}` : "ssr"} initial={{ rotate: -30, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} transition={transition.micro}>
+            <Icon aria-hidden className="size-[18px] shrink-0" />
+          </m.span>
+          <Label className="flex-1 text-left">Theme</Label>
+          {mounted && <span className="text-xs text-muted-foreground rail:hidden">{current}</span>}
+        </DropdownMenuTrigger>
+      </RailTooltip>
       <DropdownMenuContent side="right" align="end" className="w-40 rounded-xl">
         <DropdownMenuLabel className="text-xs text-muted-foreground">Appearance</DropdownMenuLabel>
         {THEMES.map(([v, I, l]) => (
-          <DropdownMenuItem key={v} onSelect={() => setTheme(v)} className={cn("gap-2", theme === v && "text-primary")}>
+          <DropdownMenuItem key={v} onSelect={() => setTheme(v)} className={cn("gap-2", theme === v && "text-info-fg")}>
             <I className="size-3.5" /> {l}
             {theme === v && <Check className="ml-auto size-3.5" />}
           </DropdownMenuItem>
@@ -123,11 +122,14 @@ function ThemeSwitch({ open }: { open: boolean }) {
   );
 }
 
-function SidebarBody({ user, open, onNavigate }: { user: CurrentUser; open: boolean; onNavigate?: () => void }) {
+const groupLabel = "rail-label px-3 pb-1 type-eyebrow text-muted-foreground rail:hidden";
+
+function SidebarBody({ user, variant, onNavigate }: { user: CurrentUser; variant: Variant; onNavigate?: () => void }) {
   const pathname = usePathname();
   const runs = useRuns();
   const { setCopilotOpen, setCommandPaletteOpen } = useUIStore();
-  const active = (runs.data ?? []).filter((r) => isActiveStatus(r.status)).length;
+  const running = (runs.data ?? []).filter((r) => isActiveStatus(r.status)).length;
+  const activeHref = [...NAV, SETTINGS_NAV].find((n) => pathname.startsWith(n.href))?.href ?? null;
 
   const quick = [
     { label: "Ask Copilot", icon: Sparkles, kbd: "⌘J", onClick: () => { setCopilotOpen(true); onNavigate?.(); } },
@@ -135,126 +137,117 @@ function SidebarBody({ user, open, onNavigate }: { user: CurrentUser; open: bool
   ];
 
   return (
-    <div className="flex h-full flex-col gap-4 p-3">
-      {/* brand */}
-      <div className="flex h-11 items-center gap-3 px-1.5">
-        <div className="relative flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-violet text-white shadow-lg shadow-primary/30">
-          <Sparkles className="size-[18px]" />
-          <span className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
-        </div>
-        <Reveal show={open} className="flex flex-col leading-tight">
-          <span className="text-[15px] font-bold tracking-tight">MTA</span>
-          <span className="text-[11px] font-medium text-muted-foreground">Master Testing Agent</span>
-        </Reveal>
-      </div>
-
-      {/* navigation */}
-      <nav className="flex flex-col gap-1" aria-label="Main">
-        <Reveal show={open} className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
-          Workspace
-        </Reveal>
-        {NAV.map((item) => (
-          <NavLink key={item.href} item={item} open={open} active={pathname.startsWith(item.href)}
-            badge={item.href === "/runs" ? active : undefined} onNavigate={onNavigate} />
-        ))}
-      </nav>
-
-      {/* AI quick actions */}
-      <div className="flex flex-col gap-1">
-        <Reveal show={open} className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
-          AI actions
-        </Reveal>
-        <Link href="/projects/new" onClick={onNavigate}
-          className={cn("group relative flex h-10 items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-primary to-violet px-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-transform hover:scale-[1.02] active:scale-[0.98]",
-            !open && "justify-center px-0")}>
-          <Plus className="size-[18px] shrink-0" />
-          <Reveal show={open}>New evaluation</Reveal>
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+    <IndicatorGroup activeKey={activeHref}>
+      <div className="flex h-full flex-col gap-4 p-3">
+        {/* brand */}
+        <Link href="/dashboard" onClick={onNavigate} className="flex h-11 items-center gap-3 rounded-xl px-1.5 rail:justify-center rail:px-0">
+          <span className="relative flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-solid to-violet text-white shadow-control">
+            <Sparkles aria-hidden className="size-[18px]" />
+            <span className="absolute inset-0 rounded-xl ring-1 ring-white/20 ring-inset" />
+          </span>
+          <Label className="flex flex-col leading-tight">
+            <span className="text-[15px] font-bold tracking-tight">MTA</span>
+            <span className="text-2xs font-medium text-muted-foreground">Master Testing Agent</span>
+          </Label>
         </Link>
-        {quick.map((q) => {
-          const btn = (
-            <button key={q.label} type="button" onClick={q.onClick}
-              className={cn("group flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
-                !open && "justify-center px-0")}>
-              <q.icon className="size-[18px] shrink-0 transition-transform group-hover:scale-110" />
-              <Reveal show={open} className="flex-1 text-left">{q.label}</Reveal>
-              {open && <span className="kbd">{q.kbd}</span>}
-            </button>
-          );
-          return open ? btn : (
-            <Tooltip key={q.label}><TooltipTrigger asChild>{btn}</TooltipTrigger><TooltipContent side="right">{q.label} · {q.kbd}</TooltipContent></Tooltip>
-          );
-        })}
-      </div>
 
-      {/* profile */}
-      <div className="mt-auto flex flex-col gap-1">
-        <ThemeSwitch open={open} />
-        <NavLink item={SETTINGS_NAV} open={open} active={pathname.startsWith("/settings")} onNavigate={onNavigate} />
-        <DropdownMenu>
-          <DropdownMenuTrigger className={cn("flex items-center gap-3 rounded-xl border border-border bg-muted/30 p-2 text-left outline-none transition-colors hover:bg-muted/60",
-            !open && "justify-center border-transparent bg-transparent")} aria-label="Account">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet to-primary text-xs font-bold text-white">
-              {initials(user)}
-            </span>
-            <Reveal show={open} className="flex min-w-0 flex-1 flex-col leading-tight">
-              <span className="truncate text-sm font-medium">{user.name ?? user.email.split("@")[0]}</span>
-              <span className="truncate text-[11px] text-muted-foreground">{user.email}</span>
-            </Reveal>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" align="end" className="w-56 rounded-xl">
-            <DropdownMenuLabel className="font-normal">
-              <p className="text-sm font-medium">{user.name ?? user.email}</p>
-              <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => logout()} className="gap-2"><LogOut className="size-3.5" /> Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* navigation */}
+        <nav className="flex flex-col gap-1" aria-label="Main">
+          <span className={groupLabel}>Workspace</span>
+          {NAV.map((item) => (
+            <NavLink key={item.href} item={item} variant={variant} active={item.href === activeHref}
+              badge={item.href === "/runs" ? running : undefined} onNavigate={onNavigate} />
+          ))}
+        </nav>
+
+        {/* quick actions */}
+        <div className="flex flex-col gap-1">
+          <span className={groupLabel}>Actions</span>
+          <RailTooltip variant={variant} label="New evaluation">
+            <Link href="/projects/new" onClick={onNavigate}
+              className="flex h-10 items-center gap-3 rounded-xl bg-primary-solid px-3 text-sm font-semibold text-primary-foreground shadow-control transition-[background-color,transform] duration-(--dur-fast) ease-enter hover:bg-primary-solid-hover active:scale-[0.98] rail:justify-center rail:px-0">
+              <Plus aria-hidden className="size-[18px] shrink-0" />
+              <Label>New evaluation</Label>
+            </Link>
+          </RailTooltip>
+          {quick.map((q) => (
+            <RailTooltip key={q.label} variant={variant} label={q.label} hint={q.kbd}>
+              <button type="button" onClick={q.onClick}
+                className="flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors duration-(--dur-micro) hover:bg-muted/60 hover:text-foreground rail:justify-center rail:px-0">
+                <q.icon aria-hidden className="size-[18px] shrink-0" />
+                <Label className="flex-1 text-left">{q.label}</Label>
+                <span className="kbd rail:hidden">{q.kbd}</span>
+              </button>
+            </RailTooltip>
+          ))}
+        </div>
+
+        {/* preferences + profile */}
+        <div className="mt-auto flex flex-col gap-1">
+          <ThemeSwitch variant={variant} />
+          <NavLink item={SETTINGS_NAV} variant={variant} active={activeHref === SETTINGS_NAV.href} onNavigate={onNavigate} />
+          <DropdownMenu>
+            <DropdownMenuTrigger aria-label="Account"
+              className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 p-2 text-left transition-colors duration-(--dur-micro) hover:bg-muted/60 rail:justify-center rail:border-transparent rail:bg-transparent">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet to-primary-solid text-xs font-bold text-white">
+                {initials(user)}
+              </span>
+              <Label className="flex min-w-0 flex-1 flex-col leading-tight">
+                <span className="truncate text-sm font-medium">{user.name ?? user.email.split("@")[0]}</span>
+                <span className="truncate text-2xs text-muted-foreground">{user.email}</span>
+              </Label>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="right" align="end" className="w-56 rounded-xl">
+              <DropdownMenuLabel className="font-normal">
+                <p className="text-sm font-medium text-foreground">{user.name ?? user.email}</p>
+                <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => logout()} className="gap-2"><LogOut className="size-3.5" /> Log out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-    </div>
+    </IndicatorGroup>
   );
 }
 
-/** Floating, collapsible desktop sidebar (md+) and slide-in drawer (mobile). */
+/** Floating, collapsible desktop sidebar (md+) and slide-in drawer (phones). */
 export function Sidebar({ user }: { user: CurrentUser }) {
   const { sidebarCollapsed, toggleSidebar, mobileNavOpen, setMobileNavOpen } = useUIStore();
-  const open = !sidebarCollapsed;
   return (
     <>
-      <motion.aside
-        initial={false}
-        animate={{ width: open ? SIDEBAR_WIDTH.open : SIDEBAR_WIDTH.closed }}
-        transition={spring.gentle}
-        className="glass fixed inset-y-3 left-3 z-40 hidden overflow-visible rounded-2xl shadow-2xl shadow-black/10 md:block"
+      <aside
+        data-slot="desktop-sidebar"
+        aria-label="Sidebar"
+        className="glass fixed inset-y-3 left-3 z-(--z-sidebar) hidden w-(--sidebar-w) rounded-2xl shadow-popover md:block"
       >
-        <div className="h-full overflow-y-auto overflow-x-hidden">
-          <SidebarBody user={user} open={open} />
+        <div className="h-full overflow-x-hidden overflow-y-auto">
+          <SidebarBody user={user} variant="desktop" />
         </div>
         <button
           type="button"
           onClick={toggleSidebar}
-          aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
-          className="absolute -right-3 top-[4.25rem] flex size-6 items-center justify-center rounded-full border border-border bg-popover text-muted-foreground shadow-md transition-colors hover:text-foreground"
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-expanded={!sidebarCollapsed}
+          className="absolute top-[4.25rem] -right-3 flex size-6 items-center justify-center rounded-full border border-border bg-popover text-muted-foreground shadow-control transition-colors duration-(--dur-micro) hover:text-foreground"
         >
-          <motion.span animate={{ rotate: open ? 0 : 180 }} transition={spring.snappy}><ChevronLeft className="size-3.5" /></motion.span>
+          <ChevronLeft aria-hidden className="size-3.5 transition-transform duration-(--dur-panel) ease-enter rail:rotate-180" />
         </button>
-      </motion.aside>
+      </aside>
 
-      <AnimatePresence>
-        {mobileNavOpen && (
-          <>
-            <motion.div key="scrim" className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm md:hidden"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileNavOpen(false)} />
-            <motion.aside key="drawer" className="glass fixed inset-y-2 left-2 z-50 w-[272px] rounded-2xl shadow-2xl md:hidden"
-              initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={spring.gentle}>
-              <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close menu"
-                className="absolute right-3 top-4 rounded-lg p-1.5 text-muted-foreground hover:bg-muted"><X className="size-4" /></button>
-              <SidebarBody user={user} open onNavigate={() => setMobileNavOpen(false)} />
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+      <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+        <SheetContent
+          side="left"
+          className="gap-0 bg-popover/95 p-0 backdrop-blur-xl data-[side=left]:inset-y-2 data-[side=left]:left-2 data-[side=left]:h-auto data-[side=left]:w-[272px] data-[side=left]:max-w-[calc(100vw-1rem)] data-[side=left]:rounded-2xl data-[side=left]:border md:hidden"
+        >
+          <SheetTitle className="sr-only">Navigation</SheetTitle>
+          <SheetDescription className="sr-only">Pages, quick actions and your account</SheetDescription>
+          <div className="h-full overflow-y-auto">
+            <SidebarBody user={user} variant="drawer" onNavigate={() => setMobileNavOpen(false)} />
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
 }

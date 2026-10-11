@@ -1,56 +1,67 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { HEAT_DIMENSIONS, heatRow, type ProjectHealth } from "@/lib/insights";
+import { animatesAt, ease, STAGGER_STEP } from "@/lib/motion";
+import { band, HEAT_DIMENSIONS, heatRow, type ProjectHealth } from "@/lib/insights";
+import { BAND_TONE } from "@/lib/status";
 
 function cellColor(v: number | null) {
   if (v == null) return "color-mix(in srgb, var(--muted) 70%, transparent)";
-  // red (0) → amber (50) → green (100), translucent so the glass shows through
-  const hue = v >= 75 ? "var(--chart-3)" : v >= 50 ? "var(--chart-4)" : "var(--chart-5)";
+  // band colour, stronger the further the score is from the 50 midpoint; translucent so the card shows through
   const strength = 22 + Math.round((v >= 50 ? (v - 50) / 50 : (50 - v) / 50) * 50);
-  return `color-mix(in srgb, ${hue} ${strength}%, transparent)`;
+  return `color-mix(in srgb, var(--${BAND_TONE[band(v)]}) ${strength}%, transparent)`;
 }
 
-/** Projects × quality dimensions; colour = score band. Hover a cell for the number, click a row for the run. */
+/** Projects × quality dimensions; colour = score band. Hover a cell for details, click a project for its run. */
 export function RiskHeatmap({ items }: { items: ProjectHealth[] }) {
   const rows = items.slice(0, 8);
   return (
-    <div className="overflow-x-auto">
-      <div className="w-max min-w-full">
-        <div className="grid gap-1.5" style={{ gridTemplateColumns: `minmax(120px,1.2fr) repeat(${HEAT_DIMENSIONS.length}, minmax(max-content,1fr))` }}>
-          <span />
+    // scrolls inside the card on narrow screens; the project column stays put
+    <div className="-mx-1 overflow-x-auto px-1 pb-1">
+      <div className="grid w-full gap-1.5" role="table" aria-label="Risk heatmap"
+        style={{ gridTemplateColumns: `minmax(110px,1.2fr) repeat(${HEAT_DIMENSIONS.length}, minmax(56px,1fr))`, minWidth: 110 + HEAT_DIMENSIONS.length * 62 }}>
+        <div role="row" className="contents">
+          <span role="columnheader" className="sticky left-0 z-10 bg-card/95" />
           {HEAT_DIMENSIONS.map((d) => (
-            <span key={d.key} className="whitespace-nowrap px-1 pb-1 text-center text-[11px] font-semibold text-muted-foreground">
+            <span key={d.key} role="columnheader" className="flex items-end justify-center px-1 pb-1 text-center text-2xs leading-tight font-semibold text-balance text-muted-foreground">
               {d.label}
             </span>
           ))}
-          {rows.map((h, ri) => {
-            const row = heatRow(h);
-            return [
-              <Link key={`${h.projectId}-n`} href={`/runs/${h.run.id}`} className="flex items-center truncate pr-2 text-xs font-medium hover:text-primary">
-                {h.name}
-              </Link>,
-              ...HEAT_DIMENSIONS.map((d, ci) => (
-                <Tooltip key={`${h.projectId}-${d.key}`}>
-                  <TooltipTrigger asChild>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.02 * (ri * HEAT_DIMENSIONS.length + ci), duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      whileHover={{ scale: 1.08 }}
-                      className="flex h-9 items-center justify-center rounded-lg text-[11px] font-semibold tabular-nums ring-1 ring-inset ring-white/5"
-                      style={{ background: cellColor(row[d.key]) }}
-                    >
-                      {row[d.key] != null ? Math.round(row[d.key] as number) : "–"}
-                    </motion.div>
-                  </TooltipTrigger>
-                  <TooltipContent>{h.name} · {d.label}: {row[d.key] != null ? `${Math.round(row[d.key] as number)}/100` : "not measured"}</TooltipContent>
-                </Tooltip>
-              )),
-            ];
-          })}
         </div>
+        {rows.map((h, ri) => {
+          const row = heatRow(h);
+          return (
+            <div key={h.projectId} role="row" className="contents">
+              <Link role="rowheader" href={`/runs/${h.run.id}`} title={h.name}
+                className="sticky left-0 z-10 flex items-center truncate rounded-sm bg-card/95 pr-2 text-xs font-medium transition-colors duration-(--dur-micro) hover:text-info-fg">
+                {h.name}
+              </Link>
+              {HEAT_DIMENSIONS.map((d, ci) => {
+                const i = ri * HEAT_DIMENSIONS.length + ci;
+                const v = row[d.key];
+                return (
+                  <Tooltip key={d.key}>
+                    <TooltipTrigger asChild>
+                      <m.div
+                        role="cell"
+                        initial={animatesAt(i) ? { opacity: 0, scale: 0.85 } : false}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: STAGGER_STEP * Math.min(i, 20), duration: 0.24, ease: ease.enter }}
+                        className="flex h-9 items-center justify-center rounded-lg text-2xs font-semibold tabular-nums ring-1 ring-white/5 ring-inset"
+                        style={{ background: cellColor(v) }}
+                      >
+                        {v != null ? Math.round(v) : <span aria-label="not measured">–</span>}
+                      </m.div>
+                    </TooltipTrigger>
+                    <TooltipContent>{h.name} · {d.label}: {v != null ? `${Math.round(v)}/100` : "not measured"}</TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

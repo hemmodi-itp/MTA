@@ -19,6 +19,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioCard, RadioGroup } from "@/components/ui/radio-group";
+import { PageHeader } from "@/components/shared/page-header";
+import { Collapse } from "@/components/motion/collapse";
+import { AnimatePresence, m } from "framer-motion";
+import { transition } from "@/lib/motion";
 import {
   Form,
   FormControl,
@@ -127,21 +132,19 @@ export default function NewProjectPage() {
   const needsBrd = mode === "brd_and_live" || mode === "brd_only";
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold">Evaluate an agent</h1>
-        <p className="text-sm text-muted-foreground">
-          MTA downloads your agent&apos;s public GitHub repository and checks it against its BRD. If there is no BRD,
-          Gemini writes one from your code. MTA then generates agent-specific and general test cases, runs them, and
-          gives the agent a score.
-        </p>
-      </div>
+    <>
+      <PageHeader
+        breadcrumb={[{ label: "Projects", href: "/projects" }, { label: "New evaluation" }]}
+        title="Evaluate an agent"
+        description={<>MTA downloads your agent&apos;s public GitHub repository and checks it against its BRD. If there is no BRD, Gemini writes one from your code. MTA then generates agent-specific and general test cases, runs them, and gives the agent a score.</>}
+      />
+      <div className="max-w-3xl">
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm font-medium">1 · Repository</CardTitle>
+              <CardTitle className="type-section-title">1 · Repository</CardTitle>
               <CardDescription>The repository must be public, since MTA downloads it without credentials.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -164,7 +167,7 @@ export default function NewProjectPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm font-medium">2 · What does your repository contain?</CardTitle>
+              <CardTitle className="type-section-title">2 · What does your repository contain?</CardTitle>
               <CardDescription>This decides how MTA gets the BRD and whether it can run tests against a live agent.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
@@ -173,36 +176,23 @@ export default function NewProjectPage() {
                 name="mode"
                 render={({ field }) => (
                   <FormItem>
-                    <div role="radiogroup" aria-label="Repository contents" className="grid gap-3 sm:grid-cols-3">
-                      {MODES.map((m) => {
-                        const selected = field.value === m.value;
-                        return (
-                          <button
-                            key={m.value}
-                            type="button"
-                            role="radio"
-                            aria-checked={selected}
-                            onClick={() => field.onChange(m.value)}
-                            className={cn(
-                              "flex flex-col gap-2 rounded-lg border p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                              selected ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border hover:bg-muted/50"
-                            )}
-                          >
-                            <span className="flex items-center gap-2 text-sm font-medium">
-                              <m.icon className={cn("size-4", selected ? "text-primary" : "text-muted-foreground")} />
-                              {m.title}
-                            </span>
-                            <span className="text-xs leading-relaxed text-muted-foreground">{m.description}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
+                    <RadioGroup aria-label="Repository contents" value={field.value ?? ""} onValueChange={field.onChange} className="grid gap-3 sm:grid-cols-3">
+                      {MODES.map((option) => (
+                        <RadioCard key={option.value} value={option.value} aria-describedby={`mode-${option.value}`}>
+                          <span className="flex items-center gap-2 pr-6 text-sm font-medium">
+                            <option.icon aria-hidden className={cn("size-4 transition-colors duration-(--dur-micro)", field.value === option.value ? "text-info-fg" : "text-muted-foreground")} />
+                            {option.title}
+                          </span>
+                          <span id={`mode-${option.value}`} className="text-xs leading-relaxed text-muted-foreground">{option.description}</span>
+                        </RadioCard>
+                      ))}
+                    </RadioGroup>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {needsLive && (
+              <Collapse open={needsLive}>
                 <FormField
                   control={form.control}
                   name="liveUrl"
@@ -221,10 +211,10 @@ export default function NewProjectPage() {
                     </FormItem>
                   )}
                 />
-              )}
+              </Collapse>
 
-              {needsLive && (
-                <div className="space-y-3 rounded-lg border border-border p-4">
+              <Collapse open={needsLive}>
+                <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-4">
                   <div>
                     <p className="text-sm font-medium">
                       Test login for the live app <span className="font-normal text-muted-foreground">(optional)</span>
@@ -263,9 +253,9 @@ export default function NewProjectPage() {
                     />
                   </div>
                 </div>
-              )}
+              </Collapse>
 
-              {needsBrd && (
+              <Collapse open={needsBrd}>
                 <FormField
                   control={form.control}
                   name="brdPath"
@@ -286,9 +276,9 @@ export default function NewProjectPage() {
                     </FormItem>
                   )}
                 />
-              )}
+              </Collapse>
 
-              {mode && (
+              <Collapse open={!!mode}>
                 <FormField
                   control={form.control}
                   name="branch"
@@ -308,11 +298,11 @@ export default function NewProjectPage() {
                     </FormItem>
                   )}
                 />
-              )}
+              </Collapse>
             </CardContent>
           </Card>
 
-          <div className="rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          <div className="rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-pretty text-muted-foreground">
             You&apos;ll be taken to the live run view. It shows each step, the BRD, the generated test cases and, at the
             end, the agent&apos;s score. Expect{" "}
             <span className="font-medium text-foreground">
@@ -325,7 +315,8 @@ export default function NewProjectPage() {
 
           <Button
             type="submit"
-            className="w-full gap-2"
+            size="lg"
+            className="h-10 w-full gap-2"
             disabled={createProject.isPending || repo.kind === "error" || repo.kind === "checking"}
           >
             {createProject.isPending ? <Loader2 className="size-4 animate-spin" /> : <Rocket className="size-4" />}
@@ -333,11 +324,25 @@ export default function NewProjectPage() {
           </Button>
         </form>
       </Form>
+      </div>
+    </>
+  );
+}
+
+/** The repository check, cross-fading between states so the line under the field doesn't flicker as you type. */
+function RepoStatus({ state }: { state: RepoState }) {
+  return (
+    <div aria-live="polite" className="min-h-5">
+      <AnimatePresence mode="wait" initial={false}>
+        <m.div key={state.kind} initial={{ opacity: 0 }} animate={{ opacity: 1, transition: transition.micro }} exit={{ opacity: 0, transition: transition.exit }}>
+          <RepoStatusLine state={state} />
+        </m.div>
+      </AnimatePresence>
     </div>
   );
 }
 
-function RepoStatus({ state }: { state: RepoState }) {
+function RepoStatusLine({ state }: { state: RepoState }) {
   if (state.kind === "checking") {
     return (
       <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -347,7 +352,7 @@ function RepoStatus({ state }: { state: RepoState }) {
   }
   if (state.kind === "public") {
     return (
-      <p className="flex items-center gap-1.5 text-xs text-success">
+      <p className="flex items-center gap-1.5 text-xs text-success-fg">
         <CheckCircle2 className="size-3.5" />
         {state.verified
           ? `${state.fullName} is public${state.defaultBranch ? ` · default branch ${state.defaultBranch}` : ""}`
@@ -357,7 +362,7 @@ function RepoStatus({ state }: { state: RepoState }) {
   }
   if (state.kind === "error") {
     return (
-      <p className="flex items-center gap-1.5 text-xs text-critical">
+      <p className="flex items-center gap-1.5 text-xs text-critical-fg">
         <Lock className="size-3.5" /> {state.message}
       </p>
     );

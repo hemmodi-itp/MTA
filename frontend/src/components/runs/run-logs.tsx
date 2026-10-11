@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Download, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useRunLogs } from "@/lib/query/hooks";
 import type { RunEvent, RunStatus, RunStep } from "@/lib/types";
@@ -11,9 +12,9 @@ import type { RunEvent, RunStatus, RunStep } from "@/lib/types";
 const LEVELS: RunEvent["level"][] = ["info", "success", "warning", "error"];
 const LEVEL_STYLE: Record<RunEvent["level"], string> = {
   info: "text-muted-foreground",
-  success: "text-success",
-  warning: "text-warning-foreground dark:text-warning",
-  error: "text-critical",
+  success: "text-success-fg",
+  warning: "text-warning-fg",
+  error: "text-critical-fg",
 };
 
 function clock(iso: string) {
@@ -72,10 +73,10 @@ export function RunLogs({ runId, status, steps }: { runId: string; status: RunSt
         {LEVELS.map((l) => (
           <button
             key={l}
-            type="button"
+            type="button" aria-pressed={levels.has(l)}
             onClick={() => setLevels((prev) => { const n = new Set(prev); if (n.has(l)) n.delete(l); else n.add(l); return n; })}
             className={cn("h-8 rounded-full border px-3 text-xs capitalize",
-              levels.has(l) ? "border-primary/40 bg-primary/10 text-foreground" : "border-border text-muted-foreground")}
+              levels.has(l) ? "tone-info tone-tint tone-border text-foreground" : "border-border text-muted-foreground hover:text-foreground")}
           >
             {l} <span className="tabular-nums opacity-70">{counts[l] ?? 0}</span>
           </button>
@@ -85,7 +86,7 @@ export function RunLogs({ runId, status, steps }: { runId: string; status: RunSt
           <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search the log" className="h-8 pl-7 text-sm" />
         </div>
         <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <input type="checkbox" checked={follow} onChange={(e) => setFollow(e.target.checked)} /> Follow
+          <input type="checkbox" className="accent-primary-solid" checked={follow} onChange={(e) => setFollow(e.target.checked)} /> Follow
         </label>
         <Button variant="outline" size="sm" onClick={download} disabled={!events.length}>
           <Download className="size-4" /> Download
@@ -101,20 +102,20 @@ export function RunLogs({ runId, status, steps }: { runId: string; status: RunSt
           const el = e.currentTarget;
           if (el.scrollHeight - el.scrollTop - el.clientHeight > 40 && follow) setFollow(false);
         }}
-        className="h-[65vh] overflow-y-auto rounded-lg border border-border bg-muted/40 p-3 font-mono text-xs leading-relaxed"
+        className="h-[65vh] overflow-y-auto rounded-xl border border-border bg-muted/40 p-3 font-mono text-xs leading-relaxed"
       >
         {logs.isLoading ? (
-          <p className="text-muted-foreground">Loading the log…</p>
+          <div role="status" className="space-y-2"><span className="sr-only">Loading the log…</span>{Array.from({ length: 10 }).map((_, i) => <Skeleton key={i} className="h-3.5" style={{ width: `${55 + ((i * 37) % 40)}%` }} />)}</div>
         ) : shown.length === 0 ? (
           <p className="text-muted-foreground">{events.length ? "No lines match the filters." : "No log lines yet."}</p>
         ) : (
           shown.map((e) => (
             <div key={e.id} className="flex gap-2">
-              <span className="shrink-0 tabular-nums text-muted-foreground/70" title={offset(start, e.createdAt)}>{clock(e.createdAt)}</span>
-              <span className="w-28 shrink-0 truncate text-muted-foreground/70" title={e.stage ? labels[e.stage] : ""}>
+              <span className="shrink-0 tabular-nums text-muted-foreground" title={offset(start, e.createdAt)}>{clock(e.createdAt)}</span>
+              <span className="w-28 shrink-0 truncate text-muted-foreground" title={e.stage ? labels[e.stage] : ""}>
                 {e.stage ? (labels[e.stage] ?? e.stage) : "—"}
               </span>
-              <span className={cn("min-w-0 whitespace-pre-wrap break-words", LEVEL_STYLE[e.level])}>{e.message}</span>
+              <span className={cn("min-w-0 whitespace-pre-wrap wrap-anywhere", LEVEL_STYLE[e.level])}>{e.message}</span>
             </div>
           ))
         )}

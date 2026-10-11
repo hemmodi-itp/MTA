@@ -55,7 +55,7 @@ export function CommandPalette() {
   return (
     <CommandDialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setQuery(""); }}
       title="Command palette" description="Search, navigate, run actions or ask in plain language"
-      className="max-w-2xl! rounded-2xl! border border-border bg-popover/95 shadow-2xl backdrop-blur-2xl">
+      className="max-w-2xl! rounded-2xl! border border-border bg-popover/95 shadow-overlay backdrop-blur-2xl">
       <Command className="bg-transparent">
       <CommandInput value={query} onValueChange={setQuery} placeholder="Search or ask… e.g. “failed runs from yesterday”, “re-run BRD_Agent”" />
       <CommandList className="max-h-[440px]">
@@ -65,7 +65,7 @@ export function CommandPalette() {
           <CommandGroup heading="Ask MTA">
             {intents.map((i) => (
               <CommandItem key={i.label} value={`intent ${i.label} ${query}`} onSelect={() => runIntent(i)} className="gap-3 py-2.5">
-                <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-violet/20 text-primary">
+                <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-violet/20 text-info-fg">
                   {i.kind === "rerun" ? <RotateCw className="size-4" /> : i.kind === "new" ? <Plus className="size-4" /> : <Wand2 className="size-4" />}
                 </span>
                 <span className="flex-1">
@@ -76,7 +76,7 @@ export function CommandPalette() {
               </CommandItem>
             ))}
             <CommandItem value={`ask copilot ${query}`} onSelect={() => { const q = query; close(); askCopilot(q); }} className="gap-3 py-2.5">
-              <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-violet text-white">
+              <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary-solid to-violet text-white">
                 <Sparkles className="size-4" />
               </span>
               <span className="flex-1">

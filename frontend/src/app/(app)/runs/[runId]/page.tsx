@@ -2,11 +2,10 @@
 
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Ban, ExternalLink, GitBranch, Globe, Loader2, RotateCw } from "lucide-react";
+import { Ban, Check, Copy, ExternalLink, GitBranch, Globe, Loader2, RotateCw } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogClose,
@@ -17,10 +16,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader, PageHeaderSkeleton } from "@/components/shared/page-header";
+import { RunBodySkeleton } from "@/components/shared/skeletons";
 import { StatusPill } from "@/components/shared/status-pill";
 import { AgentRunView } from "@/components/runs/agent-run-view";
 import { LegacyRunView } from "@/components/runs/legacy-run-view";
 import { isActiveStatus, useCancelRun, useRerunProject, useRun } from "@/lib/query/hooks";
+import { shortName } from "@/lib/insights";
 import type { Run, SubmissionMode } from "@/lib/types";
 
 const MODE_LABEL: Record<SubmissionMode, string> = {
@@ -29,14 +31,45 @@ const MODE_LABEL: Record<SubmissionMode, string> = {
   brd_only: "BRD only · static review",
 };
 
+/** The run id, shortened, with a one-click copy of the full id. */
+function RunId({ id }: { id: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(id);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error("Couldn't copy the run id");
+    }
+  };
+  return (
+    <button type="button" onClick={copy} title={id} aria-label={`Copy run id ${id}`}
+      className="inline-flex items-center gap-1 rounded-md font-mono text-xs transition-colors duration-(--dur-micro) hover:text-foreground">
+      Run {id.slice(0, 8)}
+      {copied ? <Check aria-hidden className="size-3 text-success-fg" /> : <Copy aria-hidden className="size-3" />}
+      <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+    </button>
+  );
+}
+
 export default function RunDetailPage({ params }: { params: Promise<{ runId: string }> }) {
   const { runId } = use(params);
   const router = useRouter();
   const run = useRun(runId);
   const rerun = useRerunProject();
 
-  if (run.isLoading) return <Skeleton className="h-96 rounded-lg" />;
-  if (run.isError || !run.data) return <ErrorState message="Run not found." onRetry={run.refetch} />;
+  if (run.isLoading) {
+    return (
+      <>
+        <PageHeaderSkeleton meta actions />
+        <RunBodySkeleton />
+      </>
+    );
+  }
+  if (run.isError || !run.data) {
+    return <ErrorState title="Run not found" message="It may have been deleted, or it belongs to another account." onRetry={run.refetch} />;
+  }
 
   const data = run.data;
   const isAgentEval = data.mode !== null;
@@ -51,41 +84,44 @@ export default function RunDetailPage({ params }: { params: Promise<{ runId: str
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0 space-y-1.5">
-          <h1 className="text-xl font-semibold">{data.projectName}</h1>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-            <a href={data.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground">
-              <GitBranch className="size-3.5" />
+    <>
+      <PageHeader
+        breadcrumb={[{ label: "Runs", href: "/runs" }, { label: shortName(data.projectName) }]}
+        title={data.projectName}
+        adornment={<StatusPill status={data.status} />}
+        meta={
+          <>
+            <a href={data.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-sm transition-colors duration-(--dur-micro) hover:text-foreground">
+              <GitBranch aria-hidden className="size-3.5" />
               {data.commitRef ? data.commitRef.slice(0, 7) : "repository"}
-              <ExternalLink className="size-3" />
+              <ExternalLink aria-hidden className="size-3" />
             </a>
             {data.liveUrl && (
-              <a href={data.liveUrl} target="_blank" rel="noreferrer" className="flex max-w-xs items-center gap-1 truncate hover:text-foreground">
-                <Globe className="size-3.5 shrink-0" />
+              <a href={data.liveUrl} target="_blank" rel="noreferrer" className="inline-flex max-w-xs min-w-0 items-center gap-1 rounded-sm transition-colors duration-(--dur-micro) hover:text-foreground">
+                <Globe aria-hidden className="size-3.5 shrink-0" />
                 <span className="truncate">{data.liveUrl.replace(/^https?:\/\//, "")}</span>
               </a>
             )}
             {data.mode && <Badge variant="secondary" className="font-normal">{MODE_LABEL[data.mode]}</Badge>}
             {data.projectIsSample && <Badge variant="outline" className="font-normal">Sample project</Badge>}
-            <span className="font-mono text-xs">Run {data.id}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <StatusPill status={data.status} />
-          {isActiveStatus(data.status) && !data.projectIsSample && <CancelRunButton run={data} />}
-          {isAgentEval && !data.projectIsSample && !isActiveStatus(data.status) && (
-            <Button size="sm" variant="outline" className="gap-1.5" onClick={onRerun} disabled={rerun.isPending}>
-              {rerun.isPending ? <Loader2 className="size-3.5 animate-spin" /> : <RotateCw className="size-3.5" />}
-              Re-run
-            </Button>
-          )}
-        </div>
-      </div>
+            <RunId id={data.id} />
+          </>
+        }
+        actions={
+          <>
+            {isActiveStatus(data.status) && !data.projectIsSample && <CancelRunButton run={data} />}
+            {isAgentEval && !data.projectIsSample && !isActiveStatus(data.status) && (
+              <Button variant="outline" className="gap-1.5" onClick={onRerun} disabled={rerun.isPending}>
+                {rerun.isPending ? <Loader2 aria-hidden className="size-3.5 animate-spin" /> : <RotateCw aria-hidden className="size-3.5" />}
+                Re-run
+              </Button>
+            )}
+          </>
+        }
+      />
 
       {isAgentEval ? <AgentRunView run={data} /> : <LegacyRunView run={data} />}
-    </div>
+    </>
   );
 }
 
@@ -96,8 +132,8 @@ function CancelRunButton({ run }: { run: Run }) {
 
   if (run.cancelRequested) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-        <Loader2 className="size-3.5 animate-spin" /> Cancelling…
+      <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground" role="status">
+        <Loader2 aria-hidden className="size-3.5 animate-spin" /> Cancelling…
       </span>
     );
   }
@@ -116,8 +152,8 @@ function CancelRunButton({ run }: { run: Run }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setOpen(true)}>
-        <Ban className="size-3.5" /> Cancel
+      <Button variant="outline" className="gap-1.5" onClick={() => setOpen(true)}>
+        <Ban aria-hidden className="size-3.5" /> Cancel
       </Button>
       <DialogContent>
         <DialogHeader>
@@ -133,7 +169,7 @@ function CancelRunButton({ run }: { run: Run }) {
             <Button variant="outline">Keep running</Button>
           </DialogClose>
           <Button variant="destructive" className="gap-1.5" onClick={onConfirm} disabled={cancel.isPending}>
-            {cancel.isPending && <Loader2 className="size-3.5 animate-spin" />} Cancel evaluation
+            {cancel.isPending && <Loader2 aria-hidden className="size-3.5 animate-spin" />} Cancel evaluation
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -37,7 +37,7 @@ export function LiveLogStream({ currentStage }: { currentStage: PipelineStage | 
   }, [lines]);
 
   return (
-    <ScrollArea className="h-[280px] rounded-lg border border-border bg-muted/30">
+    <ScrollArea className="h-[280px] rounded-xl border border-border bg-muted/30">
       <div className="space-y-1 p-4 font-mono text-xs text-muted-foreground">
         {lines.length === 0 && <p>Waiting for the run to start…</p>}
         {lines.map((line, i) => (

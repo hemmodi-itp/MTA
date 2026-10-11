@@ -22,7 +22,7 @@ import type {
 function Flag({ on, label }: { on: boolean; label: string }) {
   return (
     <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs",
-      on ? "border-primary/30 bg-primary/10 text-primary" : "border-border text-muted-foreground")}>
+      on ? "tone-info tone-border tone-tint tone-text" : "border-border text-muted-foreground")}>
       {on ? <CheckCircle2 className="size-3" /> : <XCircle className="size-3" />}
       {label}
     </span>
@@ -37,7 +37,7 @@ function ClassificationCard({ c }: { c: AppClassification }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">Application type</CardTitle>
+        <CardTitle className="type-section-title">Application type</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
@@ -47,7 +47,7 @@ function ClassificationCard({ c }: { c: AppClassification }) {
             confidence {Math.round(c.confidence * 100)}% · from {c.basis}
           </p>
         </div>
-        {c.note && <p className="text-xs text-warning-foreground dark:text-warning">{c.note}</p>}
+        {c.note && <p className="text-xs text-warning-fg">{c.note}</p>}
         {top.length > 0 && (
           <div className="space-y-1.5">
             {top.map(([cls, s]) => (
@@ -120,7 +120,7 @@ function ActionPlanCard({ plan }: { plan: ActionPlan }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">Action plans</CardTitle>
+        <CardTitle className="type-section-title">Action plans</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         <p>
@@ -129,7 +129,7 @@ function ActionPlanCard({ plan }: { plan: ActionPlan }) {
           {(c.flow_checks ?? 0) > 0 && <> · {c.flow_checks} flow check(s)</>}
           <span className="text-muted-foreground"> · {c.llm_mapped ?? 0} mapped by Gemini, grounded on {plan.inventory_size} discovered element(s)</span>
         </p>
-        {plan.reason && plan.status !== "ready" && <p className="text-xs text-warning-foreground dark:text-warning">{plan.reason}</p>}
+        {plan.reason && plan.status !== "ready" && <p className="text-xs text-warning-fg">{plan.reason}</p>}
         <div className="divide-y divide-border rounded-md border border-border">
           {plan.plans.map((p) => (
             <details key={p.plan_id} className="group px-3 py-2">
@@ -177,7 +177,7 @@ function ExecutionCard({ run, runId, plan }: { run: ExecutionRun; runId: string;
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">Browser execution</CardTitle>
+        <CardTitle className="type-section-title">Browser execution</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         <p>
@@ -187,14 +187,14 @@ function ExecutionCard({ run, runId, plan }: { run: ExecutionRun; runId: string;
           {c.downloads > 0 && <> · {c.downloads} file(s) downloaded</>}
           <span className="text-muted-foreground"> · {run.duration_s}s · verdicts come from output validation</span>
         </p>
-        {run.reason && <p className="text-xs text-warning-foreground dark:text-warning">{run.reason}</p>}
+        {run.reason && <p className="text-xs text-warning-fg">{run.reason}</p>}
         <div className="divide-y divide-border rounded-md border border-border">
           {run.results.map((r) => {
             const planned = stepsOf(r.plan_id);
             return (
               <details key={r.plan_id} className="px-3 py-2">
                 <summary className="flex cursor-pointer list-none flex-wrap items-center gap-2">
-                  {r.status === "completed" ? <CheckCircle2 className="size-4 text-success" /> : <XCircle className="size-4 text-critical" />}
+                  {r.status === "completed" ? <CheckCircle2 className="size-4 text-success-fg" /> : <XCircle className="size-4 text-critical-fg" />}
                   <span className="font-mono text-xs">{r.test_code ?? "flow"}</span>
                   <span className="min-w-0 flex-1 truncate">{r.title}</span>
                   <Badge variant="outline" className="font-normal">
@@ -202,13 +202,13 @@ function ExecutionCard({ run, runId, plan }: { run: ExecutionRun; runId: string;
                   </Badge>
                 </summary>
                 <div className="mt-2 space-y-2 text-xs">
-                  {r.error && <p className="text-critical">{r.error}</p>}
+                  {r.error && <p className="text-critical-fg">{r.error}</p>}
                   {r.steps.length > 0 && (
                     <ol className="space-y-0.5 text-muted-foreground">
                       {r.steps.map((s) => {
                         const p = planned.find((x) => x.n === s.n);
                         return (
-                          <li key={s.n} className={cn(s.status === "failed" && "text-critical", s.status === "skipped" && "opacity-60")}>
+                          <li key={s.n} className={cn(s.status === "failed" && "text-critical-fg", s.status === "skipped" && "opacity-60")}>
                             {s.n}. {p ? describeStep(p) : s.action} — {s.status}
                             {s.detail ? ` · ${s.detail}` : ""}
                             {s.error ? ` · ${s.error}` : ""}
@@ -264,7 +264,7 @@ function BundleRow({ b, runId }: { b: EvidenceBundle; runId: string }) {
           {!ran ? "not executed" : b.completeness.output_captured ? `${b.completeness.expected_output} captured` : "output missing"}
         </Badge>
       </div>
-      {b.completeness.missing.length > 0 && <p className="text-warning-foreground dark:text-warning">{b.completeness.missing.join("; ")}</p>}
+      {b.completeness.missing.length > 0 && <p className="text-warning-fg">{b.completeness.missing.join("; ")}</p>}
       {!ran && b.error && <p className="text-muted-foreground">{b.error}</p>}
       {b.inputs.filter((i) => !i.synthetic).length > 0 && (
         <p className="text-muted-foreground">
@@ -304,7 +304,7 @@ function EvidenceCard({ evidence, runId }: { evidence: EvidenceCollection; runId
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">Evidence by acceptance criterion</CardTitle>
+        <CardTitle className="type-section-title">Evidence by acceptance criterion</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         <p>
@@ -361,7 +361,7 @@ function ValidationRow({ r }: { r: OutputValidationResult }) {
         {r.checks.length > 0 && (
           <ul className="space-y-0.5">
             {r.checks.map((c) => (
-              <li key={c.id} className={cn(c.result === "fail" ? "text-critical" : "text-muted-foreground")}>
+              <li key={c.id} className={cn(c.result === "fail" ? "text-critical-fg" : "text-muted-foreground")}>
                 {c.result === "pass" ? "✓" : c.result === "fail" ? "✗" : "?"} {c.name}
                 {c.weight === "supporting" && <span className="opacity-70"> (supporting)</span>} — {c.detail}
               </li>
@@ -372,15 +372,15 @@ function ValidationRow({ r }: { r: OutputValidationResult }) {
           <div className="space-y-1 rounded bg-muted p-2">
             <p><span className="font-medium">Judge:</span> {r.judge.reasoning}</p>
             {r.judge.criteria_results.map((c, i) => (
-              <p key={i} className={cn(c.result === "not_met" && "text-critical")}>
+              <p key={i} className={cn(c.result === "not_met" && "text-critical-fg")}>
                 {c.result === "met" ? "✓" : c.result === "not_met" ? "✗" : "?"} {c.criterion}
                 {c.quote && <span className="text-muted-foreground"> — “{c.quote}”</span>}
-                {c.note && <span className="text-warning-foreground dark:text-warning"> ({c.note})</span>}
+                {c.note && <span className="text-warning-fg"> ({c.note})</span>}
               </p>
             ))}
           </div>
         )}
-        {r.judge_error && <p className="text-warning-foreground dark:text-warning">Judge unavailable: {r.judge_error}</p>}
+        {r.judge_error && <p className="text-warning-fg">Judge unavailable: {r.judge_error}</p>}
       </div>
     </details>
   );
@@ -393,14 +393,14 @@ function ValidationCard({ validation }: { validation: OutputValidation }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">Output validation</CardTitle>
+        <CardTitle className="type-section-title">Output validation</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         <p>
           <span className="font-medium">{c.meets}/{c.judged}</span> judged output(s) fully meet the BRD expectation
           · {c.checks_passed} check(s) passed, {c.checks_failed} failed
           {c.not_validatable > 0 && <> · {c.not_validatable} not validatable</>}
-          {c.ungrounded_quotes > 0 && <span className="text-warning-foreground dark:text-warning"> · {c.ungrounded_quotes} unverifiable judge claim(s) downgraded</span>}
+          {c.ungrounded_quotes > 0 && <span className="text-warning-fg"> · {c.ungrounded_quotes} unverifiable judge claim(s) downgraded</span>}
         </p>
         <div className="divide-y divide-border rounded-md border border-border">
           {rows.map((r) => <ValidationRow key={r.bundle_id} r={r} />)}
@@ -411,9 +411,9 @@ function ValidationCard({ validation }: { validation: OutputValidation }) {
 }
 
 const VERDICT_STYLE: Record<TestVerdict["verdict"], string> = {
-  passed: "border-success/40 bg-success/10 text-success",
-  failed: "border-critical/40 bg-critical/10 text-critical",
-  inconclusive: "border-warning/40 bg-warning/10 text-warning-foreground dark:text-warning",
+  passed: "tone-success tone-border tone-tint tone-text",
+  failed: "tone-critical tone-border tone-tint tone-text",
+  inconclusive: "tone-warning tone-border tone-tint tone-text",
   not_executed: "border-border text-muted-foreground",
 };
 const CRITERION_STYLE: Record<string, string> = {
@@ -433,7 +433,7 @@ function PassFailCard({ pf }: { pf: PassFail }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">Verdicts</CardTitle>
+        <CardTitle className="type-section-title">Verdicts</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
@@ -469,7 +469,7 @@ function PassFailCard({ pf }: { pf: PassFail }) {
                     </div>
                     {t.reasons.map((r, i) => <p key={i} className="text-muted-foreground">{r}</p>)}
                     {t.supporting_issues.length > 0 && (
-                      <p className="text-warning-foreground dark:text-warning">Also noted: {t.supporting_issues.join("; ")}</p>
+                      <p className="text-warning-fg">Also noted: {t.supporting_issues.join("; ")}</p>
                     )}
                   </div>
                 ))}
@@ -519,7 +519,7 @@ export function LiveAppPanel({ profile, classification, actionPlan, executionRun
       {(profile.needs_credentials || loginFailed) && (
         <Card className="border-warning/40 bg-warning/5">
           <CardContent className="flex gap-3 text-sm">
-            <AlertTriangle className="mt-0.5 size-4 shrink-0 text-warning-foreground dark:text-warning" />
+            <AlertTriangle className="mt-0.5 size-4 shrink-0 text-warning-fg" />
             <div>
               <p className="font-medium">{loginFailed ? "Login with the test account failed" : "The app is behind a login"}</p>
               <p className="text-muted-foreground">
@@ -534,7 +534,7 @@ export function LiveAppPanel({ profile, classification, actionPlan, executionRun
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-muted-foreground">Runtime discovery</CardTitle>
+          <CardTitle className="type-section-title">Runtime discovery</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm">
           <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
@@ -561,7 +561,7 @@ export function LiveAppPanel({ profile, classification, actionPlan, executionRun
 
       {profile.user_flows.length > 0 && (
         <Card>
-          <CardHeader><CardTitle className="text-sm font-medium text-muted-foreground">User flows found</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="type-section-title">User flows found</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             {profile.user_flows.map((f, i) => (
               <div key={i}>
@@ -577,7 +577,7 @@ export function LiveAppPanel({ profile, classification, actionPlan, executionRun
       )}
 
       <Card>
-        <CardHeader><CardTitle className="text-sm font-medium text-muted-foreground">Pages</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="type-section-title">Pages</CardTitle></CardHeader>
         <CardContent className="divide-y divide-border p-0 text-sm">
           {profile.pages.map((p, i) => (
             <div key={i} className="space-y-1 px-6 py-3">
@@ -599,10 +599,10 @@ export function LiveAppPanel({ profile, classification, actionPlan, executionRun
 
       {profile.api_calls.length > 0 && (
         <Card>
-          <CardHeader><CardTitle className="text-sm font-medium text-muted-foreground">API calls observed</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="type-section-title">API calls observed</CardTitle></CardHeader>
           <CardContent className="grid gap-1 font-mono text-xs sm:grid-cols-2">
             {profile.api_calls.map((c, i) => (
-              <span key={i} className={cn(c.status >= 400 ? "text-critical" : "text-muted-foreground")}>
+              <span key={i} className={cn(c.status >= 400 ? "text-critical-fg" : "text-muted-foreground")}>
                 {c.method} {c.path} → {c.status}
               </span>
             ))}

@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { AlertOctagon, ChevronRight, Compass } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/shared/kpi-card";
+import { EmptyState } from "@/components/shared/empty-state";
+import { Notice } from "@/components/shared/notice";
+import { SectionCard } from "@/components/shared/section-card";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { ProgressBar } from "@/components/motion/progress-bar";
 import { ExecutionStepper } from "@/components/runs/execution-stepper";
 import { LiveLogStream } from "@/components/runs/live-log-stream";
 import { QualityScoreCard } from "@/components/reports/quality-score-card";
@@ -29,35 +32,38 @@ export function LegacyRunView({ run: data }: { run: Run }) {
 
   if (isRunning) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm font-medium text-muted-foreground">Execution progress</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${progressPct}%` }} />
-          </div>
+      <SectionCard title="Execution progress">
+        <div className="space-y-4">
+          <ProgressBar value={progressPct} live label="Execution progress" />
           <div className="grid gap-4 sm:grid-cols-2">
             <ExecutionStepper currentStage={data.currentStage as PipelineStage | null} isComplete={false} />
             <LiveLogStream currentStage={data.currentStage} />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </SectionCard>
     );
   }
 
+  const executed = data.stats.passed + data.stats.failed || 1;
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <KpiCard label="Scenarios found" value={data.stats.scenariosFound} />
-        <KpiCard label="Test cases" value={data.stats.testCasesGenerated} />
-        <KpiCard label="Passed" value={data.stats.passed} tone="good" />
-        <KpiCard label="Failed" value={data.stats.failed} tone={data.stats.failed > 0 ? "bad" : "default"} sub={`${data.stats.criticalDefects} critical`} />
-        <KpiCard label="Healed" value={data.stats.healed} sub={`${Math.round((data.stats.healed / (data.stats.passed + data.stats.failed || 1)) * 100)}% of executed`} />
-        <KpiCard label="Coverage" value={`${data.stats.coveragePct}%`} />
-        <KpiCard label="Duplicates rejected" value={data.stats.duplicatesRejected} />
-        <KpiCard label="Duration" value={data.durationSec ? `${Math.floor(data.durationSec / 60)}m ${data.durationSec % 60}s` : "—"} />
-      </div>
+      <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StaggerItem><KpiCard size="sm" label="Scenarios found" value={data.stats.scenariosFound} /></StaggerItem>
+        <StaggerItem><KpiCard size="sm" label="Test cases" value={data.stats.testCasesGenerated} /></StaggerItem>
+        <StaggerItem><KpiCard size="sm" label="Passed" value={data.stats.passed} valueTone="success" /></StaggerItem>
+        <StaggerItem>
+          <KpiCard size="sm" label="Failed" value={data.stats.failed} valueTone={data.stats.failed > 0 ? "critical" : undefined} sub={`${data.stats.criticalDefects} critical`} />
+        </StaggerItem>
+        <StaggerItem>
+          <KpiCard size="sm" label="Healed" value={data.stats.healed} valueTone={data.stats.healed ? "violet" : undefined}
+            sub={`${Math.round((data.stats.healed / executed) * 100)}% of executed`} />
+        </StaggerItem>
+        <StaggerItem><KpiCard size="sm" label="Coverage" value={data.stats.coveragePct} suffix="%" /></StaggerItem>
+        <StaggerItem><KpiCard size="sm" label="Duplicates rejected" value={data.stats.duplicatesRejected} /></StaggerItem>
+        <StaggerItem>
+          <KpiCard size="sm" label="Duration" value={data.durationSec ? `${Math.floor(data.durationSec / 60)}m ${data.durationSec % 60}s` : "—"} />
+        </StaggerItem>
+      </Stagger>
 
       <QualityScoreCard
         score={scoreOf(data)}
@@ -68,25 +74,17 @@ export function LegacyRunView({ run: data }: { run: Run }) {
       />
 
       {data.stats.failed > 0 && (
-        <Card className="border-critical/40 bg-critical/5">
-          <CardContent>
-            <p className="text-sm">
-              <span className="font-medium">{data.stats.criticalDefects} critical failure(s)</span> need review before this
-              is production-ready.
-            </p>
-          </CardContent>
-        </Card>
+        <Notice tone="critical" icon={AlertOctagon} title={`${data.stats.criticalDefects} critical failure${data.stats.criticalDefects === 1 ? "" : "s"} to review`}>
+          They need a look before this build is production-ready.
+        </Notice>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm font-medium text-muted-foreground">Business scenarios discovered</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <SectionCard title="Business scenarios discovered">
+        {(scenarios.data ?? []).length ? (
           <Accordion type="single" collapsible className="w-full">
             {(scenarios.data ?? []).map((s) => (
               <AccordionItem key={s.id} value={s.id}>
-                <AccordionTrigger className="text-sm">
+                <AccordionTrigger className="text-sm hover:no-underline">
                   <span className="flex items-center gap-2">
                     {s.title}
                     <Badge variant="secondary" className="font-normal">{s.module}</Badge>
@@ -98,27 +96,30 @@ export function LegacyRunView({ run: data }: { run: Run }) {
               </AccordionItem>
             ))}
           </Accordion>
-        </CardContent>
-      </Card>
+        ) : (
+          <EmptyState size="inline" icon={Compass} title={scenarios.isLoading ? "Loading scenarios…" : "No scenarios recorded"}
+            description={scenarios.isLoading ? undefined : "This run didn't store the business scenarios it discovered."} />
+        )}
+      </SectionCard>
 
-      <div>
-        <h2 className="mb-2 text-sm font-medium text-muted-foreground">Test cases</h2>
+      <section className="space-y-3">
+        <h2 className="type-section-title">Test cases</h2>
         <TestResultTable data={testCases.data ?? []} />
-      </div>
+      </section>
 
-      <div>
-        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
-          Recommendations
-          <Link href="/reports" className="ml-auto flex items-center gap-0.5 text-xs text-primary hover:underline">
-            Full report <ChevronRight className="size-3" />
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <h2 className="type-section-title">Recommendations</h2>
+          <Link href="/reports" className="ml-auto inline-flex items-center gap-0.5 rounded-sm text-xs font-medium text-info-fg hover:underline">
+            All reports <ChevronRight aria-hidden className="size-3" />
           </Link>
-        </h2>
-        <div className="space-y-2">
-          {(recommendations.data ?? []).map((r) => (
-            <RecommendationCard key={r.id} recommendation={r} />
-          ))}
         </div>
-      </div>
+        <Stagger className="space-y-2">
+          {(recommendations.data ?? []).map((r, i) => (
+            <StaggerItem key={r.id} index={i}><RecommendationCard recommendation={r} /></StaggerItem>
+          ))}
+        </Stagger>
+      </section>
     </>
   );
 }

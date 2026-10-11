@@ -31,7 +31,7 @@ export function ExecutionStepper({ currentStage, isComplete }: { currentStage: P
               className={cn(
                 "flex size-5 shrink-0 items-center justify-center rounded-full border text-[10px]",
                 done && "border-success bg-success text-success-foreground",
-                active && "border-primary bg-primary/15 text-primary",
+                active && "border-primary bg-primary/15 text-info-fg",
                 pending && "border-border text-muted-foreground"
               )}
             >

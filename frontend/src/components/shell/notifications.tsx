@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
-import { Ban, Bell, CheckCircle2, CircleDashed, Loader2, XCircle } from "lucide-react";
+import { AnimatePresence, m } from "framer-motion";
+import { Ban, Bell, BellOff, CheckCircle2, XCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { LiveDot } from "@/components/motion/live-dot";
 import { cn } from "@/lib/utils";
-import { listItem, stagger } from "@/lib/motion";
+import { ease, listItem, stagger, transition } from "@/lib/motion";
+import { TONE_CLASS, type Tone } from "@/lib/status";
 import { isActiveStatus, useRuns } from "@/lib/query/hooks";
 import { scoreOf } from "@/lib/insights";
 import { useUIStore } from "@/lib/stores/ui-store";
@@ -45,6 +47,9 @@ function toNote(r: Run): Note | null {
     body: blocks ? `${blocks} blocking gate${blocks > 1 ? "s" : ""}` : "Report ready" };
 }
 
+const NOTE_TONE: Record<Note["tone"], Tone> = { ok: "success", bad: "critical", live: "info", muted: "neutral" };
+const NOTE_ICON = { ok: CheckCircle2, bad: XCircle, muted: Ban } as const;
+
 /** Notification center: run lifecycle events from your evaluations, newest first, unread since you last looked. */
 export function Notifications() {
   const runs = useRuns();
@@ -55,58 +60,64 @@ export function Notifications() {
   const since = notificationsSeenAt ?? FIRST_VISIT_CUTOFF;
   const unread = notes.filter((n) => n.tone === "live" || n.at > since).length;
 
+  // The bell rings once when something new arrives (not on a loop): adjust state during render when the count grows.
+  const [seenCount, setSeenCount] = useState(unread);
+  const [rings, setRings] = useState(0);
+  if (unread !== seenCount) {
+    setSeenCount(unread);
+    if (unread > seenCount) setRings((r) => r + 1);
+  }
+
   return (
     <Popover open={open} onOpenChange={(o) => { setOpen(o); if (!o) markNotificationsSeen(); }}>
-      <PopoverTrigger className="relative flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
+      <PopoverTrigger className="relative flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors duration-(--dur-micro) hover:bg-muted/70 hover:text-foreground"
         aria-label={`Notifications${unread ? `, ${unread} new` : ""}`}>
-        <motion.span animate={unread ? { rotate: [0, -12, 10, -6, 0] } : {}} transition={{ duration: 0.6, repeat: unread ? Infinity : 0, repeatDelay: 6 }}>
-          <Bell className="size-[18px]" />
-        </motion.span>
+        <m.span key={rings} animate={rings ? { rotate: [0, -14, 10, -6, 0] } : undefined} transition={{ duration: 0.5, ease: ease.move }}>
+          <Bell aria-hidden className="size-[18px]" />
+        </m.span>
         <AnimatePresence>
           {unread > 0 && (
-            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-              className="absolute right-1 top-1 flex min-w-4 items-center justify-center rounded-full bg-critical px-1 text-[10px] font-bold leading-4 text-white">
+            <m.span initial={{ scale: 0.4, opacity: 0 }} animate={{ scale: 1, opacity: 1, transition: transition.micro }} exit={{ scale: 0.4, opacity: 0, transition: transition.exit }}
+              className="absolute top-1 right-1 flex min-w-4 items-center justify-center rounded-full bg-critical-solid px-1 text-[10px] leading-4 font-bold text-white">
               {unread}
-            </motion.span>
+            </m.span>
           )}
         </AnimatePresence>
       </PopoverTrigger>
-      <PopoverContent className="w-[360px]">
+      <PopoverContent className="w-[min(360px,calc(100vw-1rem))]">
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <p className="text-sm font-semibold">Notifications</p>
           <span className="text-xs text-muted-foreground">{unread ? `${unread} new` : "All caught up"}</span>
         </div>
         {notes.length === 0 ? (
           <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-sm text-muted-foreground">
-            <CircleDashed className="size-6" /> No evaluations yet
+            <BellOff aria-hidden className="size-5" /> No evaluations yet
           </div>
         ) : (
-          <motion.ul variants={stagger(0.04)} initial="hidden" animate="show" className="max-h-[420px] overflow-y-auto p-1.5">
+          <m.ul variants={stagger(0.03)} initial="hidden" animate="show" className="max-h-[420px] overflow-y-auto p-1.5">
             {notes.map((n) => {
               const fresh = n.tone === "live" || n.at > since;
-              const Icon = n.tone === "live" ? Loader2 : n.tone === "bad" ? XCircle : n.tone === "muted" ? Ban : CheckCircle2;
+              const Icon = n.tone === "live" ? null : NOTE_ICON[n.tone];
               return (
-                <motion.li key={n.id + n.at} variants={listItem}>
+                <m.li key={n.id + n.at} variants={listItem}>
                   <Link href={`/runs/${n.run.id}`} onClick={() => setOpen(false)}
-                    className="flex gap-3 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-muted/60">
-                    <span className={cn("mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg",
-                      n.tone === "ok" && "bg-success/15 text-success", n.tone === "bad" && "bg-critical/15 text-critical",
-                      n.tone === "live" && "bg-primary/15 text-primary", n.tone === "muted" && "bg-muted text-muted-foreground")}>
-                      <Icon className={cn("size-4", n.tone === "live" && "animate-spin")} />
+                    className="flex gap-3 rounded-xl px-2.5 py-2.5 transition-colors duration-(--dur-micro) hover:bg-muted/60">
+                    <span className={cn("mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg tone-tint tone-text", TONE_CLASS[NOTE_TONE[n.tone]])}>
+                      {Icon ? <Icon aria-hidden className="size-4" /> : <LiveDot />}
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="flex items-center gap-2">
                         <span className="truncate text-sm font-medium">{n.title}</span>
-                        {fresh && <span className="size-1.5 shrink-0 rounded-full bg-primary" />}
+                        {fresh && <span aria-label="new" className="size-1.5 shrink-0 rounded-full bg-primary" />}
                       </span>
                       <span className="block truncate text-xs text-muted-foreground">{n.body}</span>
-                      <span className="text-[11px] text-muted-foreground/70">{timeAgo(n.at)}</span>
+                      <span className="text-2xs text-muted-foreground">{timeAgo(n.at)}</span>
                     </span>
                   </Link>
-                </motion.li>
+                </m.li>
               );
             })}
-          </motion.ul>
+          </m.ul>
         )}
       </PopoverContent>
     </Popover>

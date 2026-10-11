@@ -121,7 +121,7 @@ export function TestResultTable({ data, initialStatus = "all" }: { data: TestCas
           description="Try clearing the search or status filter."
         />
       ) : (
-        <div className="rounded-lg border border-border">
+        <div className="rounded-xl border border-border">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((hg) => (

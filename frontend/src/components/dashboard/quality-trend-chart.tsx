@@ -10,7 +10,7 @@ export function QualityTrendChart({ trend }: { trend: (number | null)[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">Quality score trend</CardTitle>
+        <CardTitle className="type-section-title">Quality score trend</CardTitle>
       </CardHeader>
       <CardContent className="h-[180px] pl-0">
         <ResponsiveContainer width="100%" height="100%">

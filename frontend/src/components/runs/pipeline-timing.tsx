@@ -44,9 +44,19 @@ export function PipelineTiming({ progress, active }: { progress: RunProgress; ac
   const elapsed = (end - new Date(first).getTime()) / 1000;
   const left = active ? remainingSeconds(progress, now) : null;
   return (
-    <span className="font-mono text-xs tabular-nums text-muted-foreground">
-      {active ? `elapsed ${fmt(elapsed)}` : `took ${fmt(elapsed)}`}
-      {left !== null && <> · about {fmt(left)} left · ends ~{new Date(now + left * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</>}
-    </span>
+    <dl className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+      <Stat label={active ? "Elapsed" : "Took"} value={fmt(elapsed)} />
+      {left !== null && <Stat label="Left" value={`~${fmt(left)}`} />}
+      {left !== null && <Stat label="Ends" value={`~${new Date(now + left * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`} />}
+    </dl>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-baseline gap-1.5">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="font-medium tabular-nums">{value}</dd>
+    </div>
   );
 }

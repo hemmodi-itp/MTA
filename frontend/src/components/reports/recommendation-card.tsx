@@ -11,24 +11,24 @@ const CATEGORY_META: Record<Recommendation["category"], { label: string; icon: t
 };
 
 const SEVERITY_CLASS: Record<Recommendation["severity"], string> = {
-  critical: "border-l-critical",
-  warning: "border-l-warning",
-  info: "border-l-primary",
+  critical: "tone-critical",
+  warning: "tone-warning",
+  info: "tone-info",
 };
 
 export function RecommendationCard({ recommendation }: { recommendation: Recommendation }) {
   const meta = CATEGORY_META[recommendation.category];
   const body = (
     <>
-      <meta.icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+      <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg tone-tint tone-text"><meta.icon aria-hidden className="size-3.5" /></span>
       <div className="min-w-0">
-        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{meta.label}</p>
-        <p className="mt-0.5">{recommendation.summary}</p>
+        <p className="type-eyebrow text-muted-foreground">{meta.label}</p>
+        <p className="mt-0.5 text-pretty wrap-anywhere">{recommendation.summary}</p>
       </div>
     </>
   );
   const className = cn(
-    "flex items-start gap-3 rounded-lg border border-l-4 border-border bg-card px-4 py-3 text-sm",
+    "flex items-start gap-3 rounded-xl border border-border bg-card/80 px-4 py-3 text-sm",
     SEVERITY_CLASS[recommendation.severity]
   );
 

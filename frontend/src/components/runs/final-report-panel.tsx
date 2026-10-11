@@ -29,7 +29,7 @@ export function FinalReportPanel({ runId, headline }: { runId: string; headline:
         title="Final evaluation report"
         src={url("html")}
         sandbox="allow-popups allow-popups-to-escape-sandbox"
-        className="h-[78vh] w-full rounded-lg border border-border bg-background"
+        className="h-[78vh] w-full rounded-xl border border-border bg-background"
       />
       <p className="flex items-center gap-1 text-xs text-muted-foreground">
         <ExternalLink className="size-3" /> Links in the report (screenshots, repository) open in a new tab.

@@ -13,9 +13,9 @@ type Filter = "all" | "agent_specific" | "general" | "failed" | "inconclusive" |
 
 function scoreTone(score?: number) {
   if (score == null) return "text-muted-foreground";
-  if (score >= 70) return "text-success";
-  if (score >= 40) return "text-warning-foreground dark:text-warning";
-  return "text-critical";
+  if (score >= 70) return "text-success-fg";
+  if (score >= 40) return "text-warning-fg";
+  return "text-critical-fg";
 }
 
 /**
@@ -64,8 +64,8 @@ export function AgentTestCases({ tests }: { tests: TestCase[] }) {
             type="button"
             onClick={() => setFilter(key)}
             className={cn(
-              "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-              filter === key ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:bg-muted"
+              "rounded-full border px-3 py-1 text-xs font-medium transition-colors duration-(--dur-micro)",
+              filter === key ? "tone-info tone-tint tone-border tone-text" : "border-border text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >
             {label} <span className="tabular-nums opacity-70">{counts[key]}</span>
@@ -73,7 +73,7 @@ export function AgentTestCases({ tests }: { tests: TestCase[] }) {
         ))}
       </div>
 
-      <Accordion type="multiple" className="rounded-lg border border-border">
+      <Accordion type="multiple" className="rounded-2xl border border-border bg-card/60">
         {shown.map((t) => (
           <AccordionItem key={t.id} value={t.id} className="px-4">
             <AccordionTrigger className="gap-3 text-sm hover:no-underline">
@@ -120,7 +120,7 @@ export function AgentTestCases({ tests }: { tests: TestCase[] }) {
               ) : null}
               {t.judgeReasoning && (
                 <Section label={`Gemini verdict${t.judgeScore != null ? ` · ${t.judgeScore}/100` : ""}`}>
-                  <span className={t.status === "failed" ? "text-critical" : undefined}>{t.judgeReasoning}</span>
+                  <span className={t.status === "failed" ? "text-critical-fg" : undefined}>{t.judgeReasoning}</span>
                 </Section>
               )}
             </AccordionContent>
@@ -134,7 +134,7 @@ export function AgentTestCases({ tests }: { tests: TestCase[] }) {
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1">
-      <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="type-eyebrow text-muted-foreground">{label}</p>
       <div>{children}</div>
     </div>
   );

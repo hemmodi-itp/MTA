@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { MotionConfig } from "framer-motion"
 import { ThemeProvider } from "next-themes"
+import { MotionProvider } from "@/components/motion/motion-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "@/components/ui/sonner"
 
@@ -23,13 +23,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>
-        {/* every animation honours the OS "reduce motion" setting */}
-        <MotionConfig reducedMotion="user">
+        {/* LazyMotion (small feature bundle) + MotionConfig: every animation honours the OS "reduce motion" setting */}
+        <MotionProvider>
           <TooltipProvider delayDuration={200}>
             {children}
             <Toaster richColors position="top-right" />
           </TooltipProvider>
-        </MotionConfig>
+        </MotionProvider>
       </QueryClientProvider>
     </ThemeProvider>
   )

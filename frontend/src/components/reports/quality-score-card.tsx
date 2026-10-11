@@ -1,8 +1,13 @@
 "use client";
 
 import { RadialBar, RadialBarChart, PolarAngleAxis } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SectionCard } from "@/components/shared/section-card";
 import { StatusPill } from "@/components/shared/status-pill";
+import { ProgressBar } from "@/components/motion/progress-bar";
+import { CountUp } from "@/components/motion/count-up";
+import { useChartAnimation } from "@/components/motion/chart-reveal";
+import { band } from "@/lib/insights";
+import { BAND_TONE } from "@/lib/status";
 import type { QualityBreakdown, RiskLevel } from "@/lib/types";
 
 interface QualityScoreCardProps {
@@ -16,12 +21,6 @@ interface QualityScoreCardProps {
   criticalDefects: number;
 }
 
-function scoreColor(score: number) {
-  if (score >= 80) return "var(--success)";
-  if (score >= 60) return "var(--warning)";
-  return "var(--critical)";
-}
-
 export function QualityScoreCard({
   score,
   breakdown,
@@ -30,65 +29,47 @@ export function QualityScoreCard({
   criticalDefects,
   title = "Quality score",
 }: QualityScoreCardProps) {
-  const data = [{ name: "score", value: score ?? 0, fill: score == null ? "var(--muted)" : scoreColor(score) }];
+  const chart = useChartAnimation();
+  // one band rule everywhere (lib/insights → band(): ≥ 75 good · 50–75 warn · < 50 bad)
+  const data = [{ name: "score", value: score ?? 0, fill: score == null ? "var(--muted)" : `var(--${BAND_TONE[band(score)]})` }];
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center">
+    <SectionCard title={title}>
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
         <div className="relative mx-auto size-32 shrink-0 sm:mx-0">
-          <RadialBarChart
-            width={128}
-            height={128}
-            innerRadius="72%"
-            outerRadius="100%"
-            barSize={10}
-            data={data}
-            startAngle={90}
-            endAngle={-270}
-          >
+          <RadialBarChart width={128} height={128} innerRadius="72%" outerRadius="100%" barSize={10} data={data} startAngle={90} endAngle={-270}>
             <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-            <RadialBar dataKey="value" cornerRadius={8} background={{ fill: "var(--muted)" }} />
+            <RadialBar dataKey="value" cornerRadius={8} background={{ fill: "var(--muted)" }} {...chart} />
           </RadialBarChart>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
             {score == null ? (
               <span className="text-sm font-medium text-muted-foreground">Not scored</span>
             ) : (
               <>
-                <span className="font-mono text-3xl font-bold tabular-nums">{Math.round(score)}</span>
-                <span className="text-[11px] text-muted-foreground">/ 100</span>
+                <CountUp value={Math.round(score)} className="text-3xl font-bold" />
+                <span className="text-2xs text-muted-foreground">/ 100</span>
               </>
             )}
           </div>
         </div>
 
-        <div className="flex-1 space-y-2.5">
+        <div className="min-w-0 flex-1 space-y-2.5">
           {breakdown.map((b) => (
-            <div key={b.label} className="flex items-center gap-3 text-sm">
-              <span className="w-48 shrink-0 text-muted-foreground">{b.label}</span>
-              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-                <div className="h-full rounded-full bg-primary" style={{ width: `${(b.score / b.max) * 100}%` }} />
-              </div>
-              <span className="w-14 shrink-0 text-right font-mono text-xs tabular-nums">
-                {b.score}/{b.max}
-              </span>
+            <div key={b.label} className="grid grid-cols-[minmax(0,1fr)_minmax(5rem,1fr)_3.5rem] items-center gap-3 text-sm sm:grid-cols-[minmax(0,11rem)_1fr_3.5rem]">
+              <span className="truncate text-muted-foreground">{b.label}</span>
+              <ProgressBar value={(b.score / b.max) * 100} tone="info" label={b.label} />
+              <span className="text-right font-mono text-xs tabular-nums">{b.score}/{b.max}</span>
             </div>
           ))}
           {healingPenalty ? (
-          <div className="flex items-center gap-3 text-sm">
-            <span className="w-40 shrink-0 text-muted-foreground">Healing Penalty</span>
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-critical" style={{ width: `${Math.min(100, healingPenalty * 10)}%` }} />
+            <div className="grid grid-cols-[minmax(0,1fr)_minmax(5rem,1fr)_3.5rem] items-center gap-3 text-sm sm:grid-cols-[minmax(0,11rem)_1fr_3.5rem]">
+              <span className="truncate text-muted-foreground">Healing penalty</span>
+              <ProgressBar value={Math.min(100, healingPenalty * 10)} tone="critical" label="Healing penalty" />
+              <span className="text-right font-mono text-xs text-critical-fg tabular-nums">−{healingPenalty}</span>
             </div>
-            <span className="w-14 shrink-0 text-right font-mono text-xs tabular-nums text-critical">
-              −{healingPenalty}
-            </span>
-          </div>
           ) : null}
 
-          <div className="flex items-center gap-2 pt-2">
+          <div className="flex flex-wrap items-center gap-2 pt-2">
             <StatusPill status={riskLevel} />
             {criticalDefects > 0 && (
               <span className="text-xs text-muted-foreground">
@@ -97,7 +78,7 @@ export function QualityScoreCard({
             )}
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </SectionCard>
   );
 }

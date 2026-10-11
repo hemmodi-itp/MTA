@@ -30,7 +30,7 @@ export function AgentScoresCard({ runs }: { runs: Run[] }) {
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
-        <CardTitle className="text-sm font-medium text-muted-foreground">Agent scores</CardTitle>
+        <CardTitle className="type-section-title">Agent scores</CardTitle>
         <Button asChild size="sm" variant="outline">
           <Link href="/projects/new">Evaluate an agent</Link>
         </Button>

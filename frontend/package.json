@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "lint:schema": "node scripts/check-pipeline-stages.mjs",
+    "test:unit": "vitest run",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",

@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   description: "Autonomous test generation, execution, and healing for your app.",
 };
 
+// Runs before first paint: restores the collapsed sidebar rail from the persisted UI store ("aqp-ui", see
+// lib/stores/ui-store) so the rail width and content offset (CSS, keyed on html[data-sidebar]) never jump on load.
+const SIDEBAR_STATE_SCRIPT = `try{var s=JSON.parse(localStorage.getItem("aqp-ui")||"null");document.documentElement.dataset.sidebar=s&&s.state&&s.state.sidebarCollapsed?"collapsed":"open"}catch(e){}`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -28,6 +32,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${fontSans.variable} ${fontMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SIDEBAR_STATE_SCRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Providers>{children}</Providers>
       </body>

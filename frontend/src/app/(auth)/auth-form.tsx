@@ -2,7 +2,7 @@
 
 import { useActionState, useState, type ComponentType, type ReactNode } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   AlertCircle, ArrowRight, Eye, EyeOff, FileCheck2, Gauge, Loader2, Lock, Mail, PlayCircle, Sparkles, User,
 } from "lucide-react";
@@ -39,14 +39,14 @@ function Field({
   id, label, icon: Icon, error, children,
 }: { id: string; label: string; icon: ComponentType<{ className?: string }>; error?: string[]; children: ReactNode }) {
   return (
-    <motion.div variants={fadeUp} className="space-y-2">
+    <m.div variants={fadeUp} className="space-y-2">
       <Label htmlFor={id} className="text-[13px]">{label}</Label>
       <div className="group relative">
         <Icon className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
         {children}
       </div>
       {error?.length ? <p id={`${id}-error`} className="text-xs text-destructive">{error[0]}</p> : null}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -71,28 +71,28 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         <div aria-hidden className="pointer-events-none absolute -top-32 -left-24 size-[28rem] rounded-full bg-primary/20 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute -bottom-40 right-0 size-[26rem] rounded-full bg-violet/20 blur-3xl" />
 
-        <motion.div initial="hidden" animate="show" variants={stagger(0.08, 0.05)} className="relative">
-          <motion.div variants={fadeUp}><Brand /></motion.div>
-        </motion.div>
+        <m.div initial="hidden" animate="show" variants={stagger(0.08, 0.05)} className="relative">
+          <m.div variants={fadeUp}><Brand /></m.div>
+        </m.div>
 
-        <motion.div initial="hidden" animate="show" variants={stagger(0.08, 0.15)} className="relative max-w-lg">
-          <motion.span
+        <m.div initial="hidden" animate="show" variants={stagger(0.08, 0.15)} className="relative max-w-lg">
+          <m.span
             variants={fadeUp}
             className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary"
           >
             <Sparkles className="size-3.5" /> Autonomous agent QA
-          </motion.span>
-          <motion.h1 variants={fadeUp} className="mt-5 text-4xl leading-[1.1] font-bold tracking-tight text-balance xl:text-5xl">
+          </m.span>
+          <m.h1 variants={fadeUp} className="mt-5 text-4xl leading-[1.1] font-bold tracking-tight text-balance xl:text-5xl">
             <span className="text-gradient">Know your agent is ready</span> before your users do.
-          </motion.h1>
-          <motion.p variants={fadeUp} className="mt-4 text-base text-pretty text-muted-foreground">
+          </m.h1>
+          <m.p variants={fadeUp} className="mt-4 text-base text-pretty text-muted-foreground">
             Point MTA at a repo and its requirements. It traces every requirement, runs the app live and scores it,
             with no hand-written tests.
-          </motion.p>
+          </m.p>
 
           <ul className="mt-10 space-y-5">
             {FEATURES.map((f) => (
-              <motion.li key={f.title} variants={fadeUp} className="flex gap-4">
+              <m.li key={f.title} variants={fadeUp} className="flex gap-4">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-card/70 text-primary shadow-sm backdrop-blur">
                   <f.icon className="size-[18px]" />
                 </div>
@@ -100,12 +100,12 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                   <p className="text-sm font-semibold">{f.title}</p>
                   <p className="text-sm text-muted-foreground">{f.body}</p>
                 </div>
-              </motion.li>
+              </m.li>
             ))}
           </ul>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6, ease: ease.out }}
@@ -114,7 +114,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           <p className="mb-3 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">How a run works</p>
           <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-2">
             {PIPELINE.map((step, i) => (
-              <motion.li
+              <m.li
                 key={step}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -128,17 +128,17 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                   {step}
                 </span>
                 {i < PIPELINE.length - 1 && <ArrowRight className="size-3 text-muted-foreground/60" />}
-              </motion.li>
+              </m.li>
             ))}
           </ol>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* ── form panel ───────────────────────────────────────────────────── */}
       <section className="relative flex items-center justify-center px-4 py-12 sm:px-8">
         <div aria-hidden className="pointer-events-none absolute top-1/4 left-1/2 size-80 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl lg:hidden" />
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.5, ease: ease.emphasized }}
@@ -147,13 +147,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           <div className="mb-8 flex justify-center lg:hidden"><Brand /></div>
 
           <div className="gradient-border rounded-2xl p-7 shadow-2xl shadow-primary/10 backdrop-blur-xl sm:p-9">
-            <motion.div initial="hidden" animate="show" variants={stagger(0.06, 0.2)}>
-              <motion.div variants={fadeUp} className="mb-7">
+            <m.div initial="hidden" animate="show" variants={stagger(0.06, 0.2)}>
+              <m.div variants={fadeUp} className="mb-7">
                 <h2 className="text-2xl font-bold tracking-tight">{isSignup ? "Create your account" : "Welcome back"}</h2>
                 <p className="mt-1.5 text-sm text-muted-foreground">
                   {isSignup ? "Start evaluating your agents in minutes." : "Log in to see how your agents are doing."}
                 </p>
-              </motion.div>
+              </m.div>
 
               <form action={action} className="space-y-4" noValidate>
                 {isSignup && (
@@ -192,18 +192,18 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                 </Field>
 
                 {state?.error && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
                     role="alert"
                     className="flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2.5 text-sm text-destructive"
                   >
                     <AlertCircle className="mt-0.5 size-4 shrink-0" />
                     {state.error}
-                  </motion.div>
+                  </m.div>
                 )}
 
-                <motion.div variants={fadeUp} className="pt-2">
-                  <motion.button
+                <m.div variants={fadeUp} className="pt-2">
+                  <m.button
                     type="submit"
                     disabled={pending}
                     whileHover={pending ? undefined : { y: -1 }}
@@ -219,26 +219,26 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                         <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                       </>
                     )}
-                  </motion.button>
-                </motion.div>
+                  </m.button>
+                </m.div>
               </form>
 
-              <motion.div variants={fadeUp} className="mt-7 flex items-center gap-3 text-xs text-muted-foreground">
+              <m.div variants={fadeUp} className="mt-7 flex items-center gap-3 text-xs text-muted-foreground">
                 <span className="h-px flex-1 bg-border" />
                 {isSignup ? "Already have an account?" : "New to MTA?"}
                 <span className="h-px flex-1 bg-border" />
-              </motion.div>
-              <motion.div variants={fadeUp} className="mt-4">
+              </m.div>
+              <m.div variants={fadeUp} className="mt-4">
                 <Link
                   href={isSignup ? "/login" : "/signup"}
                   className="flex h-11 w-full items-center justify-center rounded-xl border border-border bg-background/50 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
                 >
                   {isSignup ? "Log in instead" : "Create an account"}
                 </Link>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
     </main>
   );

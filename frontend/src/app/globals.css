@@ -3,12 +3,19 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+/* The desktop sidebar's collapsed rail. html[data-sidebar] is set before first paint (see AppShell), so server and
+   client markup are identical and collapsing never re-renders React or shifts layout after load. */
+@custom-variant rail (&:where(:root[data-sidebar="collapsed"] [data-slot="desktop-sidebar"], :root[data-sidebar="collapsed"] [data-slot="desktop-sidebar"] *));
 
 /* ─────────────────────────────────────────────────────────────────────────────
    MTA design system
-   Palette: primary #2563EB · accent #7C3AED · success #22C55E · warning #F59E0B · danger #EF4444
-   Dark (default for "system" on dark OS): background #0B0F1A · surface #111827 · card #1E293B
-   Every component reads semantic tokens below — never raw hex — so light/dark stay in sync.
+   Palette: primary #2563EB · accent #7C3AED · success #16A34A · warning #D97706 · critical #DC2626 (light)
+   Every component reads the semantic tokens below, never raw hex, so light and dark stay in sync.
+
+   Status tones (success · warning · critical · info · neutral · violet · orange) come in three parts:
+     --{tone}      fill / dot / bar / chart colour
+     --{tone}-fg   text colour, ≥ 4.5:1 on the card AND on the tone's own tint in both themes (unit-tested)
+     tint/border   colour-mixes of --{tone} (see the tone-* utilities)
    ───────────────────────────────────────────────────────────────────────────── */
 
 @theme inline {
@@ -42,20 +49,34 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-solid: var(--primary-solid);
+  --color-primary-solid-hover: var(--primary-solid-hover);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-  --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
-  --color-critical: var(--critical);
-  --color-critical-foreground: var(--critical-foreground);
-  /* new in the redesign */
   --color-surface: var(--surface);
   --color-violet: var(--violet);
   --color-glow: var(--glow);
+  /* status tones */
+  --color-success: var(--success);
+  --color-success-fg: var(--success-fg);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-fg: var(--warning-fg);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-critical: var(--critical);
+  --color-critical-fg: var(--critical-fg);
+  --color-critical-solid: var(--critical-solid);
+  --color-critical-foreground: var(--critical-foreground);
+  --color-info: var(--info);
+  --color-info-fg: var(--info-fg);
+  --color-neutral: var(--neutral);
+  --color-neutral-fg: var(--neutral-fg);
+  --color-violet-fg: var(--violet-fg);
+  --color-orange: var(--orange);
+  --color-orange-fg: var(--orange-fg);
+  /* radius scale */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -63,8 +84,23 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --animate-shimmer: shimmer 1.6s linear infinite;
+  /* type scale additions (the rest is Tailwind's) */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  /* elevation */
+  --shadow-control: var(--elev-control);
+  --shadow-card: var(--elev-card);
+  --shadow-card-hover: var(--elev-card-hover);
+  --shadow-popover: var(--elev-popover);
+  --shadow-overlay: var(--elev-overlay);
+  /* motion: ease-enter on the way in, ease-exit on the way out, ease-move for position changes */
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-move: cubic-bezier(0.65, 0, 0.35, 1);
   --animate-pulse-ring: pulse-ring 1.8s cubic-bezier(0.2, 0, 0, 1) infinite;
+  --animate-shimmer: shimmer-x 1.6s var(--ease-move) infinite;
+  --animate-sheen: sheen 1.8s var(--ease-move) infinite;
+  --animate-indeterminate: indeterminate 1.4s var(--ease-move) infinite;
 }
 
 :root {
@@ -77,23 +113,39 @@
   --popover-foreground: #0f172a;
   --primary: #2563eb;
   --primary-foreground: #ffffff;
+  --primary-solid: #2563eb;
+  --primary-solid-hover: #1d4ed8;
   --violet: #7c3aed;
   --secondary: #f1f5f9;
   --secondary-foreground: #0f172a;
   --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --muted-foreground: #5b6b81;
   --accent: #eef2ff;
   --accent-foreground: #1e40af;
-  --destructive: #ef4444;
+  --destructive: #b91c1c;
   --border: #e2e8f0;
   --input: #e2e8f0;
   --ring: #2563eb;
+  /* status tones */
   --success: #16a34a;
+  --success-fg: #166534;
   --success-foreground: #ffffff;
-  --warning: #f59e0b;
+  --warning: #d97706;
+  --warning-fg: #92400e;
   --warning-foreground: #92400e;
   --critical: #dc2626;
+  --critical-fg: #b91c1c;
+  --critical-solid: #dc2626;
   --critical-foreground: #ffffff;
+  --info: #2563eb;
+  --info-fg: #1d4ed8;
+  --neutral: #64748b;
+  --neutral-fg: #475569;
+  --violet-fg: #6d28d9;
+  --orange: #ea580c;
+  --orange-fg: #9a3412;
+  --tint-pct: 12%;
+  /* charts */
   --chart-1: #2563eb;
   --chart-2: #7c3aed;
   --chart-3: #22c55e;
@@ -101,6 +153,7 @@
   --chart-5: #ef4444;
   --glow: rgb(37 99 235 / 0.16);
   --radius: 0.75rem;
+  /* shell */
   --sidebar: rgb(255 255 255 / 0.72);
   --sidebar-foreground: #0f172a;
   --sidebar-primary: #2563eb;
@@ -109,10 +162,39 @@
   --sidebar-accent-foreground: #1e40af;
   --sidebar-border: #e2e8f0;
   --sidebar-ring: #2563eb;
+  --sidebar-w: 252px;
   --mesh-1: rgb(37 99 235 / 0.10);
   --mesh-2: rgb(124 58 237 / 0.08);
   --mesh-3: rgb(34 197 94 / 0.05);
   --noise-opacity: 0.025;
+  /* loading */
+  --skeleton-base: #edf0f5;
+  --skeleton-highlight: rgb(255 255 255 / 0.75);
+  /* elevation */
+  --elev-control: 0 1px 2px rgb(15 23 42 / 0.06);
+  --elev-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -14px rgb(15 23 42 / 0.2);
+  --elev-card-hover: 0 1px 2px rgb(15 23 42 / 0.05), 0 18px 40px -18px rgb(37 99 235 / 0.35);
+  --elev-popover: 0 2px 6px rgb(15 23 42 / 0.06), 0 16px 40px -12px rgb(15 23 42 / 0.25);
+  --elev-overlay: 0 28px 72px -18px rgb(15 23 42 / 0.4);
+  /* motion: 120–200 ms for micro-interactions, 200–350 ms for panels and pages (mirrored in lib/motion.ts) */
+  --dur-fast: 120ms;
+  --dur-micro: 160ms;
+  --dur-exit: 140ms;
+  --dur-panel: 240ms;
+  --dur-page: 280ms;
+  /* stacking order */
+  --z-sticky: 30;
+  --z-sidebar: 40;
+  --z-drawer: 50;
+  --z-panel: 55;
+  --z-modal: 60;
+  --z-popover: 70;
+  --z-toast: 80;
+  --z-tooltip: 90;
+}
+
+:root[data-sidebar="collapsed"] {
+  --sidebar-w: 76px;
 }
 
 .dark {
@@ -125,6 +207,8 @@
   --popover-foreground: #f8fafc;
   --primary: #3b82f6;
   --primary-foreground: #ffffff;
+  --primary-solid: #2563eb;
+  --primary-solid-hover: #1d4ed8;
   --violet: #8b5cf6;
   --secondary: #1e293b;
   --secondary-foreground: #f8fafc;
@@ -132,16 +216,28 @@
   --muted-foreground: #94a3b8;
   --accent: rgb(37 99 235 / 0.16);
   --accent-foreground: #bfdbfe;
-  --destructive: #ef4444;
+  --destructive: #f87171;
   --border: rgb(148 163 184 / 0.14);
   --input: rgb(148 163 184 / 0.2);
   --ring: #3b82f6;
   --success: #22c55e;
+  --success-fg: #4ade80;
   --success-foreground: #052e16;
   --warning: #f59e0b;
+  --warning-fg: #fbbf24;
   --warning-foreground: #fcd34d;
   --critical: #ef4444;
+  --critical-fg: #f87171;
+  --critical-solid: #dc2626;
   --critical-foreground: #ffffff;
+  --info: #3b82f6;
+  --info-fg: #60a5fa;
+  --neutral: #94a3b8;
+  --neutral-fg: #94a3b8;
+  --violet-fg: #a78bfa;
+  --orange: #f97316;
+  --orange-fg: #fb923c;
+  --tint-pct: 16%;
   --chart-1: #3b82f6;
   --chart-2: #8b5cf6;
   --chart-3: #22c55e;
@@ -160,6 +256,13 @@
   --mesh-2: rgb(124 58 237 / 0.14);
   --mesh-3: rgb(34 197 94 / 0.05);
   --noise-opacity: 0.045;
+  --skeleton-base: #182133;
+  --skeleton-highlight: rgb(255 255 255 / 0.06);
+  --elev-control: 0 1px 2px rgb(0 0 0 / 0.4);
+  --elev-card: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 8px 24px -14px rgb(0 0 0 / 0.6);
+  --elev-card-hover: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 18px 40px -16px rgb(59 130 246 / 0.3);
+  --elev-popover: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 18px 44px -12px rgb(0 0 0 / 0.65);
+  --elev-overlay: 0 28px 72px -18px rgb(0 0 0 / 0.75);
 }
 
 @layer base {
@@ -175,6 +278,112 @@
   }
   ::selection {
     background: color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+  /* long unbroken tokens (ids, URLs, code paths in evaluation output) wrap instead of widening the page */
+  main {
+    overflow-wrap: anywhere;
+  }
+  /* A visible focus ring on every interactive element; components with their own ring style override this. */
+  :where(a, button, summary, [role="button"], [role="tab"], [role="radio"], [role="option"], [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ── typography roles ─────────────────────────────────────────────────────── */
+@utility type-page-title {
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+@utility type-section-title {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.006em;
+}
+/* 11-px uppercase label above a value or a group (KPI labels, table heads, sidebar groups) */
+@utility type-eyebrow {
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+@utility type-kpi {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-kpi-sm {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── status tones: set one tone-{name}, then use tone-text / tone-tint / tone-border / tone-fill ──────────────── */
+@utility tone-success { --tone: var(--success); --tone-fg: var(--success-fg); }
+@utility tone-warning { --tone: var(--warning); --tone-fg: var(--warning-fg); }
+@utility tone-critical { --tone: var(--critical); --tone-fg: var(--critical-fg); }
+@utility tone-info { --tone: var(--info); --tone-fg: var(--info-fg); }
+@utility tone-neutral { --tone: var(--neutral); --tone-fg: var(--neutral-fg); }
+@utility tone-violet { --tone: var(--violet); --tone-fg: var(--violet-fg); }
+@utility tone-orange { --tone: var(--orange); --tone-fg: var(--orange-fg); }
+@utility tone-text { color: var(--tone-fg); }
+@utility tone-fill { background-color: var(--tone); }
+@utility tone-tint { background-color: color-mix(in srgb, var(--tone) var(--tint-pct), transparent); }
+@utility tone-border { border-color: color-mix(in srgb, var(--tone) 32%, transparent); }
+/* status pill shell; StatusPill adds the tone */
+@utility pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  height: 1.375rem;
+  padding-inline: 0.5rem;
+  border-radius: 9999px;
+  border-width: 1px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── interaction ──────────────────────────────────────────────────────────── */
+/* Hover elevation for interactive cards: the stronger shadow lives on a pseudo-element and only its opacity animates. */
+@utility card-elevate {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--elev-card-hover);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-micro) var(--ease-enter);
+  }
+  &:hover::after {
+    opacity: 1;
+  }
+}
+/* Horizontal scroller that hints at more content with a soft fade on both edges. */
+@utility scroll-fade-x {
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 20px), transparent);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -231,17 +440,35 @@
     z-index: -1;
     border-radius: inherit;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--dur-panel) var(--ease-enter);
     background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), var(--glow), transparent 60%);
   }
   .spotlight:hover::before {
     opacity: 1;
   }
-  /* skeleton shimmer */
-  .shimmer {
-    background: linear-gradient(90deg, var(--muted) 0%, color-mix(in srgb, var(--muted) 55%, var(--surface)) 50%, var(--muted) 100%);
-    background-size: 200% 100%;
+  /* skeleton block: a highlight sweeps across with a transform (no background-position animation) */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--skeleton-base);
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, var(--skeleton-highlight), transparent);
     animation: var(--animate-shimmer);
+  }
+  /* moving highlight on a live progress fill */
+  .progress-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+    animation: var(--animate-sheen);
   }
   .text-gradient {
     background: linear-gradient(120deg, var(--foreground) 10%, color-mix(in srgb, var(--primary) 85%, var(--foreground)) 55%, var(--violet) 95%);
@@ -252,17 +479,49 @@
   .kbd {
     @apply inline-flex h-5 min-w-5 items-center justify-center rounded-md border border-border bg-muted/60 px-1 font-mono text-[10px] font-medium text-muted-foreground;
   }
+  /* sidebar labels fade back in when the rail expands (display none → shown restarts the animation) */
+  .rail-label {
+    animation: rail-label-in var(--dur-micro) var(--ease-enter) 40ms both;
+  }
 }
 
-@keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
+@keyframes shimmer-x {
+  to { transform: translateX(100%); }
+}
+@keyframes sheen {
+  to { transform: translateX(260%); }
+}
+@keyframes indeterminate {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
 }
 @keyframes pulse-ring {
   0% { transform: scale(0.8); opacity: 0.7; }
-  80%, 100% { transform: scale(2.2); opacity: 0; }
+  80%, 100% { transform: scale(2.4); opacity: 0; }
+}
+@keyframes rail-label-in {
+  from { opacity: 0; transform: translateX(-4px); }
 }
 
+/* Reduced motion: every CSS animation and transition finishes at once (loops stop on their last frame), and the
+   live indicators fall back to a still state. Framer animations are covered by <MotionConfig reducedMotion="user">. */
 @media (prefers-reduced-motion: reduce) {
-  .shimmer { animation: none; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .skeleton::after,
+  .progress-sheen::after {
+    display: none;
+  }
+  [data-indeterminate] {
+    animation: none !important;
+    transform: none !important;
+    width: 100% !important;
+    opacity: 0.45;
+  }
 }

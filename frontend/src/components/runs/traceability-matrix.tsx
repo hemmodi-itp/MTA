@@ -1,4 +1,4 @@
-import { CheckCircle2, ExternalLink, ListChecks, XCircle } from "lucide-react";
+import { CheckCircle2, ChevronDown, ExternalLink, ListChecks, XCircle } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -6,17 +6,17 @@ import { cn } from "@/lib/utils";
 import type { BrdCompliance, ComplianceDiscrepancy, Criterion, CriterionVerdict, EvidenceItem, Requirement } from "@/lib/types";
 
 const VERDICT: Record<string, { label: string; className: string }> = {
-  verified_pass: { label: "Verified", className: "bg-success/15 text-success border-success/30" },
-  verified: { label: "Verified", className: "bg-success/15 text-success border-success/30" },
-  implemented_static: { label: "Implemented (code)", className: "bg-success/10 text-success border-success/25" },
-  implemented: { label: "Implemented", className: "bg-success/10 text-success border-success/25" },
-  partial: { label: "Partial", className: "bg-warning/15 text-warning-foreground border-warning/40 dark:text-warning" },
-  contested: { label: "Contested", className: "bg-warning/15 text-warning-foreground border-warning/40 dark:text-warning" },
-  verified_fail: { label: "Failed at runtime", className: "bg-critical/15 text-critical border-critical/30" },
-  failed: { label: "Failed", className: "bg-critical/15 text-critical border-critical/30" },
-  not_implemented: { label: "Not implemented", className: "bg-critical/15 text-critical border-critical/30" },
-  insufficient_evidence: { label: "Insufficient evidence", className: "bg-muted text-muted-foreground border-border" },
-  not_technically_verifiable: { label: "Not technically verifiable", className: "bg-muted text-muted-foreground border-border" },
+  verified_pass: { label: "Verified", className: "tone-success" },
+  verified: { label: "Verified", className: "tone-success" },
+  implemented_static: { label: "Implemented (code)", className: "tone-success" },
+  implemented: { label: "Implemented", className: "tone-success" },
+  partial: { label: "Partial", className: "tone-warning" },
+  contested: { label: "Contested", className: "tone-warning" },
+  verified_fail: { label: "Failed at runtime", className: "tone-critical" },
+  failed: { label: "Failed", className: "tone-critical" },
+  not_implemented: { label: "Not implemented", className: "tone-critical" },
+  insufficient_evidence: { label: "Insufficient evidence", className: "tone-neutral" },
+  not_technically_verifiable: { label: "Not technically verifiable", className: "tone-neutral" },
 };
 
 const STRENGTH_HINT: Record<string, string> = {
@@ -28,15 +28,15 @@ const STRENGTH_HINT: Record<string, string> = {
 };
 
 function VerdictPill({ v }: { v: string | null }) {
-  const s = VERDICT[v ?? ""] ?? { label: v ?? "Pending", className: "bg-muted text-muted-foreground border-border" };
-  return <span className={cn("shrink-0 rounded-full border px-2 py-0.5 text-xs font-medium", s.className)}>{s.label}</span>;
+  const s = VERDICT[v ?? ""] ?? { label: v ?? "Pending", className: "tone-neutral" };
+  return <span className={cn("pill shrink-0 tone-tint tone-border tone-text", s.className)}>{s.label}</span>;
 }
 
 const DISCREPANCY: Record<ComplianceDiscrepancy["kind"], { label: string; className: string }> = {
-  broken_at_runtime: { label: "Implemented, but broken at runtime", className: "border-critical/30 bg-critical/10 text-critical" },
-  mixed_runtime: { label: "Inconsistent at runtime", className: "border-warning/40 bg-warning/10 text-warning-foreground dark:text-warning" },
-  runtime_only_unverified: { label: "Runtime-only, not reached", className: "border-warning/40 bg-warning/10 text-warning-foreground dark:text-warning" },
-  missed_by_code_review: { label: "Works live, not found in code", className: "border-border bg-muted text-muted-foreground" },
+  broken_at_runtime: { label: "Implemented, but broken at runtime", className: "tone-critical" },
+  mixed_runtime: { label: "Inconsistent at runtime", className: "tone-warning" },
+  runtime_only_unverified: { label: "Runtime-only, not reached", className: "tone-warning" },
+  missed_by_code_review: { label: "Works live, not found in code", className: "tone-neutral" },
 };
 const MIX = [
   { key: "E5", label: "E5 runtime, deterministic", className: "bg-success" },
@@ -52,7 +52,7 @@ export function ComplianceSummary({ compliance }: { compliance: BrdCompliance })
   const counts: Record<string, number> = { ...m, E1: m.E1 + m.none };
   const total = compliance.counts.criteria || 1;
   return (
-    <div className="space-y-3 rounded-lg border border-border p-4 text-sm">
+    <div className="space-y-3 rounded-2xl border border-border bg-card/60 p-4 text-sm">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="font-medium">What the verdicts rest on</p>
         <p className="text-xs text-muted-foreground">
@@ -77,7 +77,7 @@ export function ComplianceSummary({ compliance }: { compliance: BrdCompliance })
           <p className="font-medium">Code vs runtime</p>
           {compliance.discrepancies.map((d) => (
             <div key={d.criterion_code + d.kind} className="flex flex-wrap items-start gap-2 text-xs">
-              <span className={cn("shrink-0 rounded-full border px-2 py-0.5", DISCREPANCY[d.kind].className)}>{DISCREPANCY[d.kind].label}</span>
+              <span className={cn("pill shrink-0 tone-tint tone-border tone-text", DISCREPANCY[d.kind].className)}>{DISCREPANCY[d.kind].label}</span>
               <span className="font-mono">{d.criterion_code}</span>
               <span className="min-w-0 flex-1 text-muted-foreground">{d.requirement_code} {d.requirement_title} — {d.detail}</span>
             </div>
@@ -94,13 +94,13 @@ export function TraceabilityMatrix({ requirements, runId }: { requirements: Requ
     return <EmptyState icon={ListChecks} title="No requirements yet" description="They appear once the BRD has been processed." />;
   }
   return (
-    <Accordion type="multiple" className="rounded-lg border border-border">
+    <Accordion type="multiple" className="rounded-2xl border border-border bg-card/60">
       {requirements.map((r) => (
         <AccordionItem key={r.id} value={r.id} className="px-4">
           <AccordionTrigger className="gap-3 text-sm hover:no-underline">
             <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-left">
               <span className="font-mono text-xs text-muted-foreground">{r.code}</span>
-              {r.section && <span className="font-mono text-[11px] text-muted-foreground/80">§{r.section}</span>}
+              {r.section && <span className="font-mono text-2xs text-muted-foreground">§{r.section}</span>}
               <span className="font-medium">{r.title}</span>
               <Badge variant="secondary" className="font-normal">{r.priority}</Badge>
               {r.origin !== "brd" && (
@@ -135,21 +135,22 @@ export function TraceabilityMatrix({ requirements, runId }: { requirements: Requ
 
 function CriterionRow({ c, runId }: { c: Criterion; runId: string }) {
   return (
-    <details className="group rounded-md border border-border px-3 py-2">
-      <summary className="flex cursor-pointer list-none items-start gap-2">
-        <span className="mt-0.5 font-mono text-[11px] text-muted-foreground">{c.code}</span>
+    <details className="group rounded-xl border border-border px-3 py-2">
+      <summary className="flex cursor-pointer list-none items-start gap-2 rounded-sm [&::-webkit-details-marker]:hidden">
+        <ChevronDown aria-hidden className="mt-0.5 size-3.5 shrink-0 text-muted-foreground transition-transform duration-(--dur-micro) ease-enter group-open:rotate-180" />
+        <span className="mt-0.5 font-mono text-2xs text-muted-foreground">{c.code}</span>
         <span className="flex-1">{c.statement}</span>
         {c.bestStrength && (
-          <span title={STRENGTH_HINT[c.bestStrength]} className="shrink-0 rounded border border-border px-1.5 font-mono text-[11px] text-muted-foreground">
+          <span title={STRENGTH_HINT[c.bestStrength]} className="shrink-0 rounded border border-border px-1.5 font-mono text-2xs text-muted-foreground">
             {c.bestStrength}
           </span>
         )}
         <VerdictPill v={c.verdict as CriterionVerdict} />
       </summary>
-      <div className="mt-2 space-y-2 border-t border-border pt-2 text-xs">
+      <div className="mt-2 space-y-2 border-t border-border pt-2 text-xs animate-in fade-in-0 slide-in-from-top-1 duration-(--dur-micro) ease-enter">
         {c.rationale && <p className="text-muted-foreground">{c.rationale}</p>}
         {c.agreement !== null && c.agreement < 1 && (
-          <p className="text-warning-foreground dark:text-warning">The two independent verifier samples disagreed; the more conservative verdict was kept.</p>
+          <p className="text-warning-fg">The two independent verifier samples disagreed; the more conservative verdict was kept.</p>
         )}
         {c.evidence.length === 0 ? (
           <p className="text-muted-foreground">No evidence recorded.</p>
@@ -169,32 +170,32 @@ function EvidenceRow({ e, runId }: { e: EvidenceItem; runId: string }) {
   const where = cit?.file ? `${cit.file}:${cit.start_line}${cit.end_line && cit.end_line !== cit.start_line ? `-${cit.end_line}` : ""}` : null;
   return (
     <li className="flex gap-2">
-      {e.validated ? <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-success" /> : <XCircle className="mt-0.5 size-3.5 shrink-0 text-critical" />}
+      {e.validated ? <CheckCircle2 aria-label="validated" className="mt-0.5 size-3.5 shrink-0 text-success-fg" /> : <XCircle aria-label="rejected" className="mt-0.5 size-3.5 shrink-0 text-critical-fg" />}
       <div className="min-w-0 space-y-0.5">
         <div className="flex flex-wrap items-center gap-x-2">
-          <span className="font-mono text-[11px] text-muted-foreground">{e.strength} · {e.method}</span>
+          <span className="font-mono text-2xs text-muted-foreground">{e.strength} · {e.method}</span>
           {where &&
             (cit?.url ? (
-              <a href={cit.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-mono text-[11px] text-primary hover:underline">
+              <a href={cit.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-sm font-mono text-2xs text-info-fg hover:underline">
                 {where}
                 <ExternalLink className="size-3" />
               </a>
             ) : (
-              <span className="font-mono text-[11px] text-muted-foreground line-through">{where}</span>
+              <span className="font-mono text-2xs text-muted-foreground line-through">{where}</span>
             ))}
         </div>
         <p className={cn(!e.validated && "text-muted-foreground")}>{e.summary}</p>
         {cit?.kind === "runtime" && (cit.screenshot || (cit.documents?.length ?? 0) > 0) && (
-          <p className="flex flex-wrap gap-x-3 text-[11px]">
+          <p className="flex flex-wrap gap-x-3 text-2xs">
             {cit.screenshot && (
-              <a className="text-primary hover:underline" href={artifactUrl(runId, cit.screenshot)} target="_blank" rel="noreferrer">screenshot</a>
+              <a className="rounded-sm text-info-fg hover:underline" href={artifactUrl(runId, cit.screenshot)} target="_blank" rel="noreferrer">screenshot</a>
             )}
             {(cit.documents ?? []).map((d) => (
-              <a key={d.file} className="text-primary hover:underline" href={artifactUrl(runId, d.file)}>{d.name}</a>
+              <a key={d.file} className="rounded-sm text-info-fg hover:underline" href={artifactUrl(runId, d.file)}>{d.name}</a>
             ))}
           </p>
         )}
-        {!e.validated && cit?.check && <p className="text-critical">Rejected: {cit.check}</p>}
+        {!e.validated && cit?.check && <p className="text-critical-fg">Rejected: {cit.check}</p>}
       </div>
     </li>
   );

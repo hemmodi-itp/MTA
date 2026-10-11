@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 import type { Requirement, RequirementStatus, TestCase } from "@/lib/types";
 
 const STATUS: Record<RequirementStatus, { label: string; className: string }> = {
-  implemented: { label: "Implemented", className: "bg-success/15 text-success border-success/30" },
-  partial: { label: "Partial", className: "bg-warning/15 text-warning-foreground border-warning/40 dark:text-warning" },
-  missing: { label: "Missing", className: "bg-critical/15 text-critical border-critical/30" },
-  unknown: { label: "Not reviewed", className: "bg-muted text-muted-foreground border-border" },
+  implemented: { label: "Implemented", className: "tone-success" },
+  partial: { label: "Partial", className: "tone-warning" },
+  missing: { label: "Missing", className: "tone-critical" },
+  unknown: { label: "Not reviewed", className: "tone-neutral" },
 };
 
 /** BRD requirements with the static-review verdict and the live test results traced to each. */
@@ -20,7 +20,7 @@ export function RequirementsList({ requirements, tests }: { requirements: Requir
     );
   }
   return (
-    <Accordion type="multiple" className="rounded-lg border border-border">
+    <Accordion type="multiple" className="rounded-2xl border border-border bg-card/60">
       {requirements.map((r) => {
         const traced = tests.filter((t) => t.requirementRef === r.code);
         const passed = traced.filter((t) => t.status === "passed").length;
@@ -31,16 +31,16 @@ export function RequirementsList({ requirements, tests }: { requirements: Requir
             <AccordionTrigger className="gap-3 text-sm hover:no-underline">
               <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-left">
                 <span className="font-mono text-xs text-muted-foreground">{r.code}</span>
-                {r.section && <span className="font-mono text-[11px] text-muted-foreground/80">§{r.section}</span>}
+                {r.section && <span className="font-mono text-2xs text-muted-foreground">§{r.section}</span>}
                 <span className="font-medium">{r.title}</span>
                 <Badge variant="secondary" className="font-normal">{r.priority}</Badge>
               </span>
               {executed > 0 && (
-                <span className={cn("text-xs tabular-nums", passed === executed ? "text-success" : "text-critical")}>
+                <span className={cn("text-xs tabular-nums", passed === executed ? "text-success-fg" : "text-critical-fg")}>
                   {passed}/{executed} tests
                 </span>
               )}
-              <span className={cn("rounded-full border px-2 py-0.5 text-xs font-medium", status.className)}>{status.label}</span>
+              <span className={cn("pill tone-tint tone-border tone-text", status.className)}>{status.label}</span>
             </AccordionTrigger>
             <AccordionContent className="space-y-3 pb-4 text-sm">
               <p>{r.description}</p>
@@ -52,7 +52,7 @@ export function RequirementsList({ requirements, tests }: { requirements: Requir
               )}
               {r.acceptanceCriteria.length > 0 && (
                 <div>
-                  <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Acceptance criteria</p>
+                  <p className="mb-1 type-eyebrow text-muted-foreground">Acceptance criteria</p>
                   <ul className="list-disc space-y-0.5 pl-5 text-muted-foreground">
                     {r.acceptanceCriteria.map((c, i) => (
                       <li key={i}>{c}</li>
@@ -62,7 +62,7 @@ export function RequirementsList({ requirements, tests }: { requirements: Requir
               )}
               {r.evidence && (
                 <div>
-                  <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Code review evidence</p>
+                  <p className="mb-1 type-eyebrow text-muted-foreground">Code review evidence</p>
                   <p className="text-muted-foreground">{r.evidence}</p>
                 </div>
               )}

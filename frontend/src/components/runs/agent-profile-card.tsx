@@ -9,7 +9,7 @@ export function AgentProfileCard({ profile }: { profile: AgentProfile }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">
+        <CardTitle className="type-section-title">
           Agent profile{profile.agent_name ? ` · ${profile.agent_name}` : ""}
         </CardTitle>
       </CardHeader>
@@ -20,7 +20,7 @@ export function AgentProfileCard({ profile }: { profile: AgentProfile }) {
           <List label="Out of scope" items={profile.out_of_scope} />
           <List label="Tools & integrations" items={profile.tools_and_integrations} />
           <div className="space-y-1">
-            <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Interface</p>
+            <p className="type-eyebrow text-muted-foreground">Interface</p>
             <p>
               {iface.type ?? "unknown"}
               {iface.framework && iface.framework !== "unknown" ? ` · ${iface.framework}` : ""}
@@ -40,7 +40,7 @@ export function AgentProfileCard({ profile }: { profile: AgentProfile }) {
           </div>
         )}
         {(profile.observed_risks?.length ?? 0) > 0 && (
-          <List label="Risks spotted in the code" items={profile.observed_risks} tone="text-critical" />
+          <List label="Risks spotted in the code" items={profile.observed_risks} tone="text-critical-fg" />
         )}
       </CardContent>
     </Card>
@@ -51,7 +51,7 @@ function List({ label, items, tone }: { label: string; items?: string[]; tone?: 
   if (!items?.length) return null;
   return (
     <div className="space-y-1">
-      <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="type-eyebrow text-muted-foreground">{label}</p>
       <ul className={`list-disc space-y-0.5 pl-5 ${tone ?? "text-muted-foreground"}`}>
         {items.slice(0, 8).map((item, i) => (
           <li key={i}>{item}</li>

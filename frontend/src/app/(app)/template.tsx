@@ -1,13 +1,6 @@
-"use client";
+import { PageTransition } from "@/components/motion/page-transition";
 
-import { motion } from "framer-motion";
-import { page } from "@/lib/motion";
-
-/** Route transition for every page inside the app shell (a template re-mounts on navigation). */
+/** Route transition for every page inside the app shell: fade + 8 px rise, replayed whenever the path changes. */
 export default function AppTemplate({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div variants={page} initial="hidden" animate="show" className="space-y-6">
-      {children}
-    </motion.div>
-  );
+  return <PageTransition className="space-y-6">{children}</PageTransition>;
 }

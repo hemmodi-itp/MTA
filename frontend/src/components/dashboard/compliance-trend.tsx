@@ -1,14 +1,16 @@
 "use client";
 
 import { Area, Bar, CartesianGrid, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { ChartReveal, useChartAnimation } from "@/components/motion/chart-reveal";
 
 const tick = { fontSize: 11, fill: "var(--muted-foreground)" };
 
 /** 14-day portfolio compliance (line) over evaluation volume (bars); both draw progressively on mount. */
 export function ComplianceTrend({ data }: { data: { day: string; level: number | null; score: number | null; runs: number }[] }) {
+  const chart = useChartAnimation();
   const rows = data.map((d) => ({ ...d, label: new Date(d.day).toLocaleDateString([], { month: "short", day: "numeric" }) }));
   return (
-    <div className="h-64">
+    <ChartReveal className="h-64">
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={rows} margin={{ top: 8, right: 4, bottom: 0, left: -18 }}>
           <defs>
@@ -27,17 +29,17 @@ export function ComplianceTrend({ data }: { data: { day: string; level: number |
           <YAxis yAxisId="runs" orientation="right" hide allowDecimals={false} />
           <Tooltip
             cursor={{ stroke: "var(--border)" }}
-            contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12, boxShadow: "0 12px 32px -12px rgb(0 0 0 / .35)" }}
+            contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12, boxShadow: "var(--elev-popover)", color: "var(--popover-foreground)" }}
             labelStyle={{ color: "var(--muted-foreground)" }}
             formatter={(v, name) => (name === "runs" ? [v, "evaluations"] : [v == null ? "—" : `${v}/100`, "compliance"])}
           />
           <Bar yAxisId="runs" dataKey="runs" fill="var(--chart-2)" fillOpacity={0.18} radius={[4, 4, 0, 0]} barSize={10}
-            isAnimationActive animationDuration={900} />
+            {...chart} />
           <Area yAxisId="score" type="monotone" dataKey="level" stroke="url(#trend-stroke)" strokeWidth={2.5} fill="url(#trend-fill)"
-            connectNulls dot={false} activeDot={{ r: 4 }} isAnimationActive animationDuration={1400} animationEasing="ease-out" />
+            connectNulls dot={false} activeDot={{ r: 4 }} {...chart} />
         </ComposedChart>
       </ResponsiveContainer>
-    </div>
+    </ChartReveal>
   );
 }
 

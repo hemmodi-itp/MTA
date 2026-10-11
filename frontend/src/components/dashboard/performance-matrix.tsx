@@ -1,64 +1,62 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { listItem, stagger } from "@/lib/motion";
-import { band, type ProjectHealth } from "@/lib/insights";
-
-const BAND_TEXT = { good: "text-success", warn: "text-warning", bad: "text-critical", none: "text-muted-foreground" } as const;
+import { m } from "framer-motion";
+import { itemMotion } from "@/components/motion/stagger";
+import { ScoreBadge } from "@/components/shared/score";
+import { ease, stagger } from "@/lib/motion";
+import type { ProjectHealth } from "@/lib/insights";
 
 function fmtDuration(sec: number | null) {
   if (!sec) return "—";
-  const m = Math.round(sec / 60);
-  return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`;
+  const mins = Math.round(sec / 60);
+  return mins >= 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins}m`;
 }
 
-/** Per-project performance: compliance, runtime test outcomes (stacked bar), depth and duration. Rows stagger in. */
+/**
+ * Per-project performance as a list (it fits any column width without clipping): compliance, runtime test outcomes
+ * as a stacked bar, verification depth and duration. The bar grows in from the left with a transform.
+ */
 export function PerformanceMatrix({ items }: { items: ProjectHealth[] }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[520px] text-sm">
-        <thead>
-          <tr className="text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-            <th className="pb-2 font-semibold">Project</th>
-            <th className="pb-2 text-right font-semibold">Compliance</th>
-            <th className="w-[36%] pb-2 pl-4 font-semibold">Runtime tests</th>
-            <th className="pb-2 text-right font-semibold">Verified</th>
-            <th className="hidden pb-2 text-right font-semibold 2xl:table-cell">Duration</th>
-          </tr>
-        </thead>
-        <motion.tbody variants={stagger(0.05)} initial="hidden" animate="show">
-          {items.map((h) => {
-            const s = h.run.stats;
-            const total = s.passed + s.failed + s.skipped || 1;
-            return (
-              <motion.tr key={h.projectId} variants={listItem} className="border-t border-border">
-                <td className="py-2.5 pr-3">
-                  <Link href={`/runs/${h.run.id}`} className="font-medium hover:text-primary">{h.name}</Link>
-                </td>
-                <td className={cn("py-2.5 text-right font-semibold tabular-nums", BAND_TEXT[band(h.score)])}>
-                  {h.score != null ? Math.round(h.score) : "—"}
-                </td>
-                <td className="py-2.5 pl-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-2 flex-1 overflow-hidden rounded-full bg-muted">
-                      {[["passed", s.passed, "bg-success"], ["failed", s.failed, "bg-critical"], ["other", s.skipped, "bg-muted-foreground/40"]].map(([k, n, c]) => (
-                        <motion.span key={k as string} className={c as string} initial={{ width: 0 }}
-                          animate={{ width: `${(100 * (n as number)) / total}%` }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} />
-                      ))}
-                    </div>
-                    <span className="w-16 shrink-0 text-right text-xs tabular-nums text-muted-foreground">{s.passed}/{s.failed}/{s.skipped}</span>
-                  </div>
-                </td>
-                <td className="py-2.5 text-right tabular-nums text-muted-foreground">{h.depth != null ? `${Math.round(h.depth * 100)}%` : "—"}</td>
-                <td className="hidden py-2.5 text-right tabular-nums text-muted-foreground 2xl:table-cell">{fmtDuration(h.run.durationSec)}</td>
-              </motion.tr>
-            );
-          })}
-        </motion.tbody>
-      </table>
-      <p className="mt-2 text-[11px] text-muted-foreground">Runtime tests: passed / failed / inconclusive or not run, latest run per project.</p>
+    <div className="space-y-3">
+      <m.ul variants={stagger()} initial="hidden" animate="show" className="divide-y divide-border">
+        {items.map((h, i) => {
+          const s = h.run.stats;
+          const total = s.passed + s.failed + s.skipped || 1;
+          return (
+            <m.li key={h.projectId} {...itemMotion(i)} className="space-y-2 py-3 first:pt-0 last:pb-0">
+              <div className="flex items-center justify-between gap-3">
+                <Link href={`/runs/${h.run.id}`} className="min-w-0 truncate rounded-sm text-sm font-medium transition-colors duration-(--dur-micro) hover:text-info-fg">
+                  {h.name}
+                </Link>
+                <ScoreBadge score={h.score} title="BRD compliance" />
+              </div>
+              <div className="flex items-center gap-3">
+                <m.div
+                  className="flex h-2 flex-1 origin-left overflow-hidden rounded-full bg-muted"
+                  initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.6, ease: ease.enter, delay: 0.03 * Math.min(i, 20) }}
+                  role="img" aria-label={`${s.passed} passed, ${s.failed} failed, ${s.skipped} inconclusive or not run`}
+                >
+                  <span className="bg-success" style={{ width: `${(100 * s.passed) / total}%` }} />
+                  <span className="bg-critical" style={{ width: `${(100 * s.failed) / total}%` }} />
+                  <span className="bg-muted-foreground/40" style={{ width: `${(100 * s.skipped) / total}%` }} />
+                </m.div>
+                <span className="shrink-0 text-xs tabular-nums">
+                  <span className="text-success-fg">{s.passed}</span>
+                  <span className="text-muted-foreground"> / </span>
+                  <span className="text-critical-fg">{s.failed}</span>
+                  <span className="text-muted-foreground"> / {s.skipped}</span>
+                </span>
+              </div>
+              <p className="text-2xs text-muted-foreground">
+                {h.depth != null ? `${Math.round(h.depth * 100)}% runtime-verified` : "Not runtime-verified"} · took {fmtDuration(h.run.durationSec)}
+              </p>
+            </m.li>
+          );
+        })}
+      </m.ul>
+      <p className="text-2xs text-muted-foreground">Runtime tests: passed / failed / inconclusive or not run, latest run per project.</p>
     </div>
   );
 }
