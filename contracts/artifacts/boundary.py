@@ -21,7 +21,8 @@ from contracts.artifacts.io import ValidationReport, validate_file
 from contracts.artifacts.paths import COMPREHENSION_DIRS, REPORTS_MTA, artifact_path
 
 STEP_ARTIFACTS: Dict[str, List[str]] = {
-    "discovery": ["business_scenarios", "dom_elements", "requirements"],
+    "discovery": ["business_scenarios", "dom_elements", "requirements",
+                  "app_map", "form_model", "api_inventory", "permission_matrix", "baseline"],
     "comprehension": ["business_scenarios", "requirements"],
     "testdata": ["test_data"],
     "semantic_map": ["scenario_element_map"],

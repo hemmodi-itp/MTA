@@ -126,6 +126,15 @@ def llm_cost(usage: Dict[str, Dict[str, int]], pricing: Dict[str, Dict[str, floa
     }
 
 
+def _discovery_metrics(deep: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Phase 2 deep-discovery summary + ground-truth scores (None when the run had no deep pass)."""
+    if not deep:
+        return None
+    keep = ("status", "seconds", "states", "page_templates", "transitions", "forms", "probes", "endpoints",
+            "roles", "stopped_by", "error")
+    return {**{k: deep.get(k) for k in keep if k in deep}, **(deep.get("metrics") or {})}
+
+
 def score(run: Dict[str, Any], bugs: Iterable[Dict[str, Any]], acs: Iterable[str],
           pricing: Optional[Dict[str, Dict[str, float]]] = None) -> Dict[str, Any]:
     bugs = list(bugs)
@@ -207,7 +216,11 @@ def score(run: Dict[str, Any], bugs: Iterable[Dict[str, Any]], acs: Iterable[str
             "generation": runtime.get("generation"), "total": runtime.get("total"),
             "execution_median": round(statistics.median(durations), 2) if durations else None,
             "executions": len(durations),
+            # Phase 2: the project-level deep pass, and the discovery step of each module run
+            "deep_discovery": runtime.get("deep_discovery"),
+            "discovery_by_module": runtime.get("discovery_by_module"),
         },
+        "discovery": _discovery_metrics(run.get("deep_discovery")),
         "llm": llm_cost(run.get("llm_usage") or {}, pricing or {}),
         "unknown_bug_ids": sorted(set(bug_runs) - set(truth)),
     }

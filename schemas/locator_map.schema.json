@@ -1,10 +1,64 @@
 {
-  "$defs": {},
+  "$defs": {
+    "LocatorScope": {
+      "additionalProperties": true,
+      "properties": {
+        "locator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "LocatorScope",
+      "type": "object"
+    }
+  },
   "$id": "mta://schemas/locator_map.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": {
     "additionalProperties": true,
     "properties": {
+      "frame": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Frame"
+      },
       "locator": {
         "anyOf": [
           {
@@ -28,6 +82,17 @@
         ],
         "default": null,
         "title": "Name"
+      },
+      "scope": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/LocatorScope"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
       },
       "type": {
         "title": "Type",

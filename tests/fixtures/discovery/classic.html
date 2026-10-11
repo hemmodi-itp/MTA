@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Classic controls</title>
+<style>.gone{display:none}.ghost{visibility:hidden}</style></head>
+<body>
+<header><a href="/" id="home-link" data-testid="home">Home</a></header>
+<main>
+  <h1>Sign in</h1>
+  <form id="login" method="post" action="/login">
+    <input type="hidden" name="csrf" value="x">
+    <label for="user">User name</label>
+    <input id="user" name="user" type="text" placeholder="you@example.com" required>
+    <label>Password <input name="pass" type="password"></label>
+    <select id="plan" name="plan"><option value="">Pick a plan</option><option value="pro">Pro</option></select>
+    <textarea name="notes" aria-label="Notes"></textarea>
+    <button type="submit" data-test="submit-btn">Sign in</button>
+    <button type="button" title="Show help"><span aria-hidden="true">?</span></button>
+  </form>
+  <fieldset disabled><legend><button type="button" id="legend-btn">Legend action</button></legend>
+    <input id="in-disabled-fieldset" name="x"></fieldset>
+  <button aria-disabled="true" id="aria-off">Unavailable</button>
+  <input id="gone" class="gone" name="gone">
+  <input id="ghost" class="ghost" name="ghost">
+  <a href="/docs" id="docs">Docs</a>
+  <a id="no-href">Not a link</a>
+  <div role="combobox" aria-label="Country" tabindex="-1"></div>
+  <details><summary>More</summary><input name="in-details"></details>
+</main>
+</body>
+</html>

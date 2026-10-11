@@ -1,12 +1,64 @@
 import fs from 'fs';
 import path from 'path';
-import { Locator, Page } from '@playwright/test';
+import { FrameLocator, Locator, Page } from '@playwright/test';
+
+type LocatorType = 'css' | 'xpath' | 'role' | 'text' | 'label' | 'testid' | 'placeholder';
+
+/** A container the entry is resolved inside (Phase 2 container-scoped locators). */
+export interface LocatorScope {
+    type: LocatorType;
+    locator: string;
+    name?: string;
+}
 
 export interface LocatorEntry {
-    type: 'css' | 'xpath' | 'role' | 'text' | 'label' | 'testid' | 'placeholder';
+    type: LocatorType;
     locator: string;
     name?: string;        // used only when type === 'role'
     description?: string;
+    frame?: string[];     // Phase 2: iframe selectors from the page down to the element's frame
+    scope?: LocatorScope; // Phase 2: resolve inside this container (e.g. a named dialog)
+}
+
+type LocatorBase = Page | FrameLocator | Locator;
+
+function resolveOn(base: LocatorBase, type: string, locator: string, name: string | undefined, key: string): Locator {
+    switch (type) {
+        case 'css':
+            return base.locator(locator);
+        case 'xpath':
+            return base.locator(`xpath=${locator}`);
+        case 'role':
+            return name
+                ? base.getByRole(locator as Parameters<Page['getByRole']>[0], { name })
+                : base.getByRole(locator as Parameters<Page['getByRole']>[0]);
+        case 'text':
+            return base.getByText(locator);
+        case 'label':
+            return base.getByLabel(locator);
+        case 'testid':
+            return base.getByTestId(locator);
+        case 'placeholder':
+            return base.getByPlaceholder(locator);
+        default:
+            throw new Error(`Unknown locator type for '${key}': ${type}`);
+    }
+}
+
+/**
+ * {type, locator, name?, frame?, scope?} -> Locator. Without frame/scope this is exactly the
+ * pre-Phase-2 switch against *page*. Mirrored in Python by
+ * tools/test_creation/script_generator/locator_resolve.py (live validation).
+ */
+export function resolveEntry(page: Page, entry: LocatorEntry, key = '<entry>'): Locator {
+    let base: LocatorBase = page;
+    for (const selector of entry.frame ?? []) {
+        base = base.frameLocator(selector);
+    }
+    if (entry.scope) {
+        base = resolveOn(base, entry.scope.type, entry.scope.locator, entry.scope.name, key);
+    }
+    return resolveOn(base, entry.type, entry.locator, entry.name, key);
 }
 
 type LocatorMap = Record<string, LocatorEntry>;
@@ -62,27 +114,7 @@ class LocatorManagerImpl {
      * delegates here instead of duplicating this switch.
      */
     resolve(page: Page, name: string): Locator {
-        const entry = this.get(name);
-        switch (entry.type) {
-            case 'css':
-                return page.locator(entry.locator);
-            case 'xpath':
-                return page.locator(`xpath=${entry.locator}`);
-            case 'role':
-                return entry.name
-                    ? page.getByRole(entry.locator as Parameters<Page['getByRole']>[0], { name: entry.name })
-                    : page.getByRole(entry.locator as Parameters<Page['getByRole']>[0]);
-            case 'text':
-                return page.getByText(entry.locator);
-            case 'label':
-                return page.getByLabel(entry.locator);
-            case 'testid':
-                return page.getByTestId(entry.locator);
-            case 'placeholder':
-                return page.getByPlaceholder(entry.locator);
-            default:
-                throw new Error(`Unknown locator type for '${name}': ${(entry as LocatorEntry).type}`);
-        }
+        return resolveEntry(page, this.get(name), name);
     }
 }
 

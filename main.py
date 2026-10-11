@@ -34,6 +34,8 @@ def main() -> int:
                         help="Print the persistent project state summary and exit")
     parser.add_argument("--force-rediscover", action="store_true",
                         help="Bypass fingerprint check and re-run discovery even if content is unchanged")
+    parser.add_argument("--force-recrawl", action="store_true",
+                        help="discovery.deep projects: crawl again even if a fresh app_map.json could be reused")
     parser.add_argument("--force-execute", action="store_true",
                         help="Run all test scripts found on disk even when project state has no new_additions")
     parser.add_argument("--module", "-m", default=None,
@@ -86,6 +88,7 @@ def main() -> int:
         "project_name": args.project,
         "workflow": args.workflow,
         "force_rediscover": args.force_rediscover,
+        "force_recrawl": args.force_recrawl,
         "force_execute": args.force_execute,
         "module_filter": args.module,
         "suite": args.suite,

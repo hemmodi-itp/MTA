@@ -13,6 +13,7 @@ from typing import Optional
 import yaml
 
 from tools.constants import PROJECTS_BASE as _PROJECTS_DIR
+from tools.discovery.deep.config import resolve_discovery_config, resolve_roles
 from tools.requirements.config import resolve_requirements_config
 from tools.safety.policy import SafetyPolicy, warn_if_unspecified
 
@@ -51,6 +52,12 @@ def load_project_manifest(project_name: str) -> dict:
     flat["contracts"] = resolve_contracts_config(raw)
     # Phase 1 requirements & traceability — opt-in (`requirements.enabled`, default false).
     flat["requirements"] = resolve_requirements_config(raw)
+    # Phase 2 deep discovery — opt-in (`discovery.deep`, default false) + `auth.roles`
+    # (read even when auth.enabled is false; see tools/discovery/deep/config.py).
+    flat["discovery"] = resolve_discovery_config(raw)
+    roles = resolve_roles(raw)
+    if roles:
+        flat["auth_roles"] = roles
     return {k: v for k, v in flat.items() if v is not None}
 
 

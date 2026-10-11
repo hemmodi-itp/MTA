@@ -432,38 +432,12 @@ def _read_failure_report(ctx: HealingRunContext) -> dict:
 
 
 def _locator_entry_resolves(page, entry: dict) -> bool:
-    """Same {type, locator, name?} -> Locator resolution ActionEngine/
-    LocatorManager.ts perform at test-run time, done in Python for a live
-    dry-run check. Deliberately duplicated from ScriptGenerationAgent's
-    equivalent rather than a cross-agent import — HealingAgent doesn't
-    depend on ScriptGenerationAgent's package."""
-    t = entry.get("type")
-    v = entry.get("locator", "")
-    name = entry.get("name")
-    try:
-        if t == "css":
-            locator = page.locator(v)
-        elif t == "xpath":
-            locator = page.locator(f"xpath={v}")
-        elif t == "role":
-            locator = page.get_by_role(v, name=name) if name else page.get_by_role(v)
-        elif t == "text":
-            locator = page.get_by_text(v)
-        elif t == "label":
-            locator = page.get_by_label(v)
-        elif t == "testid":
-            locator = page.get_by_test_id(v)
-        elif t == "placeholder":
-            locator = page.get_by_placeholder(v)
-        else:
-            return True  # unknown type — can't check, don't reject
-        # Exactly 1, not just >0: a locator matching 2+ elements (e.g. two
-        # "Sign in" buttons — one text, one icon, shown responsively) is a
-        # Playwright strict-mode violation at actual runtime just as surely
-        # as matching 0 — the old ">0" check reported these as fine.
-        return locator.count() == 1
-    except Exception:
-        return True  # a resolution error is "can't tell", not a rejection
+    """Same {type, locator, name?, frame?, scope?} -> Locator resolution LocatorManager.ts
+    performs at test-run time, done in Python for a live dry-run check. Shared with
+    ScriptGenerationAgent through tools/ (Phase 2) instead of two private copies; the
+    count()==1 rule and the fail-open on unknown types / errors are unchanged."""
+    from tools.test_creation.script_generator.locator_resolve import entry_resolves
+    return entry_resolves(page, entry)
 
 
 def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, test_name: str) -> dict:

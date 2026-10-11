@@ -1,0 +1,105 @@
+{
+  "$defs": {
+    "StateBaseline": {
+      "additionalProperties": false,
+      "properties": {
+        "console_errors": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Console Errors",
+          "type": "array"
+        },
+        "console_warnings": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Console Warnings",
+          "type": "array"
+        },
+        "failed_requests": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Failed Requests",
+          "type": "array"
+        },
+        "page_errors": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Page Errors",
+          "type": "array"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "timing": {
+          "additionalProperties": true,
+          "title": "Timing",
+          "type": "object"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "role"
+      ],
+      "title": "StateBaseline",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/baseline.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "const": "baseline",
+      "default": "baseline",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "browser": {
+      "default": "",
+      "title": "Browser",
+      "type": "string"
+    },
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "project": {
+      "title": "Project",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "states": {
+      "additionalProperties": {
+        "$ref": "#/$defs/StateBaseline"
+      },
+      "title": "States",
+      "type": "object"
+    }
+  },
+  "required": [
+    "project",
+    "generated_at"
+  ],
+  "title": "BaselineDoc",
+  "type": "object",
+  "x-mta-artifact": "baseline",
+  "x-mta-kind": "dict"
+}

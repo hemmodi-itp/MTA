@@ -1,0 +1,362 @@
+{
+  "$defs": {
+    "AppState": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "default": "reachable",
+          "enum": [
+            "reachable",
+            "blocked",
+            "not_found",
+            "error"
+          ],
+          "title": "Access",
+          "type": "string"
+        },
+        "elements": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Elements",
+          "type": "array"
+        },
+        "first_seen_depth": {
+          "default": 0,
+          "title": "First Seen Depth",
+          "type": "integer"
+        },
+        "forms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Forms",
+          "type": "array"
+        },
+        "kind": {
+          "default": "page",
+          "enum": [
+            "page",
+            "revealed"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "revealed_by": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RevealedBy"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roles",
+          "type": "array"
+        },
+        "seed": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Seed"
+        },
+        "state_id": {
+          "title": "State Id",
+          "type": "string"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status"
+        },
+        "structural_hash": {
+          "title": "Structural Hash",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "url_template": {
+          "title": "Url Template",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state_id",
+        "url",
+        "url_template",
+        "structural_hash"
+      ],
+      "title": "AppState",
+      "type": "object"
+    },
+    "RevealedBy": {
+      "additionalProperties": false,
+      "properties": {
+        "element": {
+          "additionalProperties": true,
+          "title": "Element",
+          "type": "object"
+        },
+        "from_state": {
+          "title": "From State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from_state",
+        "element"
+      ],
+      "title": "RevealedBy",
+      "type": "object"
+    },
+    "Skipped": {
+      "additionalProperties": false,
+      "properties": {
+        "element": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Element"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "Skipped",
+      "type": "object"
+    },
+    "Transition": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "navigate",
+            "click",
+            "expand"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "element": {
+          "additionalProperties": true,
+          "title": "Element",
+          "type": "object"
+        },
+        "from_state": {
+          "title": "From State",
+          "type": "string"
+        },
+        "resolved_by_template": {
+          "default": false,
+          "title": "Resolved By Template",
+          "type": "boolean"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roles",
+          "type": "array"
+        },
+        "to_state": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "To State"
+        },
+        "unresolved_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unresolved Reason"
+        },
+        "via": {
+          "default": "href",
+          "enum": [
+            "href",
+            "click"
+          ],
+          "title": "Via",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from_state",
+        "action"
+      ],
+      "title": "Transition",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/app_map.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "const": "app_map",
+      "default": "app_map",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "bounds": {
+      "additionalProperties": true,
+      "title": "Bounds",
+      "type": "object"
+    },
+    "config_hash": {
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "duration_s": {
+      "default": 0.0,
+      "title": "Duration S",
+      "type": "number"
+    },
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "project": {
+      "title": "Project",
+      "type": "string"
+    },
+    "roles": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Roles",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "seeds": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Seeds",
+      "type": "array"
+    },
+    "skipped": {
+      "items": {
+        "$ref": "#/$defs/Skipped"
+      },
+      "title": "Skipped",
+      "type": "array"
+    },
+    "states": {
+      "items": {
+        "$ref": "#/$defs/AppState"
+      },
+      "title": "States",
+      "type": "array"
+    },
+    "stopped_by": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Stopped By",
+      "type": "object"
+    },
+    "transitions": {
+      "items": {
+        "$ref": "#/$defs/Transition"
+      },
+      "title": "Transitions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "project",
+    "generated_at",
+    "config_hash"
+  ],
+  "title": "AppMapDoc",
+  "type": "object",
+  "x-mta-artifact": "app_map",
+  "x-mta-kind": "dict"
+}

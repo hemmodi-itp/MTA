@@ -258,3 +258,11 @@ active for the run:
 The Python fallback spec (tier 2, off by default) tags its `describe` with the scenario's ACs plus `@degraded`;
 it is not counted as coverage (it only asserts a page title). Untraced plans (flag off) render byte-for-byte as
 before.
+
+## Deep-discovery locators (Phase 2)
+
+Live locator validation (`_locator_entry_resolves`) now calls the shared resolver
+`tools/test_creation/script_generator/locator_resolve.py` (also used by HealingAgent). Rules are unchanged —
+`count() == 1`, unknown types and resolution errors fail open — and it additionally resolves the optional entry
+fields `frame` (frameLocator chain) and `scope` (container-scoped role) that `locator_map.json` entries built from
+deep-captured elements may carry. Entries built from pre-Phase-2 elements are byte-identical to before.

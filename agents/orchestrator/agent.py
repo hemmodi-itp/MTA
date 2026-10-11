@@ -86,6 +86,21 @@ class OrchestratorAgent:
             "(or re-run with --force-rediscover)."
         )
 
+    def _hint_missing_app_map(self, project_name: str, request: dict) -> None:
+        """Phase 2: cached discovery skips the deep crawl, so turning `discovery.deep` on for an existing
+        project produces no app_map.json. Say how to build it instead of silently doing nothing."""
+        if not (request.get("discovery") or {}).get("deep") or request.get("interactive_scan"):
+            return
+        safe = re.sub(r"[^A-Za-z0-9_-]", "_", project_name).strip("_") or "project"
+        from contracts.artifacts.paths import artifact_path
+        if artifact_path(os.path.join(_PROJECTS_DIR, safe), "app_map", existing_only=True):
+            return
+        self.logger.warning(
+            "discovery.deep is on but app_map.json does not exist and discovery was skipped (cached). "
+            f"Build it with: python -m tools.discovery.deep --project {project_name} "
+            "(or re-run with --force-rediscover)."
+        )
+
     def _check_contracts(self, step: str, result, project_name: str, request: dict):
         """Validate the artifacts *step* produced (contracts.enforce: warn | block).
         Never raises — a validator crash is logged and the result returned as is."""
@@ -200,6 +215,7 @@ class OrchestratorAgent:
                         # Cached artifacts are still checked (logged only — nothing ran).
                         self._check_contracts(step, {"status": "skipped"}, project_name, request)
                         self._hint_missing_requirements(project_name, request)
+                        self._hint_missing_app_map(project_name, request)
                         continue
 
             self.logger.info(f"Starting step {step}")

@@ -222,6 +222,47 @@ def _dom_elements_path_for_module(comprehension_dir: str, module_id: Optional[st
 
 
 def _best_locator_entry(el: dict) -> Optional[dict]:
+    """The locator_map entry for one dom_elements.json element.
+
+    Legacy (pre-Phase-2) elements: the priority chain in _legacy_best_locator_entry,
+    byte-for-byte unchanged. Deep-captured elements (capture_mode == "deep", Phase 2):
+      * a role locator whose (role, name) pair is duplicated on the page is never used bare —
+        a browser-verified container-scoped candidate becomes {type: role, ..., scope: {...}},
+        otherwise the role/text steps are skipped and the chain falls through to
+        testid / id / name / CSS;
+      * an element inside a child frame gets `frame: [iframe selector, ...]`.
+    """
+    if el.get("capture_mode") != "deep":
+        return _legacy_best_locator_entry(el)
+
+    candidates = el.get("locator_candidates") or []
+    scoped = next((c for c in candidates if c.get("type") == "scoped_role"), None)
+    role_duplicated = any(c.get("type") == "role" and c.get("unique") is False for c in candidates)
+
+    if scoped:
+        v = scoped.get("value") or {}
+        container = v.get("container") or {}
+        scope = {"type": "role", "locator": container.get("role", "")}
+        if container.get("name"):
+            scope["name"] = container["name"]
+        entry: Optional[dict] = {"type": "role", "locator": v.get("role", ""), "name": v.get("name", ""), "scope": scope}
+    elif role_duplicated:
+        pw = {k: val for k, val in (el.get("playwright_locators") or {}).items()
+              if k not in ("get_by_role", "get_by_text")}
+        rec = next((c for c in candidates if c.get("type") not in ("role", "scoped_role")), None)
+        if rec is None:
+            rec = {"type": "css", "value": {"css": (el.get("technical_locators") or {}).get("css", "")}}
+        entry = _legacy_best_locator_entry({**el, "playwright_locators": pw, "recommended_locator": rec})
+    else:
+        entry = _legacy_best_locator_entry(el)
+
+    frame_path = ((el.get("frame") or {}).get("path")) or []
+    if entry and frame_path:
+        entry["frame"] = list(frame_path)
+    return entry
+
+
+def _legacy_best_locator_entry(el: dict) -> Optional[dict]:
     """Same priority chain as _best_playwright_expr, extended to reach every
     LocatorEntry.type LocatorManager.ts supports (adds label, xpath):
     placeholder > role > label > text > id > name > css > testid >
@@ -287,11 +328,19 @@ def _entry_module(entry: dict) -> str:
     return entry.get("_module_id") or "_default"
 
 
-def _locator_value_key(entry: dict) -> Tuple[str, str, str]:
+def _locator_value_key(entry: dict) -> Tuple[str, str, str, str, str]:
     """A hashable fingerprint of the resolved locator itself (ignoring key
     name/description) — used to detect the same element re-appearing under a
-    new id instead of minting a duplicate key for an identical locator."""
-    return (entry.get("type") or "", entry.get("locator") or "", entry.get("name") or "")
+    new id instead of minting a duplicate key for an identical locator.
+    Phase 2: the container scope and frame chain are part of the locator, so two
+    "Save" buttons scoped to different dialogs stay two entries (both "" when absent)."""
+    scope = entry.get("scope")
+    frame = entry.get("frame")
+    return (
+        entry.get("type") or "", entry.get("locator") or "", entry.get("name") or "",
+        json.dumps(scope, sort_keys=True) if scope else "",
+        json.dumps(frame) if frame else "",
+    )
 
 
 def _locator_fields_equal(a: dict, b: dict) -> bool:
@@ -304,7 +353,8 @@ def _apply_locator_update(existing_entry: dict, new_entry: dict, loc_id: str, mo
     Clears a stale `name` (role-type only) when the new locator type doesn't
     carry one, rather than leaving it dangling from a prior role-type entry."""
     merged = dict(existing_entry)
-    merged.pop("name", None)
+    for stale in ("name", "scope", "frame"):
+        merged.pop(stale, None)
     merged.update(new_entry)
     merged["_source_locator_id"] = loc_id
     merged["_module_id"] = module_id
@@ -330,10 +380,10 @@ def _mint_key(el: dict, used_keys: set) -> str:
     elif display_text and _slugify(display_text):
         base = _slugify(display_text)
     else:
-        base = f"{tag}_{locator_id.lower().replace('-', '_')}"
+        base = _slugify(f"{tag}_{locator_id}") or f"el_{locator_id.lower().replace('-', '_')}"
 
     if not base:
-        base = f"{tag}_{locator_id.lower().replace('-', '_')}"
+        base = _slugify(f"{tag}_{locator_id}") or f"el_{locator_id.lower().replace('-', '_')}"
 
     key = base
     n = 2
@@ -540,7 +590,8 @@ def repair_named_locator(locator_map_path: str, comprehension_dir: str, key: str
     if not new_entry:
         return False
 
-    entry.pop("name", None)
+    for stale in ("name", "scope", "frame"):
+        entry.pop(stale, None)
     entry.update(new_entry)
     locator_map[key] = entry
 

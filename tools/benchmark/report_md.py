@@ -38,6 +38,21 @@ def render_markdown(metrics: Dict[str, Any], meta: Dict[str, Any]) -> str:
     ]
     if metrics.get("ac_extraction_recall") is not None:
         lines.append(f"| AC extraction recall (vs acs.yaml) | {_pct(metrics['ac_extraction_recall'])} |")
+    disc = metrics.get("discovery")
+    if disc:
+        lines.append(f"| Deep discovery (Phase 2) | {disc.get('status')} in {disc.get('seconds')} s — "
+                     f"{disc.get('states')} states, {disc.get('forms')} forms, {disc.get('probes')} probes, "
+                     f"{disc.get('endpoints')} endpoints |")
+        for key, label in (("element_recall_link_pct", "Element recall, link-reachable (vs elements.yaml)"),
+                           ("constraint_capture_pct", "Constraint capture"),
+                           ("page_coverage_pct", "Page coverage (app_map)"),
+                           ("oracle_match_pct", "Observed validation messages (vs validation_messages.yaml)")):
+            if disc.get(key) is not None:
+                lines.append(f"| {label} | {disc[key]}% |")
+    by_module = rt.get("discovery_by_module") or {}
+    if by_module:
+        shown = ", ".join(f"{m} {v if v is not None else 'n/a'}" for m, v in by_module.items())
+        lines.append(f"| Discovery step per module (s) | {shown} |")
     lines += [
         "",
     ]

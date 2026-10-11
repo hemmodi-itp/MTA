@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Custom widgets</title>
+<style>.card{cursor:pointer;padding:8px;border:1px solid #ccc}.card *{cursor:pointer}</style></head>
+<body>
+<main>
+  <div role="button" tabindex="0" id="div-button">Div button</div>
+  <span role="link" tabindex="0" id="span-link">Span link</span>
+  <div role="tablist" aria-label="Sections">
+    <div role="tab" id="tab-a" aria-selected="true" aria-controls="panel-a">Tab A</div>
+    <div role="tab" id="tab-b" aria-selected="false" aria-controls="panel-b">Tab B</div>
+  </div>
+  <div role="tabpanel" id="panel-a" aria-labelledby="tab-a">Panel A</div>
+  <ul role="menu" aria-label="Actions"><li role="menuitem" id="mi-1">Open</li><li role="menuitemcheckbox" aria-checked="false" id="mi-2">Pin</li></ul>
+  <div role="switch" aria-checked="false" tabindex="0" id="sw">Dark mode</div>
+  <div role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="3" aria-label="Volume" tabindex="0" id="sl"></div>
+  <div role="spinbutton" aria-valuemin="1" aria-valuemax="5" aria-valuenow="2" aria-label="Seats" aria-required="true" tabindex="0" id="spin"></div>
+  <div role="checkbox" aria-checked="false" tabindex="0" id="cb">Accept</div>
+  <ul role="tree" aria-label="Files"><li role="treeitem" id="ti">src</li></ul>
+  <div role="listbox" aria-label="Colours"><div role="option" id="opt-red">Red</div></div>
+  <div role="searchbox" contenteditable="true" aria-label="Find" id="sb"></div>
+  <div contenteditable="true" id="editor" aria-label="Editor"></div>
+  <div onclick="void 0" id="onclick-div">Clickable div</div>
+  <span tabindex="0" id="focus-span">Focusable span</span>
+  <div class="card" id="card"><h3>Product card</h3><p>Click anywhere</p></div>
+  <details id="det"><summary id="sum">Show details</summary><p>Hidden text</p></details>
+  <input type="date" id="d" name="d" min="2026-01-01" max="2026-12-31">
+  <input type="datetime-local" id="dt" name="dt">
+  <input type="time" id="t" name="t">
+  <input type="range" id="r" name="r" min="0" max="100" step="5">
+  <input type="color" id="c" name="c">
+  <input type="file" id="f" name="f" accept=".png,.jpg" multiple>
+</main>
+</body>
+</html>

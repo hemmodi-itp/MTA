@@ -36,6 +36,11 @@ ARTIFACTS: Dict[str, ArtifactSpec] = {
         ArtifactSpec("locator_map", m.LocatorEntry, "locator_map.json", "plain"),
         ArtifactSpec("requirements", m.RequirementsV2, "requirements.json", "dict"),
         ArtifactSpec("traceability", m.TraceabilityV2, "traceability.json", "dict"),
+        ArtifactSpec("app_map", m.AppMapV2, "app_map.json", "dict"),
+        ArtifactSpec("form_model", m.FormModelV2, "form_model.json", "dict"),
+        ArtifactSpec("api_inventory", m.ApiInventoryV2, "api_inventory.json", "dict"),
+        ArtifactSpec("permission_matrix", m.PermissionMatrixV2, "permission_matrix.json", "dict"),
+        ArtifactSpec("baseline", m.BaselineV2, "baseline.json", "dict"),
     ]
 }
 

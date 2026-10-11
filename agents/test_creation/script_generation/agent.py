@@ -777,34 +777,10 @@ class ScriptGenerationAgent(BaseAgent):
 
     @staticmethod
     def _locator_entry_resolves(page, entry: dict) -> bool:
-        t = entry.get("type")
-        v = entry.get("locator", "")
-        name = entry.get("name")
-        try:
-            if t == "css":
-                locator = page.locator(v)
-            elif t == "xpath":
-                locator = page.locator(f"xpath={v}")
-            elif t == "role":
-                locator = page.get_by_role(v, name=name) if name else page.get_by_role(v)
-            elif t == "text":
-                locator = page.get_by_text(v)
-            elif t == "label":
-                locator = page.get_by_label(v)
-            elif t == "testid":
-                locator = page.get_by_test_id(v)
-            elif t == "placeholder":
-                locator = page.get_by_placeholder(v)
-            else:
-                return True  # unknown type — can't check, don't reject
-            # Exactly 1, not just >0: a locator matching 2+ elements (e.g. two
-            # "Sign in" buttons — one text, one icon, shown responsively) is a
-            # Playwright strict-mode violation at actual runtime just as
-            # surely as matching 0 — the real SC-001/SC-003 failures passed
-            # this check under the old ">0" test and were only caught live.
-            return locator.count() == 1
-        except Exception:
-            return True  # a resolution error is "can't tell", not a rejection
+        # Shared with HealingAgent (Phase 2): same count()==1 rule and the same fail-open on
+        # unknown types / errors, plus the optional `frame` / `scope` entry fields.
+        from tools.test_creation.script_generator.locator_resolve import entry_resolves
+        return entry_resolves(page, entry)
 
     def _alt_llm(self, model: str, request: dict):
         try:

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Duplicate names</title></head>
+<body>
+<header><nav aria-label="Main"><a href="/">Home</a> <a href="/settings">Settings</a></nav></header>
+<main>
+  <h1>Users</h1>
+  <dialog open aria-labelledby="edit-title" id="edit-dialog">
+    <h2 id="edit-title">Edit user</h2>
+    <input name="email" aria-label="Email">
+    <button id="save-edit">Save</button>
+  </dialog>
+  <div role="dialog" aria-label="Create user" id="create-dialog">
+    <input name="new-email" aria-label="New email">
+    <button id="save-create">Save</button>
+  </div>
+  <form aria-label="Newsletter"><input name="nl" aria-label="Newsletter email"><button id="sub-1">Submit</button></form>
+  <form aria-label="Feedback"><textarea name="fb" aria-label="Feedback text"></textarea><button id="sub-2">Submit</button></form>
+  <form><button id="unnamed-1">Continue</button></form>
+  <form><button id="unnamed-2">Continue</button></form>
+</main>
+<footer><a href="/">Home</a></footer>
+</body>
+</html>

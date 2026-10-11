@@ -99,6 +99,11 @@ contracts:
   enforce: warn                       # warn (default) | block — artifact contract violations at step boundaries
 requirements:                         # Phase 1 — see "Requirements & Traceability" below
   enabled: false                      # default false; true → requirements.json, AC-tagged tests, traceability.json
+discovery:                            # Phase 2 — see "Deep Discovery" below
+  deep: false                         # default false; true → deep capture + crawl + form probes + roles + baseline
+  max_pages: 25                       # per role
+  max_depth: 4
+  max_minutes: 10
 
 input:
   brd_dir: application_assets/projects/myapp/inputs/   # optional — enables LLM comprehension
@@ -157,6 +162,31 @@ The actual browser-driven discovery step behind Discovery/Locator agents, via `s
 6. **Persist** — `dom_elements.json` is **merge-written** across rescans (locator IDs are stabilized by content-hash via `ArtifactRegistry`, never a bare per-scan counter), plus `dom_intents.json` via `tools/intent_generator.py`.
 
 Also supports pre-scan `setup_steps` (login/click sequences), a `storageState`/live-login auth path, and a fully separate **interactive recording mode** (`--record`) that captures a human session instead of driving the browser itself.
+
+> **Audit corrections:** the real locator scores are testid > id > label > placeholder > role > name
+> (`getByText` is never a candidate), and the 12-attribute loop captures no field constraints and only the main
+> frame (`docs/audit/current_state.md` §2). With `discovery.deep: true` the steps above change — see below.
+
+### Deep capture (Phase 2, `discovery.deep: true`)
+
+Steps 2–3 are replaced by **one `page.evaluate()` per frame** (`tools/discovery/deep/extract.js`). On buggy_shop's
+module pages, element collection takes 0.02–0.2 s instead of 0.9–1.9 s. Classic elements keep exactly the legacy fields
+and `tag`, so their `LOC-` ids do not change (parity-tested on fixtures and buggy_shop). Added:
+
+- **Wider capture:** ARIA widget roles (`button, link, tab, menuitem*, checkbox, radio, switch, slider, spinbutton,
+  option, treeitem, searchbox, textbox`), `contenteditable`, `[onclick]`, focusable `[tabindex]`, `summary` /
+  `details`, and the outermost `cursor: pointer` element with no interactive ancestor or descendant. Each element
+  records a `capture_reason`.
+- **All frames** on allowed hosts (`frame: {path, url}`; locators get a `frameLocator` chain) and **open shadow
+  roots** (`shadow: true`, host-prefixed CSS that Playwright pierces). Closed shadow roots cannot be reached and are
+  listed as a limitation.
+- **Constraints** on every form control: `required`, `aria-required`, `maxlength`, `minlength`, `pattern`, `min`,
+  `max`, `step`, `type`, `inputmode`, `accept`, `multiple`, `autocomplete`, `readonly`, `disabled`, default value,
+  `<select>`/datalist options, radio group, error container (`aria-describedby` / `aria-errormessage`), owning form.
+- **Container-scoped locators** instead of CSS for duplicated role names. The nearest named dialog / form / landmark /
+  group / row is tried in the browser and kept only if `container.getByRole(role, {name})` matches exactly that one
+  element. The locator map then writes `{type: "role", locator, name, scope: {type: "role", locator, name}}`.
+  `LocatorManager.ts` and the Python validators resolve `scope` and `frame`.
 
 ---
 
@@ -265,6 +295,9 @@ Boundary max length is derived from field constraints in the scenario; defaults 
 
 - `comprehension/dom_elements.json` — the raw discovery snapshot, untouched by this agent.
 - **`test_creation/locator_map.json`** — one flat, project-wide file merge-written from every module's `dom_elements.json`. This is the *only* place a locator gets fixed: matched elements update in place, byte-identical relocated elements reuse the existing key, and only genuinely ambiguous adds/removals go to an LLM reconciliation call. An entry whose source element is confirmed gone is kept (never deleted) and flagged to `human_review_queue.json`.
+- **Deep-discovery entries (Phase 2)** may carry `frame: [iframe selector, …]` and `scope: {type, locator, name?}`.
+  `LocatorManager.resolve` applies the frame chain, then the scope, then the entry. Entries without them resolve
+  exactly as before.
 - **`test_creation/pages.ts`** — one generated Page-factory class per module (a `constructor(page)` + one `Locator` getter per key) plus a `PAGE_REGISTRY`, regenerated every run. At test-run time, the shared runtime fixture resolves the spec's module, instantiates its Page class, and `ActionEngine` resolves every `locator_key` by property lookup on that instance.
 - **Locator validation** — once per project per run, grouped by module (one headless browser launch per module), every `locator_map.json` entry is live-checked against the real page; a key must resolve to exactly one element (`count() == 1`, not just `> 0`) or it's excluded and flagged as drift.
 
@@ -497,6 +530,50 @@ python -m tools.requirements.build --project <name> [--module M01] [--no-llm]
 
 Specs generated before the flag was on are traced through their scenario (`link: legacy`).
 
+## Deep Discovery (Phase 2)
+
+Opt in per project with `discovery.deep: true`. It defaults to `false` and is on in the project template and the
+buggy_shop benchmark. With the flag off, the scanner, `dom_elements.json`, `locator_map.json` and `pages.ts` are
+unchanged.
+
+All logic is in `tools/discovery/deep/`. The browser primitives shared with the Agent-Eval crawler (route templating,
+skip-link rules, readiness probe, login helper) moved to `tools/discovery/web/` and are re-exported from
+`engines/runtime/discovery.py`.
+
+DiscoveryAgent deep-scans the module page (see "Deep capture" above), then runs a **project-level deep pass**:
+- seeded from every module URL plus `project.url`;
+- run once and reused across module runs for `discovery.reuse_minutes` (default 60), unless `--force-recrawl`;
+- writes five artifacts to `test_comprehension/`.
+
+| Artifact | Contents |
+|---|---|
+| `app_map.json` | **Crawl:** breadth-first within `allowed_hosts`, bounded by `max_pages` (per role), `max_depth` and `max_minutes`. **States:** URL template (`/products/{id}`, `?page&q`) plus DOM structural hash; text, values and digit runs in ids are ignored; one sample per template. **Expanders:** non-destructive tabs, `aria-expanded`, menus, dialog triggers and `summary` are opened to reveal hidden states (`kind: revealed`, `revealed_by`). **Transitions:** `from_state → action/element → to_state`. Also: skipped URLs and elements with a reason, and the elements of every state in the dom_elements shape. |
+| `form_model.json` | **Observed validation oracle.** Each form is submitted empty, then with each field invalid in turn while the other fields hold deterministic valid values. Probes: required missing, too long (`maxlength+1`, or `validation.long_text_length`), wrong type, below/above `min`/`max`, step mismatch, pattern violation, wrong file type. Each probe records the native `validationMessage`, visible error text attributed to a field, `aria-invalid`, focus, network calls, and whether the app *accepted* the bad input. Per field, `observed_messages` gives the real message per probe kind (`source: native \| client \| server`). |
+| `api_inventory.json` | Every page load, form submission, XHR and fetch: method, templated path, query names, status codes, whether an auth header or cookie was present, request field names, inferred JSON schemas, the triggering UI action, roles. No bodies, header values or cookie values are stored. |
+| `permission_matrix.json` | One crawl per role in `auth.roles`, read even when `auth.enabled` is false. Strategies: `credentials` (env-var live login), `storageState`, `setup` (module-style steps), `anonymous: true`. Each page template one role reached is then deep-linked by the other roles. **Per template × role:** `reachable`, `reachable_unlinked` (not linked, but the URL loads: an authorization finding), `blocked`, `not_found`. **Per action × role:** `visible`, `hidden`, or the page's access; `differs` marks role-dependent actions. |
+| `baseline.json` | Per state: console errors and warnings, page errors, failed requests, navigation timing (TTFB, DCL, load, FCP, bytes, requests). Later phases use it to tell new errors from existing noise. |
+
+**Safety.** Discovery explores; it does not act.
+- It never clicks an element the action classifier calls destructive, whatever `allow_destructive` says.
+- It never follows logout, delete or off-host links.
+- A route guard aborts every write request (non-GET), except during a form-probe submit in `local`, `dev` or
+  `staging`.
+- On `prod`, or when no environment is declared, the probes are **client-only**: writes are aborted and nothing
+  reaches the server.
+- These forms are listed in `skipped_forms` and not probed: forms with a destructive submit (unless allowed), forms
+  without fillable fields, and GET forms without declared constraints.
+
+Full-mode probes can still create data when the app wrongly accepts invalid input; that is recorded as
+`accepted: true`.
+
+**Elements of crawled pages stay in `app_map.json`.** `dom_elements.json` keeps describing the module page, because
+specs start at the module URL. Phase 3 generates navigation-aware tests from `app_map`.
+
+```bash
+python -m tools.discovery.deep --project <name> [--force] [--no-probes] [--enable]   # the deep pass alone (no LLM)
+python main.py --project <name> --module M01 --force-recrawl                         # crawl again inside the pipeline
+```
+
 ## Artifact Contracts (Phase 0)
 
 Every pipeline artifact has a Pydantic v2 contract (`contracts/artifacts/models.py`) and an
@@ -531,6 +608,7 @@ python -m tools.benchmark.run --app buggy_shop                           # full 
 python -m tools.benchmark.run --app buggy_shop --skip-generate --no-healing  # re-score the existing suite, no LLM
 python -m tools.benchmark.run --app buggy_shop --rescore benchmarks/results/<file>.json  # recompute a saved result (e.g. after pricing)
 python -m tools.benchmark.ac_recall --app buggy_shop [--strip-ids] [--no-llm]   # Phase 1: AC extraction recall vs acs.yaml
+python -m tools.benchmark.discovery_metrics --app buggy_shop [--repeat 3]         # Phase 2: deep-discovery metrics (no LLM)
 ```
 
 The runner generates the suite with the unchanged pipeline (module by module), runs it on the
@@ -545,6 +623,19 @@ reported for direct links only (not inherited from the scenario), and the run re
 of the pipeline's own `requirements.json` against the hand-labelled `benchmarks/apps/buggy_shop/acs.yaml`.
 `ac_recall` measures extraction alone — on the BRD as written and, with `--strip-ids`, with every REQ/AC id
 removed so the LLM must find the criteria itself (matching is by text, never by id).
+
+Since Phase 2, the runner does the project's deep discovery once, **on its own app instance**, before generation.
+Full-mode probes can change app state, so generation then starts from a fresh instance. The runner records:
+- `runtime_s.deep_discovery`;
+- the discovery step time of every module run;
+- a `discovery` block scored against the app's ground truth.
+
+`discovery_metrics` measures the same without the LLM pipeline:
+- element recall against `benchmarks/apps/buggy_shop/elements.yaml`, gated on link-reachable elements;
+- constraint capture;
+- page coverage of `app_map`;
+- observed messages against `validation_messages.yaml`;
+- single-page scan time, classic vs deep, per module URL.
 
 ---
 
@@ -605,6 +696,11 @@ URL + BRD
         ├─ comprehension/dom_elements.json       ← locator source of truth
         ├─ comprehension/business_scenarios.json ← scenario source of truth (+ ac_ids, Phase 1)
         ├─ comprehension/requirements.json       ← REQ → atomic AC (Phase 1, requirements.enabled)
+        ├─ comprehension/app_map.json            ← states + transitions (Phase 2, discovery.deep)
+        ├─ comprehension/form_model.json         ← forms + observed validation messages (Phase 2)
+        ├─ comprehension/api_inventory.json      ← requests seen during the crawl (Phase 2)
+        ├─ comprehension/permission_matrix.json  ← page / action access per role (Phase 2)
+        ├─ comprehension/baseline.json           ← console / page errors + timing per state (Phase 2)
         ├─ comprehension/interaction_catalog.json ← docs only; human-readable UI catalog
         └─ test_creation/intents.yaml            ← ui_scanner-sourced intent list
 
@@ -639,6 +735,7 @@ URL + BRD
 | `business_scenarios.json` | ComprehensionAgent | TestDataAgent, SemanticMapAgent, ScriptGenerationAgent |
 | `requirements.json` | ComprehensionAgent (Phase 1) | ScriptGenerationAgent (tracing), traceability, ReportingAgent |
 | `traceability.json` | ScriptGenerationAgent, UIExecutionAgent, ReportingAgent (Phase 1) | ReportingAgent, benchmark scorer |
+| `app_map.json`, `form_model.json`, `api_inventory.json`, `permission_matrix.json`, `baseline.json` | DiscoveryAgent (Phase 2, `discovery.deep`) | benchmark `discovery_metrics`; Phase 3+ test design |
 | `test_data.json` | TestDataAgent | ScriptGenerationAgent |
 | `scenario_element_map.json` | SemanticMapAgent | ScriptGenerationAgent |
 | `locator_map.json` / `pages.ts` | ScriptGenerationAgent | UIExecutionAgent (runtime), HealingAgent |
@@ -676,6 +773,8 @@ application_assets/projects/{project}/
 │   ├── dom_elements.json                   ← locator source of truth
 │   ├── business_scenarios.json             ← scenario source of truth
 │   ├── requirements.json                   ← REQ → atomic AC (Phase 1)
+│   ├── app_map.json, form_model.json, api_inventory.json,
+│   │   permission_matrix.json, baseline.json  ← deep discovery (Phase 2)
 │   ├── interaction_catalog.json            ← docs-only UI catalog
 │   └── modules/{module_id}/                ← per-module scan/scenario outputs (modular projects)
 │
@@ -759,10 +858,13 @@ tools/
 ├── requirements/                  ← Phase 1 shared core: BrdIndex, extraction, linking, traceability, build CLI
 ├── suite_orchestrator.py          ← 4-level test execution tool (individual/module/suite/workflow)
 ├── playwright_scanner.py          ← the DOM scanner behind Discovery/LocatorAgent
+├── discovery/deep/                ← Phase 2 deep discovery: extract.js/.py, crawl, forms, network, roles, baseline
+├── discovery/web/                 ← browser primitives shared with Agent-Eval (urls, links, ready, login)
 ├── scaffold_agent.py              ← generates a new agent's 7-file skeleton
 ├── test_creation/
 │   └── script_generator/
 │       ├── build_dom_locator_map.py  ← locator priority extraction + merge into locator_map.json
+│       ├── locator_resolve.py        ← Python mirror of LocatorManager.resolve (frame / scope aware)
 │       └── spec_renderer.py          ← deterministic action-plan → .spec.ts renderer
 ├── test_execution/
 │   ├── healing/
@@ -932,6 +1034,9 @@ python main.py --project AppEvolve --module M01
 
 # Force re-discovery / re-execution even without detected changes
 python main.py --project AppEvolve --force-rediscover --force-execute
+
+# discovery.deep projects: crawl again even if a fresh app_map.json could be reused
+python main.py --project AppEvolve --module M01 --force-recrawl
 
 # Run a named suite (bypasses the new_additions guard)
 python main.py --project AppEvolve --suite smoke

@@ -37,6 +37,12 @@ class DomElement(Lenient):
     recommended_locator: Optional[Dict[str, Any]] = None
     locator_candidates: Optional[List[Any]] = None
     quality: Optional[Dict[str, Any]] = None
+    # Phase 2 deep capture (discovery.deep) — optional, absent on legacy scans
+    capture_mode: Optional[str] = None
+    capture_reason: Optional[str] = None
+    constraints: Optional[Dict[str, Any]] = None
+    containers: Optional[List[Dict[str, Any]]] = None
+    frame: Optional[Dict[str, Any]] = None
 
 
 class DomPage(Lenient):
@@ -52,6 +58,7 @@ class DomElementsV2(Lenient):
     project: Optional[str] = None
     elements: List[DomElement] = Field(default_factory=list)
     pages: Optional[List[DomPage]] = None
+    scan: Optional[Dict[str, Any]] = None          # Phase 2 deep-scan stats
 
 
 # ── business_scenarios.json ──────────────────────────────────────────────────
@@ -218,10 +225,18 @@ class PlaywrightReportLoose(Lenient):
 
 # ── locator_map.json (no envelope; read by the TS runtime) ───────────────────
 
+class LocatorScope(Lenient):
+    type: str
+    locator: Optional[str] = None
+    name: Optional[str] = None
+
+
 class LocatorEntry(Lenient):
     type: str
     locator: Optional[str] = None
     name: Optional[str] = None
+    frame: Optional[List[str]] = None              # Phase 2: frameLocator chain
+    scope: Optional[LocatorScope] = None           # Phase 2: container-scoped locator
 
 
 # ── requirements.json / traceability.json (Phase 1) ──────────────────────────
@@ -231,3 +246,12 @@ class LocatorEntry(Lenient):
 from tools.requirements.models import RequirementsDoc as RequirementsV2  # noqa: E402
 from tools.requirements.models import TraceabilityDoc as TraceabilityV2  # noqa: E402
 
+
+# ── Phase 2 deep discovery artifacts ─────────────────────────────────────────
+# New artifacts; contracts are the strict producer models in tools/discovery/deep/models.py.
+
+from tools.discovery.deep.models import ApiInventoryDoc as ApiInventoryV2  # noqa: E402
+from tools.discovery.deep.models import AppMapDoc as AppMapV2  # noqa: E402
+from tools.discovery.deep.models import BaselineDoc as BaselineV2  # noqa: E402
+from tools.discovery.deep.models import FormModelDoc as FormModelV2  # noqa: E402
+from tools.discovery.deep.models import PermissionMatrixDoc as PermissionMatrixV2  # noqa: E402

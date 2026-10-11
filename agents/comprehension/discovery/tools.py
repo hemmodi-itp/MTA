@@ -6,6 +6,7 @@ single, clear import point (mirrors the pattern already established for
 ComprehensionAgent's own tools.py).
 """
 
+from tools.discovery.deep import ensure_app_discovery
 from tools.discovery.dom_scan import scan_dom, save_dom_scan
 from tools.discovery.interactive_dom_scan import promote_checkpoint
 from tools.discovery.paths import comprehension_scan_dir
@@ -16,6 +17,7 @@ from tools.discovery.synthesize_scenarios import (
 )
 
 __all__ = [
+    "ensure_app_discovery",
     "scan_dom",
     "save_dom_scan",
     "promote_checkpoint",

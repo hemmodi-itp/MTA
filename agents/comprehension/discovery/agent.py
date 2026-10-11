@@ -58,6 +58,7 @@ import yaml
 from agents.base_agent import BaseAgent
 from agents.comprehension.comprehension_agent.agent import ComprehensionAgent
 from agents.comprehension.discovery.tools import (
+    ensure_app_discovery,
     scan_dom,
     save_dom_scan,
     promote_checkpoint,
@@ -149,6 +150,13 @@ class DiscoveryAgent(BaseAgent):
 
         result["mode"] = mode
         result["module"] = "discovery"
+
+        deep = result.get("deep_discovery") or {}
+        if deep.get("status") == "failed":
+            result["partial_reasons"] = list(result.get("partial_reasons") or []) + [
+                f"deep discovery failed: {deep.get('error', 'unknown error')}"]
+            if result.get("status") == "success":
+                result["status"] = "partial"
 
         module_id = request.get("module_filter")
         interactive = bool(request.get("interactive_scan", False))
@@ -675,7 +683,13 @@ class DiscoveryAgent(BaseAgent):
             # still running, not just after save_dom_scan() at the end.
             os.makedirs(comp_dir, exist_ok=True)
             checkpoint_path = self._dom_checkpoint_path(request, safe)
-            raw = scan_dom(url=url, browser=browser, headless=headless, storage_state_path=storage_state_path, auth_config=live_auth, setup_steps=setup_steps, checkpoint_path=checkpoint_path)
+            deep_config = _deep_config(request)
+            url_allowed = None
+            if deep_config is not None:
+                from tools.safety.policy import SafetyPolicy
+                url_allowed = SafetyPolicy.from_request(request.get("safety")).url_allowed
+                self.logger.info("  discovery.deep is on — batched deep element capture (frames, shadow DOM, constraints)")
+            raw = scan_dom(url=url, browser=browser, headless=headless, storage_state_path=storage_state_path, auth_config=live_auth, setup_steps=setup_steps, checkpoint_path=checkpoint_path, deep_config=deep_config, url_allowed=url_allowed)
             paths = save_dom_scan(
                 scan_data=raw,
                 url=url,
@@ -695,13 +709,23 @@ class DiscoveryAgent(BaseAgent):
             dom_intents_raw = _load_dom_intents_raw(paths["dom_intents"])
             self.logger.info(f"  {len(dom_intents_raw)} intents extracted")
 
-            return {
+            out = {
                 "dom_status": "success",
                 "dom_intents_count": len(dom_intents_raw),
                 "dom_intents_path": paths["dom_intents"],
                 "dom_elements_path": paths["dom_elements"],
                 "dom_intents_raw": dom_intents_raw,
             }
+            if raw.get("scan"):
+                out["dom_scan_stats"] = raw["scan"]
+            if deep_config is not None:
+                # Phase 2: project-level crawl / forms / network / roles / baseline (run once,
+                # reused across module runs). Never blocking — a failure is a partial reason.
+                out["deep_discovery"] = ensure_app_discovery(
+                    project_name, request=request, force=bool(request.get("force_recrawl")),
+                    log=self.logger.info,
+                )
+            return out
 
         except Exception as exc:
             self.logger.error(f"DOM scan failed: {exc}")
@@ -994,6 +1018,15 @@ def _merge(comp: Dict, scan: Dict) -> Dict:
     if "dom_intents_raw" in scan:
         merged["dom_intents_raw"] = scan["dom_intents_raw"]
     return merged
+
+
+def _deep_config(request: dict) -> Optional[dict]:
+    """The request's resolved `discovery` block when Phase 2 deep discovery is on, else None
+    (None keeps the legacy scanner path byte-for-byte)."""
+    cfg = request.get("discovery")
+    if isinstance(cfg, dict) and cfg.get("deep"):
+        return cfg
+    return None
 
 
 def _load_dom_intents_raw(path: str) -> list:

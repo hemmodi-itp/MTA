@@ -66,16 +66,64 @@ def _pricing() -> Dict[str, Dict[str, float]]:
 
 # ── generation ────────────────────────────────────────────────────────────────
 
+def _discovery_step_seconds(project: str, since: float) -> Optional[float]:
+    """Duration of the `discovery` step in the newest workflow run file written for *project*
+    after *since* (epoch seconds) — the per-module discovery time (Phase 2)."""
+    import glob
+
+    files = [f for f in glob.glob(os.path.join(REPO_ROOT, "workflow_runs", f"*_{project}_*.json"))
+             if os.path.getmtime(f) >= since]
+    if not files:
+        return None
+    try:
+        with open(max(files, key=os.path.getmtime), encoding="utf-8") as f:
+            trace = json.load(f).get("execution_trace") or []
+    except (OSError, ValueError):
+        return None
+    step = next((t for t in trace if t.get("step") == "discovery"), None)
+    return round(step["duration_ms"] / 1000, 1) if step and step.get("duration_ms") is not None else None
+
+
+def deep_discovery_pass(app, port: int, server_log: str) -> Dict[str, Any]:
+    """Phase 2: run deep discovery once, on its OWN app instance, before generation.
+
+    Full-mode validation probes can change the app's in-memory state (an invalid input the app
+    wrongly accepts creates data), so generation then starts from a fresh instance. The module
+    runs reuse the app_map this pass wrote (same config hash, younger than reuse_minutes)."""
+    from tools.discovery.deep.service import ensure_app_discovery
+
+    started = time.monotonic()
+    with AppServer(app, port, log_path=server_log):
+        result = ensure_app_discovery(app.project_name, force=True, log=_log)
+    out: Dict[str, Any] = {"status": result.get("status"), "seconds": round(time.monotonic() - started, 1),
+                           **{k: v for k, v in result.items() if k not in ("paths", "status")}}
+    if result.get("status") == "success" and os.path.exists(app.elements_yaml):
+        from tools.benchmark.discovery_metrics import score_artifacts
+
+        scored = score_artifacts(app.name, os.path.dirname(result["paths"]["app_map"]))
+        out["metrics"] = {
+            "element_recall_link_pct": scored["element_recall"]["recall_link_pct"],
+            "element_recall_all_pct": scored["element_recall"]["recall_all_pct"],
+            "constraint_capture_pct": scored["constraint_capture"]["pct"],
+            "page_coverage_pct": scored["page_coverage"]["pct"],
+            "oracle_match_pct": scored["oracle_match"]["pct"],
+        }
+    return out
+
+
 def generate(project: str, modules: List[str], usage_log: str, timeout_s: int,
-             workflow: str) -> Tuple[Dict[str, int], float]:
+             workflow: str) -> Tuple[Dict[str, int], float, Dict[str, Optional[float]]]:
     """Run the unchanged pipeline once per module (`main.py --module <id>`), the way
     modular projects are run: without --module, request["url"] is empty and discovery
     silently falls back to BRD-only mode (no DOM scan, no specs) — see
-    docs/audit/current_state.md A13. Returns ({module: returncode}, seconds)."""
+    docs/audit/current_state.md A13. Returns ({module: returncode}, seconds,
+    {module: discovery-step seconds})."""
     env = {**os.environ, "MTA_LLM_USAGE_LOG": usage_log, "PYTHONIOENCODING": "utf-8"}
     started = time.monotonic()
     codes: Dict[str, int] = {}
+    discovery_s: Dict[str, Optional[float]] = {}
     for module_id in modules:
+        module_started = time.time()
         cmd = [sys.executable, "main.py", "--project", project, "--workflow", workflow,
                "--module", module_id, "--force-rediscover"]
         _log(f"generation: {' '.join(cmd)}")
@@ -85,7 +133,8 @@ def generate(project: str, modules: List[str], usage_log: str, timeout_s: int,
         except subprocess.TimeoutExpired:
             codes[module_id] = -1
             _log(f"generation for {module_id} timed out")
-    return codes, round(time.monotonic() - started, 1)
+        discovery_s[module_id] = _discovery_step_seconds(project, module_started)
+    return codes, round(time.monotonic() - started, 1), discovery_s
 
 
 # ── execution ─────────────────────────────────────────────────────────────────
@@ -288,10 +337,18 @@ def main(argv=None) -> int:
                               "runtime_s": {"executions": []}}
 
     gen_rc, gen_s = None, None
+    if not args.skip_generate:
+        from tools.project_manifest import load_project_manifest
+
+        if (load_project_manifest(app.project_name).get("discovery") or {}).get("deep"):
+            record["deep_discovery"] = deep_discovery_pass(app, port, server_log)
+            record["runtime_s"]["deep_discovery"] = record["deep_discovery"]["seconds"]
+            _log(f"deep discovery: {record['deep_discovery'].get('status')} in {record['deep_discovery']['seconds']}s")
     with AppServer(app, port, log_path=server_log):
         if not args.skip_generate:
-            gen_rc, gen_s = generate(app.project_name, list(app.module_reqs), usage_log,
-                                     args.generation_timeout, args.workflow)
+            gen_rc, gen_s, disc_s = generate(app.project_name, list(app.module_reqs), usage_log,
+                                             args.generation_timeout, args.workflow)
+            record["runtime_s"]["discovery_by_module"] = disc_s
             _log(f"generation finished rc={gen_rc} in {gen_s}s")
             bad = {m: c for m, c in gen_rc.items() if c != 0}
             if bad:

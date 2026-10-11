@@ -1,0 +1,52 @@
+# The app's real validation messages — Phase 2 ground truth for the observed validation oracle
+# (form_model.json). Transcribed from benchmarks/apps/buggy_shop/app.py (messages at :30-36 and the
+# cart / upload / login handlers) and the product-form script in templates.py.
+#
+# Used by:  python -m tools.benchmark.discovery_metrics --app buggy_shop --oracle
+# A message matches when form_model.json has a form on `template` with this `form` (HTML id) whose
+#   * `field` entry's observed_messages[`probe`].text equals `text`, or
+#   * for a form-level message (`field: null`), any probe of kind `probe` shows `text` as a visible error.
+# Browser-generated native messages ("Please fill out this field.") are not the app's and are not listed.
+
+forms:
+  - template: /products/new
+    form: product-form
+    expected:
+      - {field: name, probe: required_missing, text: "Name is required"}
+      - {field: name, probe: too_long, text: "Name must be at most 50 characters"}
+      - {field: price, probe: required_missing, text: "Price is required"}
+      - {field: price, probe: wrong_type, text: "Price must be a number with at most 2 decimals"}
+      - {field: category, probe: required_missing, text: "Please choose a category"}
+      - {field: description, probe: too_long, text: "Description must be at most 500 characters"}
+
+  - template: /products/{id}/edit
+    form: product-form
+    expected:
+      - {field: name, probe: required_missing, text: "Name is required"}
+      - {field: name, probe: too_long, text: "Name must be at most 50 characters"}
+      - {field: price, probe: required_missing, text: "Price is required"}
+      - {field: price, probe: wrong_type, text: "Price must be a number with at most 2 decimals"}
+      - {field: category, probe: required_missing, text: "Please choose a category"}
+      - {field: description, probe: too_long, text: "Description must be at most 500 characters"}
+
+  - template: /products/{id}
+    form: add-to-cart-form
+    expected:
+      - {field: quantity, probe: below_min, text: "Quantity must be between 1 and 99"}
+      - {field: quantity, probe: above_max, text: "Quantity must be between 1 and 99"}
+
+  - template: /cart
+    form: discount-form
+    expected:
+      - {field: code, probe: required_missing, text: "Invalid discount code"}
+
+  - template: /upload
+    form: upload-form
+    expected:
+      - {field: file, probe: required_missing, text: "Please choose a file"}
+      - {field: file, probe: wrong_accept, text: "Only CSV or PNG files are allowed"}
+
+  - template: /login
+    form: login-form
+    expected:
+      - {field: null, probe: too_long, text: "Invalid username or password"}

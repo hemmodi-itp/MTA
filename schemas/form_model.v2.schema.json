@@ -1,0 +1,480 @@
+{
+  "$defs": {
+    "FormField": {
+      "additionalProperties": false,
+      "properties": {
+        "constraints": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Constraints"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        },
+        "locator": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "observed_messages": {
+          "additionalProperties": true,
+          "title": "Observed Messages",
+          "type": "object"
+        },
+        "type": {
+          "default": "",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "FormField",
+      "type": "object"
+    },
+    "FormRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action"
+        },
+        "dom_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dom Id"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/FormField"
+          },
+          "title": "Fields",
+          "type": "array"
+        },
+        "form_id": {
+          "title": "Form Id",
+          "type": "string"
+        },
+        "kind": {
+          "default": "form",
+          "enum": [
+            "form",
+            "virtual"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "method": {
+          "default": "get",
+          "title": "Method",
+          "type": "string"
+        },
+        "novalidate": {
+          "default": false,
+          "title": "Novalidate",
+          "type": "boolean"
+        },
+        "probes": {
+          "items": {
+            "$ref": "#/$defs/Probe"
+          },
+          "title": "Probes",
+          "type": "array"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "skipped_probes": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Skipped Probes",
+          "type": "array"
+        },
+        "state_id": {
+          "title": "State Id",
+          "type": "string"
+        },
+        "submit": {
+          "additionalProperties": true,
+          "title": "Submit",
+          "type": "object"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "url_template": {
+          "title": "Url Template",
+          "type": "string"
+        }
+      },
+      "required": [
+        "form_id",
+        "state_id",
+        "url",
+        "url_template",
+        "role"
+      ],
+      "title": "FormRecord",
+      "type": "object"
+    },
+    "Probe": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted": {
+          "default": false,
+          "title": "Accepted",
+          "type": "boolean"
+        },
+        "aria_invalid": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aria Invalid",
+          "type": "array"
+        },
+        "duration_ms": {
+          "default": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "focused": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Focused"
+        },
+        "native": {
+          "additionalProperties": true,
+          "title": "Native",
+          "type": "object"
+        },
+        "navigated": {
+          "default": false,
+          "title": "Navigated",
+          "type": "boolean"
+        },
+        "network": {
+          "items": {
+            "$ref": "#/$defs/ProbeNetwork"
+          },
+          "title": "Network",
+          "type": "array"
+        },
+        "probe": {
+          "title": "Probe",
+          "type": "string"
+        },
+        "submitted_via": {
+          "default": "",
+          "title": "Submitted Via",
+          "type": "string"
+        },
+        "url_after": {
+          "default": "",
+          "title": "Url After",
+          "type": "string"
+        },
+        "url_before": {
+          "default": "",
+          "title": "Url Before",
+          "type": "string"
+        },
+        "value_rule": {
+          "default": "",
+          "title": "Value Rule",
+          "type": "string"
+        },
+        "visible_errors": {
+          "items": {
+            "$ref": "#/$defs/VisibleError"
+          },
+          "title": "Visible Errors",
+          "type": "array"
+        }
+      },
+      "required": [
+        "probe"
+      ],
+      "title": "Probe",
+      "type": "object"
+    },
+    "ProbeNetwork": {
+      "additionalProperties": false,
+      "properties": {
+        "aborted": {
+          "default": false,
+          "title": "Aborted",
+          "type": "boolean"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status"
+        }
+      },
+      "required": [
+        "method",
+        "path"
+      ],
+      "title": "ProbeNetwork",
+      "type": "object"
+    },
+    "SkippedForm": {
+      "additionalProperties": false,
+      "properties": {
+        "form": {
+          "title": "Form",
+          "type": "string"
+        },
+        "form_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Form Id"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "state_id": {
+          "title": "State Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state_id",
+        "form",
+        "reason"
+      ],
+      "title": "SkippedForm",
+      "type": "object"
+    },
+    "VisibleError": {
+      "additionalProperties": false,
+      "properties": {
+        "attribution": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribution"
+        },
+        "container": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Container"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "VisibleError",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/form_model.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "const": "form_model",
+      "default": "form_model",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "browser": {
+      "default": "",
+      "title": "Browser",
+      "type": "string"
+    },
+    "environment": {
+      "title": "Environment",
+      "type": "string"
+    },
+    "forms": {
+      "items": {
+        "$ref": "#/$defs/FormRecord"
+      },
+      "title": "Forms",
+      "type": "array"
+    },
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "locale": {
+      "default": "",
+      "title": "Locale",
+      "type": "string"
+    },
+    "probe_mode": {
+      "enum": [
+        "full",
+        "client_only",
+        "disabled"
+      ],
+      "title": "Probe Mode",
+      "type": "string"
+    },
+    "project": {
+      "title": "Project",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "skipped_forms": {
+      "items": {
+        "$ref": "#/$defs/SkippedForm"
+      },
+      "title": "Skipped Forms",
+      "type": "array"
+    }
+  },
+  "required": [
+    "project",
+    "generated_at",
+    "environment",
+    "probe_mode"
+  ],
+  "title": "FormModelDoc",
+  "type": "object",
+  "x-mta-artifact": "form_model",
+  "x-mta-kind": "dict"
+}

@@ -1,0 +1,124 @@
+{
+  "$defs": {
+    "ActionVisibility": {
+      "additionalProperties": false,
+      "properties": {
+        "differs": {
+          "default": false,
+          "title": "Differs",
+          "type": "boolean"
+        },
+        "element": {
+          "additionalProperties": true,
+          "title": "Element",
+          "type": "object"
+        },
+        "url_template": {
+          "title": "Url Template",
+          "type": "string"
+        },
+        "visibility": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Visibility",
+          "type": "object"
+        }
+      },
+      "required": [
+        "url_template",
+        "element"
+      ],
+      "title": "ActionVisibility",
+      "type": "object"
+    },
+    "StateAccess": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Access",
+          "type": "object"
+        },
+        "evidence": {
+          "additionalProperties": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Evidence",
+          "type": "object"
+        },
+        "sample_url": {
+          "title": "Sample Url",
+          "type": "string"
+        },
+        "url_template": {
+          "title": "Url Template",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url_template",
+        "sample_url"
+      ],
+      "title": "StateAccess",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/permission_matrix.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/ActionVisibility"
+      },
+      "title": "Actions",
+      "type": "array"
+    },
+    "artifact": {
+      "const": "permission_matrix",
+      "default": "permission_matrix",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "project": {
+      "title": "Project",
+      "type": "string"
+    },
+    "roles": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Roles",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "states": {
+      "items": {
+        "$ref": "#/$defs/StateAccess"
+      },
+      "title": "States",
+      "type": "array"
+    }
+  },
+  "required": [
+    "project",
+    "generated_at"
+  ],
+  "title": "PermissionMatrixDoc",
+  "type": "object",
+  "x-mta-artifact": "permission_matrix",
+  "x-mta-kind": "dict"
+}

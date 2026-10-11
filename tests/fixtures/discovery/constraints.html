@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Constraints</title></head>
+<body>
+<main>
+  <form id="signup" method="post" action="/signup" novalidate>
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required autocomplete="email" aria-describedby="email-help email-err" aria-invalid="false">
+    <p id="email-help">We never share it.</p>
+    <p id="email-err" hidden></p>
+    <label for="username">Username</label>
+    <input id="username" name="username" minlength="3" maxlength="20" pattern="[a-z0-9_]+" aria-errormessage="user-err" value="guest">
+    <span id="user-err">Lower-case letters, digits and _ only</span>
+    <label for="age">Age</label>
+    <input id="age" name="age" type="number" min="18" max="120" step="1" inputmode="numeric">
+    <label for="price">Price</label>
+    <input id="price" name="price" inputmode="decimal" readonly value="9.99">
+    <label for="code">Code</label>
+    <input id="code" name="code" disabled>
+    <label for="avatar">Avatar</label>
+    <input id="avatar" name="avatar" type="file" accept="image/png,.jpg" multiple>
+    <label for="country">Country</label>
+    <select id="country" name="country" required>
+      <option value="">Choose</option>
+      <option value="de" disabled>Germany</option>
+      <option value="fr" selected>France</option>
+      <option value="it">Italy</option>
+    </select>
+    <label for="city">City</label>
+    <input id="city" name="city" list="cities">
+    <datalist id="cities"><option value="Paris"><option value="Rome"></datalist>
+    <fieldset><legend>Size</legend>
+      <label><input type="radio" name="size" value="s"> Small</label>
+      <label><input type="radio" name="size" value="m" checked> Medium</label>
+    </fieldset>
+    <label><input type="checkbox" name="terms" id="terms" required> I agree</label>
+    <label for="bio">Bio</label>
+    <textarea id="bio" name="bio" maxlength="500">Hello</textarea>
+    <button type="submit">Create account</button>
+  </form>
+</main>
+</body>
+</html>

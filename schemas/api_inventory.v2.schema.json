@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "Endpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "aborted": {
+          "default": 0,
+          "title": "Aborted",
+          "type": "integer"
+        },
+        "auth": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "title": "Auth",
+          "type": "object"
+        },
+        "hosts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Hosts",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "page",
+            "form_submit",
+            "xhr",
+            "fetch",
+            "other"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "path_template": {
+          "title": "Path Template",
+          "type": "string"
+        },
+        "request": {
+          "additionalProperties": true,
+          "title": "Request",
+          "type": "object"
+        },
+        "response": {
+          "additionalProperties": true,
+          "title": "Response",
+          "type": "object"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roles",
+          "type": "array"
+        },
+        "samples": {
+          "default": 0,
+          "title": "Samples",
+          "type": "integer"
+        },
+        "statuses": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Statuses",
+          "type": "object"
+        },
+        "triggers": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Triggers",
+          "type": "array"
+        }
+      },
+      "required": [
+        "method",
+        "path_template",
+        "kind"
+      ],
+      "title": "Endpoint",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/api_inventory.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "const": "api_inventory",
+      "default": "api_inventory",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "endpoints": {
+      "items": {
+        "$ref": "#/$defs/Endpoint"
+      },
+      "title": "Endpoints",
+      "type": "array"
+    },
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "project": {
+      "title": "Project",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "project",
+    "generated_at"
+  ],
+  "title": "ApiInventoryDoc",
+  "type": "object",
+  "x-mta-artifact": "api_inventory",
+  "x-mta-kind": "dict"
+}

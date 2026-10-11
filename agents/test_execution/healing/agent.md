@@ -110,3 +110,10 @@ object (whitespace-normalised) — the patch may change the body or turn the tes
 link. The rejection message quotes the object to keep; the supervisor prompt says the same. Specs without a
 details object (generated before Phase 1, or with `requirements.enabled` off) are unaffected. This only adds a
 guard; the existing tool-surface boundary is unchanged.
+
+## Shared locator resolver (Phase 2)
+
+`_locator_entry_resolves` delegates to `tools/test_creation/script_generator/locator_resolve.py` instead of a
+private copy of ScriptGenerationAgent's logic (a tools/ module, not a cross-agent import). Same `count() == 1` rule
+and fail-open behaviour; entries may now carry `frame` / `scope` (deep-discovery locators) and are resolved through
+them. No tool gained a new write path — the tool-surface boundary is unchanged.

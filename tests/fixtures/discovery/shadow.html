@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Shadow DOM</title></head>
+<body>
+<main>
+  <h1>Shadow roots</h1>
+  <my-search id="open-host"></my-search>
+  <my-secret id="closed-host"></my-secret>
+  <button id="light-button">Light button</button>
+</main>
+<script>
+  class MySearch extends HTMLElement {
+    constructor() {
+      super();
+      const root = this.attachShadow({ mode: 'open' });
+      root.innerHTML = '<label for="q">Query</label><input id="q" name="q" placeholder="Search inside" required maxlength="40">'
+        + '<button id="go">Go</button><inner-widget></inner-widget>';
+    }
+  }
+  class InnerWidget extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' }).innerHTML = '<button id="nested">Nested shadow button</button>';
+    }
+  }
+  class MySecret extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'closed' }).innerHTML = '<button id="hidden-from-scripts">Closed root button</button>';
+    }
+  }
+  customElements.define('inner-widget', InnerWidget);
+  customElements.define('my-search', MySearch);
+  customElements.define('my-secret', MySecret);
+</script>
+</body>
+</html>

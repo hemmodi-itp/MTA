@@ -39,6 +39,16 @@ class BenchmarkApp:
         return os.path.join(self.app_dir, "acs.yaml")
 
     @property
+    def elements_yaml(self) -> str:
+        """Hand-labelled interactive elements per page (Phase 2 discovery ground truth)."""
+        return os.path.join(self.app_dir, "elements.yaml")
+
+    @property
+    def validation_messages_yaml(self) -> str:
+        """The app's real validation messages (Phase 2 observed-oracle ground truth)."""
+        return os.path.join(self.app_dir, "validation_messages.yaml")
+
+    @property
     def template_path(self) -> str:
         return os.path.join(self.app_dir, "mta_project", "project.yaml.tmpl")
 

@@ -31,12 +31,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional
 MAX_PAGES = 12
 MAX_NAVIGATIONS = 40               # attempts incl. failed / duplicate pages — the crawl can never loop unbounded
 DISCOVERY_BUDGET_S = 600           # whole crawl (login excluded); the run's step deadline is the backstop
-NAV_TIMEOUT_MS = 45_000
-WAKE_TIMEOUT_MS = 120_000          # first request to a scale-to-zero host can take over a minute
-LOGIN_FORM_TIMEOUT_MS = 25_000     # client-rendered login forms appear after hydration
-LOGIN_RESULT_TIMEOUT_MS = 25_000
 SETTLE_MS = 3_000
-RENDER_WAIT_S = 30                 # client-rendered pages: wait until the content has actually rendered
 RECHECK_WAIT_S = 75                # a page that should have a form but showed none gets one longer look
 
 _AUTH_WORDS = re.compile(r"\b(log ?in|sign ?in|sign ?up|register|forgot password|authenticate)\b", re.I)
@@ -44,46 +39,16 @@ _DOWNLOAD_WORDS = re.compile(r"\b(download|export|save as|\.docx|\.pdf|\.csv|\.x
 _SUBMIT_WORDS = re.compile(r"\b(submit|generate|create|send|save|run|start|continue|next|analy[sz]e|upload|search|ask|go)\b", re.I)
 _CHAT_WORDS = re.compile(r"\b(chat|message|ask (me|anything)|type your|conversation|assistant)\b", re.I)
 _REQUIRED_LABEL = re.compile(r"\(required\)|\brequired\b\s*$|\*\s*$", re.I)
-_SKIP_LINK = re.compile(r"\.(png|jpe?g|gif|svg|webp|ico|pdf|zip|docx?|xlsx?|csv|css|js|map)(\?|$)|logout|log-out|sign-?out|"
-                        r"mailto:|tel:|javascript:|/(delete|remove|destroy|deactivate|unsubscribe|reset|revoke|cancel)\b|"
-                        r"[?&](action|op)=(delete|remove|destroy)", re.I)
-
-# Cheap per-poll readiness probe: [interactive controls in the main area, text length, busy indicator / wording].
-_READY_JS = r"""() => {
-  const vis = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el);
-    return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
-  const nav = el => !!el.closest('nav,aside,header,[role=navigation],[class*=sidebar i]');
-  const controls = [...document.querySelectorAll('input:not([type=hidden]),textarea,select,[contenteditable=true],button,[role=button]')]
-    .filter(el => vis(el) && !nav(el)).length;
-  const text = (document.body && document.body.innerText) || '';
-  const busy = [...document.querySelectorAll('[aria-busy=true],[role=progressbar],[class*=spinner i],[class*=loading i],[class*=skeleton i]')]
-    .some(vis) || /^\s*(loading|please wait)/im.test(text);
-  const headings = [...document.querySelectorAll('main h1,main h2,h1,h2')].filter(el => vis(el) && !nav(el)).length;
-  return [controls, text.length, busy, headings];
-}"""
-
-
-def _wait_for_render(page, max_s: float = RENDER_WAIT_S) -> Dict[str, Any]:
-    """Wait until a client-rendered page shows its content: no busy indicator and the main area's controls / text
-    unchanged across two polls. Pages that look empty (no controls, no headings) keep being polled until max_s,
-    because SPAs fill the main area only after their API calls return (slow on a cold backend)."""
-    t0 = time.monotonic()
-    last, stable = None, 0
-    probe = [0, 0, True, 0]
-    while time.monotonic() - t0 < max_s:
-        try:
-            probe = page.evaluate(_READY_JS)
-        except Exception:
-            probe = [0, 0, True, 0]
-        controls, length, busy, headings = probe
-        key = (controls, length // 50)
-        stable = stable + 1 if key == last and not busy else 0
-        last = key
-        looks_empty = controls == 0 and headings == 0
-        if stable >= 2 and (not looks_empty or time.monotonic() - t0 > max_s / 2):
-            break
-        page.wait_for_timeout(1_500)
-    return {"waited_s": round(time.monotonic() - t0, 1), "controls": probe[0], "busy": bool(probe[2])}
+# Shared with the legacy pipeline's deep discovery (Phase 2): moved to tools/discovery/web/ and
+# re-exported here under their original names, so behaviour and imports are unchanged.
+from tools.discovery.web.links import SKIP_LINK as _SKIP_LINK  # noqa: E402
+from tools.discovery.web.login import (  # noqa: E402
+    LOGIN_FORM_TIMEOUT_MS, LOGIN_RESULT_TIMEOUT_MS, NAV_TIMEOUT_MS, WAKE_TIMEOUT_MS,
+    goto as _goto, log_in as _log_in, login_link as _login_link, submit_login as _submit_login,
+    visible_error as _visible_error, wait_for_password as _wait_for_password,
+)
+from tools.discovery.web.ready import READY_JS as _READY_JS, RENDER_WAIT_S, wait_for_render as _wait_for_render  # noqa: E402
+from tools.discovery.web.urls import ID_SEGMENT as _ID_SEGMENT, normalise_route as _normalise  # noqa: E402
 
 
 # Runs inside the page; returns everything about one page in one round-trip.
@@ -312,148 +277,6 @@ def discover(live_url: str, known_pages: Iterable[str] = (), known_api_routes: I
     return prof
 
 
-def _log_in(page, live_url: str, creds: Dict[str, str], log) -> Dict[str, Any]:
-    """Find the login form, fill it, submit, and confirm the app let us in.
-
-    Robust to the two things that break naive logins:
-      * cold starts — scale-to-zero hosts (Azure Container Apps, Render, Cloud Run…) can take > 60 s to answer the first
-        request, so the first navigation gets a long timeout and one retry;
-      * client-rendered forms — React/Next login pages draw the form after hydration, so we WAIT for a visible password
-        field (up to LOGIN_FORM_TIMEOUT_MS) instead of sleeping a fixed time.
-    Where to look: the live URL, then the page's own "Log in" / "Sign in" link or button, then common login paths.
-    Success = the URL leaves the login page or the password field goes away; an error message or a password field
-    still showing after LOGIN_RESULT_TIMEOUT_MS = rejected.
-    """
-    base = urllib.parse.urlsplit(live_url)
-    origin = f"{base.scheme}://{base.netloc}"
-    queue: List[str] = [live_url]
-    tried: List[str] = []
-    paths_added = False
-    while queue:
-        url = queue.pop(0)
-        if url.rstrip("/") in [t.rstrip("/") for t in tried]:
-            continue
-        tried.append(url)
-        if not _goto(page, url, log, first=len(tried) == 1):
-            continue
-        first_page = len(tried) == 1
-        # the landing page gets a short look (it is usually not the login page); login paths get the full wait
-        pw = _wait_for_password(page, 8_000 if first_page and url == live_url else LOGIN_FORM_TIMEOUT_MS)
-        if pw is None:
-            target = _login_link(page)
-            if target and target.get("href") and target["href"].rstrip("/") not in [t.rstrip("/") for t in tried]:
-                queue.insert(0, target["href"])
-            elif target and target.get("element") is not None:
-                try:  # a "Log in" button that opens a modal or navigates client-side
-                    target["element"].click(timeout=10_000)
-                    pw = _wait_for_password(page, LOGIN_FORM_TIMEOUT_MS)
-                except Exception:
-                    pw = None
-            if pw is None and not paths_added:
-                queue += [origin + p for p in ("/login", "/signin", "/sign-in", "/auth/login", "/account/login", "/users/sign_in")]
-                paths_added = True
-            if pw is None:
-                continue
-        return _submit_login(page, pw, creds, page.url, log)
-    shown = ", ".join(urllib.parse.urlsplit(t).path or "/" for t in tried)
-    log(f"Login failed: no login form found (looked at {shown})")
-    return {"attempted": True, "succeeded": False,
-            "error": f"no login form found — no password field appeared within {LOGIN_FORM_TIMEOUT_MS // 1000}s on {shown}"}
-
-
-def _goto(page, url: str, log, first: bool) -> bool:
-    timeout = WAKE_TIMEOUT_MS if first else NAV_TIMEOUT_MS
-    for attempt in range(2 if first else 1):
-        try:
-            page.goto(url, wait_until="domcontentloaded", timeout=timeout)
-            try:
-                page.wait_for_load_state("networkidle", timeout=8_000)
-            except Exception:
-                pass
-            return True
-        except Exception as exc:
-            log(f"Could not open {url} ({type(exc).__name__})" + (" — the app may be waking up; retrying" if first and attempt == 0 else ""))
-    return False
-
-
-def _wait_for_password(page, timeout_ms: int):
-    try:
-        page.wait_for_selector("input[type=password]", state="visible", timeout=timeout_ms)
-        return page.locator("input[type=password]:visible").first
-    except Exception:
-        return None
-
-
-def _login_link(page) -> Optional[Dict[str, Any]]:
-    """The page's own way to the login form: a link (preferred, by href) or a button."""
-    rx = re.compile(r"^\s*(log ?in|sign ?in|login|signin)\s*$", re.I)
-    try:
-        links = page.locator("a:visible").filter(has_text=rx)
-        if links.count():
-            href = links.first.get_attribute("href")
-            if href and not href.startswith(("javascript:", "#")):
-                return {"href": urllib.parse.urljoin(page.url, href)}
-            return {"element": links.first}
-        buttons = page.locator("button:visible, [role=button]:visible").filter(has_text=rx)
-        if buttons.count():
-            return {"element": buttons.first}
-    except Exception:
-        pass
-    return None
-
-
-def _submit_login(page, pw, creds: Dict[str, str], login_url: str, log) -> Dict[str, Any]:
-    form = pw.locator("xpath=ancestor::form[1]")
-    scope = form if form.count() else page
-    user = scope.locator("input[type=email]:visible, input[autocomplete=username]:visible, input[name*=user i]:visible, "
-                         "input[name*=email i]:visible, input[name*=login i]:visible, input[type=text]:visible").first
-    if user.count():
-        user.fill(creds.get("username", ""))
-    pw.fill(creds.get("password", ""))
-    button = (form.locator("button[type=submit], input[type=submit], button").first if form.count() else
-              page.locator("button:visible").filter(has_text=re.compile(r"log ?in|sign ?in|continue|submit", re.I)).first)
-    if button.count():
-        button.click()
-    else:
-        pw.press("Enter")
-
-    start_path = urllib.parse.urlsplit(login_url).path
-    deadline = time.monotonic() + LOGIN_RESULT_TIMEOUT_MS / 1000
-    error = None
-    while time.monotonic() < deadline:
-        page.wait_for_timeout(500)
-        path = urllib.parse.urlsplit(page.url).path
-        left = path != start_path and not re.search(r"/(log-?in|sign-?in|auth)(/|$)", path, re.I)
-        pw_gone = not page.locator("input[type=password]:visible").count()
-        if left or pw_gone:
-            try:
-                page.wait_for_load_state("networkidle", timeout=8_000)
-            except Exception:
-                pass
-            landed = urllib.parse.urlsplit(page.url).path or "/"
-            log(f"Logged in; landed on {landed}")
-            return {"attempted": True, "succeeded": True, "landed_on": landed, "login_url": login_url}
-        error = _visible_error(page)
-        if error:
-            break
-    msg = error or f"still on the login page {LOGIN_RESULT_TIMEOUT_MS // 1000}s after submitting (credentials not accepted?)"
-    log(f"Login failed: {msg}")
-    return {"attempted": True, "succeeded": False, "error": msg, "login_url": login_url}
-
-
-def _visible_error(page) -> Optional[str]:
-    loc = page.locator("[role=alert]:visible, .error:visible, [class*=error i]:visible, [class*=alert i]:visible, "
-                       "[aria-live]:visible")
-    try:
-        for i in range(min(loc.count(), 6)):
-            text = (loc.nth(i).inner_text(timeout=1_000) or "").strip()
-            if 2 < len(text) < 300:
-                return text
-    except Exception:
-        pass
-    return None
-
-
 # ── repeater fields ("+ Add" rows) ──────────────────────────────────────────
 
 # Buttons that add an empty input row to a list inside a form — client-side only, nothing is submitted.
@@ -608,14 +431,6 @@ def _profile(live_url: str, pages: List[Dict], network: List[Dict], api_routes: 
         "pages": pages,
         "duration_s": round(seconds, 1),
     }
-
-
-_ID_SEGMENT = re.compile(r"^(?=.*\d)[0-9a-f-]{8,}$|^\d{3,}$|^[A-Za-z0-9_-]{20,}$|^(?=(?:.*\d){6})[A-Za-z0-9_.-]{6,}$", re.I)
-
-
-def _normalise(path: str) -> str:
-    """A route template: path segments that look like record ids (numbers, hex/uuid, dated or long tokens) → {id}."""
-    return "/".join("{id}" if seg and _ID_SEGMENT.match(seg) else seg for seg in (path or "/").split("/")) or "/"
 
 
 def _classify(pages, forms, downloads, chat, generation_routes, frameworks):

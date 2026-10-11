@@ -30,8 +30,41 @@ contracts:
 requirements:
   enabled: true      # Phase 1: requirements.json, AC-linked + tagged tests, traceability.json
 
+discovery:
+  deep: true         # Phase 2: deep capture + crawl + form probes + network + roles + baseline
+  max_pages: 25      # per role
+  max_depth: 4
+  max_minutes: 10
+
 auth:
-  enabled: false
+  enabled: false     # no single-identity auth; modules log in through their setup steps
+  roles:             # Phase 2 role-aware discovery (read even though auth.enabled is false)
+    user:
+      strategy: setup
+      steps:
+        - goto: {{BASE_URL}}/login
+        - fill:
+            selector: "#username"
+            value: alice
+        - fill:
+            selector: "#password"
+            value: alice-pass-1
+        - click: "#login-button"
+        - wait: 500
+    admin:
+      strategy: setup
+      steps:
+        - goto: {{BASE_URL}}/login
+        - fill:
+            selector: "#username"
+            value: admin
+        - fill:
+            selector: "#password"
+            value: admin-pass-1
+        - click: "#login-button"
+        - wait: 500
+    guest:
+      anonymous: true
 
 modules:
   - id: M01

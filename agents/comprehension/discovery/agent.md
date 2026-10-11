@@ -225,3 +225,41 @@ application_assets/{project}/
 In URL-only mode the synthesised-BRD comprehension request carries `requirements_source: "dom_inferred"`, so any
 requirements extracted from it (with `requirements.enabled`) are marked `source: dom_inferred` (confidence ≤ 0.6)
 instead of passing as BRD requirements. `requirements` is part of this step's contract check.
+
+## Deep discovery (Phase 2, `discovery.deep`)
+
+Off by default. With `discovery.deep: true` in `project.yaml`, a non-interactive DOM scan changes in two ways:
+
+**1. The module page is scanned with the batched extractor** (`tools/discovery/deep/extract.py`): one
+`page.evaluate` per frame instead of ~19 Playwright round trips per element.
+- Wider set: ARIA widget roles, `contenteditable`, `[onclick]`, focusable `[tabindex]`, `summary` / `details`,
+  outermost `cursor: pointer` elements, typed inputs (`file`, `date`, `range`, …).
+- All frames on allowed hosts (`frame: {path, url}`); open shadow roots (`shadow: true`, host-prefixed CSS).
+- Every form control gets `constraints` (`required`, `maxlength`, `pattern`, `min`/`max`/`step`, `accept`, options,
+  radio group, error container, owning form …).
+- A `(role, name)` pair that occurs more than once gets a browser-verified **container-scoped** candidate
+  (`scoped_role`), which the locator map turns into `{type: role, …, scope: {…}}`.
+- Classic elements keep their legacy fields and `tag`, so their `LOC-` ids do not change (parity-tested).
+  `dom_elements.json` gains a `scan` stats block.
+
+**2. A project-level deep pass runs once** (`ensure_app_discovery`, reused across module runs for
+`discovery.reuse_minutes` unless `--force-recrawl`):
+
+| Artifact (`test_comprehension/`) | What |
+|---|---|
+| `app_map.json` | States (URL template + structural hash), transitions (links, expanders), skipped URLs with reasons |
+| `form_model.json` | Every form, its fields + constraints, and the observed validation messages from the probes |
+| `api_inventory.json` | Requests seen (templated paths, statuses, field names / inferred JSON schemas, trigger) — no values |
+| `permission_matrix.json` | Per role (`auth.roles`): page access and action visibility |
+| `baseline.json` | Console errors, page errors, failed requests, navigation timing per state |
+
+Seeds are every module URL plus `project.url`. Crawled pages' elements stay in `app_map.json`; `dom_elements.json`
+keeps describing the module page only (Phase 3 consumes `app_map`). A failed deep pass adds a `partial_reasons` entry
+("deep discovery failed: …") and never blocks the workflow. Result keys: `deep_discovery` (status + counts) and
+`dom_scan_stats`.
+
+Safety: discovery never clicks anything the action classifier calls destructive, never follows logout / delete /
+off-host links, and aborts every write request except during a form probe in a non-prod environment; on `prod` or an
+undeclared environment probes are client-only (all writes aborted).
+
+Run it without the pipeline: `python -m tools.discovery.deep --project <name> [--force] [--no-probes]`.

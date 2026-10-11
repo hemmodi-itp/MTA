@@ -33,6 +33,21 @@ requirements:
                                  # scenarios + tests linked to AC ids, Playwright tags (@P1 @AC-01.2 …),
                                  # test_creation/traceability.json and a traceability section in the report
 
+# ── Deep discovery (Phase 2) ────────────────────────────────────────────────
+discovery:
+  deep: true                     # false when omitted. On: batched element capture (all frames, open shadow
+                                 # roots, custom widgets, field constraints, container-scoped locators) plus a
+                                 # project-level crawl → test_comprehension/app_map.json (states + transitions),
+                                 # form_model.json (observed validation messages), api_inventory.json,
+                                 # permission_matrix.json (per role) and baseline.json (console errors, timing)
+  max_pages: 25                  # page visits per role
+  max_depth: 4                   # link / expander hops from a module URL
+  max_minutes: 10                # the whole deep pass, all roles
+  # validation:                  # form probes: full in local/dev/staging; client-only (writes aborted) in prod
+  #   enabled: true
+  #   max_probes_per_form: 20
+  #   long_text_length: 1000     # "too long" probe length when a field declares no maxlength
+
 input:
   # Directory containing per-module BRD files.
   # Each module entry below references a brd_file relative to this directory.
@@ -49,6 +64,24 @@ auth:
   strategy: storageState                  # storageState = reuse saved session across runs
                                           # live_login   = re-authenticate on every pipeline run
   storage_state_path: application_assets/projects/YourProjectName/.auth/auth.json
+  # roles:                                # Phase 2 role-aware discovery — read even when enabled: false.
+  #   admin:                              # one crawl per role, diffed into permission_matrix.json
+  #     strategy: credentials             # live login; credentials come from env vars only
+  #     login_url: https://yourapp.com/login
+  #     username_env: ADMIN_USER
+  #     password_env: ADMIN_PASS
+  #     username_selector: "#username"
+  #     password_selector: "#password"
+  #     submit_selector: "#login-button"
+  #     success_url: https://yourapp.com/dashboard
+  #   user:
+  #     strategy: storageState
+  #     storage_state_path: application_assets/projects/YourProjectName/.auth/user.json
+  #   member:
+  #     strategy: setup                   # the same goto/fill/click/wait steps as modules[].setup
+  #     steps: [{goto: https://yourapp.com/login}, {fill: {selector: "#username", value_env: MEMBER_USER}}]
+  #   guest:
+  #     anonymous: true
 
 
 modules:

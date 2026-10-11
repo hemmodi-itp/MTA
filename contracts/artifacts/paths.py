@@ -24,6 +24,12 @@ _COMPREHENSION = {
     "dom_elements": "dom_elements.json",
     "business_scenarios": "business_scenarios.json",
     "requirements": "requirements.json",
+    # Phase 2 deep discovery (project-level)
+    "app_map": "app_map.json",
+    "form_model": "form_model.json",
+    "api_inventory": "api_inventory.json",
+    "permission_matrix": "permission_matrix.json",
+    "baseline": "baseline.json",
 }
 REPORTS_JSON = os.path.join("test_execution", "reports", "json")
 # MTA-normalised run records live apart from Playwright's JSON: HealingAgent and

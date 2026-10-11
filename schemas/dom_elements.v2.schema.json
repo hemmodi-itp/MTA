@@ -16,6 +16,59 @@
           "default": null,
           "title": "Attribute Locators"
         },
+        "capture_mode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capture Mode"
+        },
+        "capture_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capture Reason"
+        },
+        "constraints": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Constraints"
+        },
+        "containers": {
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Containers"
+        },
         "display_text": {
           "anyOf": [
             {
@@ -27,6 +80,19 @@
           ],
           "default": null,
           "title": "Display Text"
+        },
+        "frame": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame"
         },
         "locator_candidates": {
           "anyOf": [
@@ -190,6 +256,19 @@
       ],
       "default": null,
       "title": "Project"
+    },
+    "scan": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scan"
     },
     "schema_version": {
       "const": 2,

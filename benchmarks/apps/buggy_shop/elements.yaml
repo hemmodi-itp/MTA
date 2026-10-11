@@ -1,0 +1,177 @@
+# Hand-labelled interactive elements of buggy_shop (bug-free build) — Phase 2 ground truth.
+# Source: benchmarks/apps/buggy_shop/templates.py (every key element carries a data-testid).
+#
+# Used by:  python -m tools.benchmark.discovery_metrics --app buggy_shop
+#   * element recall — an element is found when a state of `template` reached by `role` in
+#     app_map.json holds an element with this data-testid (`count` of them for repeated items);
+#   * constraint capture — every `constraints` value below must equal the captured
+#     element's `constraints` value (DOM-declared constraints only; rules enforced only in JS or
+#     on the server — name <= 50, price format — are what form_model.json observes instead);
+#   * page coverage — every `link` page template must be a state in app_map.json.
+#
+# reachability:
+#   link            reachable by a non-destructive crawl from the module URLs (gated: recall >= 95%)
+#   deep_link       exists only behind a URL no page links to (/orders/{id})
+#   requires_state  appears only after a state change the crawl does not perform (items in the cart)
+# Hidden inputs (type=hidden) are not user-interactive and are not listed.
+
+frames:
+  guest: [brand-link, nav-login, footer-help-link]
+  user: [brand-link, nav-products, nav-new-product, nav-cart, nav-upload, logout-link, footer-help-link]
+  admin: [brand-link, nav-products, nav-new-product, nav-cart, nav-upload, nav-admin, logout-link, footer-help-link]
+
+pages:
+  - template: /login
+    role: guest
+    reachability: link
+    frame: guest
+    elements:
+      - testid: username
+        constraints: {type: text, required: true, autocomplete: username}
+      - testid: password
+        constraints: {type: password, required: true, autocomplete: current-password}
+      - testid: login-button
+
+  - template: /help
+    role: guest
+    reachability: link
+    frame: guest
+    elements: []
+
+  - template: /help
+    role: user
+    reachability: link
+    frame: user
+    elements: []
+
+  - template: /products
+    role: user
+    reachability: link
+    frame: user
+    elements:
+      - testid: search
+        constraints: {type: search}
+      - testid: category-filter
+        constraints: {type: select, options_values: ["", Books, Electronics, Home]}
+      - testid: sort
+        constraints: {type: select, options_values: ["", price_asc, price_desc, name]}
+      - testid: search-button
+      - testid: product-link
+        count: 5
+      - testid: next-page
+
+  - template: /products
+    role: admin
+    reachability: link
+    frame: admin
+    elements:
+      - testid: search
+      - testid: search-button
+
+  - template: /products?page
+    role: user
+    reachability: link
+    frame: user
+    elements:
+      - testid: search
+      - testid: category-filter
+      - testid: sort
+      - testid: search-button
+      - testid: product-link
+        count: 5
+      - testid: prev-page
+      - testid: next-page
+
+  - template: /products/new
+    role: user
+    reachability: link
+    frame: user
+    elements:
+      - testid: name
+        constraints: {type: text, required: true, aria_required: true}
+      - testid: price
+        constraints: {type: text, required: true, aria_required: true, inputmode: decimal}
+      - testid: category
+        constraints: {type: select, required: true, aria_required: true, options_values: ["", Books, Electronics, Home]}
+      - testid: description
+        constraints: {type: textarea}
+      - testid: save-product
+
+  - template: /products/{id}
+    role: user
+    reachability: link
+    frame: user
+    elements:
+      - testid: quantity
+        constraints: {type: number, min: "1", max: "99", default_value: "1"}
+      - testid: add-to-cart
+      - testid: edit-product
+      - testid: delete-product
+      - testid: back-to-products
+
+  - template: /products/{id}/edit
+    role: user
+    reachability: link
+    frame: user
+    elements:
+      - testid: name
+        constraints: {type: text, required: true, aria_required: true}
+      - testid: price
+        constraints: {type: text, required: true, aria_required: true, inputmode: decimal}
+      - testid: category
+        constraints: {type: select, required: true, aria_required: true}
+      - testid: description
+      - testid: save-product
+
+  - template: /cart
+    role: user
+    reachability: link
+    frame: user
+    elements:
+      - testid: discount-code
+        constraints: {type: text}
+      - testid: apply-discount
+      - testid: checkout-link
+
+  - template: /cart
+    role: user
+    reachability: requires_state     # one row per cart line
+    elements:
+      - testid: cart-line-quantity
+        constraints: {type: number, min: "1", max: "99"}
+      - testid: update-quantity
+      - testid: remove-line
+
+  - template: /checkout
+    role: user
+    reachability: link
+    frame: user
+    elements: []
+
+  - template: /checkout
+    role: user
+    reachability: requires_state     # empty cart -> "Continue shopping"; items -> "Place order"
+    elements:
+      - testid: continue-shopping
+      - testid: place-order
+
+  - template: /upload
+    role: user
+    reachability: link
+    frame: user
+    elements:
+      - testid: file
+        constraints: {type: file, accept: ".csv,.png", multiple: false}
+      - testid: upload-button
+
+  - template: /admin
+    role: admin
+    reachability: link
+    frame: admin
+    elements: []
+
+  - template: /orders/{id}
+    role: user
+    reachability: deep_link
+    frame: user
+    elements: []

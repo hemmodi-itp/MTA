@@ -72,6 +72,17 @@ def _element_identity_parts(element: Dict[str, Any]) -> Tuple[str, ...]:
     return (tag, role, css)
 
 
+def _identity_parts_with_frame(element: Dict[str, Any]) -> Tuple[str, ...]:
+    """Identity parts plus the frame path (Phase 2) — appended only when the element lives
+    in a child frame, so every main-frame element keeps exactly the identity (and LOC id)
+    it had before, while identical elements in two frames no longer collide."""
+    parts = _element_identity_parts(element)
+    frame_path = ((element.get("frame") or {}).get("path")) or []
+    if frame_path:
+        parts = parts + ("frame:" + " >> ".join(frame_path),)
+    return parts
+
+
 def assign_stable_locator_ids(
     elements: List[Dict[str, Any]], module_id: Optional[str], registry: ArtifactRegistry
 ) -> List[Dict[str, Any]]:
@@ -80,7 +91,7 @@ def assign_stable_locator_ids(
     the same physical element gets the same LOC-XXXX id across reruns."""
     stamped = []
     for element in elements:
-        parts = _element_identity_parts(element)
+        parts = _identity_parts_with_frame(element)
         artifact_id, _is_new, _hash = registry.get_or_create_id(module_id or "GEN", "LOC", *parts)
         n = int(artifact_id.rsplit("_", 1)[-1])
         new_element = dict(element)
@@ -96,8 +107,31 @@ _MERGE_COMPARE_FIELDS = (
 )
 
 
+# Phase 2 deep-capture fields. Not part of the legacy comparison: when a pre-Phase-2 element
+# is otherwise unchanged they are copied onto it silently (design R18), and they count as an
+# update only when the existing element already carried them and they changed.
+_ENRICHMENT_FIELDS = (
+    "capture_mode", "capture_reason", "tag_name", "aria_role", "constraints", "containers",
+    "state_hints", "frame", "shadow", "href",
+)
+
+
 def _elements_content_equal(a: Dict[str, Any], b: Dict[str, Any]) -> bool:
     return all(a.get(f) == b.get(f) for f in _MERGE_COMPARE_FIELDS)
+
+
+def _enrichment_changed(existing: Dict[str, Any], fresh: Dict[str, Any]) -> bool:
+    return any(f in existing and existing.get(f) != fresh.get(f) for f in _ENRICHMENT_FIELDS)
+
+
+def _with_enrichment(existing: Dict[str, Any], fresh: Dict[str, Any]) -> Dict[str, Any]:
+    if not any(f in fresh for f in _ENRICHMENT_FIELDS):
+        return existing
+    out = dict(existing)
+    for f in _ENRICHMENT_FIELDS:
+        if f in fresh:
+            out[f] = fresh[f]
+    return out
 
 
 def merge_elements(
@@ -128,8 +162,8 @@ def merge_elements(
         if fresh is None:
             merged.append(element)  # kept, never deleted
             continue
-        if _elements_content_equal(element, fresh):
-            merged.append(element)
+        if _elements_content_equal(element, fresh) and not _enrichment_changed(element, fresh):
+            merged.append(_with_enrichment(element, fresh))
         else:
             merged.append(fresh)
             updated.append(loc_id)
@@ -154,6 +188,8 @@ def scan_dom(
     auth_config: dict = None,
     setup_steps: list = None,
     checkpoint_path: str = None,
+    deep_config: Optional[dict] = None,
+    url_allowed=None,
 ) -> Dict[str, Any]:
     """
     Open *url* with Playwright and return raw scan data.
@@ -185,11 +221,16 @@ def scan_dom(
         auth_config=auth_config,
         setup_steps=setup_steps,
         checkpoint_path=checkpoint_path,
+        deep_config=deep_config,
+        url_allowed=url_allowed,
     )
-    return {
+    out = {
         "elements": result.get("elements", []),
         "element_count": len(result.get("elements", [])),
     }
+    if result.get("scan"):
+        out["scan"] = result["scan"]     # Phase 2 deep-scan stats (absent in the legacy path)
+    return out
 
 
 def save_dom_scan(
@@ -238,6 +279,8 @@ def save_dom_scan(
 
     # ── raw elements ────────────────────────────────────────────────────
     elements_doc: dict = {"url": url, "project": project_name, "elements": elements}
+    if scan_data.get("scan"):
+        elements_doc["scan"] = scan_data["scan"]
     if is_multipage:
         elements_doc["scan_mode"] = "interactive"
         elements_doc["total_element_count"] = scan_data.get("total_element_count", len(elements))

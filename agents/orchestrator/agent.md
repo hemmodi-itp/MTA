@@ -84,3 +84,11 @@ existing project would silently produce no `requirements.json`. `_hint_missing_r
 it (`python -m tools.requirements.build --project X`, or `--force-rediscover`). Boundary validation now also
 covers `requirements` (discovery / comprehension) and `traceability` (script_generation, ui_execution, healing,
 reporting).
+
+## Deep discovery (Phase 2)
+
+The request carries the resolved `discovery` block and `auth_roles` (from `project.yaml`), plus `force_recrawl`
+(`main.py --force-recrawl`). Boundary validation of the `discovery` step also covers `app_map`, `form_model`,
+`api_inventory`, `permission_matrix` and `baseline`. When cached discovery is skipped while `discovery.deep` is on
+and `app_map.json` is missing, `_hint_missing_app_map` logs how to build it
+(`python -m tools.discovery.deep --project X`, or `--force-rediscover`).
