@@ -50,8 +50,9 @@ def guarded_urlopen(req, timeout: float = 30):
     url = req.full_url if isinstance(req, urllib.request.Request) else str(req)
     if not is_allowed_url(url):
         raise BlockedTarget(f"refused a request to a private or internal address ({url[:120]})")
+    ctx = ssl_context()  # taken BEFORE _lock: ssl_context() acquires the same non-reentrant lock
     with _lock:
         if _guarded_opener is None:
-            _guarded_opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=ssl_context()),
+            _guarded_opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=ctx),
                                                           _GuardedRedirects())
     return _guarded_opener.open(req, timeout=timeout)
