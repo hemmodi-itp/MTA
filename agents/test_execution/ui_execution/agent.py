@@ -45,7 +45,7 @@ import sys
 import threading
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from agents.base_agent import BaseAgent
 from tools.base_url import (
@@ -56,7 +56,8 @@ from tools.base_url import (
     resolve_execution_base_url,
     resolve_project_base_url,
 )
-from tools.execution.config import KNOWN_PROJECTS, project_slug, resolve_execution_config
+from tools.execution.cmdline import cmd_exe_line, resolve_cmd
+from tools.execution.config import KNOWN_PROJECTS, effective_retries, project_slug, resolve_execution_config
 from tools.execution.shards import ShardSpecError, blob_root, parse_shard, plan_shards, single_shard
 from tools.safety.hosts import url_allowed
 from tools.safety.policy import SafetyPolicy, hosts_env_value
@@ -72,6 +73,7 @@ from tools.constants import PROJECTS_BASE as _ASSETS_BASE
 _NO_INTERACTION_MAX_MS = 5_000
 
 _BROWSER_CLOSE_COMMENT = "Browser closed by user — skipped"
+_HEADLESS_CLOSE_COMMENT = "Browser closed unexpectedly in a headless run — counted as an error"
 _INTERRUPT_COMMENT = "Execution was interrupted before this test ran"
 
 _BROWSER_CLOSE_PATTERNS = [
@@ -83,6 +85,17 @@ _BROWSER_CLOSE_PATTERNS = [
     "connection closed",
     "session closed",
     "target crashed",
+    "target page, context or browser has been closed",
+]
+
+# Phase 4.7: only these mean "a human closed the window" — and only in a headed run. A crash or a dropped
+# connection ("target crashed", "connection closed", ...) is an error in every mode.
+_HUMAN_CLOSE_PATTERNS = [
+    "target closed",
+    "page has been closed",
+    "browser has been closed",
+    "browser was disconnected",
+    "browser disconnected",
     "target page, context or browser has been closed",
 ]
 
@@ -112,11 +125,35 @@ def _is_browser_close_error(text: str) -> bool:
     return any(pat in t for pat in _BROWSER_CLOSE_PATTERNS)
 
 
+def _is_human_close_error(text: str) -> bool:
+    t = text.lower()
+    return any(pat in t for pat in _HUMAN_CLOSE_PATTERNS)
+
+
 def _count_results(results: List[Dict]) -> Tuple[int, int, int]:
+    """(passed, failed, skipped). A "flaky" result is none of these — count it with _count_flaky (Phase 4.7)."""
     passed = sum(1 for r in results if r.get("status") in ("success", "expected"))
     failed = sum(1 for r in results if r.get("status") == "failed")
     skipped = sum(1 for r in results if r.get("status") == "skipped")
     return passed, failed, skipped
+
+
+def _count_flaky(results: List[Dict]) -> int:
+    """Phase 4.7: failed, then passed on a retry — never counted as passed."""
+    return sum(1 for r in results if r.get("status") == "flaky")
+
+
+def _load_results(mta_path: str, json_path: str, logger) -> Tuple[List[Dict], str]:
+    """Phase 4.7: per-test results from the MTA reporter file (the source of truth: keeps flaky / skipped /
+    timedOut apart), falling back to Playwright's JSON report when the MTA file is missing or empty
+    (execution.mta_reporter: false, an interrupted run, a reporter crash). Returns (results, source)."""
+    from tools.execution.mta_results import load_mta_results, to_execution_results
+
+    doc = load_mta_results(mta_path) if mta_path else None
+    if doc is not None and doc.get("tests"):
+        return to_execution_results(doc), "mta_results"
+    results, _, _ = _parse_playwright_json(json_path, logger)
+    return results, "playwright_json"
 
 
 def _find_scripts(scripts_dir: str, suffix: str) -> List[str]:
@@ -181,6 +218,7 @@ class UIExecutionAgent(BaseAgent):
         if request.get("spec_files"):
             shard, shards = None, 1     # healing re-runs a few specs; never shard them
         self._exec_cfg = cfg
+        self._headless = headless
         self._project_cfg = project_cfg
         self._projects = projects
         self._grep = request.get("grep") or None
@@ -553,6 +591,8 @@ class UIExecutionAgent(BaseAgent):
             "--config", "playwright.config.ts",
             *[f"--project={p}" for p in projects],
             *(["--headed"] if not headless else []),
+            # Phase 4.7: a human closing a headed window must not relaunch the test — no retries when headed.
+            *(["--retries=0"] if not headless else []),
             f"--workers={workers}",
             *(["--grep", grep] if grep else []),
             *(["--grep-invert", grep_invert] if grep_invert else []),
@@ -582,6 +622,9 @@ class UIExecutionAgent(BaseAgent):
         # playwright.config.ts never has to guess.
         env["BASE_URL"] = base_url
         env["MTA_ALLOWED_HOSTS"] = hosts_env_value(policy.allowed_hosts)
+        # Phase 4.4: the run-time destructive-action guard applies the same policy that filters plans.
+        env["MTA_DESTRUCTIVE_ALLOWED"] = "1" if policy.destructive_allowed else "0"
+        env["MTA_SAFETY_ENVIRONMENT"] = policy.environment
         if auth_config and auth_config.get("strategy") == "live_login":
             fresh_state = self._capture_live_auth(auth_config)
             if fresh_state:
@@ -646,8 +689,8 @@ class UIExecutionAgent(BaseAgent):
             self._log(msg, level="error")
             return {"module": "ui_execution", "status": "failed", "error": msg, "returncode": returncode}
 
-        # Parse JSON results
-        results, _, _ = _parse_playwright_json(json_report_path, self.logger)
+        # Phase 4.7: per-test results from the MTA reporter file (flaky stays flaky), JSON report as fallback
+        results, results_source = _load_results(mta_path, json_report_path, self.logger)
 
         # A grep that selects nothing: Playwright exits 1 with "No tests found" — report it as
         # skipped instead of recovering a "not started" entry per spec file.
@@ -687,10 +730,12 @@ class UIExecutionAgent(BaseAgent):
                     "No JSON report produced — recovering real progress from streamed output",
                     level="warning",
                 )
-                results = _recover_partial_results(ts_files, json_report_path, stdout, self.logger)
+                results = _recover_partial_results(ts_files, json_report_path, stdout, self.logger,
+                                                   headed=not headless)
 
-        # Fix 3: mark browser-close failures as skipped, tagging interaction info
-        results, browser_close_count = _mark_browser_close_as_skipped(results)
+        # Fix 3 (Phase 4.7: headed runs only): a human closed the window -> skipped, tagging interaction info.
+        # Headless, a browser-close error stays a failure.
+        results, browser_close_count = _mark_browser_close_as_skipped(results, headed=not headless)
 
         # Fix 4: if 3 consecutive no-interaction browser closes occurred in a headed
         # run, re-run all specs from that point onward in headless mode
@@ -716,14 +761,18 @@ class UIExecutionAgent(BaseAgent):
                 )
 
         passed, failed, skipped = _count_results(results)
+        flaky = _count_flaky(results)
         _update_report_index(reports_dir, ts, json_report_path, html_report_dir, passed, failed)
-        self._log(f"Done — passed={passed} failed={failed} skipped={skipped}")
+        self._log(f"Done — passed={passed} flaky={flaky} failed={failed} skipped={skipped} "
+                  f"(results from {results_source})")
         extra = _run_outputs(junit_path, mta_path, projects, shards=shards, shard=shard, run_id=run_id,
                              grep=grep, reports_dir=reports_dir)
+        extra["results_source"] = results_source
+        extra["retries"] = effective_retries(cfg, headed=not headless)
         _write_execution_results(
             reports_dir, ts, project=safe, base_url=base_url, results=results,
             passed=passed, failed=failed, skipped=skipped, returncode=returncode,
-            report_json=json_report_path, logger=self.logger, extra=extra,
+            report_json=json_report_path, logger=self.logger, extra={**extra, "flaky": flaky},
         )
         _apply_traceability(safe, results, ts, logger=self.logger)
         return {
@@ -731,8 +780,9 @@ class UIExecutionAgent(BaseAgent):
             "status": "success",
             "suite": safe,
             "mode": "playwright",
-            "scenarios_executed": passed + failed + skipped,
+            "scenarios_executed": passed + flaky + failed + skipped,
             "passed": passed,
+            "flaky": flaky,
             "failed": failed,
             "skipped": skipped,
             "returncode": returncode,
@@ -809,25 +859,28 @@ class UIExecutionAgent(BaseAgent):
                         json_path=json_path, html_dir=html_dir, junit_path=junit_path, mta_path=mta_path)
         names, (_out, err, _int, rc) = merge_blob_reports(
             root, env, lambda c, cwd, e: _stream_proc(c, cwd=cwd, env=e, logger=self.logger))
-        results, _, _ = _parse_playwright_json(json_path, self.logger)
+        results, results_source = _load_results(mta_path, json_path, self.logger)
         if rc != 0 and not results:
             msg = f"merge-reports failed for run '{run_id}' ({len(names)} blob(s)): {(err or '')[:500]}"
             self._log(msg, level="error")
             return {"module": "ui_execution", "status": "failed", "error": msg, "returncode": rc}
         passed, failed, skipped = _count_results(results)
+        flaky = _count_flaky(results)
         _update_report_index(reports_dir, ts, json_path, html_dir, passed, failed)
         extra = _run_outputs(junit_path, mta_path, list(getattr(self, "_projects", ["chromium"])),
                              shards=len(names), shard=None, run_id=run_id, grep=None, reports_dir=reports_dir)
+        extra["results_source"] = results_source
         _write_execution_results(
             reports_dir, ts, project=safe, base_url="", results=results, passed=passed, failed=failed,
-            skipped=skipped, returncode=rc, report_json=json_path, logger=self.logger, extra=extra,
+            skipped=skipped, returncode=rc, report_json=json_path, logger=self.logger, extra={**extra, "flaky": flaky},
         )
         _apply_traceability(safe, results, ts, logger=self.logger)
-        self._log(f"Merged run {run_id}: {len(names)} blob(s) — passed={passed} failed={failed} skipped={skipped}")
+        self._log(f"Merged run {run_id}: {len(names)} blob(s) — passed={passed} flaky={flaky} failed={failed} "
+                  f"skipped={skipped}")
         return {
             "module": "ui_execution", "status": "success", "suite": safe, "mode": "playwright",
-            "scenarios_executed": passed + failed + skipped, "passed": passed, "failed": failed,
-            "skipped": skipped, "returncode": rc, "results": results,
+            "scenarios_executed": passed + flaky + failed + skipped, "passed": passed, "flaky": flaky,
+            "failed": failed, "skipped": skipped, "returncode": rc, "results": results,
             "report_json": json_path, "report_html": html_dir, **extra,
         }
 
@@ -872,7 +925,8 @@ class UIExecutionAgent(BaseAgent):
         safe: str,
         stdout: str,
     ) -> Dict[str, Any]:
-        results = _recover_partial_results(ts_files, json_report_path, stdout, self.logger)
+        results = _recover_partial_results(ts_files, json_report_path, stdout, self.logger,
+                                           headed=not getattr(self, "_headless", True))
         passed, failed, skipped = _count_results(results)
         _update_report_index(reports_dir, ts, json_report_path, html_report_dir, passed, failed)
         self._log(
@@ -884,8 +938,9 @@ class UIExecutionAgent(BaseAgent):
             "status": "interrupted",
             "suite": safe,
             "mode": "playwright",
-            "scenarios_executed": passed + failed + skipped,
+            "scenarios_executed": passed + failed + skipped + _count_flaky(results),
             "passed": passed,
+            "flaky": _count_flaky(results),
             "failed": failed,
             "skipped": skipped,
             "returncode": 130,
@@ -1109,13 +1164,14 @@ def _merge_runs(runs: List[Dict[str, Any]]) -> Dict[str, Any]:
     if len(runs) == 1:
         return runs[0]
     merged: List[Dict] = []
-    passed = failed = skipped = 0
+    passed = failed = skipped = flaky = 0
     errors = []
     for r in runs:
         merged.extend(r.get("results", []))
         passed += r.get("passed", 0)
         failed += r.get("failed", 0)
         skipped += r.get("skipped", 0)
+        flaky += r.get("flaky", 0)
         if r.get("status") == "failed" and r.get("error"):
             errors.append(r["error"])
     if errors and all(r.get("status") == "failed" for r in runs):
@@ -1125,9 +1181,10 @@ def _merge_runs(runs: List[Dict[str, Any]]) -> Dict[str, Any]:
         **ok[-1],
         "results": merged,
         "passed": passed,
+        "flaky": flaky,
         "failed": failed,
         "skipped": skipped,
-        "scenarios_executed": passed + failed + skipped,
+        "scenarios_executed": passed + flaky + failed + skipped,
     }
     if errors:
         out["run_errors"] = errors
@@ -1234,15 +1291,12 @@ def _parse_playwright_json(
 
             for test in spec.get("tests", []):
                 status = test.get("status", "")
-                # "flaky" = failed on the first attempt but passed on retry —
-                # Playwright's own summary counts it as a pass, not a failure.
-                # Previously only "passed"/"expected" counted as ok, so a
-                # flaky test's earlier failed attempt silently reported the
-                # whole test as "failed" even though it ultimately succeeded.
-                ok = status in ("passed", "expected", "flaky")
-                if ok:
+                # Phase 4.7: "flaky" (failed, then passed on a retry) is its own result — never a pass — and
+                # Playwright "skipped" stays "skipped" (Phase 1 D6). Everything else ("unexpected") is a failure.
+                result_status = _PW_STATUS_TO_RESULT.get(status, "failed")
+                if result_status == "success":
                     passed += 1
-                else:
+                elif result_status == "failed":
                     failed += 1
 
                 test_results = test.get("results", [])
@@ -1260,7 +1314,7 @@ def _parse_playwright_json(
                     "test_title": spec_title,
                     "test_case_id": _extract_test_case_id(spec_file),
                     "business_scenario_id": _extract_test_case_id(spec_file),
-                    "status": "success" if ok else "failed",
+                    "status": result_status,
                     "flaky": status == "flaky",
                     "duration_ms": test.get("duration", 0),
                     "first_attempt_duration_ms": first_attempt_ms,
@@ -1273,9 +1327,12 @@ def _parse_playwright_json(
     return results, passed, failed
 
 
+_PW_STATUS_TO_RESULT = {"expected": "success", "passed": "success", "flaky": "flaky", "skipped": "skipped"}
+
+
 def _trace_fields(spec: dict, test: dict) -> Dict:
     """Phase 1.3: Playwright's raw status plus the test's tags/annotations (tc / ac ids for traceability).
-    pw_status is recorded beside `status` because `status` maps "skipped" to "failed" (design D6)."""
+    pw_status keeps Playwright's own word ("expected" / "unexpected" / "flaky" / "skipped")."""
     annotations = [
         {"type": str(a.get("type", "")), "description": str(a.get("description", ""))}
         for a in (test.get("annotations") or []) if isinstance(a, dict)
@@ -1301,19 +1358,26 @@ def _iter_suites(suites: list):
 # ── Fix 3: browser-close → skipped ───────────────────────────────────────────
 
 def _mark_browser_close_as_skipped(
-    results: List[Dict],
+    results: List[Dict], headed: bool = True,
 ) -> Tuple[List[Dict], int]:
     """
-    Mark failed tests whose errors contain browser-close signatures as
-    "skipped" with a comment.  Also tag no_interaction_close=True when the
-    first-attempt duration is below the threshold (browser was closed before
-    any action in the spec could complete).
+    Headed runs only (Phase 4.7): mark failed tests whose errors say a human
+    closed the window as "skipped" with a comment. Also tag
+    no_interaction_close=True when the first-attempt duration is below the
+    threshold (browser was closed before any action in the spec could complete).
+    Headless/CI runs have no human to close anything: a browser-close error
+    stays a failure, tagged error_kind="browser_closed".
     Returns (results, total_browser_close_count).
     """
     count = 0
     for r in results:
-        if r.get("status") == "failed":
+        if r.get("status") == "failed" and not headed:
             if any(_is_browser_close_error(e) for e in r.get("errors", [])):
+                r["error_kind"] = "browser_closed"
+                r["comment"] = _HEADLESS_CLOSE_COMMENT
+            continue
+        if r.get("status") == "failed":
+            if any(_is_human_close_error(e) for e in r.get("errors", [])):
                 r["status"] = "skipped"
                 r["comment"] = _BROWSER_CLOSE_COMMENT
                 # Treat as "no interaction" when first attempt was very short
@@ -1395,6 +1459,7 @@ def _recover_partial_results(
     json_report_path: str,
     stdout: str,
     logger,
+    headed: bool = True,
 ) -> List[Dict[str, Any]]:
     """
     Recover real per-test results whenever a run didn't end with a clean,
@@ -1406,7 +1471,7 @@ def _recover_partial_results(
     test that may have already passed.
     """
     results, _, _ = _parse_playwright_json(json_report_path, logger)
-    results, _ = _mark_browser_close_as_skipped(results)
+    results, _ = _mark_browser_close_as_skipped(results, headed=headed)
 
     completed_basenames = {os.path.basename(r.get("spec_file", "")) for r in results}
 
@@ -1611,16 +1676,18 @@ def _stream_proc(
     return "".join(stdout_lines), "".join(stderr_lines), interrupted, rc
 
 
-def _resolve_cmd(cmd: List[str]) -> List[str]:
+def _resolve_cmd(cmd: List[str]) -> Union[List[str], str]:
     """Resolve cmd[0] to a full executable path so the command can run without
     a shell. On Windows `npx` is `npx.cmd`, which CreateProcess only finds via
     PATHEXT lookup — the old workaround ran everything through `shell=True`,
     and cmd.exe then mis-parsed any unquoted path containing `(`/`)` (e.g. a
-    user profile directory named like `Name(Org)`), failing every run with rc=1."""
-    if not cmd:
-        return cmd
-    resolved = shutil.which(cmd[0])
-    return [resolved, *cmd[1:]] if resolved else list(cmd)
+    user profile directory named like `Name(Org)`), failing every run with rc=1.
+    Phase 4: a .cmd target still runs through cmd.exe, so tools/execution/cmdline.py quotes its metacharacters
+    (a `|` in --grep used to become a pipe)."""
+    return resolve_cmd(cmd)
+
+
+_cmd_exe_line = cmd_exe_line
 
 
 def _kill_proc(proc: subprocess.Popen) -> None:

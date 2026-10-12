@@ -3,11 +3,11 @@
   "registry_key": "ui_execution",
   "category": "test_execution",
   "module_path": "agents.test_execution.ui_execution.agent",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "status": "active",
   "base_class": "BaseAgent",
   "llm_calls": false,
-  "description": "Runs generated TypeScript Playwright .spec.ts files (or legacy pytest .py files) via subprocess, streams progress, handles browser-close/headless-switch heuristics, and returns a flat per-test results list. Phase 0: base URL resolved explicitly or the run fails fast (blocking) — no localhost fallback; runs spanning modules with different URLs are split per module; MTA_ALLOWED_HOSTS is passed to the runtime host guard; a normalised execution_results v2 record is written to reports/mta/. Phase 1: each result records Playwright's raw pw_status, tags and annotations (tc_id / ac_ids); every run (including healing re-runs) is folded into test_creation/traceability.json when requirements.enabled is on — never fatal. Phase 4: Playwright 1.64 runtime — projects from execution.matrix, --output in its own test-results folder, JUnit + MTA reporter outputs (TC/AC-linked per-test results), grep / suite-by-grep, local shards + merge-reports and CI shard/merge_run, and a per-role storage-state pre-step (execution.role_auth) for test.use({ role }).",
+  "description": "Runs generated TypeScript Playwright .spec.ts files (or legacy pytest .py files) via subprocess, streams progress, handles browser-close/headless-switch heuristics, and returns a flat per-test results list. Phase 0: base URL resolved explicitly or the run fails fast (blocking) — no localhost fallback; runs spanning modules with different URLs are split per module; MTA_ALLOWED_HOSTS is passed to the runtime host guard; a normalised execution_results v2 record is written to reports/mta/. Phase 1: each result records Playwright's raw pw_status, tags and annotations (tc_id / ac_ids); every run (including healing re-runs) is folded into test_creation/traceability.json when requirements.enabled is on — never fatal. Phase 4: Playwright 1.64 runtime — projects from execution.matrix, --output in its own test-results folder, JUnit + MTA reporter outputs (TC/AC-linked per-test results), grep / suite-by-grep, local shards + merge-reports and CI shard/merge_run, and a per-role storage-state pre-step (execution.role_auth) for test.use({ role }). Phase 4 (session 2): per-test results from the MTA reporter file (Playwright JSON fallback); flaky is its own status and count (never a pass), Playwright skipped stays skipped; execution.retries (auto: 2 CI / 1 local, 0 headed) and failOnFlakyTests in CI; browser-close -> skipped only in headed runs; the safety policy is passed to the runtime destructive-action guard.",
   "inputs": [
     {
       "name": "project_name",
@@ -142,6 +142,21 @@
       "name": "shards / shard / blob_dir / run_id",
       "type": "mixed",
       "description": "Sharded-run details"
+    },
+    {
+      "name": "flaky",
+      "type": "int",
+      "description": "Tests that failed and then passed on a retry (never counted in passed)"
+    },
+    {
+      "name": "results_source",
+      "type": "string",
+      "description": "mta_results | playwright_json — where per-test results were read from"
+    },
+    {
+      "name": "retries",
+      "type": "int",
+      "description": "Retries this run used (execution.retries resolved; 0 when headed)"
     }
   ],
   "dependencies": [],

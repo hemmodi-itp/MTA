@@ -4,7 +4,10 @@
 //   { schema_version, artifact, run_id, project, shard, started_at, finished_at, status, totals,
 //     tests: [{ test_id, title, title_path, spec_file, line, project, tags, annotations,
 //               tc_id, case_id, scenario_id, ac_ids, status, outcome, expected_status, retries,
-//               duration_ms, attempts: [{retry, status, duration_ms, error}], attachments: [{name, content_type, path}] }] }
+//               duration_ms, attempts: [{retry, status, duration_ms, error, failed_step}],
+//               attachments: [{name, content_type, path}], cleanup_failures: [string] }] }
+// failed_step (Phase 4.5): title of the innermost failed test.step — the plan step that failed.
+// cleanup_failures (Phase 4.4): the `cleanup` fixture's `cleanup_failed` annotations.
 //
 // status ∈ passed | failed | flaky | skipped | timedOut | interrupted. A test that failed and then
 // passed on a retry is "flaky" — never "passed". Attachments are referenced by path; bodies are never
@@ -12,7 +15,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import type { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from '@playwright/test/reporter';
+import type { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult, TestStep } from '@playwright/test/reporter';
 
 export type MtaStatus = 'passed' | 'failed' | 'flaky' | 'skipped' | 'timedOut' | 'interrupted';
 
@@ -36,6 +39,19 @@ function errorText(result: TestResult): string | null {
   const err = result.error ?? result.errors?.[0];
   const text = (err?.message ?? err?.value ?? '').replace(ANSI, '').trim();
   return text ? text.slice(0, MAX_ERROR) : null;
+}
+
+/** Title of the innermost failed `test.step` of an attempt (renderer step titles name the plan step), or null. */
+export function failedStep(result: Pick<TestResult, 'steps'>): string | null {
+  let found: string | null = null;
+  const walk = (steps: TestStep[]) => {
+    for (const s of steps ?? []) {
+      if (s.category === 'test.step' && s.error) found = s.title;
+      walk(s.steps);
+    }
+  };
+  walk(result.steps);
+  return found;
 }
 
 function describeTitles(test: TestCase): string[] {
@@ -83,8 +99,11 @@ export function testRecord(test: TestCase): Record<string, unknown> {
     expected_status: test.expectedStatus,
     retries: Math.max(0, test.results.length - 1),
     duration_ms: test.results.reduce((sum, r) => sum + (r.duration > 0 ? r.duration : 0), 0),
-    attempts: test.results.map((r) => ({ retry: r.retry, status: r.status, duration_ms: r.duration, error: errorText(r) })),
+    attempts: test.results.map((r) => ({
+      retry: r.retry, status: r.status, duration_ms: r.duration, error: errorText(r), failed_step: failedStep(r),
+    })),
     attachments,
+    cleanup_failures: annotationValues(test, 'cleanup_failed'),
   };
 }
 

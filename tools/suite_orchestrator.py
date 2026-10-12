@@ -215,14 +215,15 @@ class SuiteOrchestrator:
             return {**base, "status": "no_tests", "unresolved": sg.unresolved}
         workers = suite_config.get("execution", {}).get("parallel", 4)
         args = ["npx", "playwright", "test", *targets, "--config", "playwright.config.ts", f"--workers={workers}",
-                *(["--grep", sg.grep] if sg.grep else []), *([] if headless else ["--headed"])]
+                *(["--grep", sg.grep] if sg.grep else []), *([] if headless else ["--headed", "--retries=0"])]
         try:
             env = self._playwright_env(" ".join(targets))
         except BaseUrlUnresolved as exc:
             return {**base, "status": "error", "error": str(exc)}
-        # An argument list, not a shell string: grep expressions contain | ( < ! which cmd.exe would interpret.
-        import shutil
-        result = subprocess.run([shutil.which(args[0]) or args[0], *args[1:]], capture_output=True, text=True, env=env)
+        # Not a shell string: grep expressions contain | ( < ! which cmd.exe would interpret. npx.cmd still runs
+        # through cmd.exe on Windows, so resolve_cmd quotes those characters (Phase 4).
+        from tools.execution.cmdline import resolve_cmd
+        result = subprocess.run(resolve_cmd(args), capture_output=True, text=True, env=env)
         return {**base, "status": "passed" if result.returncode == 0 else "failed", "returncode": result.returncode,
                 "grep": sg.grep, "unresolved": sg.unresolved, "output": result.stdout + result.stderr}
 
@@ -283,7 +284,7 @@ class SuiteOrchestrator:
     def _playwright_cmd(targets: str, workers: int, headless: bool) -> str:
         cmd = f"npx playwright test {targets} --config playwright.config.ts --workers={workers}"
         if not headless:
-            cmd += " --headed"
+            cmd += " --headed --retries=0"   # Phase 4.7: a closed headed window is never retried
         return cmd
 
     def _playwright_env(self, targets: str) -> Dict[str, str]:

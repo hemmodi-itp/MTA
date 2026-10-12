@@ -120,7 +120,7 @@ def test_unknown_bug_ids_reported():
 
 
 @pytest.mark.parametrize("raw,expected", [
-    ("passed", "passed"), ("expected", "passed"), ("flaky", "passed"), ("success", "passed"),
+    ("passed", "passed"), ("expected", "passed"), ("flaky", "flaky"), ("success", "passed"),
     ("failed", "failed"), ("timedOut", "failed"), ("unexpected", "failed"), ("weird", "failed"),
     ("skipped", "skipped"), ("", "skipped"), (None, "skipped"),
 ])

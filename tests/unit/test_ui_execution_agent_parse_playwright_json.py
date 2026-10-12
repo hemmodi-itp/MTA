@@ -89,7 +89,7 @@ class ParsePlaywrightJsonTests(unittest.TestCase):
         self.assertEqual(results[0]["test_case_id"], "M03_BS_006")
         self.assertEqual(results[0]["business_scenario_id"], "M03_BS_006")
 
-    def test_flaky_status_counts_as_passed_not_failed(self):
+    def test_flaky_status_is_its_own_result_not_passed_or_failed(self):
         # The real geminiTest bug: a test that failed its first attempt but
         # passed on Playwright's automatic retry gets status "flaky" in the
         # JSON reporter — Playwright's own summary counts this as a pass
@@ -115,10 +115,12 @@ class ParsePlaywrightJsonTests(unittest.TestCase):
         with open(self.json_path, "w", encoding="utf-8") as f:
             json.dump(fixture, f)
 
+        # Phase 4.7: a test that failed, then passed on Playwright's retry is "flaky" — neither a pass nor a
+        # failure (it used to be counted as passed).
         results, passed, failed = _parse_playwright_json(self.json_path, self.logger)
-        self.assertEqual(passed, 1)
+        self.assertEqual(passed, 0)
         self.assertEqual(failed, 0)
-        self.assertEqual(results[0]["status"], "success")
+        self.assertEqual(results[0]["status"], "flaky")
         self.assertTrue(results[0]["flaky"])
 
     def test_non_flaky_success_is_not_tagged_flaky(self):

@@ -28,6 +28,25 @@ def _suite(pdir, body, name="smoke"):
     (pdir / "test_suites" / f"{name}_suite.json").write_text(json.dumps(body))
 
 
+@pytest.fixture(autouse=True)
+def _plain_npx(monkeypatch):
+    """Keep the argument list inspectable: with `npx` unresolved, resolve_cmd returns the list unchanged
+    (a resolved npx.cmd on Windows becomes one cmd.exe-safe string — see test_cli_quotes_grep_for_npx_cmd)."""
+    monkeypatch.setattr("tools.execution.cmdline.shutil.which", lambda name: None)
+
+
+def test_cli_quotes_grep_for_npx_cmd(project, monkeypatch):
+    monkeypatch.setattr("tools.execution.cmdline.shutil.which", lambda name: r"C:\nodejs\npx.cmd")
+    monkeypatch.setattr("tools.execution.cmdline.os.name", "nt")
+    _suite(project, {"scenarios": ["M01_BS_001", "M02_BS_001"]})
+    calls = _capture(monkeypatch)
+    SuiteOrchestrator(str(project)).run_suite("smoke")
+    line = calls[0]["args"]
+    assert isinstance(line, str) and line.startswith(r"C:\nodejs\npx.cmd playwright test ")
+    grep = line.split("--grep ", 1)[1]
+    assert grep.startswith('"') and "|" in grep.split('"')[1]     # the alternation is inside quotes
+
+
 def _capture(monkeypatch):
     calls = []
 

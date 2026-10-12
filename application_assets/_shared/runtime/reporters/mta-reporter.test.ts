@@ -3,7 +3,7 @@ import os from 'os';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 
-import MtaReporter, { testRecord, testStatus, totals } from './mta-reporter';
+import MtaReporter, { failedStep, testRecord, testStatus, totals } from './mta-reporter';
 
 const TEST_DIR = path.resolve('/assets');
 
@@ -129,5 +129,33 @@ describe('MtaReporter', () => {
     expect(fs.readdirSync(path.dirname(out))).toEqual(['run.mta_results.json']); // no tmp file left
     delete process.env.MTA_RUN_ID;
     delete process.env.PW_PROJECT;
+  });
+});
+
+describe('Phase 4 session 2 fields', () => {
+  const step = (title: string, error?: any, steps: any[] = [], category = 'test.step') => ({ title, category, error, steps });
+
+  it('failed_step = the innermost failed test.step (the plan step), ignoring hooks and API steps', () => {
+    const result = {
+      steps: [
+        step('Before Hooks', undefined, [], 'hook'),
+        step('1. Navigate to "/products/new"'),
+        step('2. Click "save_product_button"', { message: 'x' }, [step('locator.click', { message: 'x' }, [], 'pw:api')]),
+      ],
+    };
+    expect(failedStep(result as any)).toBe('2. Click "save_product_button"');
+    expect(failedStep({ steps: [step('1. ok')] } as any)).toBeNull();
+    expect(failedStep({} as any)).toBeNull();
+  });
+
+  it('record carries failed_step per attempt and cleanup_failures from the cleanup fixture', () => {
+    const t = makeTest([{ status: 'failed', steps: [step('3. Verify "x" is visible', { message: 'nope' })] } as any], {
+      outcome: 'unexpected',
+      annotations: [{ type: 'tc', description: 'T1' }, { type: 'cleanup_failed', description: 'product 7: 500 boom' }],
+    });
+    const rec: any = testRecord(t);
+    expect(rec.attempts[0].failed_step).toBe('3. Verify "x" is visible');
+    expect(rec.cleanup_failures).toEqual(['product 7: 500 boom']);
+    expect(rec.status).toBe('failed');
   });
 });

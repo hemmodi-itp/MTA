@@ -16,6 +16,15 @@ config.py — the `execution:` block of project.yaml (Phase 4).
       suite_mode: files                 # files (legacy path targeting) | grep (test_suites/*.json -> --grep)
       shards: 1                         # > 1 -> run N shards locally + merge-reports
       max_parallel_shards: 1
+      # Phase 4 (session 2)
+      retries: auto                     # auto = 2 in CI, 1 locally; 0-5 overrides. Headed runs always use 0.
+      fail_on_flaky_tests: auto         # auto = true in CI (exit code only)
+      data_isolation: false             # true -> fullyParallel: true (specs create their data through testData)
+      console_guard: warn               # off | warn | fail — new console/page errors vs baseline.json
+      network: on-failure               # off | on-failure | on — request log + redacted HAR attachment
+      cleanup_failure: warn             # warn | fail — a cleanup error is always reported; fail also fails the test
+      test_steps: true                  # renderer: one test.step per plan step
+      module_roles: false               # renderer: modules[].role -> test.use({ role }) instead of setup steps
 
 The TypeScript config builder (application_assets/_shared/runtime/config/buildConfig.ts) resolves the
 same block for hand runs. Both sides are tested against tests/fixtures/execution_config_cases.json, so
@@ -42,6 +51,9 @@ TRACE_MODES = ("off", "on", "retain-on-failure", "on-first-retry", "on-all-retri
 VIDEO_MODES = ("off", "on", "retain-on-failure", "on-first-retry")
 SCREENSHOT_MODES = ("off", "on", "only-on-failure", "on-first-failure")
 SUITE_MODES = ("files", "grep")
+CONSOLE_GUARD_MODES = ("off", "warn", "fail")
+NETWORK_MODES = ("off", "on-failure", "on")
+CLEANUP_FAILURE_MODES = ("warn", "fail")
 
 DEFAULTS: Dict[str, Any] = {
     "matrix": ["chromium"],
@@ -58,6 +70,14 @@ DEFAULTS: Dict[str, Any] = {
     "suite_mode": "files",
     "shards": 1,
     "max_parallel_shards": 1,
+    "retries": "auto",
+    "fail_on_flaky_tests": "auto",
+    "data_isolation": False,
+    "console_guard": "warn",
+    "network": "on-failure",
+    "cleanup_failure": "warn",
+    "test_steps": True,
+    "module_roles": False,
 }
 
 _ATTR_RE = re.compile(r"^[A-Za-z_][\w.:-]*$")
@@ -106,6 +126,48 @@ def _opt_str(block: dict, key: str) -> Optional[str]:
         return value.strip()
     _warn(key, value, None)
     return None
+
+
+def _auto_int(block: dict, key: str, lo: int, hi: int) -> Any:
+    """'auto' or an int in [lo, hi]."""
+    value = block.get(key, DEFAULTS[key])
+    if value is None or (isinstance(value, str) and value.strip().lower() == "auto"):
+        return "auto"
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or int(value) != value or not lo <= value <= hi:
+        _warn(key, value, DEFAULTS[key])
+        return DEFAULTS[key]
+    return int(value)
+
+
+def _auto_bool(block: dict, key: str) -> Any:
+    """'auto' or a bool."""
+    value = block.get(key, DEFAULTS[key])
+    if value is None or (isinstance(value, str) and value.strip().lower() == "auto"):
+        return "auto"
+    if isinstance(value, bool):
+        return value
+    _warn(key, value, DEFAULTS[key])
+    return DEFAULTS[key]
+
+
+def _is_ci(env: Optional[dict] = None) -> bool:
+    return bool((env if env is not None else os.environ).get("CI"))
+
+
+def effective_retries(cfg: Dict[str, Any], *, headed: bool = False, env: Optional[dict] = None) -> int:
+    """execution.retries for one run: headed -> 0 (a human closing the window must not relaunch the test);
+    'auto' -> 2 in CI, 1 locally. Mirrors buildConfig.ts::effectiveRetries."""
+    if headed:
+        return 0
+    value = cfg.get("retries", "auto")
+    if value == "auto":
+        return 2 if _is_ci(env) else 1
+    return int(value)
+
+
+def effective_fail_on_flaky(cfg: Dict[str, Any], env: Optional[dict] = None) -> bool:
+    value = cfg.get("fail_on_flaky_tests", "auto")
+    return _is_ci(env) if value == "auto" else bool(value)
 
 
 def resolve_projects(matrix: List[str], profile: Optional[str]) -> List[str]:
@@ -163,6 +225,14 @@ def resolve_execution_config(raw: Optional[dict]) -> Dict[str, Any]:
         "suite_mode": _enum(block, "suite_mode", SUITE_MODES),
         "shards": _int(block, "shards", 1, 64),
         "max_parallel_shards": _int(block, "max_parallel_shards", 1, 16),
+        "retries": _auto_int(block, "retries", 0, 5),
+        "fail_on_flaky_tests": _auto_bool(block, "fail_on_flaky_tests"),
+        "data_isolation": _bool(block, "data_isolation"),
+        "console_guard": _enum(block, "console_guard", CONSOLE_GUARD_MODES),
+        "network": _enum(block, "network", NETWORK_MODES),
+        "cleanup_failure": _enum(block, "cleanup_failure", CLEANUP_FAILURE_MODES),
+        "test_steps": _bool(block, "test_steps"),
+        "module_roles": _bool(block, "module_roles"),
     }
     cfg["projects"] = resolve_projects(matrix, profile)
     return cfg

@@ -78,7 +78,7 @@ class PostGenerationFailureIsolationTests(unittest.TestCase):
             return real_render(plan, scenario, *args, **kwargs)
 
         with patch(
-            "agents.test_creation.script_generation.agent.render_spec_from_plan",
+            "tools.test_creation.script_generator.compose.render_spec_from_plan",   # Phase 4.5: rendering goes through compose_spec
             side_effect=_boom_for_second_scenario,
         ):
             out = self.agent.execute(request, {})

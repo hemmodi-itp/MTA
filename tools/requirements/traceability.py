@@ -231,7 +231,9 @@ def _aggregate_result(statuses: List[str]) -> str:
     if s == {"passed"}:
         return "passed"
     if "failed" in s:
-        return "mixed" if "passed" in s else "failed"
+        return "mixed" if ("passed" in s or "flaky" in s) else "failed"
+    if "flaky" in s:            # Phase 4.7: an AC whose only non-pass is a flaky test is flaky, not passing
+        return "flaky"
     if s <= {"skipped", "not_run"}:
         return "skipped"
     return "mixed"
@@ -240,15 +242,19 @@ def _aggregate_result(statuses: List[str]) -> str:
 # ── results ──────────────────────────────────────────────────────────────────
 
 def result_status(r: dict) -> str:
+    """passed | flaky | failed | skipped. Phase 4.7: a test that failed and then passed on a retry is "flaky",
+    never "passed"."""
     pw = str(r.get("pw_status") or "").lower()
-    if pw in ("expected", "passed", "flaky"):
+    if pw in ("expected", "passed"):
         return "passed"
+    if pw == "flaky":
+        return "flaky"
     if pw == "skipped":
         return "skipped"
     if pw in ("unexpected", "failed", "timedout", "interrupted"):
         return "failed"
     st = str(r.get("status") or "").lower()
-    return {"success": "passed", "passed": "passed", "skipped": "skipped"}.get(st, "failed")
+    return {"success": "passed", "passed": "passed", "flaky": "flaky", "skipped": "skipped"}.get(st, "failed")
 
 
 def _first_error(r: dict) -> Optional[str]:
@@ -314,6 +320,7 @@ def summarise(trace: TraceabilityDoc, unmatched_results: Optional[int] = None) -
         "coverage_pct": round(100.0 * len(covered) / len(automatable), 1) if automatable else None,
         "acs_covered_any": sum(1 for v in leaves.values() if v.status == "covered"),
         "acs_passing": sum(1 for v in leaves.values() if v.result == "passed"),
+        "acs_flaky": sum(1 for v in leaves.values() if v.result == "flaky"),
         "acs_failing": sum(1 for v in leaves.values() if v.result in ("failed", "mixed")),
         "non_atomic_parents": sum(1 for v in trace.acs.values() if v.children),
         "by_reason": dict(sorted(by_reason.items())),

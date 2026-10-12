@@ -11,6 +11,9 @@ const TRACE_MODES = ['off', 'on', 'retain-on-failure', 'on-first-retry', 'on-all
 const VIDEO_MODES = ['off', 'on', 'retain-on-failure', 'on-first-retry'];
 const SCREENSHOT_MODES = ['off', 'on', 'only-on-failure', 'on-first-failure'];
 const SUITE_MODES = ['files', 'grep'];
+const CONSOLE_GUARD_MODES = ['off', 'warn', 'fail'];
+const NETWORK_MODES = ['off', 'on-failure', 'on'];
+const CLEANUP_FAILURE_MODES = ['warn', 'fail'];
 const ATTR_RE = /^[A-Za-z_][\w.:-]*$/;
 
 export interface ExecutionConfig {
@@ -28,6 +31,15 @@ export interface ExecutionConfig {
   suite_mode: string;
   shards: number;
   max_parallel_shards: number;
+  // Phase 4 (session 2)
+  retries: 'auto' | number;
+  fail_on_flaky_tests: 'auto' | boolean;
+  data_isolation: boolean;
+  console_guard: string;
+  network: string;
+  cleanup_failure: string;
+  test_steps: boolean;
+  module_roles: boolean;
   projects: string[];
 }
 
@@ -46,7 +58,29 @@ export const DEFAULTS: Omit<ExecutionConfig, 'projects'> = {
   suite_mode: 'files',
   shards: 1,
   max_parallel_shards: 1,
+  retries: 'auto',
+  fail_on_flaky_tests: 'auto',
+  data_isolation: false,
+  console_guard: 'warn',
+  network: 'on-failure',
+  cleanup_failure: 'warn',
+  test_steps: true,
+  module_roles: false,
 };
+
+type Env = Record<string, string | undefined>;
+
+/** retries for one run: headed -> 0; 'auto' -> 2 in CI, 1 locally (same as config.py::effective_retries). */
+export function effectiveRetries(exec: Pick<ExecutionConfig, 'retries'>, env: Env, headed = false): number {
+  if (headed) return 0;
+  if (exec.retries === 'auto') return env.CI ? 2 : 1;
+  return exec.retries;
+}
+
+/** failOnFlakyTests: 'auto' -> true in CI (same as config.py::effective_fail_on_flaky). */
+export function effectiveFailOnFlaky(exec: Pick<ExecutionConfig, 'fail_on_flaky_tests'>, env: Env): boolean {
+  return exec.fail_on_flaky_tests === 'auto' ? !!env.CI : exec.fail_on_flaky_tests;
+}
 
 type Warn = (message: string) => void;
 
@@ -97,6 +131,23 @@ export function resolveExecutionConfig(raw: unknown, warn: Warn = (m) => console
     }
     return value;
   };
+  const isAuto = (v: unknown) => v === null || v === undefined || (typeof v === 'string' && v.trim().toLowerCase() === 'auto');
+  const autoInt = (key: 'retries', lo: number, hi: number): 'auto' | number => {
+    const value = has(key) ? block[key] : DEFAULTS[key];
+    if (isAuto(value)) return 'auto';
+    if (typeof value !== 'number' || !Number.isInteger(value) || value < lo || value > hi) {
+      bad(key, value, DEFAULTS[key]);
+      return DEFAULTS[key];
+    }
+    return value;
+  };
+  const autoBool = (key: 'fail_on_flaky_tests'): 'auto' | boolean => {
+    const value = has(key) ? block[key] : DEFAULTS[key];
+    if (isAuto(value)) return 'auto';
+    if (typeof value === 'boolean') return value;
+    bad(key, value, DEFAULTS[key]);
+    return DEFAULTS[key];
+  };
   const optStr = (key: keyof typeof DEFAULTS): string | null => {
     const value = block[key];
     if (value === null || value === undefined) return null;
@@ -145,6 +196,14 @@ export function resolveExecutionConfig(raw: unknown, warn: Warn = (m) => console
     suite_mode: enumOf('suite_mode', SUITE_MODES),
     shards: int('shards', 1, 64),
     max_parallel_shards: int('max_parallel_shards', 1, 16),
+    retries: autoInt('retries', 0, 5),
+    fail_on_flaky_tests: autoBool('fail_on_flaky_tests'),
+    data_isolation: bool('data_isolation'),
+    console_guard: enumOf('console_guard', CONSOLE_GUARD_MODES),
+    network: enumOf('network', NETWORK_MODES),
+    cleanup_failure: enumOf('cleanup_failure', CLEANUP_FAILURE_MODES),
+    test_steps: bool('test_steps'),
+    module_roles: bool('module_roles'),
   };
   return { ...cfg, projects: resolveProjects(matrix, profile, warn) };
 }

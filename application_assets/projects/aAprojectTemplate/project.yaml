@@ -104,6 +104,11 @@ modules:
     # from an environment variable (.env) — never commit real credentials
     # into project.yaml or generated test scripts.
     #
+    # role: an auth.roles name. With execution.module_roles: true (and role_auth: true)
+    # the generated specs start as that role — test.use({ role }) — instead of
+    # repeating the setup login in every test; setup stays the discovery recipe.
+    # role: user
+    #
     # setup:
     #   - goto: https://yourapp.com/login
     #   - fill:
@@ -152,6 +157,15 @@ execution:
   suite_mode: grep                  # template: test_suites/*.json run as one --grep (default: files)
   # shards: 1                       # > 1 → N local shards + merge-reports
   # max_parallel_shards: 1
+  # ── session 2: fixtures, steps, waiting, flakiness ──
+  # retries: auto                   # auto = 2 in CI, 1 locally (headed runs: 0); a fail-then-pass is "flaky"
+  # fail_on_flaky_tests: auto       # auto = a flaky test fails the CI run (exit code)
+  # data_isolation: false           # true = specs create data via the testData fixture -> fullyParallel
+  # console_guard: warn             # off | warn | fail — new console errors vs test_comprehension/baseline.json
+  # network: on-failure             # off | on-failure | on — redacted network.har attached to failed tests
+  # cleanup_failure: warn           # warn | fail — a cleanup error is always reported
+  # test_steps: true                # generated specs: one test.step per plan step
+  # module_roles: false             # true + modules[].role -> test.use({ role }) instead of the setup login
 
 # ── Suites (optional) — named scenario groupings for `--suite` ──────────────
 # Define suites under test_suites/*.json (see test_suites/test_suites.md),

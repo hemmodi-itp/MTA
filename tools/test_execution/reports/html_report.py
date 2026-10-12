@@ -26,6 +26,7 @@ def _chip(status: str) -> str:
         "passed":  "chip-success",
         "failed":  "chip-failed",
         "skipped": "chip-skipped",
+        "flaky":   "chip-flaky",
     }.get((status or "").lower(), "chip-skipped")
     return f'<span class="chip {cls}">{_esc(status.upper() if status else "UNKNOWN")}</span>'
 
@@ -104,6 +105,7 @@ tr.tc-detail td { padding: 0; }
 .chip-success { background: #d1fae5; color: #065f46; }
 .chip-failed  { background: #fee2e2; color: #991b1b; }
 .chip-skipped { background: #f1f5f9; color: #64748b; }
+.chip-flaky   { background: #fef3c7; color: #b45309; }
 
 /* ── Durations ── */
 .dur { color: #94a3b8; font-family: monospace; font-size: 0.82rem; }
@@ -166,6 +168,8 @@ tr.tc-detail td { padding: 0; }
 .stat-block .lbl { font-size: 0.72rem; font-weight: 600; color: #64748b; text-transform: uppercase; }
 .npass { color: #059669; }
 .nfail { color: #dc2626; }
+.nflaky { color: #d97706; }
+.nskip { color: #64748b; }
 .ntot  { color: #1e40af; }
 
 /* ── Step details inside TC rows ── */
@@ -239,7 +243,8 @@ def _header(report: dict) -> str:
     if ter.get("executed"):
         test_stat = (
             f'<span>Tests: <strong>{ter["passed"]} passed</strong>'
-            f' / {ter["failed"]} failed'
+            + (f' / {ter["flaky"]} flaky' if ter.get("flaky") else "")
+            + f' / {ter["failed"]} failed'
             f' &nbsp;({_esc(ter.get("pass_rate", "N/A"))})</span>'
         )
 
@@ -468,7 +473,9 @@ def _test_section(ter: dict) -> str:
   <div class="sec-title">🧪 3. Test Execution Report <span class="sec-cnt">{total} tests</span></div>
   <div class="suite-bar">
     <div class="stat-block"><div class="num npass">{passed}</div><div class="lbl">Passed</div></div>
+    <div class="stat-block"><div class="num nflaky">{ter.get("flaky", 0)}</div><div class="lbl">⚠ Flaky</div></div>
     <div class="stat-block"><div class="num nfail">{failed}</div><div class="lbl">Failed</div></div>
+    <div class="stat-block"><div class="num nskip">{ter.get("skipped", 0)}</div><div class="lbl">○ Skipped</div></div>
     <div class="stat-block"><div class="num ntot">{total}</div><div class="lbl">Total</div></div>
   </div>
 {_failure_summary_section(ter.get("failure_summary") or [])}

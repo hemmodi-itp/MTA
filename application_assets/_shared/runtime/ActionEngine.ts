@@ -1,7 +1,8 @@
 import * as fs from 'fs';
-import { expect, Locator, Page } from '@playwright/test';
+import { expect, Locator, Page, test } from '@playwright/test';
 import { Logger } from './Logger';
 import { allowedHostsFromEnv, assertUrlAllowed, SafetyError } from './safety';
+import { classifyStep, DestructivePolicy, LocatorEntryLike, PlanStep, refusalMessage, Rules } from './destructive';
 
 export interface VerifyOptions {
     soft?: boolean;
@@ -16,6 +17,27 @@ export interface VerifyOptions {
 export interface RuntimeSafety {
     allowedHosts: string[] | null;
     violations: string[];
+    /** Violations already raised by an action (the safety fixture fails the test at teardown for the rest). */
+    reported?: number;
+    /** Phase 4.4: destructive-action guard (tools/safety/destructive_rules.yaml + the project's policy). */
+    destructive?: {
+        policy: DestructivePolicy;
+        rules: Rules | null;
+        entryOf: (key: string) => LocatorEntryLike | null | undefined;
+    };
+}
+
+export interface WaitOptions {
+    timeout?: number;
+    intervals?: number[];
+}
+
+function annotate(type: string, description: string): void {
+    try {
+        test.info().annotations.push({ type, description });
+    } catch {
+        // outside a running test (unit tests, flows called from a script) — the log line is enough
+    }
 }
 
 export class ActionEngine {
@@ -50,17 +72,20 @@ export class ActionEngine {
         locatorName: string | null,
         action: string,
         value: string | undefined,
-        fn: () => Promise<T>
+        fn: () => Promise<T>,
+        step?: PlanStep
     ): Promise<T> {
 
         Logger.step(action, locatorName ?? undefined, value);
 
         if (this.safety.violations.length) {
+            this.safety.reported = this.safety.violations.length;
             throw new SafetyError(
                 `page left safety.allowed_hosts [${(this.safety.allowedHosts ?? []).join(', ')}]: ` +
                 this.safety.violations.join(', ')
             );
         }
+        if (step) this.guardDestructive(step);
 
         try {
             const result = await fn();
@@ -73,6 +98,16 @@ export class ActionEngine {
             throw new Error(
                 locatorName ? `[locator_key=${locatorName}] ${message}` : message
             );
+        }
+    }
+
+    /** Phase 4.4: refuse a destructive step unless safety.allow_destructive + a non-prod environment allow it. */
+    private guardDestructive(step: PlanStep): void {
+        const guard = this.safety.destructive;
+        if (!guard || !guard.policy.enforced || guard.policy.allowed || !guard.rules) return;
+        const verdict = classifyStep(step, guard.entryOf, guard.rules);
+        if (verdict.destructive) {
+            throw new SafetyError(refusalMessage(step, verdict, guard.policy));
         }
     }
 
@@ -98,7 +133,7 @@ export class ActionEngine {
             // can't block the whole test.
             await this.page.goto(url ?? '', { waitUntil: 'domcontentloaded' });
             await this.page.waitForLoadState('networkidle', { timeout: 5_000 }).catch(() => {});
-        });
+        }, { action: 'navigate', value: url });
     }
 
     async click(name: string): Promise<void> {
@@ -124,13 +159,13 @@ export class ActionEngine {
             } else {
                 await locator.click();
             }
-        });
+        }, { action: 'click', locator_key: name });
     }
 
     async doubleClick(name: string): Promise<void> {
         await this.run(name, 'Double Click', undefined, async () => {
             await this.resolve(name).dblclick();
-        });
+        }, { action: 'doubleClick', locator_key: name });
     }
 
     async hover(name: string): Promise<void> {
@@ -160,31 +195,31 @@ export class ActionEngine {
             } else {
                 await this.page.keyboard.press(key);
             }
-        });
+        }, { action: 'pressKey', locator_key: name, value: key });
     }
 
     async checkCheckbox(name: string): Promise<void> {
         await this.run(name, 'Check Checkbox', undefined, async () => {
             await this.resolve(name).check();
-        });
+        }, { action: 'checkCheckbox', locator_key: name });
     }
 
     async uncheckCheckbox(name: string): Promise<void> {
         await this.run(name, 'Uncheck Checkbox', undefined, async () => {
             await this.resolve(name).uncheck();
-        });
+        }, { action: 'uncheckCheckbox', locator_key: name });
     }
 
     async selectDropdownByText(name: string, text: string): Promise<void> {
         await this.run(name, 'Select Dropdown By Text', text, async () => {
             await this.resolve(name).selectOption({ label: text });
-        });
+        }, { action: 'selectDropdownByText', locator_key: name, value: text });
     }
 
     async selectDropdownByValue(name: string, value: string): Promise<void> {
         await this.run(name, 'Select Dropdown By Value', value, async () => {
             await this.resolve(name).selectOption(value);
-        });
+        }, { action: 'selectDropdownByValue', locator_key: name, value });
     }
 
     async scrollIntoView(name: string): Promise<void> {
@@ -202,16 +237,53 @@ export class ActionEngine {
         });
     }
 
+    /**
+     * A fixed sleep — kept only for human-authored flows.json (Phase 4.6: generated plans may not use it).
+     * Logged as a warning and recorded as a test annotation; prefer waitForElement / waitUntil / pollUntil.
+     */
     async waitForTimeout(ms: number): Promise<void> {
+        const note = `fixed sleep waitForTimeout(${ms}) — prefer a web-first wait (waitForElement, waitUntil, pollUntil)`;
+        Logger.warn(note);
+        annotate('warning', note);
         await this.run(null, 'Wait For Timeout', String(ms), async () => {
             await this.page.waitForTimeout(ms);
+        });
+    }
+
+    // ── Phase 4.6: web-first waiting for eventual consistency (runtime API, not LLM vocabulary) ──
+
+    /** Retries `fn` until it stops throwing (expect(fn).toPass) — e.g. a list that updates asynchronously. */
+    async waitUntil(description: string, fn: () => Promise<unknown> | unknown, opts: WaitOptions = {}): Promise<void> {
+        await this.run(null, 'Wait Until', description, async () => {
+            await expect(async () => { await fn(); }, description).toPass({ timeout: opts.timeout, intervals: opts.intervals });
+        });
+    }
+
+    /** Polls `fn` until its value equals `expected` (expect.poll). */
+    async pollUntil<T>(description: string, fn: () => Promise<T> | T, expected: T, opts: WaitOptions = {}): Promise<void> {
+        await this.run(null, 'Poll Until', description, async () => {
+            await expect.poll(async () => fn(), { message: description, timeout: opts.timeout, intervals: opts.intervals })
+                .toEqual(expected);
+        });
+    }
+
+    /** Waits for the page URL (string, glob or RegExp) — page.waitForURL. */
+    async waitForUrl(url: string | RegExp, opts: { timeout?: number } = {}): Promise<void> {
+        await this.run(null, 'Wait For URL', String(url), async () => {
+            await this.page.waitForURL(url, { timeout: opts.timeout });
+        });
+    }
+
+    async waitForLoadState(state: 'load' | 'domcontentloaded' | 'networkidle' = 'load'): Promise<void> {
+        await this.run(null, 'Wait For Load State', state, async () => {
+            await this.page.waitForLoadState(state);
         });
     }
 
     async dragAndDrop(sourceName: string, targetName: string): Promise<void> {
         await this.run(sourceName, 'Drag And Drop', targetName, async () => {
             await this.resolve(sourceName).dragTo(this.resolve(targetName));
-        });
+        }, { action: 'dragAndDrop', locator_key: sourceName, target_locator_key: targetName });
     }
 
     async uploadFile(name: string, filePath: string): Promise<void> {

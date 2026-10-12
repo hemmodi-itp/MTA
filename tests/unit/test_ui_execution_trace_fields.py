@@ -33,10 +33,9 @@ def test_tags_annotations_and_raw_status_are_recorded(tmp_path):
     assert traced["tc_id"] == "M01_TC_002" and traced["ac_ids"] == ["AC-01.2"]
     assert traced["tags"] == ["P1", "negative", "regression", "REQ-01", "AC-01.2"]
     assert {"type": "scenario", "description": "M01_BS_002"} in traced["annotations"]
-    # existing behaviour is unchanged: Playwright "skipped" still counts as failed in `status` (design D6);
-    # the raw status is kept beside it for traceability
-    assert skipped["status"] == "failed" and skipped["pw_status"] == "skipped"
-    assert (passed, failed) == (1, 2)
+    # Phase 4.7 fixes Phase 1 D6: Playwright "skipped" stays "skipped" in `status` (the raw status is kept too)
+    assert skipped["status"] == "skipped" and skipped["pw_status"] == "skipped"
+    assert (passed, failed) == (1, 1)
     assert "tc_id" not in legacy and legacy["annotations"] == [] and legacy["pw_status"] == "expected"
 
 

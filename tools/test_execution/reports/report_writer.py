@@ -228,6 +228,9 @@ def build_report_dict(
     exec_summary = exec_output.get("summary") or exec_output
     tc_passed    = exec_summary.get("passed", 0)
     tc_failed    = exec_summary.get("failed", 0)
+    # Phase 4.7: flaky (passed only on a retry) and skipped are their own counts — a flaky test is never a pass.
+    tc_flaky     = exec_summary.get("flaky", sum(1 for r in raw_results if r.get("status") == "flaky"))
+    tc_skipped   = exec_summary.get("skipped", 0)
     tc_total     = exec_summary.get("scenarios_executed", 0)
     pass_rate    = f"{round(tc_passed / tc_total * 100)}%" if tc_total else "N/A"
 
@@ -319,7 +322,9 @@ def build_report_dict(
             "executed":        bool(raw_results),
             "total":           tc_total,
             "passed":          tc_passed,
+            "flaky":           tc_flaky,
             "failed":          tc_failed,
+            "skipped":         tc_skipped,
             "pass_rate":       pass_rate,
             "results":         test_results,
             "failure_summary": build_failure_summary(test_results),

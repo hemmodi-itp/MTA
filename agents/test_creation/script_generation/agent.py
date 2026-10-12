@@ -53,6 +53,10 @@ from tools.state.review_queue import flag_missing_capability, flag_safety_drops,
 from agents.test_creation.script_generation.prompt import (
     ACTION_LIBRARY_PROMPT, DESIGN_CASES_PROMPT, LOCATOR_RECONCILE_PROMPT,
 )
+from tools.execution.config import load_execution_config
+from tools.test_creation.script_generator.compose import (
+    compose_spec, inject_setup_steps, module_role_for, translate_setup_step,
+)
 from agents.test_creation.script_generation.tools import (
     LOCATOR_FIRST_ACTIONS,
     LOCATOR_OR_NULL_ACTIONS,
@@ -82,15 +86,19 @@ DESIGN_CHUNK_SIZE = 6
 # plus the "useFlow" pseudo-action (a call into flows.generated.ts instead of
 # a raw ActionEngine method). Keep these two lists in sync by hand — there is
 # no single source of truth across the Python/TypeScript boundary.
+# Phase 4.6: "waitForTimeout" (a fixed sleep) is deliberately NOT here — ActionEngine keeps it only for
+# human-authored flows.json, and _validate_plan rejects it in generated plans (FIXED_SLEEP_ACTIONS).
 ALLOWED_ACTIONS = frozenset({
     "navigate", "click", "doubleClick", "hover", "enterText", "clearAndEnterText",
     "pressKey", "checkCheckbox", "uncheckCheckbox", "selectDropdownByText",
-    "selectDropdownByValue", "scrollIntoView", "waitForElement", "waitForTimeout",
+    "selectDropdownByValue", "scrollIntoView", "waitForElement",
     "dragAndDrop", "uploadFile", "verifyVisible", "verifyHidden", "verifyText",
     "verifyContainsText", "verifyValue", "verifyEnabled", "verifyDisabled",
     "verifyChecked", "verifyCount", "verifyUrl", "verifyUrlContains", "verifyTitle",
     "verifyTitleContains", "takeScreenshot", "goBack", "reload", "verifyNoPageErrors", "useFlow",
 })
+
+FIXED_SLEEP_ACTIONS = frozenset({"waitForTimeout"})
 
 
 _UNKNOWN_BASE_URL_NOTE = (
@@ -184,6 +192,8 @@ class ScriptGenerationAgent(BaseAgent):
         module_name_map = {
             m["id"]: m.get("name") for m in request.get("modules", []) if m.get("id")
         }
+        # Phase 4.5: execution.test_steps / module_roles (+ modules[].role, auth.roles) shape the rendered spec.
+        render_opts = _render_options(safe, request)
 
         # Regenerate the Page-factory classes fresh every run — pure codegen
         # from locator_map.json, so it's always in sync with a human/HealingAgent
@@ -195,6 +205,12 @@ class ScriptGenerationAgent(BaseAgent):
         flows = _load_json_or_empty(flows_path)
         flows_meta = {name: f.get("params", []) for name, f in flows.items()}
         if flows:
+            for flow_name, flow in flows.items():
+                sleeps = [st for st in (flow.get("steps") or []) if isinstance(st, dict)
+                          and st.get("action") in FIXED_SLEEP_ACTIONS]
+                if sleeps:
+                    self._log(f"flows.json flow '{flow_name}' uses waitForTimeout ({len(sleeps)}x) — a fixed sleep; "
+                              "prefer waitForElement or a verify* step", level="warning")
             flows_ts = render_flows_module(flows, safe)
             with open(flows_generated_path, "w", encoding="utf-8") as f:
                 f.write(flows_ts)
@@ -389,18 +405,23 @@ class ScriptGenerationAgent(BaseAgent):
                     if self._tracer is not None:
                         plan = self._tracer.annotate(plan, scenario, module_id)
                         self._tracer.save()   # persist tc_id assignments with the plan that uses them
-                    spec_content = render_spec_from_plan(
-                        plan, scenario, effective_url, spec_rel_path,
-                        project=safe, flows_meta=flows_meta,
-                    )
                     generation_mode = "action_library"
                     test_plans[sid] = plan
-                else:  # kind == "raw" — legacy tier-2 Python fallback, unchanged
-                    spec_content = payload
 
                 module_setup = module_setup_map.get(module_id)
-                if module_setup:
-                    spec_content = _inject_setup_steps(spec_content, module_setup)
+                role = module_role_for(
+                    render_opts["module_roles"].get(module_id), render_opts["enabled"], render_opts["roles"],
+                    render_opts["role_auth"], warn=lambda m: self._log(f"{sid}: {m}", level="warning"),
+                ) if kind == "plan" else None
+                spec_content = compose_spec(
+                    plan if kind == "plan" else None, scenario, effective_url, spec_rel_path,
+                    project=safe, flows_meta=flows_meta, module_setup=module_setup, role=role,
+                    test_steps=render_opts["test_steps"], locator_map=locator_map,
+                    raw_content=None if kind == "plan" else payload,
+                )
+                if role:
+                    self._log(f"{sid}: specs start as role '{role}' (test.use) — module setup steps not injected")
+                elif module_setup:
                     self._log(f"{sid}: injected {len(module_setup)} setup step(s) from module '{module_id}'")
 
                 with open(spec_path, "w", encoding="utf-8") as f:
@@ -1162,6 +1183,29 @@ def _get_elements_for_scenario(sid: str, scenario_map: dict) -> List[Dict[str, A
     return entry.get("relevant_elements", [])
 
 
+def _render_options(safe_project: str, request: Optional[dict] = None) -> Dict[str, Any]:
+    """execution.test_steps / module_roles / role_auth, modules[].role and the declared auth.roles names."""
+    import yaml
+    raw: dict = {}
+    yaml_path = os.path.join(_ASSETS_BASE, safe_project, "project.yaml")
+    if os.path.exists(yaml_path):
+        try:
+            with open(yaml_path, encoding="utf-8") as f:
+                raw = yaml.safe_load(f) or {}
+        except Exception:
+            raw = {}
+    cfg = load_execution_config(safe_project)
+    modules = (request or {}).get("modules") or raw.get("modules") or []
+    roles = ((raw.get("auth") or {}).get("roles") or {}) if isinstance(raw.get("auth"), dict) else {}
+    return {
+        "test_steps": cfg["test_steps"],
+        "enabled": cfg["module_roles"],
+        "role_auth": cfg["role_auth"],
+        "module_roles": {m["id"]: m.get("role") for m in modules if isinstance(m, dict) and m.get("id")},
+        "roles": list(roles) if isinstance(roles, dict) else [],
+    }
+
+
 def _load_base_url(safe_project: str) -> str:
     """Resolve the project's base URL from project.yaml: `project.url`, else the
     single distinct `modules[].url` (several distinct module URLs -> "" — the caller
@@ -1227,6 +1271,11 @@ def _validate_plan(
 
         for step in test["steps"]:
             action = step.get("action") if isinstance(step, dict) else None
+            if action in FIXED_SLEEP_ACTIONS:
+                raise LLMResponseValidationError(
+                    f"{scenario_id}: step uses '{action}' — fixed sleeps are not allowed in generated plans; "
+                    "use waitForElement or a verify* step (they wait automatically)"
+                )
             if action not in allowed_actions:
                 raise LLMResponseValidationError(
                     f"{scenario_id}: step uses disallowed action '{action}'"
@@ -1389,101 +1438,10 @@ def _flag_action_locator_type_mismatches(
 
 
 # ── Module setup injection (e.g. login before inventory/M02+ tests) ───────────
-#
-# project.yaml modules[].setup declares a goto/fill/click/wait sequence that
-# tools/playwright_scanner.py already runs before DOM-scanning a module. That
-# sequence is the module's real "how do I get to a usable state" — e.g. log in
-# before testing the inventory page. Generated specs never reused it, so a
-# module like inventory (M02) that requires auth would goto() straight into an
-# unauthenticated redirect and every test would fail. Reuse the same schema
-# here, deterministically (not LLM-prompted), so it applies no matter which
-# tier (LLM / NS / Python fallback) produced the test bodies, and regardless
-# of whether the file uses the per-test `{ action }` fixture (current LLM
-# tier) or a shared outer `page` (legacy/fallback-tier specs).
-
-_DESCRIBE_OPEN_RE = re.compile(r"test\.describe\([^\n]*=>\s*\{\s*\n")
-_BEFORE_ALL_NEWPAGE_RE = re.compile(
-    r"test\.beforeAll\(async\s*\(\s*\{\s*browser\s*\}\s*\)\s*=>\s*\{\s*\n"
-    r"\s*page\s*=\s*await\s*browser\.newPage\(\);\s*\n"
-)
-_ENV_VAR_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
-
-
-def _translate_setup_step(step: Dict[str, Any]) -> str:
-    """Translate one project.yaml setup step into a Playwright TS statement,
-    mirroring tools/playwright_scanner.py._execute_setup_steps' action set."""
-    if not isinstance(step, dict) or not step:
-        return ""
-    action = next(iter(step))
-    if action == "goto":
-        return f"    await page.goto({json.dumps(step['goto'])});"
-    if action == "fill":
-        spec = step.get("fill") or {}
-        if not spec.get("selector"):
-            return ""
-        value_env = spec.get("value_env")
-        if value_env:
-            # Never embed the actual secret in generated source — emit a
-            # reference resolved at test run time instead. Validate the name
-            # is a safe bare identifier before interpolating it as raw TS.
-            if not _ENV_VAR_NAME_RE.match(value_env):
-                return ""
-            return (
-                f"    await page.locator({json.dumps(spec['selector'])})"
-                f'.fill(process.env.{value_env} ?? "");'
-            )
-        return (
-            f"    await page.locator({json.dumps(spec['selector'])})"
-            f".fill({json.dumps(spec.get('value', ''))});"
-        )
-    if action == "click":
-        return f"    await page.locator({json.dumps(step['click'])}).click();"
-    if action == "wait":
-        try:
-            ms = int(step["wait"])
-        except (KeyError, TypeError, ValueError):
-            return ""
-        return f"    await page.waitForTimeout({ms});"
-    return ""  # unknown action — skip rather than emit broken TS
-
-
-def _inject_setup_steps(spec_content: str, setup_steps: Optional[List[Dict[str, Any]]]) -> str:
-    """Insert the module's setup sequence (e.g. login) so every test in this
-    spec starts from the module's required state.
-
-    Two shapes are supported:
-      - Legacy/fallback-tier specs with a shared page (`test.beforeAll(async
-        ({ browser }) => { page = await browser.newPage(); })`): setup runs
-        ONCE, inserted right after that line.
-      - Current action-library specs (per-test `{ action }` fixture, no
-        shared page): falls back to inserting a
-        `test.beforeEach(async ({ page }) => {...})` right after the
-        `test.describe(...)` opening line — action-library specs don't
-        destructure `page` themselves, but Playwright's own fixture always
-        provides it, so a beforeEach hook can still use it directly.
-
-    Returns spec_content unchanged if there are no usable setup steps, or if
-    neither anchor can be found (never corrupt generated output)."""
-    if not setup_steps:
-        return spec_content
-
-    lines = [line for line in (_translate_setup_step(s) for s in setup_steps) if line]
-    if not lines:
-        return spec_content
-
-    before_all_match = _BEFORE_ALL_NEWPAGE_RE.search(spec_content)
-    if before_all_match:
-        insertion = "\n".join(lines) + "\n"
-        idx = before_all_match.end()
-        return spec_content[:idx] + insertion + spec_content[idx:]
-
-    describe_match = _DESCRIBE_OPEN_RE.search(spec_content)
-    if not describe_match:
-        return spec_content
-
-    hook = "\n  test.beforeEach(async ({ page }) => {\n" + "\n".join(lines) + "\n  });\n"
-    idx = describe_match.end()
-    return spec_content[:idx] + hook + spec_content[idx:]
+# Moved to tools/test_creation/script_generator/compose.py (Phase 4.5) so rerender.py composes specs with the
+# exact same code; the old names stay importable from here.
+_translate_setup_step = translate_setup_step
+_inject_setup_steps = inject_setup_steps
 
 
 def _load_suite(suite_path: str) -> dict:

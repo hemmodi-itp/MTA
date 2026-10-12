@@ -276,6 +276,17 @@ def _header_details(block: str) -> Optional[str]:
     return re.sub(r"\s+", " ", m.group(0)) if m else None
 
 
+# Phase 4.6 / 6.6: a timing fix may never add a fixed sleep (it hides races and slows every run).
+_FIXED_SLEEP_RE = re.compile(r"\bwaitForTimeout\s*\(|\bsetTimeout\s*\(|\bsleep\s*\(")
+_SLEEP_ALTERNATIVES = ("a web-first wait instead: await expect(locator).toBeVisible() / toHaveText(...), "
+                       "action.waitForElement(\"<key>\"), page.waitForURL(...), page.waitForResponse(...), "
+                       "expect.poll(...) or expect(...).toPass()")
+
+
+def _fixed_sleeps(block: str) -> int:
+    return len(_FIXED_SLEEP_RE.findall(block or ""))
+
+
 def _structurally_valid_block(block: str) -> bool:
     if not block or not block.strip():
         return False
@@ -568,10 +579,14 @@ def _propose_timing_fix(ctx: HealingRunContext, spec_file: str, test_name: str) 
 
     try:
         ctx.pw_executor().submit(_wait).result()
+        call = _format_call(method, primary, role_name)
         return {
             "is_timing_issue": True,
-            "locator": _format_call(method, primary, role_name),
+            "locator": call,
             "resolved_within_ms": 15000,
+            # Phase 4.6: the fix is a web-first wait before the step that raced — never a fixed sleep.
+            "suggested_fix": f"await expect({call}, 'element should be visible before it is used').toBeVisible();",
+            "forbidden": "page.waitForTimeout / action.waitForTimeout / setTimeout — apply_patch rejects fixed sleeps",
         }
     except Exception:
         return {
@@ -713,6 +728,14 @@ def _apply_patch(ctx: HealingRunContext, spec_file: str, test_name: str, new_blo
     if not old_block:
         return {"applied": False, "reason": f"could not locate existing test block '{test_name}' in {spec_file}"}
 
+    # Phase 4.6 guard: never introduce a fixed sleep (one the block already had may stay).
+    if _fixed_sleeps(new_block) > _fixed_sleeps(old_block):
+        return {
+            "applied": False,
+            "reason": "new_block adds a fixed sleep (waitForTimeout / setTimeout) — not allowed; use "
+                      + _SLEEP_ALTERNATIVES,
+        }
+
     # Phase 1 traceability guard: a test's { tag, annotation } details object links it to its acceptance
     # criteria and test-case id. A patch may change the body (or turn the test into test.skip), never that link.
     old_details = _header_details(old_block)
@@ -777,6 +800,10 @@ def _run_tests(ctx: HealingRunContext, spec_files: List[str]) -> dict:
         title = r.get("test_title", "")
         if r.get("status") == "success":
             ctx.remaining.get(spec_key, {}).pop(title, None)
+        elif r.get("status") == "flaky" and spec_key in ctx.remaining and title in ctx.remaining[spec_key]:
+            # Phase 4.7: passing only on a retry is not a verified fix — keep it open, say why.
+            ctx.remaining[spec_key][title] = ("flaky after the patch — passed only on a retry, not counted as healed: "
+                                              + ("; ".join(r.get("errors", [])) or ""))
         elif spec_key in ctx.remaining and title in ctx.remaining[spec_key]:
             ctx.remaining[spec_key][title] = "; ".join(r.get("errors", [])) or r.get("comment", "")
 

@@ -13,16 +13,23 @@ test_execution/reports/mta/{ts}.mta_results.json (contract `mta_results`, schema
 
 `to_execution_results()` converts it to UIExecutionAgent's per-test result shape, which
 tools.requirements.traceability.apply_results consumes (pw_status carries the MTA status; a flaky test
-keeps status "flaky", it is never turned into a pass).
+keeps status "flaky", it is never turned into a pass). Since Phase 4.7 this is UIExecutionAgent's source of
+truth for per-test results (the Playwright JSON report is the fallback): result status is
+success | flaky | failed (failed, timedOut, interrupted) | skipped.
 """
 
 import json
 import os
+import re
 from typing import Any, Dict, List, Optional
 
 MTA_STATUSES = ("passed", "failed", "flaky", "skipped", "timedOut", "interrupted")
 
 _STATUS_TO_RESULT = {"passed": "success", "flaky": "flaky", "skipped": "skipped"}
+
+# Same spec-id scheme as ui_execution/agent.py::_SPEC_ID_RE ("M03_BS_006", legacy "BS-001" / "SC-001") —
+# test_suite.json stamping and the reports key results by it.
+_SPEC_ID_RE = re.compile(r"([A-Za-z]+\d+_BS_\d+|BS-\d+|SC-\d+)")
 
 
 def load_mta_results(path: str) -> Optional[Dict[str, Any]]:
@@ -44,8 +51,12 @@ def to_execution_results(doc: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
             continue
         status = str(t.get("status") or "")
         attempts = [a for a in (t.get("attempts") or []) if isinstance(a, dict)]
+        spec_file = str(t.get("spec_file") or "")
+        m = _SPEC_ID_RE.search(spec_file)
         r: Dict[str, Any] = {
-            "spec_file": str(t.get("spec_file") or ""),
+            "spec_file": spec_file,
+            "test_case_id": m.group(1) if m else "",
+            "business_scenario_id": m.group(1) if m else "",
             "test_title": str(t.get("title") or ""),
             "project": t.get("project"),
             "status": _STATUS_TO_RESULT.get(status, "failed"),
@@ -57,6 +68,9 @@ def to_execution_results(doc: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "tags": list(t.get("tags") or []),
             "annotations": list(t.get("annotations") or []),
             "attachments": list(t.get("attachments") or []),
+            "retries": int(t.get("retries") or 0),
+            "failed_step": next((a.get("failed_step") for a in reversed(attempts) if a.get("failed_step")), None),
+            "cleanup_failures": list(t.get("cleanup_failures") or []),
             "comment": "",
             "no_interaction_close": False,
         }

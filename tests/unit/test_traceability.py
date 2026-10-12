@@ -202,7 +202,7 @@ def test_result_aggregation(statuses, expected):
 
 
 @pytest.mark.parametrize("r,expected", [
-    ({"pw_status": "expected", "status": "failed"}, "passed"), ({"pw_status": "flaky"}, "passed"),
+    ({"pw_status": "expected", "status": "failed"}, "passed"), ({"pw_status": "flaky"}, "flaky"),
     ({"pw_status": "timedOut"}, "failed"), ({"pw_status": "skipped", "status": "failed"}, "skipped"),
     ({"status": "success"}, "passed"), ({"status": "skipped"}, "skipped"), ({"status": "weird"}, "failed"),
 ])

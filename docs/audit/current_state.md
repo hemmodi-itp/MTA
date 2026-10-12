@@ -60,6 +60,7 @@
 | Claim | Verdict | Reality |
 |---|---|---|
 | `ALLOWED_ACTIONS` mirrors `ActionEngine.ts` 1:1 | **CONFIRMED** | SG:71-79, 34 entries (33 methods + `useFlow`). Includes **`waitForTimeout`**. Runtime: `application_assets/_shared/runtime/ActionEngine.ts`. |
+| `ALLOWED_ACTIONS` after Phase 4.6 (2026-10-12) | **UPDATED** | `waitForTimeout` removed from `ALLOWED_ACTIONS` and the prompt; `_validate_plan` rejects it (`FIXED_SLEEP_ACTIONS`). ActionEngine keeps it for human-authored `flows.json` (warning + annotation). |
 | Plan validation (allowed keys, dead keys excluded, flows) | **CONFIRMED** | `_validate_plan` SG:951-1018. **Gap: steps inside `flows.json` are never validated** (`spec_renderer.py:378`). |
 | Positive tests scale per cluster | **CORRECTED** | Prompt-only (SG:501-502 → `prompt.py:311-314`). Not enforced. |
 | `_drop_placeholder_negative_tests` | **CONFIRMED** | SG:1035-1071. No-op if any variant has a truthy `expected_error`. Otherwise drops `negative` tests whose every verify step has `value == ""`. |
@@ -75,6 +76,7 @@
 | Claim | Verdict | Reality |
 |---|---|---|
 | `retries: 1 (2 on CI)` | **CORRECTED** | `retries: 0` (`playwright.config.ts:48`; the comment above it is stale). Consequences: **`video`/`trace: on-first-retry` never record**, and **Playwright's `flaky` status can never occur**. "Flaky counted as pass" (UI:750) is therefore dead code today. |
+| `retries` after Phase 4.7 (2026-10-12) | **UPDATED** | `execution.retries: auto` = 2 in CI, 1 locally, 0 headed; `failOnFlakyTests` on in CI. UIExecution reads results from the MTA reporter file: `flaky` is its own status (never a pass), skipped stays skipped. |
 | baseURL chain `BASE_URL → project.yaml → localhost:3000` | **CONFIRMED and worse than described** | `playwright.config.ts:15-35` takes the **first `url:` line anywhere in project.yaml** (regex), which is wrong for modular projects. UI sets `BASE_URL` only when `request["url"]` is truthy (UI:387-392), and `request["url"]` = `project.url` unless `--module` is given (`project_manifest.py:27, 64-66`). **`localhost:3000` is also where the MTA web app runs (README:648)**, so a miss silently tests MTA's own UI. |
 | Other default-URL fallbacks | **NOT IN README** | `fallback_core.py:162,215`; SG:507; `tools/suite_orchestrator.py:249-264` (sets no `BASE_URL`/`PW_PROJECT`/`--config`); old generated raw-TS specs carry `process.env.BASE_URL \|\| '<url>'`. |
 | Multi-module runs | **NOT IN README** | One Playwright invocation shares one `baseURL`. Specs whose `navigate` has no URL resolve against the wrong module URL unless the run is narrowed with `--module`. |

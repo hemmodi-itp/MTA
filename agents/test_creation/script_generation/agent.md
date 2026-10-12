@@ -287,3 +287,19 @@ design cases instead of the cluster/cap rules above:
 Live locator validation resolves `testid` entries with the project's `execution.test_id_attribute` (default
 `data-testid`), the attribute the TS runtime's `getByTestId` uses. Before Phase 4, Python checked `data-testid`
 while the runtime used `data-test`. The `count() == 1` rule is unchanged.
+
+## Spec structure, waiting and roles (Phase 4, session 2)
+
+- **No fixed sleeps in generated plans.** `waitForTimeout` is not in `ALLOWED_ACTIONS` (or the prompt); `_validate_plan`
+  rejects it (`FIXED_SLEEP_ACTIONS`) with a specific message that goes through the normal retry / fallback path. A
+  `flows.json` flow that uses it still renders (human-authored), with a warning per flow.
+- **One `test.step` per plan step** (`execution.test_steps`, default true): titles are the numbered plan step in words
+  (`3. Click "save_product_button"`, plus ` — <message>`), secret-looking values masked as `•••`, never unbalanced
+  brackets. The `test(` line (title, tags, annotations) is unchanged.
+- **Module login**: `setup:` renders a `beforeEach` whose `wait: N` is `await page.waitForLoadState('load')`. With
+  `execution.module_roles: true` and `modules[].role` (an `auth.roles` name), specs start as that role with
+  `test.use({ role })` instead — no literal credentials in the spec. An undeclared role falls back to the setup steps
+  with a warning; `role_auth: false` warns that the role files won't be written.
+- **One composer**: rendering + login go through `tools/test_creation/script_generator/compose.py::compose_spec`, which
+  `python -m tools.test_creation.script_generator.rerender --project X [--check]` also uses to rebuild specs from
+  `test_plans.json` without an LLM.

@@ -45,6 +45,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from typing import Dict, List, Optional
 
 from tools.safety.hosts import is_absolute_web_url as _is_absolute_web_url
@@ -336,14 +337,130 @@ def render_test_details(test: dict, scenario_id: str = "") -> str:
     return f"{{ tag: [{tag_ts}], annotation: [{ann_ts}] }}"
 
 
-def _render_test(test: dict, flows_meta: Optional[Dict[str, List[str]]], scenario_id: str = "") -> str:
+# ── Phase 4.5: one test.step per plan step ─────────────────────────────────
+#
+# The step title is the plan step in words ("3. Click \"save_button\" — <message>"), so the HTML report, the
+# trace and the MTA reporter's attempts[].failed_step name the plan step that failed. Deterministic: built from
+# the step only. Values that look secret (password/token/... by locator key, flow parameter or locator entry)
+# are shown as ••• — step titles land in reports and traces.
+
+_SECRET_RE = re.compile(r"pass(word|wd|code)?|secret|token|otp|\bpin\b|pin_?code|cvv|credential", re.I)
+_MASK = "•••"
+_MAX_TITLE = 160
+_MAX_VALUE = 60
+
+_VERB = {
+    "click": "Click {k}", "doubleClick": "Double-click {k}", "hover": "Hover {k}",
+    "enterText": "Enter {v} into {k}", "clearAndEnterText": "Clear and enter {v} into {k}",
+    "checkCheckbox": "Check {k}", "uncheckCheckbox": "Uncheck {k}",
+    "selectDropdownByText": "Select {v} in {k}", "selectDropdownByValue": "Select value {v} in {k}",
+    "scrollIntoView": "Scroll {k} into view", "uploadFile": "Upload {v} to {k}",
+    "verifyVisible": "Verify {k} is visible", "verifyHidden": "Verify {k} is hidden",
+    "verifyEnabled": "Verify {k} is enabled", "verifyDisabled": "Verify {k} is disabled",
+    "verifyChecked": "Verify {k} is checked", "verifyText": "Verify {k} has text {v}",
+    "verifyContainsText": "Verify {k} contains {v}", "verifyValue": "Verify {k} has value {v}",
+    "verifyCount": "Verify {k} count is {n}", "verifyUrl": "Verify URL is {v}",
+    "verifyUrlContains": "Verify URL contains {v}", "verifyTitle": "Verify title is {v}",
+    "verifyTitleContains": "Verify title contains {v}", "verifyNoPageErrors": "Verify no page errors",
+    "takeScreenshot": "Take screenshot {v}", "goBack": "Go back", "reload": "Reload the page",
+    "waitForTimeout": "Wait {n} ms (fixed sleep)",
+}
+
+
+def _is_secret(key: Optional[str], locator_map: Optional[dict]) -> bool:
+    if key and _SECRET_RE.search(str(key)):
+        return True
+    entry = (locator_map or {}).get(key) if key else None
+    if isinstance(entry, dict):
+        text = " ".join(str(entry.get(f) or "") for f in ("locator", "name", "description"))
+        return bool(_SECRET_RE.search(text))
+    return False
+
+
+def _preview(value, secret: bool) -> str:
+    if secret:
+        return _MASK
+    text = "" if value is None else str(value)
+    if len(text) > _MAX_VALUE:
+        text = text[:_MAX_VALUE - 1].rstrip() + "…"
+    return _ts_str(text)
+
+
+def _balanced(text: str) -> bool:
+    return text.count("(") == text.count(")") and text.count("{") == text.count("}")
+
+
+def _cut(text: str, limit: int = _MAX_TITLE) -> str:
+    if len(text) <= limit:
+        return text
+    head = text[:limit - 1]
+    if " " in head[limit // 2:]:
+        head = head[:head.rfind(" ")]
+    return head.rstrip() + "…"
+
+
+def _step_phrase(step: dict, locator_map: Optional[dict], show_value: bool = True) -> str:
+    action = step.get("action", "")
+    key = step.get("locator_key")
+    k = _ts_str(key) if key else ""
+    value = step.get("value")
+    v = _preview(value, _is_secret(key, locator_map)) if show_value else "<value>"
+    if action == "useFlow":
+        args = step.get("args") or {}
+        parts = [f"{p}={_preview(a, bool(_SECRET_RE.search(p))) if show_value else '<value>'}"
+                 for p, a in args.items()]
+        return f"Flow {step.get('flow')}({', '.join(parts)})"
+    if action == "navigate":
+        return f"Navigate to {v}" if value else "Open the module page"
+    if action == "pressKey":
+        return f"Press {v}" + (f" in {k}" if key else "")
+    if action == "waitForElement":
+        return f"Wait for {k} to be {value or 'visible'}"
+    if action == "dragAndDrop":
+        return f"Drag {k} onto {_ts_str(step.get('target_locator_key'))}"
+    template = _VERB.get(action)
+    if template is None:
+        return action
+    n = value if isinstance(value, (int, float)) else (str(value) if value is not None else "")
+    return template.format(k=k, v=v, n=n)
+
+
+def step_title(index: int, step: dict, locator_map: Optional[dict] = None) -> str:
+    """Deterministic, human-readable test.step title for plan step *index* (1-based). Never leaves unbalanced
+    () / {} — healing's _structurally_valid_block counts brackets inside strings too."""
+    message = step.get("message")
+    candidates = []
+    for show_value, with_message in ((True, True), (True, False), (False, False)):
+        phrase = _step_phrase(step, locator_map, show_value)
+        if with_message and message:
+            phrase = f"{phrase} — {message}"
+        candidates.append(_cut(f"{index}. {phrase}"))
+    for title in candidates:
+        if _balanced(title):
+            return title
+    return re.sub(r"[(){}]", "", candidates[-1])
+
+
+def _render_stepped(step: dict, index: int, flows_meta, locator_map) -> List[str]:
+    return [
+        f"    await test.step({_ts_str(step_title(index, step, locator_map))}, async () => {{",
+        _render_step(step, flows_meta=flows_meta, indent="      "),
+        "    });",
+    ]
+
+
+def _render_test(test: dict, flows_meta: Optional[Dict[str, List[str]]], scenario_id: str = "",
+                 test_steps: bool = False, locator_map: Optional[dict] = None) -> str:
     name_ts = _ts_str(render_test_title(test))
     if _has_trace(test):
         lines = [f"  test({name_ts}, {render_test_details(test, scenario_id)}, async ({{ action }}) => {{"]
     else:
         lines = [f"  test({name_ts}, async ({{ action }}) => {{"]
-    for step in test["steps"]:
-        lines.append(_render_step(step, flows_meta=flows_meta))
+    for i, step in enumerate(test["steps"], start=1):
+        if test_steps:
+            lines += _render_stepped(step, i, flows_meta, locator_map)
+        else:
+            lines.append(_render_step(step, flows_meta=flows_meta))
     lines.append("  });")
     return "\n".join(lines)
 
@@ -363,12 +480,18 @@ def render_spec_from_plan(
     spec_rel_path: str,
     project: Optional[str] = None,
     flows_meta: Optional[Dict[str, List[str]]] = None,
+    test_steps: bool = False,
+    locator_map: Optional[dict] = None,
 ) -> str:
     """
     Pure, deterministic renderer — no LLM involved. Turns a validated JSON
     test plan into a runnable .spec.ts file that imports the shared
     ActionEngine fixture (and the project's flows module, if any step uses
     one) and calls only action.<verb>(...) / flows.<name>(...) per step.
+
+    test_steps (Phase 4.5): wrap each plan step in `await test.step("<n>. <step in words>", ...)`
+    (execution.test_steps). Off by default here, so legacy callers render byte-identical specs.
+    locator_map: only used to mask secret-looking values in step titles.
     """
     fixture_import = _import_path_to_shared_fixture(spec_rel_path)
 
@@ -399,7 +522,7 @@ def render_spec_from_plan(
     ]
 
     for test in plan.get("tests", []):
-        lines.append(_render_test(test, flows_meta, scenario_id))
+        lines.append(_render_test(test, flows_meta, scenario_id, test_steps=test_steps, locator_map=locator_map))
         lines.append("")
 
     lines.append("});")

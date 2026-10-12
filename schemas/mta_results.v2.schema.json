@@ -68,6 +68,18 @@
           "default": null,
           "title": "Error"
         },
+        "failed_step": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failed Step"
+        },
         "retry": {
           "default": 0,
           "title": "Retry",
@@ -128,6 +140,13 @@
           ],
           "default": null,
           "title": "Case Id"
+        },
+        "cleanup_failures": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cleanup Failures",
+          "type": "array"
         },
         "duration_ms": {
           "anyOf": [

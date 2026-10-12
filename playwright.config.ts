@@ -21,6 +21,12 @@ function loadBaseUrl(): string {
   });
 }
 
+// Phase 4.4: every worker of one run shares one run id (testData seeds + entity prefixes). UIExecutionAgent
+// sets MTA_RUN_ID; a hand run gets one here, before the workers (which inherit this environment) start.
+if (!process.env.MTA_RUN_ID) {
+    process.env.MTA_RUN_ID = `local-${new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15)}`;
+}
+
 // Everything else comes from PW_PROJECT's `execution:` block (Phase 4: browser/device matrix,
 // test-id attribute, locale/timezone, trace/video/screenshot, JUnit + MTA reporters) and the
 // env vars UIExecutionAgent sets — see application_assets/_shared/runtime/config/buildConfig.ts.

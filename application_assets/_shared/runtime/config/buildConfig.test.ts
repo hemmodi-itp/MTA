@@ -3,7 +3,7 @@ import path from 'path';
 import { describe, expect, it } from 'vitest';
 
 import { buildMergeConfig, buildPlaywrightConfig, buildReporters, projectNames } from './buildConfig';
-import { resolveExecutionConfig } from './execution';
+import { effectiveFailOnFlaky, effectiveRetries, resolveExecutionConfig } from './execution';
 import { parseProjectYaml } from './projectYaml';
 
 const CASES = JSON.parse(
@@ -34,11 +34,12 @@ describe('resolveExecutionConfig — shared cases with tools/execution/config.py
 });
 
 describe('buildPlaywrightConfig', () => {
-  it('without an execution block keeps today\'s shape: chromium only, retries 0, no fullyParallel', () => {
+  it('without an execution block: chromium only, 1 local retry, no fullyParallel, failOnFlakyTests off', () => {
     const cfg = build();
     expect((cfg.projects ?? []).map((p) => p.name)).toEqual(['chromium']);
-    expect(cfg.retries).toBe(0);
-    expect(cfg.fullyParallel).toBeUndefined();
+    expect(cfg.retries).toBe(1);
+    expect(cfg.fullyParallel).toBe(false);
+    expect(cfg.failOnFlakyTests).toBe(false);
     expect(cfg.testMatch).toBe('**/test_scripts/**/*.spec.ts');
     expect(cfg.use?.baseURL).toBe('http://127.0.0.1:8765');
     expect(cfg.timeout).toBe(60_000);
@@ -142,5 +143,34 @@ describe('parseProjectYaml', () => {
     expect(parseProjectYaml('- a\n- b\n')).toBeNull();
     expect(parseProjectYaml('a: [unclosed')).toBeNull();
     expect(parseProjectYaml(null)).toBeNull();
+  });
+});
+
+describe('Phase 4 session 2 — retries, failOnFlakyTests, fullyParallel', () => {
+  it('retries: auto = 2 in CI, 1 locally; an explicit value wins', () => {
+    expect(build({ CI: '1' }).retries).toBe(2);
+    expect(build({}).retries).toBe(1);
+    expect(build({ CI: '1' }, { execution: { retries: 0 } }).retries).toBe(0);
+    expect(build({}, { execution: { retries: 3 } }).retries).toBe(3);
+  });
+
+  it('effectiveRetries: headed runs never retry', () => {
+    const exec = resolveExecutionConfig({ execution: { retries: 3 } }, () => {});
+    expect(effectiveRetries(exec, {}, true)).toBe(0);
+    expect(effectiveRetries(exec, {}, false)).toBe(3);
+  });
+
+  it('failOnFlakyTests: auto = on in CI only; explicit wins', () => {
+    expect(build({ CI: '1' }).failOnFlakyTests).toBe(true);
+    expect(build({}).failOnFlakyTests).toBe(false);
+    expect(build({ CI: '1' }, { execution: { fail_on_flaky_tests: false } }).failOnFlakyTests).toBe(false);
+    expect(build({}, { execution: { fail_on_flaky_tests: true } }).failOnFlakyTests).toBe(true);
+    expect(effectiveFailOnFlaky({ fail_on_flaky_tests: 'auto' }, { CI: 'true' })).toBe(true);
+  });
+
+  it('fullyParallel only with execution.data_isolation', () => {
+    expect(build({}, { execution: { data_isolation: true } }).fullyParallel).toBe(true);
+    expect(build({}, { execution: { data_isolation: false } }).fullyParallel).toBe(false);
+    expect(build({}, { execution: { data_isolation: 'yes' } }).fullyParallel).toBe(false);   // invalid -> default
   });
 });

@@ -118,6 +118,9 @@ def write_catalog_exports(project_dir: str, rows: List[Dict[str, Any]]) -> Dict[
     return {"csv": csv_path, "markdown": md_path}
 
 
+_RESULT_RANK = {"failed": 3, "flaky": 2, "skipped": 1, "passed": 0}
+
+
 def stamp_execution_results(project_dir: str, results: List[Dict[str, Any]]) -> int:
     """Write last_result/last_run onto matching test_suite.json spec entries
     from real per-test execution results (business_scenario_id/test_case_id
@@ -134,13 +137,20 @@ def stamp_execution_results(project_dir: str, results: List[Dict[str, Any]]) -> 
     today = datetime.now(timezone.utc).date().isoformat()
 
     updated = 0
+    stamped_now: Dict[str, str] = {}
     for r in results:
         sid = r.get("business_scenario_id") or r.get("test_case_id") or ""
         spec = specs_by_id.get(sid)
         if not spec:
             continue
         status = r.get("status", "")
-        spec["last_result"] = "passed" if status in ("pass", "passed", "success") else (status or "failed")
+        # Phase 4.7: "flaky" (passed only on a retry) and "skipped" are kept as they are, never stamped "passed".
+        result = "passed" if status in ("pass", "passed", "success") else (status or "failed")
+        # A spec holds several tests: its last_result is the worst of this run's (failed > flaky > skipped > passed).
+        if sid in stamped_now and _RESULT_RANK.get(stamped_now[sid], 3) >= _RESULT_RANK.get(result, 3):
+            result = stamped_now[sid]
+        stamped_now[sid] = result
+        spec["last_result"] = result
         spec["last_run"] = today
         updated += 1
 

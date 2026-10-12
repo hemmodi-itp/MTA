@@ -128,3 +128,17 @@ Behaviour:
 - **Error messages.** A missing browser binary names the browser to install. A grep that matches nothing returns
   `status: skipped`.
 - **Unchanged until Phase 4.7:** `retries: 0`, and the flaky→pass counting in `status`.
+
+## Flaky, skipped and browser-close classification (Phase 4.7)
+
+- **Source of truth**: per-test results are read from the MTA reporter file (`mta/<ts>.mta_results.json`,
+  `tools/execution/mta_results.py`); the Playwright JSON is the fallback (`results_source` says which).
+- **Statuses**: `success`, `flaky` (failed, then passed on a retry — never a pass), `failed` (failed / timedOut /
+  interrupted, `pw_status` keeps which), `skipped` (Phase 1 D6 fixed). Counts `passed`, `flaky`, `failed`, `skipped`;
+  `scenarios_executed` is their sum. Results also carry `failed_step` and `cleanup_failures`.
+- **Retries**: `execution.retries` (`auto` = 2 in CI, 1 locally); headed runs always pass `--retries=0`.
+  `failOnFlakyTests` is on in CI (`execution.fail_on_flaky_tests`).
+- **Browser-close**: reclassified as `skipped` only in a **headed** run and only for human-close errors; headless, the
+  test stays `failed` with `error_kind: "browser_closed"`.
+- **Safety**: `MTA_DESTRUCTIVE_ALLOWED` / `MTA_SAFETY_ENVIRONMENT` carry the project's safety policy to the runtime's
+  destructive-action guard (Phase 4.4 `safety` fixture).

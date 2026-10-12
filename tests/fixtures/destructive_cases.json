@@ -1,0 +1,42 @@
+{
+  "_comment": "Shared by tests/unit/test_safety_destructive_shared_cases.py (tools/safety/action_classifier.classify_step) and application_assets/_shared/runtime/destructive.test.ts (destructive.ts classifyStep). Both read tools/safety/destructive_rules.yaml; keep the verdicts identical.",
+  "locator_map": {
+    "delete_account_btn": {"type": "role", "locator": "button", "name": "Delete account"},
+    "save_product_button": {"type": "role", "locator": "button", "name": "Save product"},
+    "remove_filter": {"type": "role", "locator": "button", "name": "Remove filter"},
+    "btn_x": {"type": "css", "locator": "#purchaseNow"},
+    "pay_link": {"type": "text", "locator": "Pay now"},
+    "action_menu": {"type": "role", "locator": "combobox", "name": "Action"},
+    "search": {"type": "role", "locator": "searchbox", "name": "Search"},
+    "unsubscribe": {"type": "testid", "locator": "unsubscribe-link"},
+    "reset_form": {"type": "role", "locator": "button", "name": "Reset form"},
+    "place_order_button": {"type": "role", "locator": "button", "name": "Place order"},
+    "send_code": {"type": "role", "locator": "button", "name": "Send code"},
+    "trash_zone": {"type": "css", "locator": ".trash"},
+    "card": {"type": "css", "locator": ".card"}
+  },
+  "cases": [
+    {"name": "click delete button", "step": {"action": "click", "locator_key": "delete_account_btn"}, "destructive": true, "category": "delete"},
+    {"name": "click save", "step": {"action": "click", "locator_key": "save_product_button"}, "destructive": false, "category": null},
+    {"name": "safe phrase overrides", "step": {"action": "click", "locator_key": "remove_filter"}, "destructive": false, "category": null},
+    {"name": "css id camelCase words", "step": {"action": "click", "locator_key": "btn_x"}, "destructive": true, "category": "payment"},
+    {"name": "text locator name", "step": {"action": "doubleClick", "locator_key": "pay_link"}, "destructive": true, "category": "payment"},
+    {"name": "select a destructive option", "step": {"action": "selectDropdownByText", "locator_key": "action_menu", "value": "Delete"}, "destructive": true, "category": "delete"},
+    {"name": "select a harmless option", "step": {"action": "selectDropdownByValue", "locator_key": "action_menu", "value": "archive"}, "destructive": false, "category": null},
+    {"name": "press Enter in search", "step": {"action": "pressKey", "locator_key": "search", "value": "Enter"}, "destructive": false, "category": null},
+    {"name": "press Enter on delete", "step": {"action": "pressKey", "locator_key": "delete_account_btn", "value": "Enter"}, "destructive": true, "category": "delete"},
+    {"name": "press Tab on delete is not an interaction", "step": {"action": "pressKey", "locator_key": "delete_account_btn", "value": "Tab"}, "destructive": false, "category": null},
+    {"name": "typing never classifies", "step": {"action": "enterText", "locator_key": "delete_account_btn", "value": "x"}, "destructive": false, "category": null},
+    {"name": "verify never classifies", "step": {"action": "verifyVisible", "locator_key": "delete_account_btn"}, "destructive": false, "category": null},
+    {"name": "testid words", "step": {"action": "click", "locator_key": "unsubscribe"}, "destructive": true, "category": "account"},
+    {"name": "reset form is safe", "step": {"action": "click", "locator_key": "reset_form"}, "destructive": false, "category": null},
+    {"name": "place order", "step": {"action": "click", "locator_key": "place_order_button"}, "destructive": true, "category": "payment"},
+    {"name": "send code is safe", "step": {"action": "click", "locator_key": "send_code"}, "destructive": false, "category": null},
+    {"name": "drag onto trash", "step": {"action": "dragAndDrop", "locator_key": "card", "target_locator_key": "trash_zone"}, "destructive": true, "category": "delete"},
+    {"name": "check a checkbox", "step": {"action": "checkCheckbox", "locator_key": "card"}, "destructive": false, "category": null},
+    {"name": "navigate to a delete URL", "step": {"action": "navigate", "value": "/users/7/delete"}, "destructive": true, "category": "url"},
+    {"name": "navigate with action=delete", "step": {"action": "navigate", "value": "/admin?action=delete&id=3"}, "destructive": true, "category": "url"},
+    {"name": "navigate to products", "step": {"action": "navigate", "value": "/products/new"}, "destructive": false, "category": null},
+    {"name": "unknown key uses only its words", "step": {"action": "click", "locator_key": "confirm_payment_btn"}, "destructive": true, "category": "payment"}
+  ]
+}

@@ -76,6 +76,7 @@ modules:
     name: Products
     url: {{BASE_URL}}/products
     brd_file: brd_M02.md
+    role: user            # used only with execution.module_roles: true
     setup:
       - goto: {{BASE_URL}}/login
       - fill:
@@ -91,6 +92,7 @@ modules:
     name: Product Form
     url: {{BASE_URL}}/products/new
     brd_file: brd_M03.md
+    role: user            # used only with execution.module_roles: true
     setup:
       - goto: {{BASE_URL}}/login
       - fill:
@@ -106,6 +108,7 @@ modules:
     name: Cart & Checkout
     url: {{BASE_URL}}/cart
     brd_file: brd_M04.md
+    role: user            # used only with execution.module_roles: true
     setup:
       - goto: {{BASE_URL}}/login
       - fill:
@@ -121,6 +124,7 @@ modules:
     name: Upload
     url: {{BASE_URL}}/upload
     brd_file: brd_M05.md
+    role: user            # used only with execution.module_roles: true
     setup:
       - goto: {{BASE_URL}}/login
       - fill:
@@ -136,6 +140,7 @@ modules:
     name: Admin
     url: {{BASE_URL}}/admin
     brd_file: brd_M06.md
+    role: admin            # used only with execution.module_roles: true
     setup:
       - goto: {{BASE_URL}}/login
       - fill:
@@ -158,3 +163,6 @@ test_execution:
 execution:           # Phase 4 Playwright runtime
   role_auth: true    # log user/admin in once per run (.auth/<role>.json) for test.use({ role })
   suite_mode: grep   # test_suites/*.json -> one --grep run
+  module_roles: false  # true -> modules[].role renders test.use({ role }) instead of the setup login. Off here:
+                       # buggy_shop keeps the flash message per session, so one shared role session leaks it
+                       # between parallel tests, and the app restarts per bug (set role_auth_max_age_minutes: 0).

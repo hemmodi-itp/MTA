@@ -221,6 +221,7 @@ class MtaAttempt(Lenient):
     status: str
     duration_ms: Optional[Union[int, float]] = None
     error: Optional[str] = None
+    failed_step: Optional[str] = None   # Phase 4.5: the failed test.step (plan step) title
 
 
 class MtaAttachment(Lenient):
@@ -245,6 +246,7 @@ class MtaTest(Lenient):
     scenario_id: Optional[str] = None
     ac_ids: List[str] = Field(default_factory=list)
     status: Literal["passed", "failed", "flaky", "skipped", "timedOut", "interrupted"]
+    cleanup_failures: List[str] = Field(default_factory=list)   # Phase 4.4 cleanup fixture
     outcome: Optional[str] = None
     expected_status: Optional[str] = None
     retries: int = 0

@@ -91,7 +91,8 @@ Return ONLY a raw JSON object (no markdown fences, no explanation) matching:
 - "verifyUrlContains" / "verifyTitleContains": {"action": "verifyUrlContains", "value": "<substring>", "message": "..."} —
   no locator_key (page-level, like verifyUrl/verifyTitle). Use these instead of the exact-match verifyUrl/verifyTitle
   whenever the scenario doesn't itself pin an exact literal — see "Lessons learned" below.
-- "waitForTimeout": {"action": "waitForTimeout", "value": <milliseconds, a number>}
+- Never add a fixed sleep: every action and verify* step waits for its element automatically; use
+  "waitForElement" when a step must wait for something to appear or disappear.
 - "verifyCount": {"action": "verifyCount", "locator_key": "<key>", "value": <count, a number>, "message": "<optional>"}
 - "verifyNoPageErrors": {"action": "verifyNoPageErrors", "message": "<optional>"} — no locator_key; asserts no
   uncaught JS error/exception occurred on the page since the test started. Use sparingly — only when the

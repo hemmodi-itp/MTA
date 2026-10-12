@@ -53,7 +53,8 @@ class TranslateSetupStepTests(unittest.TestCase):
         )
 
     def test_wait(self):
-        self.assertEqual(_translate_setup_step({"wait": 1500}), "    await page.waitForTimeout(1500);")
+        # Phase 4.6: no fixed sleep — the preceding click already waited for its navigation to commit
+        self.assertEqual(_translate_setup_step({"wait": 1500}), "    await page.waitForLoadState('load');")
 
     def test_unknown_action_returns_empty(self):
         self.assertEqual(_translate_setup_step({"hover": "#thing"}), "")
@@ -99,7 +100,8 @@ class InjectSetupBeforeEachTests(unittest.TestCase):
         self.assertIn("test.beforeEach(async ({ page }) => {", result)
         self.assertIn('await page.goto("https://www.saucedemo.com/");', result)
         self.assertIn('await page.locator("[data-test=\'username\']").fill("standard_user");', result)
-        self.assertIn("await page.waitForTimeout(2000);", result)
+        self.assertIn("await page.waitForLoadState('load');", result)
+        self.assertNotIn("waitForTimeout", result)
         # beforeEach must appear before the first test(...) block
         self.assertLess(result.index("beforeEach"), result.index("test('positive"))
 

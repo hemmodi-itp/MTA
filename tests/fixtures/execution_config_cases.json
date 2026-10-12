@@ -19,6 +19,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]
@@ -58,6 +66,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium",
         "firefox",
@@ -93,6 +109,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium",
         "webkit"
@@ -130,6 +154,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]
@@ -157,6 +189,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]
@@ -188,6 +228,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]
@@ -221,6 +269,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]
@@ -254,6 +310,14 @@
       "suite_mode": "grep",
       "shards": 4,
       "max_parallel_shards": 2,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]
@@ -294,6 +358,14 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]
@@ -321,6 +393,140 @@
       "suite_mode": "files",
       "shards": 1,
       "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "phase 4b keys set",
+    "project": {
+      "execution": {
+        "retries": 3,
+        "fail_on_flaky_tests": false,
+        "data_isolation": true,
+        "console_guard": "fail",
+        "network": "on",
+        "cleanup_failure": "fail",
+        "test_steps": false,
+        "module_roles": true
+      }
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "retries": 3,
+      "fail_on_flaky_tests": false,
+      "data_isolation": true,
+      "console_guard": "fail",
+      "network": "on",
+      "cleanup_failure": "fail",
+      "test_steps": false,
+      "module_roles": true,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "phase 4b explicit auto and zero retries",
+    "project": {
+      "execution": {
+        "retries": 0,
+        "fail_on_flaky_tests": "auto"
+      }
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "retries": 0,
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "phase 4b invalid values fall back",
+    "project": {
+      "execution": {
+        "retries": 9,
+        "fail_on_flaky_tests": "yes",
+        "data_isolation": "true",
+        "console_guard": "loud",
+        "network": "always",
+        "cleanup_failure": "ignore",
+        "test_steps": 1,
+        "module_roles": null
+      }
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "retries": "auto",
+      "fail_on_flaky_tests": "auto",
+      "data_isolation": false,
+      "console_guard": "warn",
+      "network": "on-failure",
+      "cleanup_failure": "warn",
+      "test_steps": true,
+      "module_roles": false,
       "projects": [
         "chromium"
       ]

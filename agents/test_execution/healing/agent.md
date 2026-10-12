@@ -123,3 +123,12 @@ them. No tool gained a new write path — the tool-surface boundary is unchanged
 The live locator checks (`_live_locator_resolves`, the action-library key check, the timing probe) resolve
 `getByTestId` / `testid` entries with the project's `execution.test_id_attribute`, matching the TS runtime. The
 tool surface and the `count() == 1` rule are unchanged.
+
+## Steps, sleeps and flaky re-runs (Phase 4, session 2)
+
+- Block extraction, the details-object guard and structural validation work on `test.step`-wrapped tests.
+- `apply_patch` rejects a new block that adds a fixed sleep (`waitForTimeout(` / `setTimeout(`); one the block already
+  had may stay. `propose_timing_fix` returns `suggested_fix` — a web-first wait for the located element — and a
+  `forbidden` note; it never suggests a sleep.
+- `run_tests`: a test that passes only on a retry (`flaky`) stays open ("flaky after the patch — not counted as healed").
+- `read_failure_report` still excludes Playwright-flaky tests (they recovered on their own).

@@ -3,11 +3,11 @@
   "registry_key": "healing",
   "category": "test_execution",
   "module_path": "agents.test_execution.healing.agent",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "status": "active",
   "base_class": "BaseAgent",
   "llm_calls": true,
-  "description": "Native ADK agent that heals failing Playwright .spec.ts tests via a Gemini-backed LlmAgent wrapped in a LoopAgent — genuine tool-calling diagnosis/repair/verify loop, not a deterministic root-cause table. Full replacement of the prior implementation; no composition or fallback to it. Phase 0: reads test_data.json through the contracts loader (v1/v2), writes test_suite.json as schema_version 2, records ADK token usage for the benchmark. Phase 1: apply_patch rejects a block that drops or changes a traced test's { tag, annotation } details object (its link to acceptance criteria). Phase 2: locator dry-runs use the shared resolver (frame / scope aware); same count()==1 and fail-open rules.",
+  "description": "Native ADK agent that heals failing Playwright .spec.ts tests via a Gemini-backed LlmAgent wrapped in a LoopAgent — genuine tool-calling diagnosis/repair/verify loop, not a deterministic root-cause table. Full replacement of the prior implementation; no composition or fallback to it. Phase 0: reads test_data.json through the contracts loader (v1/v2), writes test_suite.json as schema_version 2, records ADK token usage for the benchmark. Phase 1: apply_patch rejects a block that drops or changes a traced test's { tag, annotation } details object (its link to acceptance criteria). Phase 2: locator dry-runs use the shared resolver (frame / scope aware); same count()==1 and fail-open rules. Phase 4 (session 2): works on test.step-wrapped specs; apply_patch rejects added fixed sleeps; propose_timing_fix suggests a web-first wait; a test that is flaky after a patch is not counted as healed.",
   "inputs": [
     {
       "name": "project_name",

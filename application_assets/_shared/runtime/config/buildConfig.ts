@@ -15,7 +15,7 @@
 import type { PlaywrightTestConfig, ReporterDescription } from '@playwright/test';
 import { devices } from 'playwright-core';
 
-import { ExecutionConfig, KNOWN_PROJECTS, resolveExecutionConfig } from './execution';
+import { effectiveFailOnFlaky, effectiveRetries, ExecutionConfig, KNOWN_PROJECTS, resolveExecutionConfig } from './execution';
 
 type Env = Record<string, string | undefined>;
 
@@ -94,9 +94,14 @@ export function buildPlaywrightConfig(input: BuildInput): PlaywrightTestConfig {
     testMatch: '**/test_scripts/**/*.spec.ts',
     // Fail the build on CI if any test.only() is left accidentally
     forbidOnly: !!env.CI,
-    // Still 0: retries arrive with flaky classification (Phase 4.7) — until then the execution agent
-    // would count a fail-then-pass as a pass. fullyParallel waits for 4.4's per-test data isolation.
-    retries: 0,
+    // Phase 4.7: execution.retries (auto = 2 in CI, 1 locally; UIExecutionAgent passes --retries=0 for headed
+    // runs). A fail-then-pass is reported as "flaky" — never as passed — by the MTA reporter and UIExecutionAgent.
+    retries: effectiveRetries(exec, env),
+    // Phase 4.7: execution.fail_on_flaky_tests (auto = on in CI) — a flaky test makes the run's exit code non-zero.
+    failOnFlakyTests: effectiveFailOnFlaky(exec, env),
+    // Phase 4.4: tests inside one file run in parallel only when the project's specs isolate their data
+    // (execution.data_isolation — created entities come from the testData fixture).
+    fullyParallel: exec.data_isolation,
     workers: env.CI ? 1 : 2,
     reporter: buildReporters(env, exec, mtaReporterPath),
     use,

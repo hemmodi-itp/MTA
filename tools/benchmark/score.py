@@ -7,7 +7,7 @@ Input — a run record (built by tools/benchmark/run.py, or synthetic in tests):
       "app": "buggy_shop",
       "tests": [{"id": "M01/x.spec.ts::title", "spec_file": "...", "title": "...",
                  "scenario_id": "...", "ac_ids": [...], "text": "..."}],
-      "clean_runs": [{test_id: "passed"|"failed"|"skipped"}, ...],   # >= 1, all bugs off
+      "clean_runs": [{test_id: "passed"|"flaky"|"failed"|"skipped"}, ...],   # >= 1, all bugs off
       "bug_runs": {"BUG_07": {test_id: status}, ...},                # one bug on at a time
       "bug_run_errors": {"BUG_09": "why the run produced no results"},
       "heals": {"applied": 3, "wrong": 1, "details": [...]},          # optional
@@ -21,7 +21,9 @@ Metric definitions (docs/phases/phase-0-design.md §4.2):
                      A test that fails when bug-free can never count as a catch.
   * detection    = caught / bugs evaluated (bugs whose run produced results).
   * false-failure= tests failing in the first clean run / tests executed there.
-  * flaky        = tests whose outcome differs across clean runs / tests in all runs.
+  * flaky        = tests that are "flaky" (failed, then passed on a retry — Phase 4.7) in any clean run, or
+                   whose outcome differs across clean runs / tests executed. A flaky test is never a stable
+                   pass (so it can't catch a bug), never a catch in a bug run, and never a false failure.
   * AC coverage  = ACs linked to >= 1 executed test / all ACs. Link = the test's
                    `ac_ids`, else an exact AC-xx.y id found in its title/text.
   * heal precision = 1 - wrong heals / heals applied (None when no heals).
@@ -34,11 +36,12 @@ from typing import Any, Dict, Iterable, List, Optional
 
 PASS = "passed"
 FAIL = "failed"
+FLAKY = "flaky"
 SKIP = "skipped"
 
 _AC_RE = re.compile(r"\bAC-\d+\.\d+\b")
 _STATUS_MAP = {
-    "passed": PASS, "success": PASS, "expected": PASS, "flaky": PASS, "pass": PASS,
+    "passed": PASS, "success": PASS, "expected": PASS, "pass": PASS, "flaky": FLAKY,
     "failed": FAIL, "failure": FAIL, "unexpected": FAIL, "timedout": FAIL, "timedOut": FAIL,
     "interrupted": FAIL, "error": FAIL, "fail": FAIL,
     "skipped": SKIP, "skip": SKIP,
@@ -50,7 +53,7 @@ def normalize_status(status: Any) -> str:
 
 
 def _executed(run: Dict[str, str]) -> List[str]:
-    return [t for t, s in run.items() if normalize_status(s) in (PASS, FAIL)]
+    return [t for t, s in run.items() if normalize_status(s) in (PASS, FAIL, FLAKY)]
 
 
 def _ratio(num: int, den: int) -> Optional[float]:
@@ -91,15 +94,18 @@ def detect_bugs(clean_runs: List[Dict[str, str]], bug_runs: Dict[str, Dict[str, 
 
 
 def flaky_tests(clean_runs: List[Dict[str, str]]) -> Optional[List[str]]:
+    """Tests flaky on a retry in any clean run, plus tests whose outcome differs across clean runs.
+    None when there is nothing to measure: fewer than 2 runs and no retry-flaky result."""
+    retry_flaky = {t for r in clean_runs for t, s in r.items() if normalize_status(s) == FLAKY}
     if len(clean_runs) < 2:
-        return None
+        return sorted(retry_flaky) if retry_flaky else None
     common = set.intersection(*[set(r) for r in clean_runs])
-    out = []
-    for t in sorted(common):
+    out = set(retry_flaky)
+    for t in common:
         outcomes = {normalize_status(r[t]) for r in clean_runs} - {SKIP}
         if len(outcomes) > 1:
-            out.append(t)
-    return out
+            out.add(t)
+    return sorted(out)
 
 
 def llm_cost(usage: Dict[str, Dict[str, int]], pricing: Dict[str, Dict[str, float]]) -> Dict[str, Any]:

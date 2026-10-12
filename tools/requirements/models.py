@@ -226,7 +226,7 @@ LLM_RESPONSE_JSON_SCHEMA: Dict[str, Any] = {
 
 # ── traceability.json ────────────────────────────────────────────────────────
 
-ResultStatus = Literal["passed", "failed", "skipped", "not_run"]
+ResultStatus = Literal["passed", "failed", "flaky", "skipped", "not_run"]   # flaky: Phase 4.7
 LinkKind = Literal["direct", "similarity", "inherited", "legacy"]
 
 
@@ -266,7 +266,7 @@ class TraceAC(_Model):
     children: List[str] = []
     tc_ids: List[str] = []
     status: Literal["covered", "partial", "not_covered"] = "not_covered"
-    result: Literal["passed", "failed", "skipped", "not_run", "mixed"] = "not_run"
+    result: Literal["passed", "failed", "flaky", "skipped", "not_run", "mixed"] = "not_run"
     uncovered_reason: Optional[UncoveredReason] = None
     defect_ids: List[str] = []
 
