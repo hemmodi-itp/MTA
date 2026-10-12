@@ -1,0 +1,59 @@
+item_id,case_id,dimension,run,judge_verdict,judge_score,judge_reasoning,rubric,conversation,human_label,human_notes
+synthetic:task_success:0,AT-SYN-task000,task_success,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:task_success:1,AT-SYN-task001,task_success,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:task_success:2,AT-SYN-task002,task_success,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:task_success:3,AT-SYN-task003,task_success,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:task_success:4,AT-SYN-task004,task_success,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:task_success:5,AT-SYN-task005,task_success,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:task_success:6,AT-SYN-task006,task_success,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:task_success:7,AT-SYN-task007,task_success,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:task_success:8,AT-SYN-task008,task_success,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:task_success:9,AT-SYN-task009,task_success,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:task_success:10,AT-SYN-task010,task_success,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:task_success:11,AT-SYN-task011,task_success,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:scope:0,AT-SYN-scop000,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:scope:1,AT-SYN-scop001,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:scope:2,AT-SYN-scop002,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:scope:3,AT-SYN-scop003,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:scope:4,AT-SYN-scop004,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:scope:5,AT-SYN-scop005,scope,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:scope:6,AT-SYN-scop006,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:scope:7,AT-SYN-scop007,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:scope:8,AT-SYN-scop008,scope,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:scope:9,AT-SYN-scop009,scope,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:hallucination:0,AT-SYN-hall000,hallucination,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:hallucination:1,AT-SYN-hall001,hallucination,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",pass,
+synthetic:hallucination:2,AT-SYN-hall002,hallucination,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:hallucination:3,AT-SYN-hall003,hallucination,0,fail,10,synthetic,synthetic example,"USER: q
+AGENT: a",fail,
+synthetic:groundedness:0,AT-SYN-grou000,groundedness,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",,
+synthetic:groundedness:1,AT-SYN-grou001,groundedness,0,pass,90,synthetic,synthetic example,"USER: q
+AGENT: a",skip,
+synthetic:groundedness:2,AT-SYN-grou002,groundedness,0,unsure,10,synthetic,synthetic example,"USER: q
+AGENT: a",pass,

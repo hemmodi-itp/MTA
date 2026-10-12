@@ -39,3 +39,12 @@ def test_similarity_bounds_and_edge_cases():
     assert similarity("", "") == 1.0
     assert 0.0 <= similarity("open today", "closed tomorrow") < 0.5
     assert score(["only one"], 0.8).result == "unsure"
+
+
+def test_omitted_fact_is_unsure_not_a_conflict():
+    full = "Shipping is free on orders over $50. Standard delivery takes 3 to 5 business days."
+    short = "Shipping is free on orders over $50."
+    r = score([full, short, full], 0.8)
+    assert r.result == "unsure" and "omits facts" in r.detail and "none conflict" in r.detail
+    wrong = "Shipping is free on orders over $100."
+    assert score([full, short, wrong], 0.8).result == "fail"  # $50 vs $100: neither set contains the other

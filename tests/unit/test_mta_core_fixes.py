@@ -47,10 +47,11 @@ def test_fence_cannot_be_closed_from_inside():
 def test_agent_evaluation_dag_loads_and_overlaps_code_and_browser_branches():
     from workflows.workflow_loader import load_workflow
     wf = load_workflow("agent_evaluation")
-    assert wf.is_dag and len(wf.steps) == 18
+    assert wf.is_dag and len(wf.steps) == 19  # 18 + Phase 9 agent_quality_testing
     # code evidence does not wait for the browser branch
     assert "playwright_executor" not in wf.deps("requirement_traceability")
-    assert set(wf.deps("brd_compliance")) == {"requirement_traceability", "live_agent_execution"}
+    assert set(wf.deps("brd_compliance")) == {"requirement_traceability", "live_agent_execution",
+                                              "agent_quality_testing"}
     # tests are designed after the live app was inspected
     assert "app_classification" in wf.deps("agent_test_generation")
     assert {"repo_fetch", "brd_builder", "requirement_traceability", "compliance_scoring"} <= wf.critical
@@ -142,10 +143,12 @@ def test_pipeline_runs_dag_and_scopes_secrets(monkeypatch, tmp_path):
     monkeypatch.setattr(p, "_persist", lambda *a, **k: None)
     p.run("run1")
     assert store.runs["status"] == "completed"
-    assert len(reg.seen) == 18
+    assert len(reg.seen) == 19  # 18 + Phase 9 agent_quality_testing
     # only discovery / executor see the test account; only the executor gets the logged-in session
     assert "live_credentials" in reg.seen["runtime_discovery"] and "live_credentials" in reg.seen["playwright_executor"]
     assert "live_credentials" not in reg.seen["brd_builder"] and "live_credentials" not in reg.seen["final_report"]
+    assert "live_credentials" not in reg.seen["agent_quality_testing"]
+    assert "runtime_session" not in reg.seen["agent_quality_testing"]
     assert "runtime_session" in reg.seen["playwright_executor"] and "runtime_session" not in reg.seen["brd_compliance"]
     assert reg.seen["agent_test_generation"]["runtime_profile"]["app_type"] == "Form Application"
 

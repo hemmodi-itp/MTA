@@ -12,6 +12,10 @@ Requirement traceability runs in parallel with the browser workflow, so it produ
 runs after Pass/Fail (and the chat/API fallback) and first merges the runtime results into that trace
 (requirement_traceability.tools.apply_runtime_evidence — runtime evidence outranks code evidence), then builds the
 matrix. Its criterion_verdicts / evidence_items / traced_requirements replace the static ones downstream.
+
+Phase 9: when agent_quality_testing produced `agent_quality`, its per-AC counts are listed next to the run's criteria
+(`brd_compliance.agent_quality`). They never change a criterion verdict: the eval set's AC ids and this run's
+re-extracted criterion codes can drift, so folding them in could credit the wrong criterion.
 """
 
 from typing import Any, Dict, Optional
@@ -19,6 +23,7 @@ from typing import Any, Dict, Optional
 from agents.base_agent import BaseAgent
 from agents.evaluation.brd_compliance.tools import build_compliance
 from agents.evaluation.requirement_traceability.tools import apply_runtime_evidence
+from tools.agent_tests.integration import cross_reference
 from tools.shared import get_logger
 
 
@@ -57,6 +62,8 @@ class BrdComplianceAgent(BaseAgent):
                  "warning" if c["broken_at_runtime"] or c["mixed_runtime"] else "info")
             for d in [d for d in result["discrepancies"] if d["severity"] == "high"][:5]:
                 emit(f"{d['criterion_code']}: {d['detail'][:240]}", "warning")
+        if request.get("agent_quality"):  # Phase 9: side-by-side only; criterion verdicts are not changed
+            result["agent_quality"] = cross_reference(request["agent_quality"], verdicts)
         out = {"module": self.MODULE_NAME, "status": "success", "brd_compliance": result}
         if merged:
             out.update(criterion_verdicts=merged["criterion_verdicts"], evidence_items=merged["evidence_items"],

@@ -4,8 +4,10 @@ consistency.py — are N replies to the same input semantically equivalent? (des
     score(["Open 9am-6pm.", "We open at 9am and close 6pm."], threshold=0.8)
 
 Two signals, both deterministic:
-  * key facts — numbers, times, money, weekdays, yes/no — must be identical across every reply. A disagreement
-    ("9am" vs "10am") is a FAIL: that is the inconsistency that matters to a customer.
+  * key facts — numbers, times, money, weekdays, yes/no — must not conflict. Two replies conflict when neither's fact
+    set contains the other's ("9am-6pm" vs "10am-8pm"): that is a FAIL, the inconsistency that matters to a customer.
+    When one reply only omits facts the other states ("free over $50" vs "free over $50, 3-5 days"), nothing is
+    contradicted: UNSURE, and the judge decides whether the omission matters (found on the real-LLM benchmark).
   * pairwise lexical similarity (Dice over content-word sets) must reach the threshold. If only this fails, the
     replies may be paraphrases of each other, so the result is UNSURE (an LLM judge decides in Phase 9.3).
 """
@@ -63,11 +65,18 @@ def score(replies: List[str], threshold: float = 0.8) -> ConsistencyResult:
     sims = [similarity(a, b) for a, b in itertools.combinations(replies, 2)]
     lo = round(min(sims), 3)
     fact_sets = tuple(tuple(sorted(f)) for f in facts)
-    distinct = sorted(set(fact_sets))
-    if len(distinct) > 1:
-        i, j = next((i, j) for i, j in itertools.combinations(range(len(facts)), 2) if facts[i] != facts[j])
+    pairs = list(itertools.combinations(range(len(facts)), 2))
+    conflict = next(((i, j) for i, j in pairs if not (facts[i] <= facts[j] or facts[j] <= facts[i])), None)
+    if conflict:
+        i, j = conflict
         diff = sorted(facts[i] ^ facts[j])
         return ConsistencyResult("fail", lo, f"replies {i + 1} and {j + 1} disagree on key facts: {', '.join(diff)}",
+                                 fact_sets)
+    partial = next(((i, j) for i, j in pairs if facts[i] != facts[j]), None)
+    if partial:  # one reply states fewer facts but contradicts none: incomplete, not inconsistent — judge decides
+        i, j = partial
+        return ConsistencyResult("unsure", lo, f"reply {i + 1 if len(facts[i]) < len(facts[j]) else j + 1} omits "
+                                 f"facts the other states ({', '.join(sorted(facts[i] ^ facts[j]))}) but none conflict",
                                  fact_sets)
     if lo < threshold:
         return ConsistencyResult("unsure", lo, f"same key facts, but wording similarity {lo:.2f} < {threshold:.2f}",

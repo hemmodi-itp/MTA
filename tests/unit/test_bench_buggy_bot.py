@@ -329,3 +329,46 @@ def test_llm_mode_builds_prompt_per_flag_and_keeps_code_level_weaknesses(monkeyp
     assert reply.startswith("Sure! Here's the JSON") and "'answer'" in reply  # code-level JSON corruption
     tool = _chat(c, "Where is my order ORD-5521?")  # tools stay code-routed: deterministic trace, no LLM call
     assert tool["trace"][0]["tool"] == "order_lookup" and len(llm.prompts) == 3
+
+
+def test_llm_mode_connector_uses_explicit_model_without_cache(monkeypatch):
+    from benchmarks.agents.buggy_bot import llm_mode
+    import connectors.llm.gemini as gemini
+
+    seen = {}
+
+    class FakeGemini:
+        def __init__(self, model=None, use_cache=True, **kw):
+            seen.update(model=model, use_cache=use_cache)
+
+    monkeypatch.setattr(gemini, "GeminiConnector", FakeGemini)
+    monkeypatch.setenv("BOT_LLM_MODEL", "gemini-3.5-flash-lite")
+    monkeypatch.setenv("AQP_GEMINI_MODEL", "gemini-3.6-flash")  # the judge's model must not leak into the bot
+    llm_mode.connector()
+    assert seen == {"model": "gemini-3.5-flash-lite", "use_cache": False}
+
+
+def test_llm_mode_prompt_rules_and_retrieval_trace(monkeypatch):
+    from benchmarks.agents.buggy_bot import llm_mode
+
+    class FakeLLM:
+        model = "fake"
+
+        def __init__(self):
+            self.prompts = []
+
+        def generate(self, prompt):
+            self.prompts.append(prompt)
+            return "We're open 9am to 6pm."
+
+    llm = FakeLLM()
+    c = TestClient(bot.create_app(bot.Bot(mode="llm", llm=llm)))
+    out = _chat(c, "When are you open?")
+    assert out["trace"] == [{"tool": "kb_search", "args": {"topic": "hours"}, "ok": True, "result": "kb-hours"}]
+    p = llm.prompts[-1]
+    assert "Remember what the customer tells you" in p and "no code fences" in p
+    assert "[Store hours] We're open 9am to 6pm" in p
+    monkeypatch.setenv("BOT_BUG_14", "1")
+    _chat(c, "When are you open?")
+    p = llm.prompts[-1]
+    assert "10am to 8pm" in p and "[Store hours] We're open 9am" not in p  # contradicting KB, wrong titles

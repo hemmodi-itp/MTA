@@ -11,7 +11,8 @@ from typing import Any, Dict, List, Literal, Optional, Union
 import yaml
 from pydantic import Field, model_validator
 
-from tools.agent_tests.config import DEFAULT_BUDGETS, DEFAULT_THRESHOLDS
+from tools.agent_tests.config import (DEFAULT_BUDGETS, DEFAULT_GATE, DEFAULT_JUDGE, DEFAULT_REPEATS, DEFAULT_THRESHOLDS,
+                                      REGRESSION, SAFETY_DIMENSIONS, SAFETY_GATE, STABILITY)
 from tools.agent_tests.models import DIMENSIONS, Expected, Strict, ToolCallExpect
 
 
@@ -24,7 +25,7 @@ class TransportCfg(Strict):
     output_path: Optional[str] = None
     trace_path: Optional[str] = None
     usage_path: Optional[str] = None
-    history: Literal["server", "client", "none"] = "server"
+    history: Literal["server", "client", "none"] = "none"  # set server / client to enable multi-turn tests
     headers: Dict[str, str] = Field(default_factory=dict)
     timeout_s: int = 60
 
@@ -171,15 +172,37 @@ class Thresholds(Strict):
     robustness_bases: int = DEFAULT_THRESHOLDS["robustness_bases"]
 
 
+class GateCfg(Strict):
+    min_lower_bound: float = Field(DEFAULT_GATE["min_lower_bound"], ge=0, le=1)
+    max_failures: Optional[int] = None  # None = no absolute limit
+
+
 class DimensionCfg(Strict):
     enabled: Union[bool, Literal["auto"]] = True
     min_cases: Optional[int] = None
+    repeats: Optional[int] = Field(None, ge=1)   # k for this dimension (Phase 9.4)
+    gate: Optional[GateCfg] = None
+
+
+class JudgeCfg(Strict):
+    connector: str = DEFAULT_JUDGE["connector"]
+    model: Optional[str] = DEFAULT_JUDGE["model"]
+    escalate: List[str] = Field(default_factory=lambda: list(DEFAULT_JUDGE["escalate"]))
+
+
+class StabilityCfg(Strict):
+    max_pass_rate_variance: float = STABILITY["max_pass_rate_variance"]
+
+
+class RegressionCfg(Strict):
+    max_drop_points: float = REGRESSION["max_drop_points"]
 
 
 class AgentSpec(Strict):
     agent: str
     name: str
     agent_version: str = "unversioned"
+    agent_model: Optional[str] = None  # the model behind the agent, when known: the judge must differ from it
     description: str = ""
     enabled: bool = True
     source: Literal["brd", "generated", "human"] = "brd"
@@ -197,6 +220,9 @@ class AgentSpec(Strict):
     budgets: Budgets = Field(default_factory=Budgets)
     thresholds: Thresholds = Field(default_factory=Thresholds)
     dimensions: Dict[str, DimensionCfg] = Field(default_factory=dict)
+    judge: JudgeCfg = Field(default_factory=JudgeCfg)
+    stability: StabilityCfg = Field(default_factory=StabilityCfg)
+    regression: RegressionCfg = Field(default_factory=RegressionCfg)
 
     @model_validator(mode="after")
     def _known_dimensions(self):
@@ -207,6 +233,16 @@ class AgentSpec(Strict):
 
     def acs_for(self, dimension: str) -> List[str]:
         return list(self.dimension_acs.get(dimension, []))
+
+    def repeats_for(self, dimension: str) -> int:
+        cfg = self.dimensions.get(dimension)
+        return (cfg.repeats if cfg and cfg.repeats else DEFAULT_REPEATS[dimension])
+
+    def gate_for(self, dimension: str) -> GateCfg:
+        cfg = self.dimensions.get(dimension)
+        if cfg and cfg.gate:
+            return cfg.gate
+        return GateCfg(**(SAFETY_GATE if dimension in SAFETY_DIMENSIONS else DEFAULT_GATE))
 
     def dimension_enabled(self, dimension: str) -> bool:
         flag = self.dimensions.get(dimension, DimensionCfg()).enabled

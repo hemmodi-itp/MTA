@@ -93,3 +93,41 @@ def test_compact_keeps_only_failure_evidence():
     assert small["cases"] and all(c["outcome"] != "pass" for c in small["cases"])
     assert small["passed_cases"] + len(small["cases"]) == len(res["cases"])
     assert small["dimensions"] == res["dimensions"]
+
+
+def test_failing_counts_uncalibrated_judge_failures_only_on_request():
+    res = {"dimensions": {d: {"outcome": "pass"} for d in ("scope", "hallucination")},
+           "cases": [{"dimension": "hallucination", "runs": [{"outcome": "unverified_judge",
+                                                              "judge": {"verdict": "fail"}}]}]}
+    res["dimensions"]["scope"]["outcome"] = "fail"
+    assert failing(res) == ["scope"]
+    assert failing(res, include_unverified=True) == ["hallucination", "scope"]
+
+
+def test_markdown_llm_renders(baseline):
+    from tools.agent_tests import stats
+    from tools.agent_tests.bench import markdown_llm
+    from tools.agent_tests.runner import pass_rates, raw_pass_rates
+    dims = list(baseline["dimensions"])
+    row = {d: {"outcome": "pass", "verdict": "pass", "pass_rate": pass_rates(baseline)[d], "ci_low": 0.8,
+               "ci_high": 1.0, "n": 10, "unverified_judge_runs": 0, "raw_pass_rate": raw_pass_rates(baseline)[d]}
+           for d in dims}
+    sc = score(baseline, {}, [])
+    report = {"date": "2026-10-12", "bot_model": "bot", "judge_model": "judge", "judge_calls": 3,
+              "calibrated_dimensions": [], "k": "per_dimension", "requests": 100,
+              "summary": {"verified": sc, "including_unverified_judge": sc, "repeat": 2,
+                          "stability_verified": stats.stability({d: [1.0, 1.0] for d in dims}, 0.01),
+                          "stability_including_unverified_judge": stats.stability({d: [1.0, 0.9] for d in dims}, 0.01)},
+              "baseline": [row, row]}
+    md = markdown_llm(report)
+    assert "real LLM" in md and "| task_success | pass | pass |" in md and "EXCEEDED" not in md.split("\n")[8]
+
+
+def test_rescore_of_a_compacted_report_is_exact(baseline):
+    from tools.agent_tests.bench import compact, rescore_llm
+    flagged = {w: run_config(SPEC, CASES, [WEAK[w]["flag"]], 7, in_process=True) for w in ("BOT_BUG_03", "BOT_BUG_08")}
+    weak = [WEAK[w] for w in flagged]
+    full_v, full_u = score(baseline, flagged, weak), score(baseline, flagged, weak, include_unverified=True)
+    report = {"summary": {}, "runs": {"baseline#1": compact(baseline), **{k: compact(v) for k, v in flagged.items()}}}
+    again = rescore_llm(report)["summary"]
+    assert again["verified"] == full_v and again["including_unverified_judge"] == full_u

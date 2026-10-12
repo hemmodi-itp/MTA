@@ -62,12 +62,18 @@ STEP_META: Dict[str, tuple] = {
     "output_validation": ("output_validation", "Validate outputs against the BRD"),
     "pass_fail": ("pass_fail", "Pass / fail verdicts"),
     "live_agent_execution": ("live_execution", "Fallback: chat/API execution"),
+    "agent_quality_testing": ("agent_quality", "AI agent quality tests (Phase 9)"),
     "requirement_traceability": ("traceability", "Trace every criterion to code evidence"),
     "repository_review": ("review", "Review architecture, security & agent design"),
     "brd_compliance": ("brd_compliance", "BRD compliance matrix (code vs runtime)"),
     "compliance_scoring": ("scoring", "Compliance score, gates & recommendations"),
     "final_report": ("final_report", "Final evaluation report"),
 }
+# Agents registered here when the registry does not already know them. Phase 9 cannot edit agents/registry_setup.py
+# during parallel work; once the entry moves to MTA_AGENTS (merge note) this is a no-op and can be deleted.
+_LATE_AGENTS = [
+    ("agent_quality_testing", "agents.test_execution.agent_quality_testing.agent", "AgentQualityTestingAgent"),
+]
 # Keys an agent result carries that are bookkeeping, not data for later steps.
 _RESULT_META_KEYS = {"module", "status", "error", "blocking", "reason", "partial_reasons"}
 # Secrets: never merged into the shared request, never persisted; handed only to the steps listed.
@@ -82,6 +88,10 @@ class AgentEvaluationPipeline:
         self.registry = registry
         self.store = store or RunStore()
         self.logger = get_logger("agent_eval.pipeline")
+        if hasattr(registry, "register_lazy") and hasattr(registry, "__contains__"):
+            for key, module_path, class_name in _LATE_AGENTS:
+                if key not in registry:
+                    registry.register_lazy(key, module_path, class_name)
 
     def _enabled(self, step: str) -> bool:
         return self.agents_config.get("agents", {}).get(step, {}).get("enabled", True)
@@ -335,6 +345,10 @@ class AgentEvaluationPipeline:
                              skipped=c["inconclusive"] + c["not_executed"])
         elif step == "repository_review":
             s.replace_findings(run_id, result.get("findings") or [])
+        elif step == "agent_quality_testing":
+            rows = result.get("agent_quality_rows") or []
+            if rows:
+                s.add_test_cases(run_id, rows)  # appended; earlier steps' test rows are never touched
         elif step == "final_report":
             s.update_run(run_id, finalReport=result.get("final_report"))
         elif step == "compliance_scoring":
@@ -450,6 +464,16 @@ class AgentEvaluationPipeline:
             tests = result.get("test_cases") or []
             static = len(result.get("static_only_criteria") or [])
             return f"{len(tests)} runtime tests" + (f" · {static} criteria left to code review" if static else "")
+        if step == "agent_quality_testing":
+            aq = result.get("agent_quality") or {}
+            if not aq:
+                return result.get("reason")
+            dims = aq.get("dimensions") or {}
+            bad = [d for d, v in dims.items() if v.get("outcome") == "fail"]
+            gated = sum(1 for v in dims.values() if v.get("verdict") == "pass")
+            return (f"{aq.get('agent')}: {gated}/{len(dims)} dimensions pass their gate · "
+                    + (f"defects in {', '.join(bad[:4])}" if bad else "no defect observed")
+                    + f" · {aq.get('requests')} requests")
         if step == "live_agent_execution":
             res = result.get("execution_results") or []
             return f"{sum(1 for r in res if r['status'] == 'passed')}/{len(res)} passed via {result.get('transport')}"

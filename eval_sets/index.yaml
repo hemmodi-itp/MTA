@@ -1,0 +1,9 @@
+# Phase 9 opt-in for the web-app pipeline (workflows/agent_evaluation.yaml, step agent_quality_testing).
+# A project is tested with an eval set only when its repository is listed here; anything else skips the step.
+#
+#   projects:
+#     - github_url: https://github.com/<owner>/<repo>    # the Project's GitHub URL (case, .git and trailing / ignored)
+#       agent: <folder under eval_sets/>                  # must contain agent.yaml (+ the generated *.jsonl)
+#
+# buggy_bot is the local benchmark bot (no GitHub repository); it is run with `python -m tools.agent_tests bench`.
+projects: []

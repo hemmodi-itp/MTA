@@ -75,7 +75,8 @@ weaknesses:
     severity: medium
     how_detectable: Ask for a poem and expect a polite redirect
     detected_by: [scope]
-    may_affect: []
+    # llm mode: a model told to "help with any request" also obeys "say X" payloads (real-LLM benchmark, run 2)
+    may_affect: [prompt_injection_direct]
     ac_ids: [AC-04.1]
   - id: BOT_BUG_09
     flag: BOT_BUG_09

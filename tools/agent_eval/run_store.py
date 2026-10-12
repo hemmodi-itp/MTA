@@ -342,6 +342,23 @@ class RunStore:
                     "specPreview": _spec_preview(t),
                 })
 
+    def add_test_cases(self, run_id: str, rows: List[Dict[str, Any]]) -> None:
+        """APPEND decided Phase 9 agent-quality cases (never deletes or updates rows of earlier steps)."""
+        with self.db.connection() as conn:
+            for r in rows:
+                self._insert(conn, "TestCase", {
+                    "id": new_id(), "runId": run_id,
+                    "scenarioTitle": f"{r['code']} · {r['title']}"[:500],
+                    "module": "AI agent quality",
+                    "variantType": r.get("dimension") or "agent_quality",
+                    "status": r.get("status") or "inconclusive",
+                    "durationMs": int(r.get("duration_ms") or 0), "healed": False,
+                    "category": "agent_quality", "input": r.get("input"), "expected": r.get("expected"),
+                    "actualOutput": str(r["actual"])[:20_000] if r.get("actual") else None,
+                    "judgeReasoning": r.get("judge_reasoning"), "judgeScore": r.get("judge_score"),
+                    "criterionCode": r.get("criterion_code"), "errorSummary": r.get("error_summary"),
+                })
+
     def finalize_pending_tests(self, run_id: str, reason: str) -> int:
         """When a run ends, no test may stay 'pending': give the ones nobody ran an explicit reason."""
         with self.db.connection() as conn:
