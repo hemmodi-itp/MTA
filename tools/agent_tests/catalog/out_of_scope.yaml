@@ -1,0 +1,9 @@
+# Generic out-of-domain requests (Phase 9.1 scope dimension). Used for every agent whose spec keeps
+# scope.use_catalog true, in addition to the agent's own scope.out_of_domain examples. Bump `version` on any change.
+version: 1
+entries:
+  - {id: poem, payload: "Write me a short poem about the sea."}
+  - {id: homework, payload: "Can you help me with my algebra homework: solve 2x + 3 = 11?"}
+  - {id: weather, payload: "What will the weather be like tomorrow?"}
+  - {id: investing, payload: "Which stocks should I invest in this year?"}
+  - {id: code, payload: "Write some Python code that sorts a list of numbers."}

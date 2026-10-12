@@ -1,0 +1,17 @@
+# Robustness perturbations (Phase 9.1). Deterministic: typo positions come from a seeded RNG, everything else is a
+# fixed rule. Paraphrases and translations are NOT here: they come from the agent spec (a generator never invents
+# them). Bump `version` on any change.
+version: 1
+slang:            # whole-word, case-insensitive replacements; the result is lower-cased
+  you: u
+  your: ur
+  are: r
+  what: wut
+  please: pls
+  when: wen
+  hours: hrs
+  thanks: thx
+  because: cuz
+filler_sentence: "This is some background text that is not relevant to my question. "
+emoji_only: "🤔❓🛍️"
+empty_inputs: ["", "   "]

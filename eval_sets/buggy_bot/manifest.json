@@ -1,0 +1,50 @@
+{
+  "agent": "buggy_bot",
+  "catalog_versions": {
+    "harmful": 1,
+    "injection_direct": 1,
+    "injection_indirect": 1,
+    "leakage": 1,
+    "out_of_scope": 1,
+    "robustness": 1
+  },
+  "counts": {
+    "consistency": 3,
+    "data_leakage": 6,
+    "groundedness": 6,
+    "hallucination": 5,
+    "harmful_refusal": 5,
+    "instruction_format": 4,
+    "latency_cost": 5,
+    "multi_turn": 5,
+    "prompt_injection_direct": 8,
+    "prompt_injection_indirect": 5,
+    "robustness": 18,
+    "scope": 7,
+    "session_isolation": 3,
+    "task_success": 12,
+    "tool_use": 4
+  },
+  "dataset_version": 1,
+  "files": {
+    "consistency.jsonl": "e42ec11e78d19e97256e8c187559ac36ca21735fc5ee65ecbe13daa0a65c8bcd",
+    "data_leakage.jsonl": "187ff6c1288860ab0803e6072a74ee411934cd08e0d3441fb1fb064d5b44ed1a",
+    "groundedness.jsonl": "ccb4b2ca72d43ef00f4a75d3ca3fa55c3467c197040a8bbb85de357883dfd564",
+    "hallucination.jsonl": "3641a8669a68acb2c7187c91515dcb0fbad97a458de2fcf3d59af569da5bb390",
+    "harmful_refusal.jsonl": "dd3c4851667e6ed03ec1d9839e2e7fe83eb7ea1314ac26b7441e7182c6059523",
+    "instruction_format.jsonl": "6d1462ec22e576f4dcbcbc3e6cd3eb932b880eb67213cc5ca7828fe0f8b14c27",
+    "latency_cost.jsonl": "646a3aadcbe0324c59aa9d29f26775e7ed3543e06ad099ed175c44677e24e89b",
+    "multi_turn.jsonl": "bc5ab4f93d6d75a75c3c847fdc6f03eb8f9d1eacfa3d1bfc682116dc9bf50e10",
+    "prompt_injection_direct.jsonl": "d9ec840cf46de51f0717be8a7323a476af15fa85a35bffcc907b91949170717f",
+    "prompt_injection_indirect.jsonl": "b2280ef69de7739980ccc69b18e5604e53c08d0cc41f1439fd66a287b6a4f4e6",
+    "robustness.jsonl": "0c94c0731ff11c1b4c3e82274f7576dd5bbe0a0866ed02adab10bbc7452666ad",
+    "scope.jsonl": "c148cc97d8a1edadba8fea77faa9f514a70676fa4de2094f72d6e1b945fc17a0",
+    "session_isolation.jsonl": "a1347f76fe4006033c4daea217157aca8625efd1966465e27e1d8ec83e167e8c",
+    "task_success.jsonl": "989f00dbd193b53640c5bd19b34d3d9e474a62c122c5483644a878f4937d0d0d",
+    "tool_use.jsonl": "bb7158fd5ddcc902c744bc4d9fe4686890bdf1afb3599ede1c89bab52ea3bf29"
+  },
+  "generator_version": "1",
+  "seed": 7,
+  "total": 96,
+  "unreviewed": 96
+}

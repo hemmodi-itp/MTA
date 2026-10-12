@@ -1,0 +1,105 @@
+# Buggy Bot knowledge base (Phase 9.0). Order matters: on a keyword-score tie the earlier document wins, so the
+# more specific documents (international shipping, damaged items) come before the general ones.
+#
+#   keywords        English words/phrases that select the document (whole-word, lower-case)
+#   keywords_es/fr  Spanish / French words (robustness: other-language questions)
+#   answer          the correct reply (facts the BRD states)
+#   wrong_answer    a contradicting reply, used only by BOT_BUG_06 (inconsistency) and BOT_BUG_14 (ungrounded)
+version: 1
+docs:
+  - id: kb-intl-shipping
+    title: International shipping
+    topic: international_shipping
+    keywords: [international, internationally, abroad, overseas, canada]
+    keywords_es: [internacional, extranjero]
+    keywords_fr: [international, internationale, etranger]
+    answer: "We ship to Canada and the UK. International delivery takes 7 to 14 business days."
+    wrong_answer: "We ship to every country in the world. International delivery takes 2 business days."
+  - id: kb-damaged
+    title: Damaged items
+    topic: damaged_items
+    keywords: [damaged, broken, defective, cracked]
+    keywords_es: [roto, danado]
+    keywords_fr: [casse, endommage]
+    answer: "If an item arrives damaged, contact us within 7 days and we will send a free replacement."
+    wrong_answer: "If an item arrives damaged, contact us within 48 hours and we will give you store credit."
+  - id: kb-price-match
+    title: Price match promise
+    topic: price_match
+    keywords: [price match, price-match, match the price, cheaper]
+    keywords_es: [igualar, igualan]
+    keywords_fr: [alignez, alignement]
+    answer: "We match the price of any major UK retailer within 14 days of your purchase."
+    wrong_answer: "We match the price of any retailer worldwide within 90 days of your purchase."
+  - id: kb-hours
+    title: Store hours
+    topic: hours
+    keywords: [hours, hour, open, opening, close, closing, closed]
+    keywords_es: [horario, abren, abierto, cierran]
+    keywords_fr: [horaires, ouvert, ouvrez, fermez]
+    answer: "We're open 9am to 6pm, Monday to Saturday. We're closed on Sundays."
+    wrong_answer: "We're open 10am to 8pm, seven days a week."
+  - id: kb-returns
+    title: Returns policy
+    topic: returns
+    keywords: [return, returns, refund, refunds, exchange]
+    keywords_es: [devolucion, devolver, reembolso]
+    keywords_fr: [retour, retourner, rembourser, remboursement]
+    answer: "You can return items within 30 days of purchase with a receipt."
+    wrong_answer: "You can return items within 60 days of purchase, no receipt needed."
+  - id: kb-shipping
+    title: Shipping
+    topic: shipping
+    keywords: [shipping, delivery, deliver, postage]
+    keywords_es: [envio, entrega]
+    keywords_fr: [livraison, livrer]
+    answer: "Shipping is free on orders over $50. Standard delivery takes 3 to 5 business days."
+    wrong_answer: "Shipping is free on orders over $100. Standard delivery takes 10 business days."
+  - id: kb-payment
+    title: Payment methods
+    topic: payment
+    keywords: [payment, pay, paying, paypal, visa, mastercard, amex]
+    keywords_es: [pago, pagar]
+    keywords_fr: [paiement, payer]
+    answer: "We accept Visa, Mastercard, American Express and PayPal."
+    wrong_answer: "We accept cash only."
+  - id: kb-tracking
+    title: Order tracking
+    topic: tracking
+    keywords: [track, tracking]
+    keywords_es: [seguimiento, rastrear]
+    keywords_fr: [suivi, suivre]
+    answer: "You can track your order with the link in your confirmation email."
+    wrong_answer: "You can track your order by calling the store; we don't send tracking links."
+  - id: kb-loyalty
+    title: Buggy Rewards
+    topic: loyalty
+    keywords: [loyalty, rewards, reward, points]
+    keywords_es: [puntos, fidelidad]
+    keywords_fr: [fidelite, points]
+    answer: "Buggy Rewards members earn 1 point per $1 spent, and 100 points give you $5 off."
+    wrong_answer: "Buggy Rewards members earn 10 points per $1 spent, and 50 points give you $20 off."
+  - id: kb-click-collect
+    title: Click and Collect
+    topic: click_collect
+    keywords: [collect, pickup, pick up, click and collect]
+    keywords_es: [recoger, recogida]
+    keywords_fr: [retrait, retirer]
+    answer: "Click and Collect orders are ready for pickup in 2 hours at no charge."
+    wrong_answer: "Click and Collect orders are ready for pickup in 3 days for a $4 fee."
+  - id: kb-contact
+    title: Contact us
+    topic: contact
+    keywords: [phone, call, contact, telephone]
+    keywords_es: [telefono, contacto, llamar]
+    keywords_fr: [telephone, contacter, appeler]
+    answer: "You can reach us at 0800 123 4567 or help@buggyshop.example."
+    wrong_answer: "You can reach us at 0900 999 0000 or sales@buggyshop.example."
+  - id: kb-location
+    title: Store location
+    topic: location
+    keywords: [located, location, address, directions]
+    keywords_es: [direccion, ubicacion, ubicados]
+    keywords_fr: [adresse, situe, situes]
+    answer: "Our store is at 12 Market Street, Springfield."
+    wrong_answer: "Our store is at 99 Harbour Road, Shelbyville."
