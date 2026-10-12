@@ -41,7 +41,7 @@ class OrchestratorTests(unittest.TestCase):
         workflow = load_workflow("full_workflow")
         self.assertEqual(
             workflow.steps,
-            ["discovery", "testdata", "semantic_map", "script_generation",
+            ["discovery", "testdata", "test_design", "semantic_map", "script_generation",
              "ui_execution", "healing", "reporting"],
         )
         settings = {

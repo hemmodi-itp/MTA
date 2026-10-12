@@ -17,6 +17,10 @@ or written to any suite. Not wired into `full_workflow.yaml`'s step list today
 to the earlier intents-based architecture and currently only runs when that
 step is actually invoked.
 
+Since Phase 3, `TestDesignAgent` also calls it: the deterministic design cases are passed as
+`existing_test_cases` and the LLM's extra domain cases as `proposed_test_cases`, so only LLM-added cases can ever
+be rejected.
+
 ## Behavior
 
 1. If `proposed_test_cases` is empty → `status: success`, nothing approved or rejected, no LLM call.

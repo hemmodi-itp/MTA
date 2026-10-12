@@ -62,6 +62,11 @@ agents:
       - connector_type: python_stub
         enabled: false
 
+  test_design:                           # Phase 3 — deterministic generators; its one LLM call per module
+    connector_type: internal             # degrades to the deterministic set internally (no fallback tier)
+    inputs: [project_name]
+    outputs: [test_cases_path]
+
   semantic_map:
     connector_type: internal
     inputs: [project_name]

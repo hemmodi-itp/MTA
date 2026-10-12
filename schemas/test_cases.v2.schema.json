@@ -1,0 +1,715 @@
+{
+  "$defs": {
+    "Conflict": {
+      "additionalProperties": false,
+      "description": "BRD and observed behaviour disagree — a potential defect for human review (plan 5.2). Never auto-resolved.",
+      "properties": {
+        "ac_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ac Id"
+        },
+        "brd": {
+          "title": "Brd",
+          "type": "string"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "form_id": {
+          "title": "Form Id",
+          "type": "string"
+        },
+        "observed": {
+          "title": "Observed",
+          "type": "string"
+        },
+        "probe": {
+          "title": "Probe",
+          "type": "string"
+        }
+      },
+      "required": [
+        "form_id",
+        "probe",
+        "brd",
+        "observed"
+      ],
+      "title": "Conflict",
+      "type": "object"
+    },
+    "CutCase": {
+      "additionalProperties": false,
+      "properties": {
+        "ac_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ac Ids",
+          "type": "array"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "title": "Priority",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "budget",
+            "no_scenario",
+            "duplicate",
+            "profile"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "risk_score": {
+          "title": "Risk Score",
+          "type": "number"
+        },
+        "technique": {
+          "enum": [
+            "ep",
+            "bva",
+            "decision_table",
+            "state_transition",
+            "pairwise",
+            "use_case",
+            "crud",
+            "error_guessing",
+            "role_matrix",
+            "llm_domain"
+          ],
+          "title": "Technique",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "technique",
+        "priority",
+        "risk_score",
+        "reason"
+      ],
+      "title": "CutCase",
+      "type": "object"
+    },
+    "DesignBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "est_runtime_minutes": {
+          "title": "Est Runtime Minutes",
+          "type": "number"
+        },
+        "max_runtime_minutes": {
+          "title": "Max Runtime Minutes",
+          "type": "number"
+        },
+        "max_tests": {
+          "title": "Max Tests",
+          "type": "integer"
+        },
+        "p0_over_budget": {
+          "default": false,
+          "title": "P0 Over Budget",
+          "type": "boolean"
+        },
+        "respected": {
+          "title": "Respected",
+          "type": "boolean"
+        },
+        "selected": {
+          "title": "Selected",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max_tests",
+        "max_runtime_minutes",
+        "selected",
+        "est_runtime_minutes",
+        "respected"
+      ],
+      "title": "DesignBudget",
+      "type": "object"
+    },
+    "DesignSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "ac_coverage_pct": {
+          "default": 0.0,
+          "title": "Ac Coverage Pct",
+          "type": "number"
+        },
+        "acs_testable": {
+          "default": 0,
+          "title": "Acs Testable",
+          "type": "integer"
+        },
+        "acs_with_case": {
+          "default": 0,
+          "title": "Acs With Case",
+          "type": "integer"
+        },
+        "acs_without_case": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Acs Without Case",
+          "type": "array"
+        },
+        "by_priority": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "By Priority",
+          "type": "object"
+        },
+        "by_technique": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "By Technique",
+          "type": "object"
+        },
+        "by_type": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "By Type",
+          "type": "object"
+        },
+        "cut": {
+          "title": "Cut",
+          "type": "integer"
+        },
+        "excluded_by_profile": {
+          "default": 0,
+          "title": "Excluded By Profile",
+          "type": "integer"
+        },
+        "generated": {
+          "title": "Generated",
+          "type": "integer"
+        },
+        "selected": {
+          "title": "Selected",
+          "type": "integer"
+        },
+        "testable_ac_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Testable Ac Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "generated",
+        "selected",
+        "cut"
+      ],
+      "title": "DesignSummary",
+      "type": "object"
+    },
+    "LlmStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "added": {
+          "default": 0,
+          "title": "Added",
+          "type": "integer"
+        },
+        "modules": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Modules",
+          "type": "object"
+        },
+        "rejected_duplicates": {
+          "default": 0,
+          "title": "Rejected Duplicates",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "degraded",
+            "skipped"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "LlmStatus",
+      "type": "object"
+    },
+    "Oracle": {
+      "additionalProperties": true,
+      "description": "One expected-outcome check. `type` is open (P5 adds kinds); `source` follows plan 5.2 precedence.",
+      "properties": {
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "Oracle",
+      "type": "object"
+    },
+    "Target": {
+      "additionalProperties": false,
+      "description": "What the case exercises: a form, a page state, a transition or an AC on its own.",
+      "properties": {
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "form_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Form Id"
+        },
+        "kind": {
+          "enum": [
+            "form",
+            "state",
+            "transition",
+            "ac",
+            "resource"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "sample_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sample Url"
+        },
+        "to_url_template": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "To Url Template"
+        },
+        "url_template": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url Template"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Target",
+      "type": "object"
+    },
+    "TestCase": {
+      "additionalProperties": false,
+      "properties": {
+        "ac_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ac Ids",
+          "type": "array"
+        },
+        "ac_link": {
+          "anyOf": [
+            {
+              "enum": [
+                "generator",
+                "token",
+                "llm"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ac Link"
+        },
+        "cleanup": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cleanup",
+          "type": "array"
+        },
+        "confidence": {
+          "default": 1.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "est_seconds": {
+          "default": 10,
+          "title": "Est Seconds",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "inputs": {
+          "additionalProperties": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Inputs",
+          "type": "object"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "smoke",
+            "standard",
+            "thorough",
+            "exhaustive"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "locator_keys": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Locator Keys",
+          "type": "object"
+        },
+        "module_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Id"
+        },
+        "oracles": {
+          "items": {
+            "$ref": "#/$defs/Oracle"
+          },
+          "title": "Oracles",
+          "type": "array"
+        },
+        "preconditions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Preconditions",
+          "type": "array"
+        },
+        "priority": {
+          "default": "P3",
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "title": "Priority",
+          "type": "string"
+        },
+        "risk_score": {
+          "default": 0.0,
+          "title": "Risk Score",
+          "type": "number"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roles",
+          "type": "array"
+        },
+        "scenario_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario Id"
+        },
+        "source": {
+          "default": "brd",
+          "title": "Source",
+          "type": "string"
+        },
+        "steps_outline": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Steps Outline",
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "technique": {
+          "enum": [
+            "ep",
+            "bva",
+            "decision_table",
+            "state_transition",
+            "pairwise",
+            "use_case",
+            "crud",
+            "error_guessing",
+            "role_matrix",
+            "llm_domain"
+          ],
+          "title": "Technique",
+          "type": "string"
+        },
+        "test_type": {
+          "enum": [
+            "positive",
+            "negative",
+            "boundary"
+          ],
+          "title": "Test Type",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "key",
+        "title",
+        "technique",
+        "test_type",
+        "level",
+        "target"
+      ],
+      "title": "TestCase",
+      "type": "object"
+    }
+  },
+  "$id": "mta://schemas/test_cases.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "const": "test_cases",
+      "default": "test_cases",
+      "title": "Artifact",
+      "type": "string"
+    },
+    "budget": {
+      "$ref": "#/$defs/DesignBudget"
+    },
+    "conflicts": {
+      "items": {
+        "$ref": "#/$defs/Conflict"
+      },
+      "title": "Conflicts",
+      "type": "array"
+    },
+    "content_hash": {
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "cut": {
+      "items": {
+        "$ref": "#/$defs/CutCase"
+      },
+      "title": "Cut",
+      "type": "array"
+    },
+    "generated_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generated At"
+    },
+    "inputs": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Inputs",
+      "type": "object"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "llm": {
+      "$ref": "#/$defs/LlmStatus"
+    },
+    "page_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Page Hashes",
+      "type": "object"
+    },
+    "profile": {
+      "enum": [
+        "smoke",
+        "standard",
+        "thorough",
+        "exhaustive"
+      ],
+      "title": "Profile",
+      "type": "string"
+    },
+    "project": {
+      "title": "Project",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 2,
+      "default": 2,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "summary": {
+      "$ref": "#/$defs/DesignSummary"
+    },
+    "test_cases": {
+      "items": {
+        "$ref": "#/$defs/TestCase"
+      },
+      "title": "Test Cases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "project",
+    "profile",
+    "content_hash",
+    "budget",
+    "summary",
+    "llm"
+  ],
+  "title": "TestCasesDoc",
+  "type": "object",
+  "x-mta-artifact": "test_cases",
+  "x-mta-kind": "dict"
+}

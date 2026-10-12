@@ -255,3 +255,9 @@ from tools.discovery.deep.models import AppMapDoc as AppMapV2  # noqa: E402
 from tools.discovery.deep.models import BaselineDoc as BaselineV2  # noqa: E402
 from tools.discovery.deep.models import FormModelDoc as FormModelV2  # noqa: E402
 from tools.discovery.deep.models import PermissionMatrixDoc as PermissionMatrixV2  # noqa: E402
+
+
+# ── Phase 3 test design ──────────────────────────────────────────────────────
+# New artifact; the contract is the strict producer model in tools/test_design/models.py.
+
+from tools.test_design.models import TestCasesDoc as TestCasesV2  # noqa: E402

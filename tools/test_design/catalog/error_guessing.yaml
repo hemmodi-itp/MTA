@@ -1,0 +1,65 @@
+# Error-guessing catalog (plan §5 D, E, I) encoded as data for tools/test_design/error_guessing.py.
+#
+#   id          stable id (part of the test-case key, so renaming an entry changes its case id)
+#   applies_to  field types (text, textarea, search, password, email, number, date, file, select) or "form"
+#   value       the input; {valid} = a valid value for the field, {long:N} = N characters
+#   expect      rejected | consistent | no_server_error | rendered_as_text | not_executed | single_record
+#               | error_clears | accepted
+#   core        true → `thorough` profile; false → `exhaustive` only (every entry on every field)
+#   requires    security_probes → generated only when safety.allow_security_probes is on (and never in prod)
+entries:
+  # ── text (generic) ────────────────────────────────────────────────────────
+  - {id: text.trim, applies_to: [text, textarea, search], title: "leading and trailing spaces", value: "  {valid}  ", expect: consistent, core: true}
+  - {id: text.paste10k, applies_to: [text, textarea], title: "paste of 10,000 characters", value: "{long:10000}", expect: rejected, core: true}
+  - {id: text.unicode, applies_to: [text, textarea, search], title: "multi-byte Unicode (é, ü, 漢字)", value: "Zoë 漢字 Ünïcode", expect: consistent, core: true}
+  - {id: text.emoji, applies_to: [text, textarea, search], title: "emoji (surrogate pairs)", value: "Pen 🖊️👍", expect: consistent, core: false}
+  - {id: text.zero_width, applies_to: [text, textarea], title: "zero-width characters", value: "Pen​‍", expect: consistent, core: false}
+  - {id: text.rtl, applies_to: [text, textarea], title: "right-to-left text", value: "قلم حبر", expect: consistent, core: false}
+  - {id: text.newline, applies_to: [text, search], title: "newline or tab in a single-line field", value: "Line1\tLine2", expect: consistent, core: false}
+  - {id: text.html, applies_to: [text, textarea], title: "HTML tags render as text", value: "<b>bold</b> & <i>x</i>", expect: rendered_as_text, core: true}
+  - {id: text.literals, applies_to: [text, textarea, search], title: "the literal strings null / undefined / NaN", value: "null", expect: consistent, core: false}
+  - {id: text.roundtrip, applies_to: [text, textarea], title: "special characters round-trip unchanged", value: "O'Brien & <Co> \"quoted\"", expect: rendered_as_text, core: true}
+  - {id: text.xss_script, applies_to: [text, textarea], title: "script payload is never executed (stored XSS)", value: "<script>window.__mta_xss=1</script>", expect: not_executed, core: true, requires: security_probes}
+  - {id: text.xss_img, applies_to: [text, textarea], title: "image onerror payload is never executed", value: "<img src=x onerror=\"window.__mta_xss=1\">", expect: not_executed, core: false, requires: security_probes}
+  # ── password ──────────────────────────────────────────────────────────────
+  - {id: password.spaces, applies_to: [password], title: "password with spaces", value: "pass word 1", expect: consistent, core: false}
+  - {id: password.unicode, applies_to: [password], title: "Unicode password", value: "pässwörd-1", expect: consistent, core: false}
+  - {id: password.not_in_url, applies_to: [password], title: "password never appears in the URL after submit", value: "{valid}", expect: consistent, core: true}
+  # ── email ─────────────────────────────────────────────────────────────────
+  - {id: email.no_at, applies_to: [email], title: "email without @", value: "qa.example.com", expect: rejected, core: true}
+  - {id: email.two_at, applies_to: [email], title: "email with two @", value: "qa@@example.com", expect: rejected, core: true}
+  - {id: email.plus, applies_to: [email], title: "plus addressing is accepted", value: "qa+tag@example.com", expect: accepted, core: true}
+  - {id: email.spaces, applies_to: [email], title: "email with spaces", value: "qa user@example.com", expect: rejected, core: false}
+  # ── number / money ────────────────────────────────────────────────────────
+  - {id: number.zero, applies_to: [number], title: "zero", value: "0", expect: consistent, core: true}
+  - {id: number.exponent, applies_to: [number], title: "exponent notation (1e5)", value: "1e5", expect: consistent, core: true}
+  - {id: number.leading_zeros, applies_to: [number], title: "leading zeros", value: "007", expect: consistent, core: false}
+  - {id: number.plus_sign, applies_to: [number], title: "explicit plus sign", value: "+5", expect: consistent, core: false}
+  - {id: number.int32, applies_to: [number], title: "2^31", value: "2147483648", expect: rejected, core: false}
+  - {id: number.int53, applies_to: [number], title: "2^53 + 1", value: "9007199254740993", expect: rejected, core: false}
+  - {id: number.locale, applies_to: [number], title: "locale separators (1.000,50)", value: "1.000,50", expect: consistent, core: false}
+  - {id: number.rounding, applies_to: [number], title: "half-cent rounding (0.005)", value: "0.005", expect: consistent, core: true}
+  # ── date ──────────────────────────────────────────────────────────────────
+  - {id: date.feb29_leap, applies_to: [date], title: "Feb 29 in a leap year", value: "2024-02-29", expect: accepted, core: true}
+  - {id: date.feb29_nonleap, applies_to: [date], title: "Feb 29 in a non-leap year", value: "2023-02-29", expect: rejected, core: true}
+  - {id: date.day31, applies_to: [date], title: "day 31 in a 30-day month", value: "2024-04-31", expect: rejected, core: true}
+  - {id: date.typed, applies_to: [date], title: "typed date in another locale format", value: "15/06/2024", expect: consistent, core: false}
+  # ── file upload ───────────────────────────────────────────────────────────
+  - {id: file.renamed_exe, applies_to: [file], title: "an .exe renamed to an allowed extension", value: "renamed_exe", expect: rejected, core: true}
+  - {id: file.zero_byte, applies_to: [file], title: "0-byte file", value: "zero_byte", expect: consistent, core: true}
+  - {id: file.unicode_name, applies_to: [file], title: "Unicode and special characters in the file name", value: "unicode_name", expect: consistent, core: false}
+  - {id: file.double_ext, applies_to: [file], title: "double extension (report.csv.exe)", value: "double_ext", expect: rejected, core: false}
+  # ── select ────────────────────────────────────────────────────────────────
+  - {id: select.default, applies_to: [select], title: "default state submitted unchanged", value: "{default}", expect: consistent, core: true}
+  # ── search ────────────────────────────────────────────────────────────────
+  - {id: search.percent, applies_to: [search], title: "search for %", value: "%", expect: no_server_error, core: true}
+  - {id: search.underscore, applies_to: [search], title: "search for _", value: "_", expect: no_server_error, core: true}
+  - {id: search.quotes, applies_to: [search], title: "search with quotes", value: "'\"", expect: no_server_error, core: true}
+  - {id: search.case, applies_to: [search], title: "upper and lower case find the same items", value: "PEN", expect: consistent, core: true}
+  - {id: search.no_results, applies_to: [search], title: "query with no results shows the empty state", value: "zzqxnomatch", expect: no_server_error, core: true}
+  - {id: search.very_long, applies_to: [search], title: "very long query", value: "{long:2000}", expect: no_server_error, core: false}
+  - {id: search.reflected_xss, applies_to: [search], title: "XSS payload reflected in the results heading is not executed", value: "<script>window.__mta_xss=1</script>", expect: not_executed, core: true, requires: security_probes}
+  # ── form behaviour (§5 E, I) ──────────────────────────────────────────────
+  - {id: form.double_click, applies_to: [form], title: "double-click submit creates exactly one record", value: null, expect: single_record, core: true}
+  - {id: form.enter_key, applies_to: [form], title: "submit with the Enter key", value: null, expect: consistent, core: true}
+  - {id: form.error_clears, applies_to: [form], title: "error clears after the input is corrected", value: null, expect: error_clears, core: true}

@@ -475,10 +475,13 @@ def build_named_locator_map(
 
             unmatched_new.append((module_id, el, entry))
 
+    # Phase 3: entries merged from form_model.json (crawled pages, `_source: form_model`) have no DOM-scan
+    # source element, so "not seen in this scan" says nothing about them — never offer them for reuse or
+    # report them as possibly removed.
     removed_candidates = [
         {**result_map[key], "_key": key}
         for key in existing_map
-        if key not in claimed_existing_keys
+        if key not in claimed_existing_keys and existing_map[key].get("_source") != "form_model"
     ]
 
     # Reconciliation is per module too: a removed M01 entry can only be
@@ -516,7 +519,8 @@ def build_named_locator_map(
         }
         added.append(key)
 
-    possibly_removed = [key for key in existing_map if key not in claimed_existing_keys]
+    possibly_removed = [key for key in existing_map
+                        if key not in claimed_existing_keys and existing_map[key].get("_source") != "form_model"]
 
     return {"map": result_map, "added": added, "updated": updated, "possibly_removed": possibly_removed}
 

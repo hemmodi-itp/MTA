@@ -50,7 +50,9 @@ from tools.base_url import resolve_project_base_url
 from tools.safety.plan_filter import filter_plan
 from tools.safety.policy import SafetyPolicy, load_safety_policy
 from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
-from agents.test_creation.script_generation.prompt import ACTION_LIBRARY_PROMPT, LOCATOR_RECONCILE_PROMPT
+from agents.test_creation.script_generation.prompt import (
+    ACTION_LIBRARY_PROMPT, DESIGN_CASES_PROMPT, LOCATOR_RECONCILE_PROMPT,
+)
 from agents.test_creation.script_generation.tools import (
     LOCATOR_FIRST_ACTIONS,
     LOCATOR_OR_NULL_ACTIONS,
@@ -69,6 +71,12 @@ from tools.requirements.traceability import refresh_project as refresh_traceabil
 from tools.requirements.tracing import PlanTracer, record_drops
 from tools.shared import get_logger
 from tools.shared.llm_response_validator import parse_llm_json
+from tools.test_design.config import design_enabled
+from tools.test_design.store import cases_by_scenario, load_doc as load_design_doc
+
+# Phase 3: design cases per LLM call. Small chunks keep the plan JSON short, so one bad step costs a retry of
+# 6 cases, not of the whole scenario.
+DESIGN_CHUNK_SIZE = 6
 
 # Mirrors application_assets/_shared/runtime/ActionEngine.ts's public verbs,
 # plus the "useFlow" pseudo-action (a call into flows.generated.ts instead of
@@ -222,6 +230,24 @@ class ScriptGenerationAgent(BaseAgent):
         # Phase 1 — requirements traceability (tc_id / ac_ids / tags); None when disabled.
         self._tracer = PlanTracer.for_project(safe, request, logger=self.logger)
 
+        # Phase 3 — test design: with a profile, each scenario implements exactly the cases TestDesignAgent
+        # selected for it (test_cases.json); a scenario with none selected gets no spec. None = legacy path.
+        design_by_scenario: Optional[Dict[str, List[dict]]] = None
+        if design_enabled(safe, request):
+            design_doc = load_design_doc(project_dir)
+            if design_doc is None:
+                self._log("test_generation.profile is set but test_cases.json is missing — run the test_design "
+                          "step first; generating with the legacy caps", level="warning")
+            else:
+                design_by_scenario = cases_by_scenario(design_doc)
+                if self._tracer is not None:
+                    self._tracer.set_design_cases(design_doc.get("test_cases") or [])
+                stale = {sid: len(v) for sid, v in design_by_scenario.items() if sid in existing_spec_ids}
+                if stale:
+                    self._log(f"{sum(stale.values())} selected design case(s) belong to {len(stale)} scenario(s) "
+                              f"that already have a spec ({', '.join(sorted(stale))}) and are NOT implemented — "
+                              "delete those specs to regenerate them from test_cases.json", level="warning")
+
         if not uncovered:
             self._refresh_traceability(safe, request)
             return {
@@ -259,7 +285,15 @@ class ScriptGenerationAgent(BaseAgent):
                 warnings.append(f"{sid}: {msg}")
                 continue
             module_name = scenario.get("module_name") or module_name_map.get(module_id)
-            self._log(f"Generating spec for {sid}: {title} [{module_id}]")
+            design_cases = None
+            if design_by_scenario is not None:
+                design_cases = design_by_scenario.get(sid) or []
+                if not design_cases:
+                    self._log(f"{sid}: no test cases selected for this scenario by test design "
+                              "(profile/budget) — no spec generated")
+                    continue
+            self._log(f"Generating spec for {sid}: {title} [{module_id}]"
+                      + (f" — {len(design_cases)} design case(s)" if design_cases else ""))
 
             elements = _get_elements_for_scenario(sid, scenario_map)
             test_data = test_data_map.get(sid, {})
@@ -267,6 +301,9 @@ class ScriptGenerationAgent(BaseAgent):
                 elements, reverse_locator_index, locator_map, unresolvable_keys,
                 module_id=module_id,
             )
+            if design_cases:
+                allowed_locators = _with_design_locators(allowed_locators, design_cases, locator_map,
+                                                         unresolvable_keys)
 
             effective_url = module_url_map.get(module_id, url)
             gen_config = load_test_generation_config(safe, module_id=module_id)
@@ -276,16 +313,23 @@ class ScriptGenerationAgent(BaseAgent):
             # so the whole per-scenario body is caught and recorded rather than
             # left to propagate out of the loop and fail the entire run.
             try:
-                kind, payload, tier_used, fallback_route = self._generate_spec(
-                    request=request,
-                    scenario=scenario,
-                    allowed_locators=allowed_locators,
-                    test_data=test_data,
-                    base_url=effective_url,
-                    gen_config=gen_config,
-                    flows_meta=flows_meta,
-                    locator_map=locator_map,
-                )
+                if design_cases:
+                    kind, payload, tier_used, fallback_route = self._generate_design_spec(
+                        request=request, scenario=scenario, allowed_locators=allowed_locators,
+                        test_data=test_data, base_url=effective_url, gen_config=gen_config,
+                        flows_meta=flows_meta, locator_map=locator_map, design_cases=design_cases,
+                    )
+                else:
+                    kind, payload, tier_used, fallback_route = self._generate_spec(
+                        request=request,
+                        scenario=scenario,
+                        allowed_locators=allowed_locators,
+                        test_data=test_data,
+                        base_url=effective_url,
+                        gen_config=gen_config,
+                        flows_meta=flows_meta,
+                        locator_map=locator_map,
+                    )
 
                 filename = _spec_filename(sid, title)
                 # Every spec is module-scoped — module_id is resolved (never None)
@@ -412,6 +456,46 @@ class ScriptGenerationAgent(BaseAgent):
             "output": {"scripts_dir": scripts_dir, "test_suite": suite_path},
         }
 
+    # ── Phase 3: one plan built from the scenario's design cases, chunk by chunk ──
+
+    def _generate_design_spec(self, request: dict, scenario: dict, allowed_locators: List[Dict[str, str]],
+                              test_data: dict, base_url: str, flows_meta: Dict[str, List[str]],
+                              gen_config: Optional[dict], locator_map: Optional[Dict[str, dict]],
+                              design_cases: List[dict]):
+        """Returns ("plan", plan, tier_used, None) like _generate_spec. Every chunk goes through the same tiers
+        and guards; a chunk that fails is recorded as dropped (generation_failed) and the others still render.
+        The merged plan holds at most one test per case — see _reconcile_design_plan."""
+        sid = scenario.get("scenario_id", "")
+        merged: Dict[str, Any] = {"tests": [], "missing_actions": [], "missing_locators": [], "dropped_tests": []}
+        tier_used, failures, last_exc = 0, 0, None
+        chunks = [design_cases[i:i + DESIGN_CHUNK_SIZE] for i in range(0, len(design_cases), DESIGN_CHUNK_SIZE)]
+        for chunk in chunks:
+            try:
+                kind, payload, tier, _route = self._generate_spec(
+                    request=request, scenario=scenario, allowed_locators=allowed_locators, test_data=test_data,
+                    base_url=base_url, flows_meta=flows_meta, gen_config=gen_config, locator_map=locator_map,
+                    design_cases=chunk,
+                )
+            except Exception as exc:
+                failures += 1
+                last_exc = exc
+                self._log(f"{sid}: design chunk of {len(chunk)} case(s) failed: {exc}", level="warning")
+                merged["dropped_tests"] += [{"test": c["title"], "case_id": c["id"], "reason": "generation_failed",
+                                             "detail": str(exc)[:200]} for c in chunk]
+                continue
+            if kind != "plan":     # tier-2 raw stub spec cannot be merged into a plan
+                merged["dropped_tests"] += [{"test": c["title"], "case_id": c["id"], "reason": "generation_failed",
+                                             "detail": "only the python stub fallback produced output"} for c in chunk]
+                continue
+            tier_used = max(tier_used, tier)
+            plan = _reconcile_design_plan(payload, chunk)
+            merged["tests"] += plan["tests"]
+            for key in ("missing_actions", "missing_locators", "dropped_tests"):
+                merged[key] += [x for x in plan.get(key) or [] if x not in merged[key]]
+        if failures == len(chunks) and last_exc is not None:
+            raise last_exc
+        return "plan", merged, tier_used, None
+
     # ── Per-scenario generation with fallback routing ─────────────────────────
 
     def _generate_spec(
@@ -424,6 +508,7 @@ class ScriptGenerationAgent(BaseAgent):
         flows_meta: Dict[str, List[str]],
         gen_config: Optional[dict] = None,
         locator_map: Optional[Dict[str, dict]] = None,
+        design_cases: Optional[List[dict]] = None,
     ):
         """
         Returns (kind, payload, tier_used, fallback_route).
@@ -475,6 +560,7 @@ class ScriptGenerationAgent(BaseAgent):
                         llm=self._alt_llm(current_model, request),
                         gen_config=gen_config,
                         locator_map=locator_map,
+                        design_cases=design_cases,
                     )
                     return "plan", plan, 1, None
                 else:
@@ -482,6 +568,7 @@ class ScriptGenerationAgent(BaseAgent):
                     plan = self._plan_via_llm(
                         scenario, allowed_locators, test_data, base_url, flows_meta,
                         llm=llm, gen_config=gen_config, locator_map=locator_map,
+                        design_cases=design_cases,
                     )
                     return "plan", plan, 0, None
 
@@ -551,6 +638,7 @@ class ScriptGenerationAgent(BaseAgent):
         llm,
         gen_config: Optional[dict] = None,
         locator_map: Optional[Dict[str, dict]] = None,
+        design_cases: Optional[List[dict]] = None,
     ) -> dict:
         sid = scenario.get("scenario_id", "")
         gen_config = gen_config or dict(DEFAULT_TEST_GENERATION_CONFIG)
@@ -559,7 +647,10 @@ class ScriptGenerationAgent(BaseAgent):
         distinct_clusters = {e["cluster"] for e in allowed_locators if e.get("cluster")}
         cluster_count = len(distinct_clusters) or 1
 
-        prompt = ACTION_LIBRARY_PROMPT.safe_substitute(
+        template = DESIGN_CASES_PROMPT if design_cases else ACTION_LIBRARY_PROMPT
+        prompt = template.safe_substitute(
+            design_cases_json=json.dumps([_design_case_view(c) for c in design_cases or []],
+                                         ensure_ascii=False, indent=2),
             scenario_json=json.dumps(scenario, ensure_ascii=False, indent=2),
             test_data_json=json.dumps(test_data, ensure_ascii=False, indent=2),
             # No silent localhost fallback (Phase 0.6): an unknown base URL is said
@@ -717,13 +808,19 @@ class ScriptGenerationAgent(BaseAgent):
         is never offered a known-dead key — and reports them via
         record_locator_drift. A module whose page can't be reached at all
         is skipped entirely (never treated as "every key is dead")."""
-        by_module: Dict[str, List[str]] = {}
+        # Grouped by (module, page): entries merged from form_model.json (Phase 3) carry the `_page_url` of the
+        # crawled page they live on and are checked there, after the module's setup, not on the module page.
+        # `_dynamic` entries (Phase 3: a form's error area, seen in form_model probes after a submit) do not exist on
+        # page load, so a load-time check would always call them dead; they are not live-validated.
+        by_module: Dict[Tuple[str, str], List[str]] = {}
         for key, entry in locator_map.items():
-            by_module.setdefault(entry.get("_module_id") or "_default", []).append(key)
+            if entry.get("_dynamic"):
+                continue
+            by_module.setdefault((entry.get("_module_id") or "_default", entry.get("_page_url") or ""), []).append(key)
 
         unresolvable: set = set()
-        for module_id, keys in by_module.items():
-            effective_url = module_url_map.get(module_id, url)
+        for (module_id, page_url), keys in by_module.items():      # insertion order, as before Phase 3
+            effective_url = page_url or module_url_map.get(module_id, url)
             scanner, page = self._get_validation_page(module_id, effective_url, module_setup_map)
             if page is None:
                 continue
@@ -962,6 +1059,97 @@ def _allowed_locator_entries_for_scenario(
                     entry[field] = el[field]
             result.append(entry)
     return result
+
+
+def _with_design_locators(allowed: List[Dict[str, Any]], design_cases: List[dict], locator_map: dict,
+                          unresolvable_keys: Optional[set] = None) -> List[Dict[str, Any]]:
+    """Phase 3: add the locator keys the scenario's design cases name (form fields on crawled pages, merged into
+    locator_map.json by TestDesignAgent). Same rules as the semantic-map keys: must exist, never a dead key."""
+    unresolvable_keys = unresolvable_keys or set()
+    out = list(allowed)
+    seen = {e["key"] for e in out}
+    for case in design_cases:
+        for key in (case.get("locator_keys") or {}).values():
+            if key in seen or key not in locator_map or key in unresolvable_keys:
+                continue
+            seen.add(key)
+            out.append({"key": key, "description": locator_map[key].get("description", "")})
+    return out
+
+
+def _design_case_view(case: dict) -> Dict[str, Any]:
+    """What the plan prompt needs from a test case (no risk/budget bookkeeping)."""
+    target = case.get("target") or {}
+    view = {k: case.get(k) for k in ("id", "title", "test_type", "technique", "preconditions", "inputs",
+                                     "steps_outline", "oracles", "locator_keys") if case.get(k)}
+    if target.get("sample_url"):
+        view["sample_url"] = target["sample_url"]
+    return view
+
+
+def _reconcile_design_plan(plan: dict, chunk: List[dict]) -> dict:
+    """Keep exactly the tests that implement a case of this chunk (first one per case_id), force each test's
+    type to the case's test_type, and record every case left unimplemented — never silent."""
+    by_id = {c["id"]: c for c in chunk}
+    tests, dropped, done = [], list(plan.get("dropped_tests") or []), set()
+    for t in plan.get("tests") or []:
+        cid = t.get("case_id")
+        if cid not in by_id:
+            dropped.append({"test": t.get("name", ""), "reason": "not_in_design",
+                            "detail": f"case_id {cid!r} is not one of this chunk's cases"})
+            continue
+        if cid in done:
+            dropped.append({"test": t.get("name", ""), "case_id": cid, "reason": "duplicate_case_test"})
+            continue
+        t = dict(t, type=by_id[cid]["test_type"])
+        problem = _design_test_problem(t, by_id[cid])
+        if problem:
+            # the guards inside _plan_via_llm saw the LLM's own "type"; the case's type is applied here, so the
+            # same rules are re-applied now — a retyped test can never slip past them
+            dropped.append({"test": t.get("name", ""), "case_id": cid, "reason": problem})
+            continue
+        done.add(cid)
+        tests.append(t)
+    for cid, case in by_id.items():
+        if cid in done:
+            continue
+        # a guard (placeholder negative / locator-type mismatch) may already have dropped it by name
+        earlier = next((d for d in dropped if d.get("case_id") == cid or d.get("test") == case["title"]), None)
+        if earlier is not None:
+            earlier.setdefault("case_id", cid)
+        else:
+            dropped.append({"test": case["title"], "case_id": cid, "reason": "not_expressed"})
+    out = dict(plan)
+    out["tests"] = tests
+    out["dropped_tests"] = dropped
+    return out
+
+
+_FILL_ACTIONS = ("enterText", "clearAndEnterText", "selectDropdownByText", "selectDropdownByValue")
+
+
+def _design_test_problem(test: dict, case: dict) -> Optional[str]:
+    """Why a plan test does not really implement its design case (None = fine):
+    no_assertion                 no verify* step at all — it would pass whatever the app does
+    placeholder_negative_dropped a negative/boundary test whose every assertion expects "" (same rule as
+                                 _drop_placeholder_negative_tests, applied after the case's type is forced)
+    input_not_used               the value under test (e.g. the 51-character name) is never entered/uploaded"""
+    steps = [s for s in test.get("steps") or [] if isinstance(s, dict)]
+    verify = [s for s in steps if str(s.get("action", "")).startswith("verify")]
+    if not verify:
+        return "no_assertion"
+    if test.get("type") in ("negative", "boundary") and all(s.get("value") == "" for s in verify):
+        return "placeholder_negative_dropped"
+    field = (case.get("target") or {}).get("field")
+    spec = (case.get("inputs") or {}).get(field) if field else None
+    value = spec.get("value") if isinstance(spec, dict) else None
+    if isinstance(value, dict):
+        if not any(s.get("action") == "uploadFile" for s in steps):
+            return "input_not_used"
+    elif isinstance(value, (str, int, float)) and str(value) != "":
+        if not any(s.get("action") in _FILL_ACTIONS and str(s.get("value")) == str(value) for s in steps):
+            return "input_not_used"
+    return None
 
 
 def _get_elements_for_scenario(sid: str, scenario_map: dict) -> List[Dict[str, Any]]:

@@ -63,7 +63,8 @@ def _legacy_title(test: dict) -> str:
 
 def build(doc: RequirementsDoc, scenarios: List[dict], plans: Dict[str, Any], suite_specs: List[dict],
           test_data: Optional[List[dict]] = None, previous: Optional[TraceabilityDoc] = None,
-          no_url_modules: Iterable[str] = (), project: Optional[str] = None) -> TraceabilityDoc:
+          no_url_modules: Iterable[str] = (), project: Optional[str] = None,
+          design_doc: Optional[dict] = None) -> TraceabilityDoc:
     from tools.requirements.linking import criteria_index, link_scenario, link_test
 
     # A scenario linked before the criteria it exercises existed (another module's, extracted later) gets a
@@ -96,7 +97,8 @@ def build(doc: RequirementsDoc, scenarios: List[dict], plans: Dict[str, Any], su
             latest_result=prev.latest_result if prev else LatestResult(),
             defect_ids=list(prev.defect_ids) if prev else [])
 
-    acs = _build_acs(doc, scenarios, plans, spec_by_sid, test_data or [], tests, set(no_url_modules))
+    acs = _build_acs(doc, scenarios, plans, spec_by_sid, test_data or [], tests, set(no_url_modules),
+                     design_reasons(design_doc, plans))
     out = TraceabilityDoc(project=project or (previous.project if previous else doc.project), updated_at=_now(),
                           acs=acs, tests=tests,
                           unlinked_tests=sorted(k for k, v in tests.items() if not v.ac_ids))
@@ -104,8 +106,35 @@ def build(doc: RequirementsDoc, scenarios: List[dict], plans: Dict[str, Any], su
     return out
 
 
+def design_reasons(design_doc: Optional[dict], plans: Dict[str, Any]) -> Dict[str, UncoveredReason]:
+    """Phase 3: why a criterion's designed cases produced no test — a selected case the plan could not express
+    (or whose generation failed), or every case for it cut by the budget in test_cases.json."""
+    if not design_doc:
+        return {}
+    selected = design_doc.get("test_cases") or []
+    selected_acs = {a for c in selected for a in c.get("ac_ids") or []}
+    drops: Dict[str, str] = {}
+    for plan in (plans or {}).values():
+        for d in (plan or {}).get("dropped_tests") or [] if isinstance(plan, dict) else []:
+            if isinstance(d, dict) and d.get("case_id"):
+                drops.setdefault(d["case_id"], d.get("reason") or "not_expressed")
+    out: Dict[str, UncoveredReason] = {}
+    for c in selected:
+        reason = drops.get(c.get("id"))
+        if reason:
+            for a in c.get("ac_ids") or []:
+                out.setdefault(a, UncoveredReason(code=reason, detail=f"design case {c['id']}: {c.get('title', '')[:100]}"))
+    for c in design_doc.get("cut") or []:
+        for a in c.get("ac_ids") or []:
+            if a not in selected_acs:
+                out.setdefault(a, UncoveredReason(code=c.get("reason") or "budget",
+                                                  detail=f"test design cut {c['id']} ({c.get('detail') or c.get('reason')})"))
+    return out
+
+
 def _build_acs(doc: RequirementsDoc, scenarios: List[dict], plans: Dict[str, Any], spec_by_sid: Dict[str, dict],
-               test_data: List[dict], tests: Dict[str, TraceTest], no_url_modules: set) -> Dict[str, TraceAC]:
+               test_data: List[dict], tests: Dict[str, TraceTest], no_url_modules: set,
+               design: Optional[Dict[str, UncoveredReason]] = None) -> Dict[str, TraceAC]:
     req_of = doc.requirement_of()
     tc_by_ac: Dict[str, List[str]] = {}
     for tc_id, t in tests.items():
@@ -142,14 +171,15 @@ def _build_acs(doc: RequirementsDoc, scenarios: List[dict], plans: Dict[str, Any
             if not entry.tc_ids:
                 entry.uncovered_reason = uncovered_reason(
                     entry, scen_by_ac.get(ac_id, []), plans, spec_by_sid, capped, generated_modules,
-                    no_url_modules, reasons.get(ac_id, ""))
+                    no_url_modules, reasons.get(ac_id, ""), (design or {}).get(ac_id))
         entry.result = _aggregate_result([tests[t].latest_result.status for t in entry.tc_ids if t in tests])
     return acs
 
 
 def uncovered_reason(entry: TraceAC, linked_scenarios: List[dict], plans: Dict[str, Any],
                      spec_by_sid: Dict[str, dict], capped: Dict[str, dict], generated_modules: set,
-                     no_url_modules: set, testability_reason: str = "") -> UncoveredReason:
+                     no_url_modules: set, testability_reason: str = "",
+                     design_reason: Optional[UncoveredReason] = None) -> UncoveredReason:
     t = entry.testability
     if t in ("manual_only", "not_testable"):
         return UncoveredReason(code=t, detail=testability_reason)
@@ -160,6 +190,8 @@ def uncovered_reason(entry: TraceAC, linked_scenarios: List[dict], plans: Dict[s
                                detail="MTA does not generate non-functional tests yet (Phase 7)")
     if entry.module_id and entry.module_id in no_url_modules:
         return UncoveredReason(code="no_url", detail="BRD-only discovery: no URL, so no locators")
+    if design_reason is not None:
+        return design_reason
     if entry.module_id and entry.module_id not in generated_modules:
         return UncoveredReason(code="module_not_generated",
                                detail=f"no spec has been generated for module {entry.module_id} yet")
@@ -387,8 +419,14 @@ def refresh_project(safe_project: str, request: Optional[dict] = None) -> Option
     td_path = artifact_path(pdir, "test_data", existing_only=True)
     test_data = load_records(td_path) if td_path else []
     previous = load_traceability(safe_project)
+    from tools.test_design.config import design_enabled
+
+    # Phase 3 reasons only with a profile: a test_cases.json left behind must not change legacy output
+    tc_path = artifact_path(pdir, "test_cases", existing_only=True) if design_enabled(safe_project, request) else None
+    design_doc = load_payload("test_cases", tc_path, None) if tc_path else None
     trace = build(doc, scenarios, plans, suite, test_data, previous,
-                  no_url_modules=_no_url_modules(safe_project, doc), project=safe_project)
+                  no_url_modules=_no_url_modules(safe_project, doc), project=safe_project,
+                  design_doc=design_doc)
     save_traceability(safe_project, trace)
     return trace
 

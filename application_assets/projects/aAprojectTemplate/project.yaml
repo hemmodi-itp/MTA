@@ -123,9 +123,16 @@ modules:
 
 
 test_generation:
-  max_negative_cases: 1     # 0 disables negative-case generation entirely
-  max_boundary_cases: 1     # 0 disables boundary-case generation entirely
-  max_data_iterations: 3    # alternate value sets tried within each negative/boundary test
+  # Phase 3 test design (needs requirements.enabled; uses discovery.deep artifacts when present).
+  # smoke = P0 happy paths · standard = every AC ±, BVA on P0/P1 fields, transitions, role boundaries
+  # thorough = + full EP/BVA, pairwise, invalid transitions, error-guessing catalog, CRUD · exhaustive = everything
+  profile: standard
+  budget: { max_tests: 400, max_runtime_minutes: 45 }
+  # design_llm: true        # false → deterministic cases only (no decision tables / domain cases)
+  # Legacy caps — used only when `profile` is removed (logged as deprecated otherwise):
+  # max_negative_cases: 1     # 0 disables negative-case generation entirely
+  # max_boundary_cases: 1     # 0 disables boundary-case generation entirely
+  # max_data_iterations: 3    # alternate value sets tried within each negative/boundary test
 
 test_execution:
   suite: YourProjectName

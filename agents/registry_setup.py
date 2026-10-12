@@ -27,6 +27,7 @@ LEGACY_AGENTS: List[_Entry] = [
     ("comprehension", "agents.comprehension.comprehension_agent.agent", "ComprehensionAgent", {}),  # standalone use
     # MODULE 2: test creation
     ("testdata", "agents.test_creation.testdata.agent", "TestDataAgent", {}),
+    ("test_design", "agents.test_creation.test_design.agent", "TestDesignAgent", {}),  # Phase 3
     ("semantic_map", "agents.test_creation.semantic_map.agent", "SemanticMapAgent", {}),
     ("artifact_generator_intents", "agents.test_creation.artifact_generator.agent", "ArtifactGeneratorAgent", {"mode": "intents"}),
     ("artifact_generator_testcases", "agents.test_creation.artifact_generator.agent", "ArtifactGeneratorAgent", {"mode": "testcases"}),

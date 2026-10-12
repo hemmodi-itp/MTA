@@ -1,6 +1,7 @@
 # test_test_creation_only.yaml — test_creation category, standalone
 #
 # Step 1: testdata          — scenarios → 8-10 test variant types per scenario
+# Step 1b: test_design     — Phase 3: test_cases.json (only when test_generation.profile is set)
 # Step 2: semantic_map      — scenarios + dom_elements → scenario_element_map.json (1 LLM call)
 # Step 3: script_generation — scenario_element_map + test_data → TypeScript .spec.ts files
 #
@@ -16,6 +17,12 @@ steps:
     # Outputs:  test_creation/test_data/test_data.json
     #           test_creation/test_data/test_data.md
 
+  - name: test_design
+    description: "Requirements + form/app/permission models → test_cases.json (techniques, risk, budget)"
+    # Inputs:   test_comprehension/requirements.json, business_scenarios.json, form_model.json,
+    #           app_map.json, permission_matrix.json, test_creation/test_data/test_data.json
+    # Outputs:  test_creation/test_cases.json, test_creation/locator_map.json (form fields added)
+
   - name: semantic_map
     description: "Map each scenario to its 3-7 relevant DOM elements — 1 LLM call total"
     # Inputs:   comprehension/business_scenarios.json
@@ -24,7 +31,7 @@ steps:
 
   - name: script_generation
     description: "Generate TypeScript .spec.ts files — one per scenario, with rich assertions"
-    depends_on: [testdata, semantic_map]
+    depends_on: [testdata, test_design, semantic_map]
     # Inputs:   test_creation/scenario_element_map.json
     #           comprehension/business_scenarios.json
     #           test_creation/test_data/test_data.json

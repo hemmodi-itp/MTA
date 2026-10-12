@@ -148,9 +148,9 @@ modules:
       - wait: 500
 
 test_generation:
-  max_negative_cases: 1
-  max_boundary_cases: 1
-  max_data_iterations: 1
+  profile: standard  # Phase 3: test design (techniques + risk + budget) → test_cases.json
+  budget: { max_tests: 400, max_runtime_minutes: 45 }
+  max_data_iterations: 1   # still read by TestData's per-scenario variants
 
 test_execution:
   suite: {{PROJECT_NAME}}

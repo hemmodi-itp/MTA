@@ -1,0 +1,1991 @@
+{
+  "schema_version": 2,
+  "artifact": "permission_matrix",
+  "project": "bench_buggy_shop",
+  "generated_at": "2026-10-11T06:56:55Z",
+  "roles": [
+    "user",
+    "admin",
+    "guest"
+  ],
+  "states": [
+    {
+      "url_template": "/admin",
+      "sample_url": "http://127.0.0.1:8765/admin",
+      "access": {
+        "user": "blocked",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 403,
+          "final_url": "http://127.0.0.1:8765/admin",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/admin",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fadmin",
+          "via": "crawl"
+        }
+      }
+    },
+    {
+      "url_template": "/cart",
+      "sample_url": "http://127.0.0.1:8765/cart",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/cart",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/cart",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fcart",
+          "via": "crawl"
+        }
+      }
+    },
+    {
+      "url_template": "/checkout",
+      "sample_url": "http://127.0.0.1:8765/checkout",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/checkout",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/checkout",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fcheckout",
+          "via": "deep_link"
+        }
+      }
+    },
+    {
+      "url_template": "/help",
+      "sample_url": "http://127.0.0.1:8765/help",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "reachable"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/help",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/help",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/help",
+          "via": "crawl"
+        }
+      }
+    },
+    {
+      "url_template": "/login",
+      "sample_url": "http://127.0.0.1:8765/login",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "reachable"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login",
+          "via": "crawl"
+        }
+      }
+    },
+    {
+      "url_template": "/products",
+      "sample_url": "http://127.0.0.1:8765/products",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fproducts",
+          "via": "crawl"
+        }
+      }
+    },
+    {
+      "url_template": "/products/new",
+      "sample_url": "http://127.0.0.1:8765/products/new",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products/new",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products/new",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fproducts%2Fnew",
+          "via": "crawl"
+        }
+      }
+    },
+    {
+      "url_template": "/products/{id}",
+      "sample_url": "http://127.0.0.1:8765/products/1",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products/1",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products/1",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fproducts%2F1",
+          "via": "deep_link"
+        }
+      }
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "sample_url": "http://127.0.0.1:8765/products/1/edit",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products/1/edit",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products/1/edit",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fproducts%2F1%2Fedit",
+          "via": "deep_link"
+        }
+      }
+    },
+    {
+      "url_template": "/products?page",
+      "sample_url": "http://127.0.0.1:8765/products?page=2",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products?page=2",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/products?page=2",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fproducts%3Fpage%3D2",
+          "via": "deep_link"
+        }
+      }
+    },
+    {
+      "url_template": "/upload",
+      "sample_url": "http://127.0.0.1:8765/upload",
+      "access": {
+        "user": "reachable",
+        "admin": "reachable",
+        "guest": "blocked"
+      },
+      "evidence": {
+        "user": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/upload",
+          "via": "crawl"
+        },
+        "admin": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/upload",
+          "via": "crawl"
+        },
+        "guest": {
+          "status": 200,
+          "final_url": "http://127.0.0.1:8765/login?next=%2Fupload",
+          "via": "crawl"
+        }
+      }
+    }
+  ],
+  "actions": [
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/admin",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "blocked",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "button",
+        "name": "Apply"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Proceed to checkout"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/cart",
+      "element": {
+        "role": "textbox",
+        "name": "Discount code"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "button",
+        "name": "Place order"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "hidden",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Continue shopping"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/checkout",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "hidden"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "hidden"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "hidden"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Log in"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "hidden",
+        "guest": "visible"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "hidden"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "hidden"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/help",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "hidden"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/login",
+      "element": {
+        "role": "button",
+        "name": "Log in"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/login",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/login",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/login",
+      "element": {
+        "role": "link",
+        "name": "Log in"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/login",
+      "element": {
+        "role": "textbox",
+        "name": "Password"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/login",
+      "element": {
+        "role": "textbox",
+        "name": "Username"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "visible"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "button",
+        "name": "Search"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "combobox",
+        "name": "All categories Books Electronics Home"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "combobox",
+        "name": "Default Price: low to high Price: high to low Name"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Atlas of Maps"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Blue Notebook"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Gel Pen"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Next"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "The Pragmatic Coder"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "link",
+        "name": "data science handbook"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products",
+      "element": {
+        "role": "searchbox",
+        "name": "Search"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "button",
+        "name": "Save product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "combobox",
+        "name": "Choose a category Books Electronics Home"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "textbox",
+        "name": "Description (optional)"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "textbox",
+        "name": "Name"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/new",
+      "element": {
+        "role": "textbox",
+        "name": "Price"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "button",
+        "name": "Add to cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "button",
+        "name": "Delete"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Back to products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Edit product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}",
+      "element": {
+        "role": "spinbutton",
+        "name": "Quantity"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "button",
+        "name": "Save product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "combobox",
+        "name": "Choose a category Books Electronics Home"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "textbox",
+        "name": "Description (optional)"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "textbox",
+        "name": "Name"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products/{id}/edit",
+      "element": {
+        "role": "textbox",
+        "name": "Price"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "button",
+        "name": "Search"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "combobox",
+        "name": "All categories Books Electronics Home"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "combobox",
+        "name": "Default Price: low to high Price: high to low Name"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Ceramic Mug"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Cotton Throw Blanket"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "LED Desk Lamp"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Next"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Previous"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "USB-C Cable"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "link",
+        "name": "wireless Mouse"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/products?page",
+      "element": {
+        "role": "searchbox",
+        "name": "Search"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "button",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Add product"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Admin"
+      },
+      "visibility": {
+        "user": "hidden",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": true
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Buggy Shop"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Cart"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Help"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Log out"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Products"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "link",
+        "name": "Upload"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    },
+    {
+      "url_template": "/upload",
+      "element": {
+        "role": "textbox",
+        "name": "File"
+      },
+      "visibility": {
+        "user": "visible",
+        "admin": "visible",
+        "guest": "blocked"
+      },
+      "differs": false
+    }
+  ]
+}

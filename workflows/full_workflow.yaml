@@ -2,6 +2,7 @@
 #
 # Step 1: discovery         — DOM scan + BRD comprehension → dom_elements.json + business_scenarios.json
 # Step 2: testdata          — scenarios → 8-10 test variant types per scenario
+# Step 2b: test_design      — Phase 3: techniques + risk + budget → test_cases.json (only with a profile)
 # Step 3: semantic_map      — scenarios + dom_elements → scenario_element_map.json (1 LLM call)
 # Step 4: script_generation — scenario_element_map + test_data → TypeScript .spec.ts files
 # Step 5: ui_execution      — npx playwright test → Playwright JSON + HTML reports
@@ -89,6 +90,22 @@ steps:
     #   test_creation/test_data/test_data.json
     #   test_creation/test_data/test_data.md
 
+  - name: test_design
+    description: "Requirements + form/app/permission models → test_cases.json (techniques, risk, budget)"
+    depends_on: [testdata]
+    # Phase 3. Runs only when project.yaml sets test_generation.profile (otherwise skipped: legacy caps apply).
+    # Inputs:
+    #   test_comprehension/requirements.json     (required — cases are traced to ACs; requirements.enabled)
+    #   test_comprehension/business_scenarios.json   (case → scenario assignment)
+    #   test_comprehension/form_model.json       (Phase 2, optional — EP / BVA / error guessing / pairwise)
+    #   test_comprehension/app_map.json          (Phase 2, optional — state transition / CRUD)
+    #   test_comprehension/permission_matrix.json    (Phase 2, optional — role matrix)
+    #   test_creation/test_data/test_data.json
+    #   test_creation/test_cases.json            (previous run — change fingerprint for risk)
+    # Outputs:
+    #   test_creation/test_cases.json            (selected cases + cut[] with reasons + conflicts[])
+    #   test_creation/locator_map.json           (form fields of crawled pages added, _source: form_model)
+
   - name: semantic_map
     description: "Map each scenario to its 3-7 relevant DOM elements — 1 LLM call total"
     depends_on: [discovery]
@@ -106,8 +123,10 @@ steps:
 
   - name: script_generation
     description: "Generate TypeScript .spec.ts files — one per scenario, with rich assertions"
-    depends_on: [testdata, semantic_map]
+    depends_on: [testdata, test_design, semantic_map]
     # Inputs:
+    #   test_creation/test_cases.json            (Phase 3, with a profile: each scenario implements exactly
+    #                                             its selected cases; a scenario with none gets no spec)
     #   comprehension/business_scenarios.json
     #   test_creation/scenario_element_map.json
     #   test_creation/test_data/test_data.json

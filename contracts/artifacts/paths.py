@@ -19,6 +19,7 @@ _FIXED = {
     "test_suite": os.path.join("test_creation", "test_suite.json"),
     "locator_map": os.path.join("test_creation", "locator_map.json"),
     "traceability": os.path.join("test_creation", "traceability.json"),
+    "test_cases": os.path.join("test_creation", "test_cases.json"),
 }
 _COMPREHENSION = {
     "dom_elements": "dom_elements.json",

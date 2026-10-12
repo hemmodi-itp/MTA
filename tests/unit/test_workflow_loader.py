@@ -17,6 +17,7 @@ class WorkflowLoaderTests(unittest.TestCase):
             [
                 "discovery",
                 "testdata",
+                "test_design",
                 "semantic_map",
                 "script_generation",
                 "ui_execution",
@@ -32,7 +33,7 @@ class WorkflowLoaderTests(unittest.TestCase):
 
     def test_load_test_test_creation_only(self):
         workflow = load_workflow("test_test_creation_only")
-        self.assertEqual(workflow.steps, ["testdata", "semantic_map", "script_generation"])
+        self.assertEqual(workflow.steps, ["testdata", "test_design", "semantic_map", "script_generation"])
 
     def test_load_test_execution_only(self):
         workflow = load_workflow("test_execution_only")

@@ -42,6 +42,7 @@ _ALIASED_CONSTANTS = [
     ("agents.test_creation.artifact_generator.agent", "_ASSETS_BASE"),
     ("agents.test_creation.script_generation.agent", "_ASSETS_BASE"),
     ("agents.test_creation.testdata.agent", "_ASSETS_BASE"),
+    ("agents.test_creation.test_design.agent", "_ASSETS_BASE"),
     ("tools.config.test_generation_config", "_ASSETS_BASE"),
     ("agents.test_execution.healing.agent", "_ASSETS_BASE"),
     ("tools.auth.auth_setup", "_ASSETS_BASE"),

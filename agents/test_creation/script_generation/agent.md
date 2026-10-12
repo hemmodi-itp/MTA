@@ -266,3 +266,18 @@ Live locator validation (`_locator_entry_resolves`) now calls the shared resolve
 `count() == 1`, unknown types and resolution errors fail open — and it additionally resolves the optional entry
 fields `frame` (frameLocator chain) and `scope` (container-scoped role) that `locator_map.json` entries built from
 deep-captured elements may carry. Entries built from pre-Phase-2 elements are byte-identical to before.
+
+## Test design cases (Phase 3, `test_generation.profile`)
+
+When the profile is set and `test_creation/test_cases.json` exists, a scenario's plan is built from its selected
+design cases instead of the cluster/cap rules above:
+- `DESIGN_CASES_PROMPT` = the same prompt with "Test counts" replaced by the case list; cases go in chunks of
+  `DESIGN_CHUNK_SIZE` (6), each through the usual tiers and guards (`_generate_design_spec`).
+- `_reconcile_design_plan` keeps exactly one test per `case_id`, forces the case's `test_type`, and records every
+  other outcome in `dropped_tests`: `not_expressed`, `not_in_design`, `duplicate_case_test`, `generation_failed`.
+- The cases' `locator_keys` are added to the scenario's allowed keys (`_with_design_locators`, dead keys excluded).
+  Entries with `_page_url` (form fields merged from `form_model.json`) are validated live on that page.
+- A scenario with no selected case gets no spec (logged, not a warning). `PlanTracer` takes the case's ACs, risk
+  priority and technique (`@bva`, `@role_matrix`, … tag; `{type: "case"}` annotation).
+- Without the profile, or without `test_cases.json` (warning), generation is unchanged.
+

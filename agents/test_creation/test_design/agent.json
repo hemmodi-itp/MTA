@@ -1,0 +1,28 @@
+{
+  "name": "TestDesignAgent",
+  "registry_key": "test_design",
+  "category": "test_creation",
+  "module_path": "agents.test_creation.test_design.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Derives test cases with named techniques (EP, BVA, decision table, state transition, pairwise, use case, CRUD, error guessing, role matrix), prioritises them by risk and selects them within the coverage profile's budget; writes test_cases.json for ScriptGeneration.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Project folder under application_assets/projects" },
+    { "name": "test_design", "type": "object", "required": false, "description": "Resolved test_generation profile/budget/design_llm block (from project.yaml via the manifest); read from project.yaml when absent" },
+    { "name": "requirements", "type": "object", "required": false, "description": "Resolved requirements block; requirements.enabled must be true" },
+    { "name": "connector_mode", "type": "string", "required": false, "description": "Optional LLM connector override" }
+  ],
+  "outputs": [
+    { "name": "status", "type": "string", "description": "success | partial (LLM degraded or budget exceeded by P0/floor cases)" },
+    { "name": "skipped", "type": "boolean", "description": "true when no profile is set or requirements are off" },
+    { "name": "summary", "type": "object", "description": "Generated / selected / cut counts, by technique, priority and type, AC coverage" },
+    { "name": "budget", "type": "object", "description": "max_tests, max_runtime_minutes, selected, est_runtime_minutes, respected" },
+    { "name": "output.test_cases", "type": "string", "description": "Path of test_creation/test_cases.json" },
+    { "name": "output.locator_keys_added", "type": "array", "description": "locator_map.json keys added for crawled-page form fields" }
+  ],
+  "dependencies": ["SemanticDedupAgent"],
+  "skills": ["test_design"],
+  "doc": "agent.md"
+}

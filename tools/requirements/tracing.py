@@ -34,6 +34,11 @@ class PlanTracer:
         self.index = criteria_index(doc)
         self.req_of = {ac.id: r.id for r in doc.requirements for ac in r.acceptance_criteria}
         self.allocator = IdAllocator(registry or ArtifactRegistry(project_dir(safe_project)))
+        self.design_cases: Dict[str, Dict[str, Any]] = {}
+
+    def set_design_cases(self, cases: List[Dict[str, Any]]) -> None:
+        """Phase 3: tests carrying a `case_id` take their ACs, priority and technique from test_cases.json."""
+        self.design_cases = {c["id"]: c for c in cases if c.get("id")}
 
     @classmethod
     def for_project(cls, safe_project: str, request: Optional[dict] = None, logger=None) -> Optional["PlanTracer"]:
@@ -73,12 +78,22 @@ class PlanTracer:
         tests = []
         for test in plan.get("tests") or []:
             t = dict(test)
-            ac_ids, link = link_test(t, allowed, self.index)
+            case = self.design_cases.get(t.get("case_id") or "")
+            if case is not None:
+                ac_ids, _ = expand_to_leaves(case.get("ac_ids") or [], self.index)
+                link = "direct" if ac_ids else ""
+                if not ac_ids:          # a design case with no AC: fall back to the scenario's criteria
+                    ac_ids, link = link_test(t, allowed, self.index)
+                t["technique"] = case.get("technique")
+            else:
+                ac_ids, link = link_test(t, allowed, self.index)
             t["ac_ids"] = ac_ids
             t["ac_link"] = link or None
             t["req_ids"] = list(dict.fromkeys(self.req_of[a] for a in ac_ids if a in self.req_of))
             priorities = [self.index[a].priority for a in ac_ids if a in self.index]
             t["priority"] = min(priorities, key=lambda p: int(p[1])) if priorities else None
+            if case is not None:
+                t["priority"] = case.get("priority") or t["priority"]     # risk-based (Phase 3.4)
             t["tc_id"] = self.allocator.test_case_id(module_id, sid, t.get("name", ""), t.get("type", ""))
             t["title"] = render_test_title(t)
             tests.append(t)

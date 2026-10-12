@@ -221,6 +221,7 @@ def score(run: Dict[str, Any], bugs: Iterable[Dict[str, Any]], acs: Iterable[str
             "discovery_by_module": runtime.get("discovery_by_module"),
         },
         "discovery": _discovery_metrics(run.get("deep_discovery")),
+        "test_design": run.get("test_design"),
         "llm": llm_cost(run.get("llm_usage") or {}, pricing or {}),
         "unknown_bug_ids": sorted(set(bug_runs) - set(truth)),
     }

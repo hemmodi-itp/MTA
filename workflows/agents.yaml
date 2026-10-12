@@ -15,6 +15,9 @@ agents:
   testdata:
     enabled: true
 
+  test_design:
+    enabled: true   # Phase 3 — acts only when project.yaml sets test_generation.profile (skips otherwise)
+
   artifact_generator_testcases:
     enabled: true
 

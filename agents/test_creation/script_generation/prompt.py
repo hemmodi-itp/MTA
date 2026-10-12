@@ -388,6 +388,40 @@ Return ONLY the JSON object described above. No markdown fences, no explanation,
 """)
 
 
+# ── Phase 3: design-driven plans (test_generation.profile set) ────────────────
+#
+# Same prompt, with the "Test counts" section (one positive per cluster + capped negative/boundary) replaced
+# by the test cases TestDesignAgent selected for this scenario. Coverage is decided by test_cases.json, never by
+# the LLM; the LLM only expresses each case with the action library. The legacy prompt above is unchanged.
+
+_DESIGN_SECTION = """== Test cases to implement (designed by TestDesignAgent — test_cases.json) ==
+$design_cases_json
+
+- Write EXACTLY ONE test per case above, in the same order, and give it "case_id": "<the case's id>". Do not add
+  tests that are not in this list and do not merge two cases into one test.
+- "name": the case's "title". "type": the case's "test_type" (positive | negative | boundary).
+- Use the exact "value" of each entry in the case's "inputs" for the matching field. "locator_keys" maps a field
+  name (and "submit") to the locator_key to use. Fill the "filler" inputs too, so only the field under test differs.
+- "locator_keys"."error" is the area where the app shows validation errors after a submit: assert an "error_text"
+  oracle with verifyContainsText on that key, and a "no_error_text" oracle with verifyHidden on it.
+- Start with {"action": "navigate"}, with the case's "sample_url" as "value" when it has one.
+- Express every oracle you can with the allowed actions: "error_text" / "text_visible" → verifyContainsText or
+  verifyVisible on that exact text; "url_unchanged" → verifyUrlContains with the starting path; "submission_accepted"
+  → the success indicator; "access_blocked" → the "Access denied" text or the login redirect; "page_reachable" →
+  verifyUrlContains with the path. Never invent an expected value the case does not state.
+- A case that cannot be expressed with the allowed actions and locators: leave it out and add one line to
+  "missing_actions" or "missing_locators" that starts with its case id (e.g. "TC-1a2b3c4d: no locator for the
+  cart line quantity").
+
+"""
+
+DESIGN_CASES_PROMPT = Template(
+    ACTION_LIBRARY_PROMPT.template.split("== Test counts ==", 1)[0]
+    + _DESIGN_SECTION
+    + "== Verification contract" + ACTION_LIBRARY_PROMPT.template.split("== Verification contract", 1)[1]
+)
+
+
 # ── Locator merge reconciliation (build_named_locator_map's ambiguous remainder) ──
 #
 # Used only when a dom_elements.json rescan has both unmatched new elements

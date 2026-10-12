@@ -1,0 +1,3353 @@
+{
+ "schema_version": 2,
+ "artifact": "app_map",
+ "project": "bench_buggy_shop",
+ "generated_at": "2026-10-11T06:56:55Z",
+ "config_hash": "92c13c61c8af11e6",
+ "seeds": [
+  "http://127.0.0.1:8765/login",
+  "http://127.0.0.1:8765/products",
+  "http://127.0.0.1:8765/products/new",
+  "http://127.0.0.1:8765/cart",
+  "http://127.0.0.1:8765/upload",
+  "http://127.0.0.1:8765/admin"
+ ],
+ "roles": [
+  {
+   "name": "user",
+   "strategy": "setup"
+  },
+  {
+   "name": "admin",
+   "strategy": "setup"
+  },
+  {
+   "name": "guest",
+   "strategy": "anonymous"
+  }
+ ],
+ "bounds": {
+  "max_pages": 25,
+  "max_depth": 4,
+  "max_minutes": 10.0,
+  "samples_per_template": 1
+ },
+ "stopped_by": {
+  "user": "queue_empty",
+  "admin": "queue_empty",
+  "guest": "queue_empty"
+ },
+ "duration_s": 36.9,
+ "states": [
+  {
+   "state_id": "S-5ef8a38d0f",
+   "url": "http://127.0.0.1:8765/admin",
+   "url_template": "/admin",
+   "title": "Access denied - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 403,
+   "access": "blocked",
+   "structural_hash": "5858a3a2b6b025de",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/admin"
+  },
+  {
+   "state_id": "S-5fd967feba",
+   "url": "http://127.0.0.1:8765/admin",
+   "url_template": "/admin",
+   "title": "Admin - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "7d76f731ccf3479b",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/admin"
+  },
+  {
+   "state_id": "S-24598b0bdc",
+   "url": "http://127.0.0.1:8765/cart",
+   "url_template": "/cart",
+   "title": "Cart - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "fb7f555c84d5db75",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-4c155852d5"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/cart"
+  },
+  {
+   "state_id": "S-708b57979b",
+   "url": "http://127.0.0.1:8765/cart",
+   "url_template": "/cart",
+   "title": "Cart - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "dc415d979da553fc",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [
+    "F-4c155852d5"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/cart"
+  },
+  {
+   "state_id": "S-0a3ac39f39",
+   "url": "http://127.0.0.1:8765/login",
+   "url_template": "/login",
+   "title": "Log in - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "9de6d33cf2fd3afb",
+   "roles": [
+    "user",
+    "admin",
+    "guest"
+   ],
+   "elements": [],
+   "forms": [
+    "F-31696bd201"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/login"
+  },
+  {
+   "state_id": "S-88601138f1",
+   "url": "http://127.0.0.1:8765/login?next=%2Fproducts",
+   "url_template": "/login?next",
+   "title": "Log in - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "blocked",
+   "structural_hash": "9de6d33cf2fd3afb",
+   "roles": [
+    "guest"
+   ],
+   "elements": [],
+   "forms": [],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-853cc2c96c",
+   "url": "http://127.0.0.1:8765/products",
+   "url_template": "/products",
+   "title": "Products - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "46011caf32964df8",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-4dc9438dcb"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-b2e3218c60",
+   "url": "http://127.0.0.1:8765/products",
+   "url_template": "/products",
+   "title": "Products - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "500d14e88ef91b47",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [
+    "F-4dc9438dcb"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-8972d128e2",
+   "url": "http://127.0.0.1:8765/products/new",
+   "url_template": "/products/new",
+   "title": "Add product - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "9cf7b1a3369b5666",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [
+    "F-69c120ba3f"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/products/new"
+  },
+  {
+   "state_id": "S-fccaef0188",
+   "url": "http://127.0.0.1:8765/products/new",
+   "url_template": "/products/new",
+   "title": "Add product - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "31f70cddc7dc2cb7",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-69c120ba3f"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/products/new"
+  },
+  {
+   "state_id": "S-d77dfb0b01",
+   "url": "http://127.0.0.1:8765/upload",
+   "url_template": "/upload",
+   "title": "Upload - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "d868a0159572422b",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [
+    "F-cfd30d2f5e"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/upload"
+  },
+  {
+   "state_id": "S-f7741d2d65",
+   "url": "http://127.0.0.1:8765/upload",
+   "url_template": "/upload",
+   "title": "Upload - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "98de7d6211e2ab13",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-cfd30d2f5e"
+   ],
+   "first_seen_depth": 0,
+   "seed": "http://127.0.0.1:8765/upload"
+  },
+  {
+   "state_id": "S-a99eea977e",
+   "url": "http://127.0.0.1:8765/checkout",
+   "url_template": "/checkout",
+   "title": "Checkout - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "7d6cc6dc897cd501",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/cart"
+  },
+  {
+   "state_id": "S-b56fae9d93",
+   "url": "http://127.0.0.1:8765/checkout",
+   "url_template": "/checkout",
+   "title": "Checkout - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "e3522db2cadbde6d",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-fc61224a97"
+   ],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/cart"
+  },
+  {
+   "state_id": "S-0f09ddcbca",
+   "url": "http://127.0.0.1:8765/help",
+   "url_template": "/help",
+   "title": "Help - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "e68fa425ba706389",
+   "roles": [
+    "guest"
+   ],
+   "elements": [],
+   "forms": [],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/login"
+  },
+  {
+   "state_id": "S-4471783184",
+   "url": "http://127.0.0.1:8765/help",
+   "url_template": "/help",
+   "title": "Help - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "45920881252bb6ae",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/login"
+  },
+  {
+   "state_id": "S-80ede1ae72",
+   "url": "http://127.0.0.1:8765/help",
+   "url_template": "/help",
+   "title": "Help - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "2f7c00e6e391d2be",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/login"
+  },
+  {
+   "state_id": "S-7e1b62cb9a",
+   "url": "http://127.0.0.1:8765/products/1",
+   "url_template": "/products/{id}",
+   "title": "The Pragmatic Coder - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "af333cd0dc1ac31b",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [
+    "F-f9540101fa",
+    "F-b0c7d7d51d"
+   ],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-e6561ac38e",
+   "url": "http://127.0.0.1:8765/products/1",
+   "url_template": "/products/{id}",
+   "title": "The Pragmatic Coder - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "58bf5e6301b008be",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-f9540101fa",
+    "F-b0c7d7d51d"
+   ],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-9ceaf34e0b",
+   "url": "http://127.0.0.1:8765/products?page=2",
+   "url_template": "/products?page",
+   "title": "Products - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "a9322521f1a14461",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-7f4ec34e7b"
+   ],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-c857a395e5",
+   "url": "http://127.0.0.1:8765/products?page=2",
+   "url_template": "/products?page",
+   "title": "Products - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "4846e58512f27d26",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [
+    "F-7f4ec34e7b"
+   ],
+   "first_seen_depth": 1,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-d68927eb40",
+   "url": "http://127.0.0.1:8765/products/1/edit",
+   "url_template": "/products/{id}/edit",
+   "title": "Edit product - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "31f70cddc7dc2cb7",
+   "roles": [
+    "user"
+   ],
+   "elements": [],
+   "forms": [
+    "F-00fd2fd5a9"
+   ],
+   "first_seen_depth": 2,
+   "seed": "http://127.0.0.1:8765/products"
+  },
+  {
+   "state_id": "S-e35aef500f",
+   "url": "http://127.0.0.1:8765/products/1/edit",
+   "url_template": "/products/{id}/edit",
+   "title": "Edit product - Buggy Shop",
+   "kind": "page",
+   "revealed_by": null,
+   "status": 200,
+   "access": "reachable",
+   "structural_hash": "9cf7b1a3369b5666",
+   "roles": [
+    "admin"
+   ],
+   "elements": [],
+   "forms": [
+    "F-00fd2fd5a9"
+   ],
+   "first_seen_depth": 2,
+   "seed": "http://127.0.0.1:8765/products"
+  }
+ ],
+ "transitions": [
+  {
+   "from_state": "S-0a3ac39f39",
+   "to_state": "S-88601138f1",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user",
+    "admin",
+    "guest"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-0a3ac39f39",
+   "to_state": "S-0f09ddcbca",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user",
+    "admin",
+    "guest"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "The Pragmatic Coder",
+    "href": "http://127.0.0.1:8765/products/1"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "data science handbook",
+    "href": "http://127.0.0.1:8765/products/2"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "Atlas of Maps",
+    "href": "http://127.0.0.1:8765/products/3"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0014",
+    "role": "link",
+    "name": "Blue Notebook",
+    "href": "http://127.0.0.1:8765/products/4"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0015",
+    "role": "link",
+    "name": "Gel Pen",
+    "href": "http://127.0.0.1:8765/products/5"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-9ceaf34e0b",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0016",
+    "role": "link",
+    "name": "Next",
+    "href": "http://127.0.0.1:8765/products?page=2"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-853cc2c96c",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0017",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-fccaef0188",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-fccaef0188",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-fccaef0188",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-fccaef0188",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-fccaef0188",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-fccaef0188",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-24598b0bdc",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-24598b0bdc",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-24598b0bdc",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-24598b0bdc",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-24598b0bdc",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-24598b0bdc",
+   "to_state": "S-b56fae9d93",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Proceed to checkout",
+    "href": "http://127.0.0.1:8765/checkout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-24598b0bdc",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-f7741d2d65",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-f7741d2d65",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-f7741d2d65",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-f7741d2d65",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-f7741d2d65",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-f7741d2d65",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-80ede1ae72",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0001",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-80ede1ae72",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0002",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-80ede1ae72",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-80ede1ae72",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-80ede1ae72",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-80ede1ae72",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-d68927eb40",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Edit product",
+    "href": "http://127.0.0.1:8765/products/1/edit"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "Back to products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e6561ac38e",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "USB-C Cable",
+    "href": "http://127.0.0.1:8765/products/6"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "LED Desk Lamp",
+    "href": "http://127.0.0.1:8765/products/7"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "wireless Mouse",
+    "href": "http://127.0.0.1:8765/products/8"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0014",
+    "role": "link",
+    "name": "Ceramic Mug",
+    "href": "http://127.0.0.1:8765/products/9"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0015",
+    "role": "link",
+    "name": "Cotton Throw Blanket",
+    "href": "http://127.0.0.1:8765/products/10"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-9ceaf34e0b",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0016",
+    "role": "link",
+    "name": "Previous",
+    "href": "http://127.0.0.1:8765/products?page=1"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-9ceaf34e0b",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0017",
+    "role": "link",
+    "name": "Next",
+    "href": "http://127.0.0.1:8765/products?page=3"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-9ceaf34e0b",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0018",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b56fae9d93",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0002",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b56fae9d93",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b56fae9d93",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b56fae9d93",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b56fae9d93",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b56fae9d93",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-b56fae9d93",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d68927eb40",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d68927eb40",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d68927eb40",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d68927eb40",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d68927eb40",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d68927eb40",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-d68927eb40",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "user"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-8972d128e2",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-708b57979b",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-d77dfb0b01",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-5fd967feba",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-7e1b62cb9a",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "The Pragmatic Coder",
+    "href": "http://127.0.0.1:8765/products/1"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "data science handbook",
+    "href": "http://127.0.0.1:8765/products/2"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0014",
+    "role": "link",
+    "name": "Atlas of Maps",
+    "href": "http://127.0.0.1:8765/products/3"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0015",
+    "role": "link",
+    "name": "Blue Notebook",
+    "href": "http://127.0.0.1:8765/products/4"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0016",
+    "role": "link",
+    "name": "Gel Pen",
+    "href": "http://127.0.0.1:8765/products/5"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-c857a395e5",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0017",
+    "role": "link",
+    "name": "Next",
+    "href": "http://127.0.0.1:8765/products?page=2"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-b2e3218c60",
+   "to_state": "S-4471783184",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0018",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-8972d128e2",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-8972d128e2",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-8972d128e2",
+   "to_state": "S-708b57979b",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-8972d128e2",
+   "to_state": "S-d77dfb0b01",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-8972d128e2",
+   "to_state": "S-5fd967feba",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-8972d128e2",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-8972d128e2",
+   "to_state": "S-4471783184",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": "S-d77dfb0b01",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": "S-5fd967feba",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": "S-a99eea977e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Proceed to checkout",
+    "href": "http://127.0.0.1:8765/checkout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-708b57979b",
+   "to_state": "S-4471783184",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d77dfb0b01",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d77dfb0b01",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d77dfb0b01",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d77dfb0b01",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d77dfb0b01",
+   "to_state": "S-5fd967feba",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-d77dfb0b01",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-d77dfb0b01",
+   "to_state": "S-4471783184",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-5fd967feba",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0001",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-5fd967feba",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0002",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-5fd967feba",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-5fd967feba",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-5fd967feba",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-5fd967feba",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-5fd967feba",
+   "to_state": "S-4471783184",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-4471783184",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0001",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-4471783184",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0002",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-4471783184",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-4471783184",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-4471783184",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-4471783184",
+   "to_state": "S-5ef8a38d0f",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-4471783184",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-5ef8a38d0f",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-e35aef500f",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "Edit product",
+    "href": "http://127.0.0.1:8765/products/1/edit"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "Back to products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-7e1b62cb9a",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0014",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-5ef8a38d0f",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "USB-C Cable",
+    "href": "http://127.0.0.1:8765/products/6"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "LED Desk Lamp",
+    "href": "http://127.0.0.1:8765/products/7"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0014",
+    "role": "link",
+    "name": "wireless Mouse",
+    "href": "http://127.0.0.1:8765/products/8"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0015",
+    "role": "link",
+    "name": "Ceramic Mug",
+    "href": "http://127.0.0.1:8765/products/9"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-e6561ac38e",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0016",
+    "role": "link",
+    "name": "Cotton Throw Blanket",
+    "href": "http://127.0.0.1:8765/products/10"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-9ceaf34e0b",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0017",
+    "role": "link",
+    "name": "Previous",
+    "href": "http://127.0.0.1:8765/products?page=1"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-9ceaf34e0b",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0018",
+    "role": "link",
+    "name": "Next",
+    "href": "http://127.0.0.1:8765/products?page=3"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-c857a395e5",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0019",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0001",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0002",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0003",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0004",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0005",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-5ef8a38d0f",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Continue shopping",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-a99eea977e",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0006",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0007",
+    "role": "link",
+    "name": "Products",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": "S-fccaef0188",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0008",
+    "role": "link",
+    "name": "Add product",
+    "href": "http://127.0.0.1:8765/products/new"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": "S-24598b0bdc",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0009",
+    "role": "link",
+    "name": "Cart",
+    "href": "http://127.0.0.1:8765/cart"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": "S-f7741d2d65",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0010",
+    "role": "link",
+    "name": "Upload",
+    "href": "http://127.0.0.1:8765/upload"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": "S-5ef8a38d0f",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0011",
+    "role": "link",
+    "name": "Admin",
+    "href": "http://127.0.0.1:8765/admin"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": null,
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0012",
+    "role": "link",
+    "name": "Log out",
+    "href": "http://127.0.0.1:8765/logout"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": false,
+   "unresolved_reason": "skip_link"
+  },
+  {
+   "from_state": "S-e35aef500f",
+   "to_state": "S-80ede1ae72",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0013",
+    "role": "link",
+    "name": "Help",
+    "href": "http://127.0.0.1:8765/help"
+   },
+   "roles": [
+    "admin"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-0f09ddcbca",
+   "to_state": "S-853cc2c96c",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0001",
+    "role": "link",
+    "name": "Buggy Shop",
+    "href": "http://127.0.0.1:8765/products"
+   },
+   "roles": [
+    "guest"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  },
+  {
+   "from_state": "S-0f09ddcbca",
+   "to_state": "S-0a3ac39f39",
+   "action": "navigate",
+   "via": "href",
+   "element": {
+    "ref": "LOC-0002",
+    "role": "link",
+    "name": "Log in",
+    "href": "http://127.0.0.1:8765/login"
+   },
+   "roles": [
+    "guest"
+   ],
+   "resolved_by_template": true,
+   "unresolved_reason": null
+  }
+ ],
+ "skipped": [
+  {
+   "role": "user",
+   "url": "http://127.0.0.1:8765/logout",
+   "reason": "skip_link"
+  },
+  {
+   "role": "admin",
+   "url": "http://127.0.0.1:8765/logout",
+   "reason": "skip_link"
+  }
+ ],
+ "limitations": [
+  "closed shadow roots are not reachable from page scripts"
+ ]
+}

@@ -25,6 +25,7 @@ STEP_ARTIFACTS: Dict[str, List[str]] = {
                   "app_map", "form_model", "api_inventory", "permission_matrix", "baseline"],
     "comprehension": ["business_scenarios", "requirements"],
     "testdata": ["test_data"],
+    "test_design": ["test_cases", "locator_map"],
     "semantic_map": ["scenario_element_map"],
     "script_generation": ["test_plans", "test_suite", "locator_map", "traceability"],
     "ui_execution": ["execution_results", "playwright_report", "traceability"],

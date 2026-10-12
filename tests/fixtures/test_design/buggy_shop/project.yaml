@@ -1,0 +1,156 @@
+# MTA project manifest for the Buggy Shop benchmark app.
+# Rendered by the benchmark runner: http://127.0.0.1:8765 (e.g. http://127.0.0.1:8765) and
+# bench_buggy_shop are substituted, then written to
+# application_assets/projects/bench_buggy_shop/project.yaml alongside inputs/brd_<module>.md
+# (one BRD per module, split from brd.md by tools/benchmark/materialize.py — each module's
+# comprehension then sees only its own requirements).
+project:
+  name: bench_buggy_shop
+  application_name: Buggy Shop
+  browser: chromium
+  headless: true
+  interactive_scan: false
+  discovery_timeout_s: 180
+
+input:
+  brd_dir: application_assets/projects/bench_buggy_shop/inputs
+
+environment: local
+
+safety:
+  allow_destructive: true
+  allow_security_probes: true
+  allowed_hosts:
+    - 127.0.0.1
+    - localhost
+
+contracts:
+  enforce: block
+
+requirements:
+  enabled: true      # Phase 1: requirements.json, AC-linked + tagged tests, traceability.json
+
+discovery:
+  deep: true         # Phase 2: deep capture + crawl + form probes + network + roles + baseline
+  max_pages: 25      # per role
+  max_depth: 4
+  max_minutes: 10
+
+auth:
+  enabled: false     # no single-identity auth; modules log in through their setup steps
+  roles:             # Phase 2 role-aware discovery (read even though auth.enabled is false)
+    user:
+      strategy: setup
+      steps:
+        - goto: http://127.0.0.1:8765/login
+        - fill:
+            selector: "#username"
+            value: alice
+        - fill:
+            selector: "#password"
+            value: alice-pass-1
+        - click: "#login-button"
+        - wait: 500
+    admin:
+      strategy: setup
+      steps:
+        - goto: http://127.0.0.1:8765/login
+        - fill:
+            selector: "#username"
+            value: admin
+        - fill:
+            selector: "#password"
+            value: admin-pass-1
+        - click: "#login-button"
+        - wait: 500
+    guest:
+      anonymous: true
+
+modules:
+  - id: M01
+    name: Login
+    url: http://127.0.0.1:8765/login
+    brd_file: brd_M01.md
+
+  - id: M02
+    name: Products
+    url: http://127.0.0.1:8765/products
+    brd_file: brd_M02.md
+    setup:
+      - goto: http://127.0.0.1:8765/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M03
+    name: Product Form
+    url: http://127.0.0.1:8765/products/new
+    brd_file: brd_M03.md
+    setup:
+      - goto: http://127.0.0.1:8765/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M04
+    name: Cart & Checkout
+    url: http://127.0.0.1:8765/cart
+    brd_file: brd_M04.md
+    setup:
+      - goto: http://127.0.0.1:8765/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M05
+    name: Upload
+    url: http://127.0.0.1:8765/upload
+    brd_file: brd_M05.md
+    setup:
+      - goto: http://127.0.0.1:8765/login
+      - fill:
+          selector: "#username"
+          value: alice
+      - fill:
+          selector: "#password"
+          value: alice-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+  - id: M06
+    name: Admin
+    url: http://127.0.0.1:8765/admin
+    brd_file: brd_M06.md
+    setup:
+      - goto: http://127.0.0.1:8765/login
+      - fill:
+          selector: "#username"
+          value: admin
+      - fill:
+          selector: "#password"
+          value: admin-pass-1
+      - click: "#login-button"
+      - wait: 500
+
+test_generation:
+  max_negative_cases: 1
+  max_boundary_cases: 1
+  max_data_iterations: 1
+
+test_execution:
+  suite: bench_buggy_shop

@@ -229,6 +229,20 @@ def ac_extraction(app: BenchmarkApp, project_dir: str) -> Optional[Dict[str, Any
 
 # ── heal probe ────────────────────────────────────────────────────────────────
 
+def test_design_metrics(project_dir: str, bugs: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Phase 3: coverage, budget and bug targeting from test_creation/test_cases.json (None without a profile)."""
+    from contracts.artifacts import load_payload
+    from tools.benchmark.design_metrics import design_summary, implemented_case_ids
+    from tools.test_design.store import load_doc
+
+    doc = load_doc(project_dir)
+    if not doc:
+        return None
+    plans_path = os.path.join(project_dir, "test_creation", "test_plans.json")
+    plans = load_payload("test_plans", plans_path, {}) if os.path.exists(plans_path) else {}
+    return design_summary(doc, bugs, implemented=implemented_case_ids(plans))
+
+
 def _tree_hashes(project_dir: str) -> Dict[str, str]:
     out = {}
     roots = [os.path.join(project_dir, "test_creation", "test_scripts")]
@@ -365,6 +379,7 @@ def main(argv=None) -> int:
             _log(f"bug-free run {i + 1}: {sum(s == 'passed' for s in statuses.values())}/{len(statuses)} passed")
     record["tests"] = test_inventory(project_dir, last_results)
     record["ac_extraction"] = ac_extraction(app, project_dir)
+    record["test_design"] = test_design_metrics(project_dir, bugs_truth)
 
     if not record["tests"]:
         notes.append("No tests were executed — detection cannot be measured.")

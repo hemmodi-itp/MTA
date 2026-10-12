@@ -319,9 +319,13 @@ def render_test_details(test: dict, scenario_id: str = "") -> str:
         tags.append(_TAG_BY_TYPE[test["type"]])
     tags += [f"@{r}" for r in test.get("req_ids") or []]
     tags += [f"@{a}" for a in test.get("ac_ids") or []]
+    if test.get("technique"):                       # Phase 3 design cases: --grep @bva / @role_matrix …
+        tags.append(f"@{test['technique']}")
     tags = list(dict.fromkeys(tags))
     annotations = [{"type": "ac", "description": a} for a in test.get("ac_ids") or []]
     annotations.append({"type": "tc", "description": test["tc_id"]})
+    if test.get("case_id"):
+        annotations.append({"type": "case", "description": test["case_id"]})
     if scenario_id:
         annotations.append({"type": "scenario", "description": scenario_id})
     if test.get("ac_link") in ("inherited", "similarity"):

@@ -1,0 +1,1993 @@
+{
+  "schema_version": 2,
+  "artifact": "business_scenarios",
+  "project": "bench_buggy_shop",
+  "total_scenarios": 47,
+  "scenarios": [
+    {
+      "scenario_id": "M01_BS_001",
+      "title": "Successful User Authentication and Redirection to Products Page",
+      "business_objective": "Allow valid registered users to securely authenticate and access the shop product catalogue.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is registered with valid credentials (e.g., username 'alice' and password 'alice-pass-1')",
+        "User is on the login page"
+      ],
+      "steps": [
+        "Navigate to the shop login page",
+        "Enter valid username and password into the respective form fields",
+        "Submit the login form"
+      ],
+      "expected_result": "User is successfully authenticated and landed on the Products page.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "7875275c7749fc9533cadd24ba1a7532d04fef385e440c9d0011587e4bf78ff7",
+      "ac_ids": [
+        "AC-01.1"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M01_BS_002",
+      "title": "Authentication Failure due to Incorrect Password",
+      "business_objective": "Prevent unauthorized user access when an incorrect password is provided without disclosing credential specifics.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User account exists in the system",
+        "User is on the login page"
+      ],
+      "steps": [
+        "Navigate to the shop login page",
+        "Enter a valid username and an incorrect password",
+        "Submit the login form"
+      ],
+      "expected_result": "Authentication fails, user remains on the login page, and the exact message 'Invalid username or password' is displayed without revealing that the password was wrong.",
+      "business_rules": [
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "979197a866fbef7788d4b04acedce751df7da34b77f131d833c50ed2f2a1ac51",
+      "ac_ids": [
+        "AC-01.2.1"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M01_BS_003",
+      "title": "Authentication Failure due to Unknown Username",
+      "business_objective": "Prevent account enumeration attacks by providing generic error messages for non-existent user accounts.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is on the login page"
+      ],
+      "steps": [
+        "Navigate to the shop login page",
+        "Enter an unregistered/unknown username and any password",
+        "Submit the login form"
+      ],
+      "expected_result": "Authentication fails, user remains on the login page, and the exact message 'Invalid username or password' is displayed without revealing that the username does not exist.",
+      "business_rules": [
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "e3fb08c1d0c942300e4c6e876baf8475545b07d1d7ca2bb9149f870d499ef861",
+      "ac_ids": [
+        "AC-01.2.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M01_BS_004",
+      "title": "Server-Side Session Invalidation Upon Logout",
+      "business_objective": "Ensure user sessions are invalidated server-side on logout so that old session credentials cannot be reused.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is currently signed in with an active server session"
+      ],
+      "steps": [
+        "Initiate logout from the application",
+        "Attempt to access a protected page (e.g., Products page) using the previous session cookie"
+      ],
+      "expected_result": "The server rejects the request with the invalidated session cookie and redirects the request to the login page.",
+      "business_rules": [
+        "BR-001",
+        "BR-006"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "6a84d1867c26cb73c5201bafd9a73a2729c584a5b5cad69de65b3ca62952c572",
+      "ac_ids": [
+        "AC-01.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M01_BS_005",
+      "title": "Access Restriction for Unauthenticated Navigation",
+      "business_objective": "Enforce authentication rules by permitting unauthenticated access only to login, help, and health check endpoints while redirecting protected pages.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is not signed in"
+      ],
+      "steps": [
+        "Access the login page, help page, and health check endpoint successfully",
+        "Attempt to access any protected shop URL (e.g., Products page, Cart, Admin page) directly"
+      ],
+      "expected_result": "Unauthenticated access to public endpoints succeeds, but attempts to visit any protected page immediately redirect the user to the login page.",
+      "business_rules": [
+        "BR-001",
+        "BR-006"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "4899a7ad678d2b35e1ba1db1094ce37ae0347126870f97f8c547539d05d8358f",
+      "ac_ids": [
+        "AC-01.5"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M01_BS_006",
+      "title": "Accessibility Verification for Login Controls and Alerts",
+      "business_objective": "Provide an accessible login experience with programmatically linked visible labels and screen-reader announced error messages.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Login page is rendered in the user browser"
+      ],
+      "steps": [
+        "Inspect Username and Password input fields on the login page",
+        "Trigger a failed login attempt to generate an error message"
+      ],
+      "expected_result": "Visible labels exist for both Username and Password inputs with programmatic association (accessible name), and the error message is announced using role='alert'.",
+      "business_rules": [
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "5c1e2cd10afa13581eac45adb3daf00244771b19b913551b46e6066ccd1758bc",
+      "ac_ids": [
+        "AC-01.4"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M01_BS_007",
+      "title": "API Session Authentication and Authorization",
+      "business_objective": "Ensure API endpoints require active user authentication and return HTTP 401 when unauthorized, except for health check.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "JSON API server is active under /api/"
+      ],
+      "steps": [
+        "Send an unauthenticated request to GET /api/health",
+        "Send unauthenticated requests to protected endpoints such as GET /api/products, POST /api/products, or GET /api/orders/{id}",
+        "Authenticate and re-send request to GET /api/products with a valid session"
+      ],
+      "expected_result": "GET /api/health succeeds without authentication; unauthenticated requests to protected API endpoints return HTTP 401 Unauthorized; authenticated API requests succeed.",
+      "business_rules": [
+        "BR-001",
+        "BR-005",
+        "BR-006"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M01.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M01",
+      "module_name": "Login",
+      "content_hash": "ba3943ed894b23ea2045aecb6fdd9678acf996a968c41e0babdec10bd9b8b76f",
+      "ac_ids": [
+        "AC-01.6"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M02_BS_001",
+      "title": "Product Catalogue Browsing, Pagination, and Footer Help Navigation",
+      "business_objective": "Verify that customers can browse paginated products (5 per page) with Previous/Next controls and access the Help page from the footer without signing in.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "The catalogue contains more than 5 products.",
+        "The user is navigating the store."
+      ],
+      "steps": [
+        "Navigate to the Products page (/products).",
+        "Verify that exactly 5 products are displayed along with the 'Page 1 of M' indicator and a Next link.",
+        "Click the Next link to navigate to Page 2.",
+        "Scroll to the page footer and click the 'Help' link."
+      ],
+      "expected_result": "Page 1 displays 5 products and 'Page 1 of M'. Clicking Next loads Page 2 with 5 products and 'Page 2 of M' with Previous enabled. Clicking 'Help' opens /help successfully without requiring authentication.",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "4fb15cf6f3e729c855f020393bb3d71220f0b0b13ab2b14c8774ef021079d457",
+      "ac_ids": [
+        "AC-02.1.1",
+        "AC-02.1.2",
+        "AC-02.1.3",
+        "AC-08.1.1",
+        "AC-08.1.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M02_BS_002",
+      "title": "Case-Insensitive Product Search and Special Character Handling",
+      "business_objective": "Ensure product search handles mixed-case terms and special SQL/symbol characters without system errors.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "The product catalogue contains items like 'wireless Mouse'.",
+        "The user is on the Products page search section."
+      ],
+      "steps": [
+        "Enter 'mouse' into the product search bar and execute the search.",
+        "Verify that 'wireless Mouse' appears in the search results.",
+        "Enter search terms containing special characters (e.g., '%', '_', single quotes, or symbols) and submit the search."
+      ],
+      "expected_result": "Searching 'mouse' returns 'wireless Mouse' (case-insensitive match). Searching with special characters processes without application error and displays matching products or 'No products found'.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "8d83dde5b7e8ceb8984930e0a70a5a4d35df3dbd64793cecb4e878f5f0009ef1",
+      "ac_ids": [
+        "AC-02.2",
+        "AC-02.4.1",
+        "AC-02.4.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M02_BS_003",
+      "title": "Stable Price Sorting Preserving Catalogue Order",
+      "business_objective": "Confirm price sorting maintains consistent catalogue ordering for products with identical prices.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Multiple products share identical price values in the catalogue.",
+        "The user is viewing the Products page."
+      ],
+      "steps": [
+        "Select 'Price: Low to High' from the sort dropdown.",
+        "Observe the ordering of products that have identical prices.",
+        "Select 'Price: High to Low' from the sort dropdown.",
+        "Observe the secondary ordering of products sharing equal prices."
+      ],
+      "expected_result": "Products are sorted by price, and products with identical prices strictly preserve their product ID / catalogue name sequence in both low-to-high and high-to-low sorts.",
+      "business_rules": [
+        "BR-005"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "f48f1a663bf28e3128829b6f94df27933042513d322f5291f3e55ffd6671a23b",
+      "ac_ids": [
+        "AC-02.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M02_BS_004",
+      "title": "Filter, Search, and Sort Retention Across Pagination",
+      "business_objective": "Ensure active filter, search, and sort query parameters persist when navigating between pagination pages.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "A category contains more than 5 products.",
+        "The user is on the Products page."
+      ],
+      "steps": [
+        "Select a specific product category filter and enter a search keyword.",
+        "Apply a price sorting option.",
+        "Click the Next pagination link to navigate to Page 2."
+      ],
+      "expected_result": "Page 2 loads maintaining active category, search, and sort parameters, presenting only items meeting the filtered criteria.",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "3ba1d4e8b89459d30a7e660d45a890f6b7752c7168225e8bea6af9c9a2ccd9d4",
+      "ac_ids": [
+        "AC-02.5"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M02_BS_005",
+      "title": "API Search, Filtering, and Pagination Mirroring",
+      "business_objective": "Validate that GET /api/products mirrors UI parameters, rules, and performance expectations.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "An active authenticated user session exists.",
+        "Products exist in the database."
+      ],
+      "steps": [
+        "Send a GET request to `/api/products` passing `q`, `category`, `sort`, and `page=2` query parameters.",
+        "Measure endpoint response latency."
+      ],
+      "expected_result": "The endpoint returns HTTP 200 OK within 2 seconds with a JSON payload matching the UI filtering, sorting, and 5-item pagination results.",
+      "business_rules": [
+        "BR-002",
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "b00e230819437845cb80df849dc5c282809aa80e2ed005446c18308a0d24513d",
+      "ac_ids": [
+        "AC-02.6.2",
+        "AC-02.7"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M02_BS_006",
+      "title": "API Authentication Enforcement and Health Endpoint Exception",
+      "business_objective": "Ensure unauthenticated requests to API endpoints return HTTP 401, while /api/health remains publicly accessible.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "The HTTP client has no active user session."
+      ],
+      "steps": [
+        "Send an unauthenticated GET request to `/api/health`.",
+        "Send an unauthenticated GET request to `/api/products`.",
+        "Send an unauthenticated GET request to `/api/orders/101`."
+      ],
+      "expected_result": "GET /api/health responds with HTTP 200 OK. Requests to /api/products and /api/orders/101 are rejected with HTTP 401 Unauthorized.",
+      "business_rules": [
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "d8c671091785e16b4aa39ca0cb1381012312e046b17db09b7c2b38760ce475a8",
+      "ac_ids": [
+        "AC-01.6"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M02_BS_007",
+      "title": "Product Creation API Validation and Authorization",
+      "business_objective": "Verify POST /api/products payload validation and HTTP 422 error response handling.",
+      "actor": "Administrator (`admin`)",
+      "preconditions": [
+        "An active authenticated session is present."
+      ],
+      "steps": [
+        "Send a POST request to `/api/products` with an invalid JSON payload missing mandatory fields such as `name` or `price`.",
+        "Verify response status and error body.",
+        "Send a POST request to `/api/products` containing valid JSON payload with `{name, price, category, description}`."
+      ],
+      "expected_result": "The invalid payload request yields HTTP 422 Unprocessable Entity with error details. The complete payload request successfully creates the product.",
+      "business_rules": [
+        "BR-002",
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "117b9eef8cd4bccd4c2a707e34e8d786e82119cec51a86d2b99cbc2791dc6565",
+      "ac_ids": [
+        "AC-03.8",
+        "AC-03.1.1",
+        "AC-03.2.1",
+        "AC-03.3.3",
+        "AC-03.4.2"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M02_BS_008",
+      "title": "Role-Based Order Isolation and Admin Access Rights",
+      "business_objective": "Confirm customers can access only their own orders while administrators can access all orders and the Admin page.",
+      "actor": "Administrator (`admin`)",
+      "preconditions": [
+        "Customer A owns Order 101.",
+        "Customer B owns Order 102.",
+        "An Administrator user account exists."
+      ],
+      "steps": [
+        "Sign in as Customer A and attempt to access Order 101.",
+        "Attempt to access Order 102 while signed in as Customer A.",
+        "Sign in as Administrator and access Order 101, Order 102, and the Admin page."
+      ],
+      "expected_result": "Customer A views Order 101 successfully but receives an authorization error for Order 102. Administrator successfully views Order 101, Order 102, and accesses the Admin page.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "1f2c2557a27a2e2fc3c4bfaf69e2b45f3491e44213974b2b070a28c010b5c020",
+      "ac_ids": [
+        "AC-06.2.1",
+        "AC-06.2.3"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M02_BS_009",
+      "title": "Product List UI Page Load SLA Performance",
+      "business_objective": "Verify that the UI product list page renders completely within the required 2-second time frame.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "The application product catalogue is populated."
+      ],
+      "steps": [
+        "Navigate to the Products page (/products).",
+        "Measure total rendering load time."
+      ],
+      "expected_result": "The Products UI page loads completely and displays product content within 2 seconds.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "brd_M02.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M02",
+      "module_name": "Products",
+      "content_hash": "d7049d973400f1f231b05a846000f898e7a7654ef6024120b8ade7c91cef93e9",
+      "ac_ids": [
+        "AC-02.6.1"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_001",
+      "title": "Create Product Successfully with Valid Information",
+      "business_objective": "Ensure signed-in users can create a new product with all mandatory and optional fields within permitted limits.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in",
+        "User is on the Add Product page"
+      ],
+      "steps": [
+        "Navigate to the Add Product form.",
+        "Enter a product name containing exactly 50 characters into the Name field.",
+        "Enter a positive price with up to two decimal places (e.g., '29.99') into the Price field.",
+        "Select 'Electronics' from the Category dropdown options.",
+        "Enter an optional product description within 500 characters into the Description field.",
+        "Click the Save button."
+      ],
+      "expected_result": "The product is saved successfully, appears in the product catalogue, and the user is notified of successful creation.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "e2e2e5eafaa803247f2f5e5591017b03801788919b483b68048b3c00b992e744",
+      "ac_ids": [
+        "AC-03.2.1",
+        "AC-03.2.2",
+        "AC-03.3.1",
+        "AC-03.4.1",
+        "AC-03.4.2",
+        "AC-03.4.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_002",
+      "title": "Validate Product Name Mandatory and Length Constraints",
+      "business_objective": "Verify that empty product names or names exceeding 50 characters are rejected with appropriate error messages.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in and on the Add/Edit Product form"
+      ],
+      "steps": [
+        "Leave the Product Name blank while entering valid Price ('10.00') and Category ('Books').",
+        "Click the Save button and observe validation response.",
+        "Enter a Product Name with 51 characters.",
+        "Click the Save button."
+      ],
+      "expected_result": "The blank submission is rejected with 'Name is required'. The 51-character name submission is rejected with 'Name must be at most 50 characters'.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "923f26be5e25a6b848436e05ffc108db627a498ed723f680d93bf549f3a58516",
+      "ac_ids": [
+        "AC-03.1.1",
+        "AC-03.1.2",
+        "AC-03.2.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_003",
+      "title": "Validate Product Price Non-Negativity",
+      "business_objective": "Ensure that entering a negative price for a product is rejected on both client and server.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in on the Add Product form"
+      ],
+      "steps": [
+        "Enter 'Valid Product Name' into Name field.",
+        "Enter a negative price value '-5.00' into Price field.",
+        "Select 'Home' as Category.",
+        "Click the Save button."
+      ],
+      "expected_result": "The form submission is rejected with error message 'Price must be zero or more' displayed in an accessibility alert.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "e2a1028709f9d7a35d05ddc3116f329a00bd49a1640ae976a80f045a0a00cf7d",
+      "ac_ids": [
+        "AC-03.3.1",
+        "AC-03.3.2",
+        "AC-03.3.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_004",
+      "title": "Validate Category Selection and Description Length Limit",
+      "business_objective": "Ensure category is chosen from allowed values and description length does not exceed 500 characters.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in on the Add Product page"
+      ],
+      "steps": [
+        "Enter valid Product Name and Price.",
+        "Leave Category unselected and attempt to save.",
+        "Verify error message 'Please choose a category' is displayed.",
+        "Select a valid category ('Books').",
+        "Enter a Description containing 501 characters and attempt to save."
+      ],
+      "expected_result": "System displays error 'Description must be at most 500 characters' and rejects saving until description is within 500 characters.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "619e0d82e2ddb9a2285e612f67b2e79c3e7597613b8e8f56be5cea101512955f",
+      "ac_ids": [
+        "AC-03.4.1",
+        "AC-03.4.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_005",
+      "title": "HTML and Script Literal Output Encoding in Product Detail View",
+      "business_objective": "Verify that user-supplied HTML or script markup in product description is output-encoded and displayed literally without execution.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in and creates a product with description '<script>alert(\"xss\")</script><b>Bold Text</b>'"
+      ],
+      "steps": [
+        "Submit a product with HTML/Script tags in the description.",
+        "Navigate to the created product's detail page.",
+        "Inspect the rendered description text."
+      ],
+      "expected_result": "The HTML markup '<script>alert(\"xss\")</script><b>Bold Text</b>' is displayed literally as plain text on screen; no alert dialog triggers and text is not formatted in bold.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "705fe34143b7a0e8c60d3796996e45953090f744b6645916b57033b7e1119e72",
+      "ac_ids": [
+        "AC-03.5.1",
+        "AC-03.5.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_006",
+      "title": "Prevent Duplicate Product Submission and Double Click",
+      "business_objective": "Prevent accidental creation of duplicate products caused by double-clicking or re-submitting identical details within 5 seconds.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in and filling out the Add Product form"
+      ],
+      "steps": [
+        "Enter product name 'Smart Lamp', price '45.00', category 'Home'.",
+        "Click the Save button twice rapidly (or submit the identical name and price twice within 5 seconds).",
+        "Observe the Save button behavior during submission."
+      ],
+      "expected_result": "The Save button becomes disabled while saving, and exactly one product record is created in the product list.",
+      "business_rules": [
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "8b6229593230f11a5d5fa557969c8be90424c3f099363f35781d0ce8144cac3d",
+      "ac_ids": [
+        "AC-03.6.1",
+        "AC-03.6.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_007",
+      "title": "Permanent Product Deletion and Catalogue Removal",
+      "business_objective": "Ensure deleting a product removes it permanently from list/search and renders detail page unavailable.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "A product exists in the catalogue",
+        "User is signed in and viewing product options"
+      ],
+      "steps": [
+        "Select the Delete action for an existing product.",
+        "Observe confirmation message on screen.",
+        "Search for the deleted product using catalogue search and browse list.",
+        "Attempt to navigate directly to the product detail URL of the deleted product."
+      ],
+      "expected_result": "The screen confirms 'Product deleted', the product is permanently absent from search/list results, and navigating to its detail page displays 'Product not found' even after browser reload.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "33e2a3c9d93c86e05e1406eb5313faec5755a5401dda5a2e78a27376d322fc79",
+      "ac_ids": [
+        "AC-03.7.1",
+        "AC-03.7.2",
+        "AC-03.7.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_008",
+      "title": "JSON API Product Creation and Validation via POST /api/products",
+      "business_objective": "Verify that POST /api/products handles JSON product creation and returns HTTP 422 with validation errors when rules are violated.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User has an authenticated session cookie or header"
+      ],
+      "steps": [
+        "Send a POST request to '/api/products' with JSON payload containing negative price: '{\"name\": \"Headphones\", \"price\": -15.00, \"category\": \"Electronics\"}'.",
+        "Observe response status and error body.",
+        "Send a POST request to '/api/products' with valid JSON payload: '{\"name\": \"Headphones\", \"price\": 15.00, \"category\": \"Electronics\", \"description\": \"Wired headphones\"}'."
+      ],
+      "expected_result": "The negative price request returns HTTP 422 with error message 'Price must be zero or more'. The valid request returns HTTP 201/200 and creates the product.",
+      "business_rules": [
+        "BR-001",
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-011",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "8e815e9edcfdfa262393e50110c33f7faa2ed1a97644b555f5e3e0f0acb937cc",
+      "ac_ids": [
+        "AC-03.3.3",
+        "AC-03.8"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_009",
+      "title": "API Session Authentication and Health Check Endpoint Access",
+      "business_objective": "Ensure unauthenticated API calls return HTTP 401 Unauthorized for secure endpoints while public health check is accessible.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is NOT signed in (no active session)"
+      ],
+      "steps": [
+        "Send GET request to '/api/health'.",
+        "Send GET request to '/api/products'.",
+        "Send POST request to '/api/products' with valid JSON."
+      ],
+      "expected_result": "'/api/health' responds with HTTP 200 OK. Both GET and POST to '/api/products' return HTTP 401 Unauthorized.",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-011",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "f1f99212ba328cd39f623bea48162926a3f093f246481c6cc6a19e5649507d9e",
+      "ac_ids": [
+        "AC-01.6"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M03_BS_010",
+      "title": "Role-Based Order Authorization for Customers and Administrators",
+      "business_objective": "Ensure customers can only access their own orders while administrators can view all orders.",
+      "actor": "Administrator (`admin`)",
+      "preconditions": [
+        "Orders exist for Customer A and Customer B in the system"
+      ],
+      "steps": [
+        "Sign in as Customer A and attempt to access Customer B's order via GET '/api/orders/{customer_b_order_id}'.",
+        "Sign in as Administrator (`admin`) and attempt to access Customer B's order via GET '/api/orders/{customer_b_order_id}'."
+      ],
+      "expected_result": "Customer A receives an authorization error or HTTP 403/401 when requesting Customer B's order. Administrator successfully retrieves Customer B's order details.",
+      "business_rules": [
+        "BR-003",
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-011",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "427854444446051ae605e1782f693a73e75b6c02f193777016a69af76d16001c",
+      "ac_ids": [
+        "AC-06.2.1",
+        "AC-06.2.2",
+        "AC-06.2.3"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M04_BS_001",
+      "title": "Validate Product Quantity on Cart Creation and Update",
+      "business_objective": "Ensure items added to or updated in the shopping cart have a valid integer quantity between 1 and 99.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Customer is signed in and browsing the store product catalog."
+      ],
+      "steps": [
+        "1. Select a product from the shop catalog.",
+        "2. Attempt to add the product with an invalid quantity (e.g., 0, -1, 100, or non-numeric text).",
+        "3. Observe the validation error displayed by the system.",
+        "4. Enter a valid quantity (e.g., 5) and add the product to the cart.",
+        "5. Navigate to the cart page and attempt to update the line item quantity to an invalid value (e.g., 0 or 150)."
+      ],
+      "expected_result": "Invalid quantities are rejected with the message \"Quantity must be between 1 and 99\". Only whole numbers between 1 and 99 are accepted for adding or updating cart items.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M04",
+      "module_name": "Cart & Checkout",
+      "content_hash": "cf3d25c9d5a2cf5a0c33b070e369e29c3bbe94e7eea2e742841c062369525c82",
+      "ac_ids": [
+        "AC-05.1.1",
+        "AC-05.1.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M04_BS_002",
+      "title": "Exact Monetary Calculation and Half-Up Rounding for Cart Totals",
+      "business_objective": "Ensure line totals, subtotals, discounts, and total order amounts are calculated using exact values and rounded half up to two decimal places.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Customer is signed in and has items with fractional pricing in the cart."
+      ],
+      "steps": [
+        "1. Add 1 unit of Gel Pen priced at 1.005 to the cart.",
+        "2. Verify the line total on the cart page.",
+        "3. Update quantity of Gel Pen to 3 units and verify line total.",
+        "4. Add 1 unit of Atlas of Maps priced at 19.95 and apply discount code SAVE10.",
+        "5. Review the updated line items, subtotal, discount, and final calculated total."
+      ],
+      "expected_result": "1 x Gel Pen at 1.005 yields $1.01. 3 x Gel Pen yields $3.02. Atlas of Maps at $19.95 with SAVE10 gives a subtotal discount resulting in $17.96 (17.955 rounded half up to 2 decimal places).",
+      "business_rules": [
+        "BR-002",
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M04",
+      "module_name": "Cart & Checkout",
+      "content_hash": "1a12f18e5ffadc804b68f882f737a8322d41dfe8d45cd7136631facfb34393b7",
+      "ac_ids": [
+        "AC-05.2.1",
+        "AC-05.2.2",
+        "AC-05.2.3",
+        "AC-05.2.4"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M04_BS_003",
+      "title": "Apply and Validate Cart Discount Codes",
+      "business_objective": "Allow customers to apply legitimate discount codes once per cart while preventing duplicate applications and rejecting invalid codes.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Customer is signed in and has at least one item in their shopping cart."
+      ],
+      "steps": [
+        "1. Enter discount code \"UNKNOWN123\" on the cart summary page and apply.",
+        "2. Verify the error message.",
+        "3. Enter discount code \"SAVE10\" and apply.",
+        "4. Verify that 10% discount is applied to the cart total.",
+        "5. Attempt to apply \"SAVE10\" a second time on the same cart."
+      ],
+      "expected_result": "Unknown codes trigger \"Invalid discount code\". Valid code SAVE10 reduces cart total by 10%. Re-applying SAVE10 displays \"Discount already applied\" without modifying the cart total further.",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M04",
+      "module_name": "Cart & Checkout",
+      "content_hash": "01397ac154808ed6e2909526805510ee1683c4f2fd5d8ce2f1a1b5a316258bc0",
+      "ac_ids": [
+        "AC-05.3.1",
+        "AC-05.3.2",
+        "AC-05.3.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M04_BS_004",
+      "title": "Prevent Checkout with Empty Cart",
+      "business_objective": "Ensure customers cannot proceed through checkout or place an order if their shopping cart is empty.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Customer is signed in and has no items in their cart."
+      ],
+      "steps": [
+        "1. Navigate to the cart / checkout page.",
+        "2. Attempt to initiate checkout or place an order.",
+        "3. Check the interface and verify whether an order was created."
+      ],
+      "expected_result": "The checkout page displays \"Your cart is empty\", no order is generated in the database, and checkout is blocked.",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M04",
+      "module_name": "Cart & Checkout",
+      "content_hash": "fa47d66b31bbd3ce391e1c1280bf3d5b443c89003fd58489b5c78e46e97cfc92",
+      "ac_ids": [
+        "AC-05.4.1",
+        "AC-05.4.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M04_BS_005",
+      "title": "Successful Order Placement and Cart Reset",
+      "business_objective": "Process a complete order submission from a non-empty cart, display order details on confirmation page, and empty the cart.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Customer is signed in and has items in their shopping cart."
+      ],
+      "steps": [
+        "1. Proceed to checkout from the non-empty cart.",
+        "2. Submit order placement.",
+        "3. Observe redirection to the order confirmation page.",
+        "4. Verify the confirmation page displays \"Order #<id>\", line items, total, and message \"Thank you! Your order #<id> has been placed.\".",
+        "5. Navigate back to the cart."
+      ],
+      "expected_result": "Order is created successfully, confirmation page displays exact line items and total along with the required message, and the active cart is emptied.",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M04",
+      "module_name": "Cart & Checkout",
+      "content_hash": "9c7d697d9c049a96b2789815886f385c1fb0572aade8e6bc8e56041503b35c95",
+      "ac_ids": [
+        "AC-06.1.1",
+        "AC-06.1.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M04_BS_006",
+      "title": "Order Access Control and Authorization Enforcement",
+      "business_objective": "Restrict order access so customers can only view their own orders while administrators can view all orders.",
+      "actor": "Customer (`user`), Administrator (`admin`)",
+      "preconditions": [
+        "Customer A and Customer B have existing orders placed in the store.",
+        "An Administrator account exists."
+      ],
+      "steps": [
+        "1. Sign in as Customer A and access Customer A's order page `/orders/<order_A_id>`.",
+        "2. Attempt to view Customer B's order page `/orders/<order_B_id>` or via GET `/api/orders/<order_B_id>`.",
+        "3. Sign out and sign in as Administrator (`admin`).",
+        "4. Access `/orders/<order_A_id>` and `/orders/<order_B_id>`."
+      ],
+      "expected_result": "Customer A successfully views their own order. Accessing Customer B's order returns HTTP 403 status with \"Access denied\". Administrator can successfully access orders for both Customer A and Customer B.",
+      "business_rules": [
+        "BR-005"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M04",
+      "module_name": "Cart & Checkout",
+      "content_hash": "5089b48382e2de387f0ea5d64f2f9406d5b29df3a93d3ad35093628bd9b789eb",
+      "ac_ids": [
+        "AC-06.2.1",
+        "AC-06.2.2",
+        "AC-06.2.3"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M04_BS_007",
+      "title": "JSON API Authentication Enforcement",
+      "business_objective": "Ensure all API endpoints except health check require active user authentication.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "The system API service is running.",
+        "No active user session is present."
+      ],
+      "steps": [
+        "1. Send an unauthenticated HTTP GET request to `/api/health`.",
+        "2. Send an unauthenticated HTTP GET request to `/api/products`.",
+        "3. Send an unauthenticated HTTP POST request to `/api/products`.",
+        "4. Send an unauthenticated HTTP GET request to `/api/orders/1`."
+      ],
+      "expected_result": "GET `/api/health` returns HTTP 200 OK without authentication. All other requests (`/api/products`, `/api/orders/{id}`) return HTTP 401 Unauthorized.",
+      "business_rules": [
+        "BR-006"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-009",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M04.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-010",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M04",
+      "module_name": "Cart & Checkout",
+      "content_hash": "c73b32e8799f270cade448c66821b2c95adcbd820c7c3ff638145cc87351f9bb",
+      "ac_ids": [
+        "AC-01.6"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M05_BS_001",
+      "title": "Upload valid CSV or PNG file within size limit",
+      "business_objective": "Allow users to successfully upload files in permitted formats (CSV or PNG) that do not exceed the 1 MB size limit.",
+      "actor": "Customer (user)",
+      "preconditions": [
+        "User is authenticated and navigated to the file upload feature."
+      ],
+      "steps": [
+        "Select a CSV or PNG file with a file size equal to or less than 1 MB.",
+        "Submit the file upload form."
+      ],
+      "expected_result": "The file uploads successfully and the application displays the confirmation message 'Uploaded <file name>'.",
+      "business_rules": [
+        "BR-001",
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M05",
+      "module_name": "Upload",
+      "content_hash": "b3b7ab7ec7b81471b67da5ff0ac841cfcec4c97f32626e35a08b854bd6e800b5",
+      "ac_ids": [
+        "AC-04.1"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M05_BS_002",
+      "title": "Reject file upload with unsupported file format",
+      "business_objective": "Ensure file security and integrity by rejecting files that are not in CSV or PNG format.",
+      "actor": "Customer (user)",
+      "preconditions": [
+        "User is authenticated and navigated to the file upload feature."
+      ],
+      "steps": [
+        "Select a file with an unsupported extension (e.g., .exe, .txt, .pdf).",
+        "Submit the file upload form."
+      ],
+      "expected_result": "The server rejects the file upload and displays the error message 'Only CSV or PNG files are allowed'.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M05",
+      "module_name": "Upload",
+      "content_hash": "0af03df52e2601eb5e066fecc1abeada513a090be6b7ee2a8bec9bd384ef6d0e",
+      "ac_ids": [
+        "AC-04.2.1"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M05_BS_003",
+      "title": "Reject file upload exceeding maximum size limit",
+      "business_objective": "Prevent system resource exhaustion by rejecting file uploads larger than 1 MB.",
+      "actor": "Customer (user)",
+      "preconditions": [
+        "User is authenticated and navigated to the file upload feature."
+      ],
+      "steps": [
+        "Select a valid CSV or PNG file that exceeds 1 MB in size.",
+        "Submit the file upload form."
+      ],
+      "expected_result": "The server rejects the file upload and displays the error message 'File must be 1 MB or smaller'.",
+      "business_rules": [
+        "BR-002"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M05",
+      "module_name": "Upload",
+      "content_hash": "a4a2f8e4b2538dbd847138f7a4ef12d336df7e19d240146ee8e73e88f09d6f1c",
+      "ac_ids": [
+        "AC-04.2.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M05_BS_004",
+      "title": "Enforce order access authorization based on user roles",
+      "business_objective": "Protect customer order privacy by restricting customers to viewing only their own orders while allowing administrators full visibility.",
+      "actor": "Customer (user)",
+      "preconditions": [
+        "Customer is signed in to the application.",
+        "Orders exist in the system belonging to both the logged-in customer and other customers."
+      ],
+      "steps": [
+        "Request order details for an order placed by the logged-in customer.",
+        "Attempt to request order details for an order placed by a different customer via the UI or GET /api/orders/{id} endpoint."
+      ],
+      "expected_result": "The customer successfully retrieves details for their own order, but access is denied when requesting another customer's order.",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M05",
+      "module_name": "Upload",
+      "content_hash": "78975e8084e3db89e89a903e3e5bf5a474157d9b8d94ffa31659586c1d74d747",
+      "ac_ids": [
+        "AC-06.2.1",
+        "AC-06.2.2",
+        "AC-06.1.2",
+        "AC-06.2.3"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M05_BS_005",
+      "title": "Require authentication for API mirror endpoints except health check",
+      "business_objective": "Ensure all API endpoints are secured behind session authentication except for public health monitoring.",
+      "actor": "Customer (user)",
+      "preconditions": [
+        "User is not authenticated (unauthenticated HTTP client session)."
+      ],
+      "steps": [
+        "Send an HTTP GET request to /api/health.",
+        "Send an HTTP GET request to /api/products.",
+        "Send an HTTP GET request to /api/orders/123."
+      ],
+      "expected_result": "The /api/health request responds successfully with system status, whereas requests to protected endpoints (/api/products, /api/orders/{id}) return HTTP status 401 Unauthorized.",
+      "business_rules": [
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M05",
+      "module_name": "Upload",
+      "content_hash": "755d239cf0d33559bb0fe84124de6b9c7936ae3d12a0d888ffd525f6845d6f47",
+      "ac_ids": [
+        "AC-01.6"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M05_BS_006",
+      "title": "Invalidate user session upon logout",
+      "business_objective": "Ensure complete session destruction on logout to prevent unauthorized access through reused session identifiers.",
+      "actor": "Customer (user)",
+      "preconditions": [
+        "User is signed in with an active session."
+      ],
+      "steps": [
+        "Perform an action requiring authentication.",
+        "Click the logout control to end the session.",
+        "Attempt to perform a subsequent authenticated request or access a protected route using the terminated session."
+      ],
+      "expected_result": "The session is invalidated upon logout and subsequent access attempts are rejected, requiring the user to re-authenticate.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "brd_M05.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M05",
+      "module_name": "Upload",
+      "content_hash": "7d5f616895641c03b931261eb4fc550fd25bb50572dedb8eb5346d1c3bafc1fd",
+      "ac_ids": [
+        "AC-03.1.1"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M06_BS_001",
+      "title": "Administrator accesses the Admin page",
+      "business_objective": "Allow administrators to access user and role management pages.",
+      "actor": "Administrator (`admin`)",
+      "preconditions": [
+        "User is logged in with an Administrator account."
+      ],
+      "steps": [
+        "Navigate to `/admin` endpoint."
+      ],
+      "expected_result": "The Admin page displays successfully, listing system users and their assigned roles.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "bfe08dea7abbcaa0cb84c4e629085da82b9be1497c0e9bcf333422d18d2d7fac",
+      "ac_ids": [
+        "AC-07.1.1"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M06_BS_002",
+      "title": "Non-administrator access attempt to Admin page is denied",
+      "business_objective": "Prevent non-administrator users from accessing administrative management pages.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in with a standard non-administrator Customer account."
+      ],
+      "steps": [
+        "Attempt to navigate to the `/admin` URL."
+      ],
+      "expected_result": "Access is denied, returning HTTP status code 403 with exact text message \"Access denied\".",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "1e961ea6d5f04675b4d82b106181e735d240fc8ee8102d22cfa83fec79d42de9",
+      "ac_ids": [
+        "AC-07.1.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M06_BS_003",
+      "title": "Unauthenticated public health check API request",
+      "business_objective": "Provide a public API health monitoring endpoint that does not require user authentication.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "System API services are running."
+      ],
+      "steps": [
+        "Send an unauthenticated GET request to `/api/health`."
+      ],
+      "expected_result": "System responds with HTTP status 200 and JSON body {\"status\": \"ok\"}.",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-006",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "b915d167f4f49c01d43efc18719eb55b25deebd5ff9ac202256cbfceb32db7d3",
+      "ac_ids": [
+        "AC-01.6"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M06_BS_004",
+      "title": "Search, filter, and paginate products via API",
+      "business_objective": "Expose product querying capabilities through a JSON API mirroring UI functionality.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User has an active signed-in session."
+      ],
+      "steps": [
+        "Send a GET request to `/api/products` with query parameters such as `q`, `category`, `sort`, and `page`."
+      ],
+      "expected_result": "System returns HTTP 200 with a JSON list of products filtered, sorted, and paginated according to the supplied request parameters.",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-007",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "8ea485398c9d695523b4fa460848808d3e275d0e4497f961136e5e073768881a",
+      "ac_ids": [
+        "AC-02.1.1",
+        "AC-02.7",
+        "AC-02.1.3",
+        "AC-02.5",
+        "AC-02.6.1"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M06_BS_005",
+      "title": "Validate product creation via JSON API",
+      "business_objective": "Ensure product creation payloads via API undergo the same validation rules as the UI form.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User has an active signed-in session."
+      ],
+      "steps": [
+        "Send a POST request to `/api/products` with invalid JSON field data (e.g., missing required fields or invalid price)."
+      ],
+      "expected_result": "System rejects the request with HTTP status 422 Unprocessable Entity and returns JSON error messages describing validation failures.",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-008",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "333f2eebac318143a36efbd40a328fef1f31aaccb45fc5dc04aa7abdee6cc5bd",
+      "ac_ids": [
+        "AC-03.8",
+        "AC-03.1.1",
+        "AC-03.3.2",
+        "AC-03.3.3"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M06_BS_006",
+      "title": "Restrict customer order details access via API based on ownership",
+      "business_objective": "Ensure users can only view their own order details via the API, while preventing unauthorized order retrieval.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "Customer A is signed in.",
+        "An order exists that belongs to Customer B."
+      ],
+      "steps": [
+        "Customer A sends a GET request to `/api/orders/{id}` using Customer B's order ID."
+      ],
+      "expected_result": "System denies the request and prevents access to Customer B's order details in accordance with authorization ownership rules.",
+      "business_rules": [
+        "BR-002",
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "6. JSON API (mirror of the UI)",
+          "requirement_id": "REQ-009",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.95,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "ec40fd8a91ac935233df406962f9f40754f86055e668dee59e0cfc4c7a10c475",
+      "ac_ids": [
+        "AC-06.2.1",
+        "AC-06.2.2"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M06_BS_007",
+      "title": "Invalidate user session upon logout",
+      "business_objective": "Ensure session invalidation on logout prevents reuse of terminated session credentials.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is currently signed in."
+      ],
+      "steps": [
+        "Perform logout action.",
+        "Attempt to send an API request requiring authentication (e.g., GET `/api/products`) using the invalidated session identifier."
+      ],
+      "expected_result": "System rejects the subsequent API request with HTTP 401 Unauthenticated because the session was invalidated.",
+      "business_rules": [
+        "BR-003"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-005",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "17dfc90d7265b011f0722f0c758aa8955c10eda8e66204701c082948d12b29d6",
+      "ac_ids": [
+        "AC-01.6",
+        "AC-03.1.1"
+      ],
+      "ac_link_source": "similarity"
+    },
+    {
+      "scenario_id": "M06_BS_008",
+      "title": "Output encoding for user-submitted content",
+      "business_objective": "Prevent cross-site scripting (XSS) and injection vulnerabilities by encoding all user content rendered in the system.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in and adding/editing a product containing HTML/script tags in the description."
+      ],
+      "steps": [
+        "Submit product details containing potential script tags or unescaped HTML characters via POST `/api/products`.",
+        "Retrieve and view the created product details."
+      ],
+      "expected_result": "User-submitted content is properly output-encoded when rendered, displaying literal characters rather than executing script code.",
+      "business_rules": [],
+      "traceability": [
+        {
+          "source_file": "brd_M06.md",
+          "page_number": null,
+          "section": "5. Non-functional requirements",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 0.9,
+      "module_id": "M06",
+      "module_name": "Admin",
+      "content_hash": "2b4abe2178d8f140e14b666d1b98e240945f91b974775f33732f7333c1cd6459",
+      "ac_ids": [
+        "AC-03.5.2",
+        "AC-03.2.1",
+        "AC-03.4.2",
+        "AC-03.4.3",
+        "AC-03.5.1"
+      ],
+      "ac_link_source": "similarity"
+    }
+  ],
+  "modules": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06"
+  ]
+}
