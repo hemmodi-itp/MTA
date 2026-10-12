@@ -56,6 +56,8 @@ from tools.base_url import (
     resolve_execution_base_url,
     resolve_project_base_url,
 )
+from tools.execution.config import KNOWN_PROJECTS, project_slug, resolve_execution_config
+from tools.execution.shards import ShardSpecError, blob_root, parse_shard, plan_shards, single_shard
 from tools.safety.hosts import url_allowed
 from tools.safety.policy import SafetyPolicy, hosts_env_value
 from tools.shared import get_logger
@@ -143,6 +145,89 @@ class UIExecutionAgent(BaseAgent):
     def execute(self, request: dict, _state: dict) -> Dict[str, Any]:
         project_name = request.get("project_name") or request.get("message", "project")
         safe = _safe_name(project_name)
+        try:
+            self._configure_run(request, safe)
+        except ShardSpecError as exc:
+            self._log(str(exc), level="error")
+            return {"module": "ui_execution", "status": "failed", "error": str(exc)}
+        if request.get("merge_run"):
+            result = self._merge_only(project_name, safe, str(request["merge_run"]))
+        else:
+            result = self._execute(request, _state)
+        return self._finalise(result)
+
+    # ── Phase 4 run configuration (execution: block + request overrides) ──────
+
+    def _configure_run(self, request: dict, safe: str) -> None:
+        """Resolve the project's `execution:` block (tools/execution/config.py) and this request's
+        overrides: browsers, grep / grep_invert, shard ("i/n", CI job), shards (local N-shard run +
+        merge), run_id (shared blob folder of a CI run)."""
+        project_cfg = load_project_yaml(_ASSETS_BASE, safe)
+        cfg = request.get("execution") if isinstance(request.get("execution"), dict) else None
+        cfg = cfg or resolve_execution_config(project_cfg)
+        projects = list(cfg.get("projects") or ["chromium"])
+        browsers = request.get("browsers")
+        if browsers:
+            wanted = [project_slug(b) for b in (browsers if isinstance(browsers, list) else [browsers])]
+            override = [p for p in KNOWN_PROJECTS if p in wanted]
+            if override:
+                projects = override
+        headless = request.get("headless", True)
+        shard = parse_shard(request.get("shard"))
+        shards = int(request.get("shards") or cfg.get("shards") or 1)
+        if not headless and (shard or shards > 1):
+            self._log("Sharding is disabled in headed mode (one visible browser at a time)", level="warning")
+            shard, shards = None, 1
+        if request.get("spec_files"):
+            shard, shards = None, 1     # healing re-runs a few specs; never shard them
+        self._exec_cfg = cfg
+        self._project_cfg = project_cfg
+        self._projects = projects
+        self._grep = request.get("grep") or None
+        self._grep_invert = request.get("grep_invert") or None
+        self._shard = shard
+        self._shards = shards if shard is None else 1
+        self._run_id = str(request.get("run_id")) if request.get("run_id") else None
+        self._role_auth_done = False
+        self._role_auth = None
+
+    def _cfg(self) -> Dict[str, Any]:
+        cfg = getattr(self, "_exec_cfg", None)
+        if cfg is None:
+            cfg = self._exec_cfg = resolve_execution_config({})
+        return cfg
+
+    def _ensure_role_auth(self, safe: str) -> None:
+        """Phase 4.3 — once per execute(): log in every auth.roles role (execution.role_auth: true)
+        so `test.use({ role })` finds .auth/<role>.json. Never fatal."""
+        if getattr(self, "_role_auth_done", True) or not self._cfg().get("role_auth"):
+            return
+        self._role_auth_done = True
+        try:
+            from tools.auth.role_states import ensure_role_states, project_roles
+
+            roles = project_roles(getattr(self, "_project_cfg", None) or load_project_yaml(_ASSETS_BASE, safe))
+            if not roles:
+                self._log("execution.role_auth is on but project.yaml declares no auth.roles", level="warning")
+                return
+            self._role_auth = ensure_role_states(
+                safe, roles, max_age_minutes=self._cfg().get("role_auth_max_age_minutes", 30))
+        except Exception as exc:
+            self._log(f"role auth pre-step failed (non-fatal): {exc}", level="warning")
+            self._role_auth = {"roles": [], "failed": [], "error": str(exc)[:300]}
+
+    def _finalise(self, result: Dict[str, Any]) -> Dict[str, Any]:
+        if not isinstance(result, dict):
+            return result
+        if getattr(self, "_role_auth", None) is not None:
+            result["role_auth"] = self._role_auth
+        if result.get("mode") == "playwright":
+            result.setdefault("projects", list(getattr(self, "_projects", ["chromium"])))
+        return result
+
+    def _execute(self, request: dict, _state: dict) -> Dict[str, Any]:
+        project_name = request.get("project_name") or request.get("message", "project")
+        safe = _safe_name(project_name)
         headless = request.get("headless", True)
         # Orchestrator already resolved the active module's URL (project.yaml
         # modules[].url, narrowed by --module) onto request["url"] — forward it
@@ -159,6 +244,14 @@ class UIExecutionAgent(BaseAgent):
 
         # Suite-based execution: resolve suite → specific spec file paths
         suite_name = request.get("suite")
+        if suite_name and self._cfg().get("suite_mode") == "grep":
+            return self._run_suite_grep(
+                suite_name=suite_name, project_name=project_name, safe=safe,
+                scripts_dir=scripts_dir, reports_dir=reports_dir, headless=headless,
+                auth_config=request.get("auth_config"),
+                auth_storage_state=request.get("auth_storage_state", ""),
+                base_url=base_url,
+            )
         if suite_name:
             from tools.suite_orchestrator import resolve_suite_spec_files
             project_dir = os.path.join(_ASSETS_BASE, safe)
@@ -310,6 +403,50 @@ class UIExecutionAgent(BaseAgent):
 
         return _merge_runs(runs)
 
+    # ── Phase 4.9: suite → one --grep run ───────────────────────────────────────
+
+    def _run_suite_grep(
+        self,
+        suite_name: str,
+        project_name: str,
+        safe: str,
+        scripts_dir: str,
+        reports_dir: str,
+        headless: bool,
+        auth_config: Optional[dict] = None,
+        auth_storage_state: str = "",
+        base_url: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """execution.suite_mode: grep — test_suites/<suite>_suite.json becomes one grep expression over
+        the project's specs (tools/execution/suite_grep.py) instead of one Playwright run per entry."""
+        from tools.execution.suite_grep import build_suite_grep
+
+        try:
+            sg = build_suite_grep(os.path.join(_ASSETS_BASE, safe), suite_name)
+        except FileNotFoundError as exc:
+            self._log(str(exc), level="error")
+            return {"module": "ui_execution", "status": "failed", "error": str(exc)}
+        if sg.empty:
+            msg = f"Suite '{suite_name}' selects nothing — unresolved ids: {sg.unresolved}"
+            self._log(msg, level="warning")
+            return {"module": "ui_execution", "status": "skipped", "reason": msg, "suite_unresolved": sg.unresolved}
+        targets, ts_files = _grep_targets(scripts_dir, sg.modules)
+        if not targets:
+            msg = f"Suite '{suite_name}': no .spec.ts files under '{scripts_dir}' for modules {sg.modules or 'all'}"
+            self._log(msg, level="warning")
+            return {"module": "ui_execution", "status": "skipped", "reason": msg}
+        self._log(f"Suite '{suite_name}' (grep mode) — {len(ts_files)} spec file(s) in scope, grep={sg.grep!r}")
+        out = self._run_playwright(
+            project_name=project_name, safe=safe, scripts_dir=scripts_dir, reports_dir=reports_dir,
+            ts_files=ts_files, headless=headless, auth_config=auth_config,
+            auth_storage_state=auth_storage_state, spec_files=targets, grep_pattern=sg.grep,
+            base_url=base_url,
+        )
+        out["suite_grep"] = sg.grep
+        if sg.unresolved:
+            out["suite_unresolved"] = sg.unresolved
+        return out
+
     # ── TypeScript / Playwright ────────────────────────────────────────────────
 
     def _run_playwright(
@@ -381,13 +518,25 @@ class UIExecutionAgent(BaseAgent):
                 level="warning",
             )
 
-        # Report paths
+        # Phase 4.3 — per-role storage states, once per execute() (execution.role_auth)
+        self._ensure_role_auth(safe)
+        cfg = self._cfg()
+        projects = list(getattr(self, "_projects", None) or cfg.get("projects") or ["chromium"])
+
+        # Report paths. Phase 4: --output (screenshots/traces/videos) gets its own folder — it used to be
+        # the HTML report folder, which the HTML reporter empties when it writes the report.
         ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         json_report_dir = os.path.join(reports_dir, "json")
         html_report_dir = os.path.join(reports_dir, "html", ts)
         os.makedirs(json_report_dir, exist_ok=True)
         os.makedirs(html_report_dir, exist_ok=True)
         json_report_path = os.path.join(json_report_dir, f"{ts}_results.json")
+        test_results_dir = os.path.join(reports_dir, "test-results", ts)
+        junit_path = os.path.join(reports_dir, "junit", f"{ts}.xml") if cfg.get("junit", True) else ""
+        mta_path = os.path.join(reports_dir, "mta", f"{ts}.mta_results.json") if cfg.get("mta_reporter", True) else ""
+        run_id = getattr(self, "_run_id", None) or ts
+        grep = _combine_grep(grep_pattern, getattr(self, "_grep", None))
+        grep_invert = getattr(self, "_grep_invert", None)
 
         # Fix 5: one browser window at a time in headed mode
         workers = "1" if not headless else "2"
@@ -402,13 +551,14 @@ class UIExecutionAgent(BaseAgent):
             "npx", "playwright", "test",
             *targets,
             "--config", "playwright.config.ts",
-            "--project=chromium",
+            *[f"--project={p}" for p in projects],
             *(["--headed"] if not headless else []),
             f"--workers={workers}",
-            *(["--grep", grep_pattern] if grep_pattern else []),
-            # --reporter omitted: playwright.config.ts already declares json+html reporters;
+            *(["--grep", grep] if grep else []),
+            *(["--grep-invert", grep_invert] if grep_invert else []),
+            # --reporter omitted: playwright.config.ts already declares its reporters;
             # adding it here would override the whole array and break the file output.
-            f"--output={os.path.join(reports_dir, 'html', ts)}",
+            f"--output={test_results_dir}",
         ]
 
         env = {
@@ -417,7 +567,17 @@ class UIExecutionAgent(BaseAgent):
             "PW_TEST_DIR": _ASSETS_BASE,
             "PW_JSON_REPORT": json_report_path,
             "PW_HTML_REPORT": html_report_dir,
+            # The config builder enables exactly these projects (a request's `browsers` override
+            # may name projects project.yaml's matrix does not enable).
+            "MTA_PROJECTS": ",".join(projects),
+            "MTA_RUN_ID": run_id,
         }
+        for key in ("PW_JUNIT_REPORT", "MTA_RESULTS_FILE", "PW_BLOB_DIR", "MTA_BLOB_ONLY"):
+            env.pop(key, None)
+        if junit_path:
+            env["PW_JUNIT_REPORT"] = junit_path
+        if mta_path:
+            env["MTA_RESULTS_FILE"] = mta_path
         # Always set: resolved above (request -> project.url -> module URL), so
         # playwright.config.ts never has to guess.
         env["BASE_URL"] = base_url
@@ -431,14 +591,26 @@ class UIExecutionAgent(BaseAgent):
             env["PW_STORAGE_STATE"] = auth_storage_state
             self._log(f"Auth state injected → PW_STORAGE_STATE='{auth_storage_state}'")
 
-        self._log(f"Running: {' '.join(cmd)}")
-        # Fix 2: stream stdout; handle KeyboardInterrupt gracefully.
-        # No outer timeout — Playwright's own per-test timeout + retries
-        # (playwright.config.ts) already bound the run; an additional
-        # suite-level kill here only discards real, already-completed results.
-        stdout, stderr, interrupted, returncode = _stream_proc(
-            cmd, cwd=os.getcwd(), env=env, logger=self.logger
-        )
+        shard = getattr(self, "_shard", None)
+        shards = getattr(self, "_shards", 1) or 1
+        if shards > 1:
+            # Phase 4.8 — every shard locally, then one merge into the normal outputs.
+            stdout, stderr, interrupted, returncode = self._run_shards(
+                cmd, env, shards, reports_dir=reports_dir, run_id=run_id, test_results_dir=test_results_dir,
+                json_path=json_report_path, html_dir=html_report_dir, junit_path=junit_path, mta_path=mta_path,
+            )
+        else:
+            if shard:
+                # A CI job: this shard only — normal reports plus a blob for a later merge_run.
+                cmd, env = single_shard(cmd, env, shard[0], shard[1], reports_dir, run_id, invocation=ts)
+            self._log(f"Running: {' '.join(cmd)}")
+            # Fix 2: stream stdout; handle KeyboardInterrupt gracefully.
+            # No outer timeout — Playwright's own per-test timeout + retries
+            # (playwright.config.ts) already bound the run; an additional
+            # suite-level kill here only discards real, already-completed results.
+            stdout, stderr, interrupted, returncode = _stream_proc(
+                cmd, cwd=os.getcwd(), env=env, logger=self.logger
+            )
         self._log(f"npx playwright test exit code: {returncode}")
 
         # Fix 2: interrupted — return partial summary without losing what ran
@@ -463,23 +635,27 @@ class UIExecutionAgent(BaseAgent):
                 level="warning",
             )
 
-        # Chromium browser binary must be installed ahead of time — no installs
+        # Browser binaries must be installed ahead of time — no installs
         # during execution (see README Quick Start).
         binary_missing = (
             "Executable doesn't exist" in (stderr + stdout)
             or "browserType.launch" in (stderr + stdout)
         )
         if returncode != 0 and binary_missing:
-            msg = (
-                "Playwright's Chromium browser binary is not installed. Run "
-                "`npx playwright install chromium` once before executing tests "
-                "(see README Quick Start)."
-            )
+            msg = _browser_missing_message(stderr + stdout, projects)
             self._log(msg, level="error")
             return {"module": "ui_execution", "status": "failed", "error": msg, "returncode": returncode}
 
         # Parse JSON results
         results, _, _ = _parse_playwright_json(json_report_path, self.logger)
+
+        # A grep that selects nothing: Playwright exits 1 with "No tests found" — report it as
+        # skipped instead of recovering a "not started" entry per spec file.
+        if not results and grep and "No tests found" in (stdout + stderr):
+            msg = f"No tests match grep {grep!r}"
+            self._log(msg, level="warning")
+            return {"module": "ui_execution", "status": "skipped", "reason": msg, "mode": "playwright",
+                    "grep": grep, "passed": 0, "failed": 0, "skipped": 0, "results": [], "returncode": returncode}
 
         if not results:
             if returncode == 4:
@@ -542,10 +718,12 @@ class UIExecutionAgent(BaseAgent):
         passed, failed, skipped = _count_results(results)
         _update_report_index(reports_dir, ts, json_report_path, html_report_dir, passed, failed)
         self._log(f"Done — passed={passed} failed={failed} skipped={skipped}")
+        extra = _run_outputs(junit_path, mta_path, projects, shards=shards, shard=shard, run_id=run_id,
+                             grep=grep, reports_dir=reports_dir)
         _write_execution_results(
             reports_dir, ts, project=safe, base_url=base_url, results=results,
             passed=passed, failed=failed, skipped=skipped, returncode=returncode,
-            report_json=json_report_path, logger=self.logger,
+            report_json=json_report_path, logger=self.logger, extra=extra,
         )
         _apply_traceability(safe, results, ts, logger=self.logger)
         return {
@@ -561,6 +739,96 @@ class UIExecutionAgent(BaseAgent):
             "results": results,
             "report_json": json_report_path,
             "report_html": html_report_dir,
+            **extra,
+        }
+
+    # ── Phase 4.8: local shards + merge ──────────────────────────────────────
+
+    def _run_shards(self, cmd: List[str], env: Dict[str, str], total: int, *, reports_dir: str, run_id: str,
+                    test_results_dir: str, json_path: str, html_dir: str, junit_path: str,
+                    mta_path: str) -> Tuple[str, str, bool, int]:
+        """Run shards 1..total (max_parallel_shards at a time) with only list + blob reporters, then
+        merge the blobs into the run's json / html / junit / mta outputs. Returns the combined
+        (stdout, stderr, interrupted, returncode): rc is the first non-zero shard rc, else the merge's."""
+        from concurrent.futures import ThreadPoolExecutor
+        from tools.execution.merge_reports import merge_blob_reports, merge_env
+
+        root = blob_root(reports_dir, run_id)
+        if os.path.isdir(root):
+            shutil.rmtree(root, ignore_errors=True)
+        runs = plan_shards(cmd, env, total, reports_dir, run_id, test_results_dir)
+        parallel = max(1, min(int(self._cfg().get("max_parallel_shards", 1) or 1), total))
+        self._log(f"Sharded run {run_id}: {total} shard(s), {parallel} at a time")
+
+        def _one(run):
+            self._log(f"Shard {run.index}/{run.total}: {' '.join(run.cmd)}")
+            return _stream_proc(run.cmd, cwd=os.getcwd(), env=run.env, logger=self.logger)
+
+        if parallel == 1:
+            outs = []
+            for run in runs:
+                outs.append(_one(run))
+                if outs[-1][2]:          # interrupted — don't start the remaining shards
+                    break
+        else:
+            with ThreadPoolExecutor(max_workers=parallel) as pool:
+                outs = list(pool.map(_one, runs))
+
+        stdout = "".join(o[0] for o in outs)
+        stderr = "".join(o[1] for o in outs)
+        interrupted = any(o[2] for o in outs)
+        rcs = [o[3] for o in outs]
+        menv = merge_env(env, json_path=json_path, html_dir=html_dir, junit_path=junit_path, mta_path=mta_path)
+        names, (m_out, m_err, m_int, m_rc) = merge_blob_reports(
+            root, menv, lambda c, cwd, e: _stream_proc(c, cwd=cwd, env=e, logger=self.logger))
+        self._log(f"merge-reports: {len(names)} blob(s) → rc={m_rc}")
+        if m_rc != 0:
+            self._log(f"merge-reports failed: {(m_err or m_out)[:2000]}", level="warning")
+        rc = next((r for r in rcs if r != 0), 0) or m_rc
+        return stdout + m_out, stderr + m_err, interrupted or m_int, rc
+
+    def _merge_only(self, project_name: str, safe: str, run_id: str) -> Dict[str, Any]:
+        """merge_run: <run_id> — a CI merge job: merge reports/blob/<run_id>/ (one folder per shard job)
+        into this project's normal reports, index, execution_results and traceability."""
+        from tools.execution.merge_reports import merge_blob_reports, merge_env
+
+        reports_dir = os.path.join(_ASSETS_BASE, safe, "test_execution", "reports")
+        root = blob_root(reports_dir, run_id)
+        if not os.path.isdir(root):
+            msg = f"No blob reports for run '{run_id}' (expected {root})"
+            self._log(msg, level="error")
+            return {"module": "ui_execution", "status": "failed", "error": msg}
+        cfg = self._cfg()
+        ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        json_path = os.path.join(reports_dir, "json", f"{ts}_results.json")
+        html_dir = os.path.join(reports_dir, "html", ts)
+        junit_path = os.path.join(reports_dir, "junit", f"{ts}.xml") if cfg.get("junit", True) else ""
+        mta_path = os.path.join(reports_dir, "mta", f"{ts}.mta_results.json") if cfg.get("mta_reporter", True) else ""
+        os.makedirs(os.path.dirname(json_path), exist_ok=True)
+        env = merge_env({**os.environ, "PW_PROJECT": safe, "MTA_RUN_ID": run_id},
+                        json_path=json_path, html_dir=html_dir, junit_path=junit_path, mta_path=mta_path)
+        names, (_out, err, _int, rc) = merge_blob_reports(
+            root, env, lambda c, cwd, e: _stream_proc(c, cwd=cwd, env=e, logger=self.logger))
+        results, _, _ = _parse_playwright_json(json_path, self.logger)
+        if rc != 0 and not results:
+            msg = f"merge-reports failed for run '{run_id}' ({len(names)} blob(s)): {(err or '')[:500]}"
+            self._log(msg, level="error")
+            return {"module": "ui_execution", "status": "failed", "error": msg, "returncode": rc}
+        passed, failed, skipped = _count_results(results)
+        _update_report_index(reports_dir, ts, json_path, html_dir, passed, failed)
+        extra = _run_outputs(junit_path, mta_path, list(getattr(self, "_projects", ["chromium"])),
+                             shards=len(names), shard=None, run_id=run_id, grep=None, reports_dir=reports_dir)
+        _write_execution_results(
+            reports_dir, ts, project=safe, base_url="", results=results, passed=passed, failed=failed,
+            skipped=skipped, returncode=rc, report_json=json_path, logger=self.logger, extra=extra,
+        )
+        _apply_traceability(safe, results, ts, logger=self.logger)
+        self._log(f"Merged run {run_id}: {len(names)} blob(s) — passed={passed} failed={failed} skipped={skipped}")
+        return {
+            "module": "ui_execution", "status": "success", "suite": safe, "mode": "playwright",
+            "scenarios_executed": passed + failed + skipped, "passed": passed, "failed": failed,
+            "skipped": skipped, "returncode": rc, "results": results,
+            "report_json": json_path, "report_html": html_dir, **extra,
         }
 
     # ── Per-module split (Phase 0.6) ──────────────────────────────────────────
@@ -661,15 +929,18 @@ class UIExecutionAgent(BaseAgent):
         json2 = os.path.join(reports_dir, "json", f"{ts2}_headless_retry.json")
         os.makedirs(html2, exist_ok=True)
 
+        projects = [p for p in env.get("MTA_PROJECTS", "chromium").split(",") if p] or ["chromium"]
         cmd2 = [
             "npx", "playwright", "test",
             *spec_paths,
             "--config", "playwright.config.ts",
-            "--project=chromium",
+            *[f"--project={p}" for p in projects],
             "--workers=2",
-            f"--output={html2}",
+            "--output=" + os.path.join(reports_dir, "test-results", f"{ts2}_headless_retry"),
         ]
         env2 = {**env, "PW_JSON_REPORT": json2, "PW_HTML_REPORT": html2}
+        for key in ("PW_JUNIT_REPORT", "MTA_RESULTS_FILE"):
+            env2.pop(key, None)
 
         self._log(f"Headless re-run: {[os.path.basename(p) for p in spec_paths]}")
         _stream_proc(cmd2, cwd=os.getcwd(), env=env2, logger=self.logger)
@@ -780,7 +1051,8 @@ _SPEC_ID_RE = re.compile(r"([A-Za-z]+\d+_BS_\d+|BS-\d+|SC-\d+)")
 
 def _write_execution_results(reports_dir: str, ts: str, *, project: str, base_url: str,
                              results: List[Dict], passed: int, failed: int, skipped: int,
-                             returncode: int, report_json: str, logger=None) -> Optional[str]:
+                             returncode: int, report_json: str, logger=None,
+                             extra: Optional[Dict[str, Any]] = None) -> Optional[str]:
     """Phase 0.7 — the MTA-normalised run record (contracts: execution_results v2),
     written to reports/mta/ (never reports/json/, which healing scans for the latest
     Playwright report). A write failure never fails the run."""
@@ -793,6 +1065,7 @@ def _write_execution_results(reports_dir: str, ts: str, *, project: str, base_ur
             "finished_at": datetime.now(timezone.utc).isoformat(),
             "passed": passed, "failed": failed, "skipped": skipped, "returncode": returncode,
             "report_json": report_json,
+            **(extra or {}),
             "results": [
                 {**r, "spec_file": str(r.get("spec_file", "")), "status": str(r.get("status", ""))}
                 for r in results
@@ -858,7 +1131,77 @@ def _merge_runs(runs: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
     if errors:
         out["run_errors"] = errors
+    # Phase 4: every sub-run writes its own JUnit / MTA file — keep all of them, not just the last.
+    for key in ("report_junit", "mta_results", "report_json"):
+        paths = [r[key] for r in runs if r.get(key)]
+        if len(paths) > 1:
+            out[f"{key}_all"] = paths
     return out
+
+
+def _combine_grep(a: Optional[str], b: Optional[str]) -> Optional[str]:
+    """Both patterns must match (a suite's grep AND the request's --grep)."""
+    if a and b:
+        return f"^(?=.*(?:{a}))(?=.*(?:{b}))"
+    return a or b or None
+
+
+def _run_outputs(junit_path: str, mta_path: str, projects: List[str], *, shards: int, shard, run_id: str,
+                 grep: Optional[str], reports_dir: str) -> Dict[str, Any]:
+    """Phase 4 additions to a run's result and execution_results record (only files that exist)."""
+    out: Dict[str, Any] = {"projects": list(projects), "run_id": run_id}
+    if junit_path and os.path.exists(junit_path):
+        out["report_junit"] = junit_path
+    if mta_path and os.path.exists(mta_path):
+        out["mta_results"] = mta_path
+    if shards and shards > 1:
+        out["shards"] = shards
+        out["blob_dir"] = blob_root(reports_dir, run_id)
+    if shard:
+        out["shard"] = f"{shard[0]}/{shard[1]}"
+        out["blob_dir"] = blob_root(reports_dir, run_id)
+    if grep:
+        out["grep"] = grep
+    return out
+
+
+_PROJECT_BROWSER = {"chromium": "chromium", "pixel-7": "chromium", "firefox": "firefox",
+                    "webkit": "webkit", "iphone-14": "webkit"}
+
+
+def _browser_missing_message(output: str, projects: List[str]) -> str:
+    """Name the missing browser(s) and the install command (no installs during execution)."""
+    low = (output or "").lower()
+    named = [b for b in ("chromium", "firefox", "webkit") if b in low and "executable doesn't exist" in low]
+    browsers = named or sorted({_PROJECT_BROWSER.get(p, "chromium") for p in projects})
+    label = ", ".join(b.capitalize() for b in browsers)
+    return (
+        f"Playwright's {label} browser binary is not installed. Run "
+        f"`npx playwright install {' '.join(browsers)}` once before executing tests "
+        "(see README Quick Start)."
+    )
+
+
+def _grep_targets(scripts_dir: str, modules: List[str]) -> Tuple[List[str], List[str]]:
+    """Targets for a grep run: one folder per module (keeps the command line short and the
+    per-module base-URL split working), plus top-level spec files of a flat project.
+    Returns (absolute targets, spec files relative to scripts_dir)."""
+    targets: List[str] = []
+    ts_files: List[str] = []
+    for rel in _find_scripts(scripts_dir, ".spec.ts"):
+        parts = rel.replace(os.sep, "/").split("/")
+        if len(parts) > 1:
+            if modules and parts[0] not in modules:
+                continue
+            target = os.path.join(scripts_dir, parts[0]).replace(os.sep, "/")
+        else:
+            if modules:
+                continue
+            target = os.path.join(scripts_dir, rel).replace(os.sep, "/")
+        ts_files.append(rel)
+        if target not in targets:
+            targets.append(target)
+    return targets, ts_files
 
 
 def _extract_test_case_id(spec_file: str) -> str:
@@ -1075,6 +1418,8 @@ def _recover_partial_results(
     # ts_files may be relative paths ("M02/test_BS-001….spec.ts") while
     # completed_basenames holds bare basenames — compare like-for-like.
     for spec in ts_files:
+        if not str(spec).endswith(".spec.ts"):
+            continue    # a folder target (per-module / grep runs) is not a spec
         if os.path.basename(spec) not in completed_basenames:
             results.append({
                 "spec_file": spec,

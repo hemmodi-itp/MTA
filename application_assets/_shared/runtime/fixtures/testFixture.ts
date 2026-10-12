@@ -2,11 +2,18 @@ import path from 'path';
 import { test as base, Page } from '@playwright/test';
 import { ActionEngine, RuntimeSafety } from '../ActionEngine';
 import { allowedHostsFromEnv, isUrlAllowed } from '../safety';
+import { resolveRoleStorageState } from '../auth/roles';
+import { loadProjectYaml } from '../config/projectYaml';
 
 type PageRegistry = Record<string, new (page: Page) => Record<string, unknown>>;
 
 type Fixtures = {
     action: ActionEngine;
+};
+
+type Options = {
+    /** Phase 4.3: an `auth.roles` role from project.yaml — `test.use({ role: 'admin' })`. */
+    role: string | undefined;
 };
 
 /**
@@ -47,7 +54,20 @@ function extractModuleId(specFilePath: string): string {
     return segments.length > 1 ? segments[0] : '_default';
 }
 
-export const test = base.extend<Fixtures>({
+export const test = base.extend<Fixtures & Options>({
+    role: [undefined, { option: true }],
+
+    // Phase 4.3: a test that sets `role` starts with that role's storage state (an empty one for an
+    // anonymous role). Without `role`, the config's storageState (PW_STORAGE_STATE) applies unchanged.
+    storageState: async ({ role, storageState }, use) => {
+        if (!role) {
+            await use(storageState);
+            return;
+        }
+        const project = process.env.PW_PROJECT;
+        await use(resolveRoleStorageState(role, { project: loadProjectYaml(project), projectName: project }));
+    },
+
     action: async ({ page }, use, testInfo) => {
         const pageErrors: string[] = [];
         page.on('pageerror', (err) => pageErrors.push(err.message));

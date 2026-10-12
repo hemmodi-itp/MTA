@@ -32,6 +32,7 @@ ARTIFACTS: Dict[str, ArtifactSpec] = {
         ArtifactSpec("test_plans", m.TestPlansV2, "test_plans.json", "map", "plans"),
         ArtifactSpec("test_suite", m.TestSuiteV2, "test_suite.json", "dict"),
         ArtifactSpec("execution_results", m.ExecutionResultsV2, "execution_results.json", "dict"),
+        ArtifactSpec("mta_results", m.MtaResultsV2, "mta_results.json", "dict"),
         ArtifactSpec("playwright_report", m.PlaywrightReportLoose, "_results.json", "plain"),
         ArtifactSpec("locator_map", m.LocatorEntry, "locator_map.json", "plain"),
         ArtifactSpec("requirements", m.RequirementsV2, "requirements.json", "dict"),

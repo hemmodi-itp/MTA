@@ -818,6 +818,9 @@ class ScriptGenerationAgent(BaseAgent):
                 continue
             by_module.setdefault((entry.get("_module_id") or "_default", entry.get("_page_url") or ""), []).append(key)
 
+        from tools.execution.config import load_execution_config
+        test_id_attribute = load_execution_config(safe)["test_id_attribute"]
+
         unresolvable: set = set()
         for (module_id, page_url), keys in by_module.items():      # insertion order, as before Phase 3
             effective_url = page_url or module_url_map.get(module_id, url)
@@ -828,7 +831,7 @@ class ScriptGenerationAgent(BaseAgent):
             try:
                 for key in keys:
                     try:
-                        if not self._locator_entry_resolves(page, locator_map[key]):
+                        if not self._locator_entry_resolves(page, locator_map[key], test_id_attribute):
                             dead_keys.append(key)
                     except Exception as exc:
                         self.logger.warning(f"Locator dry-run check errored for '{key}': {exc}")
@@ -873,11 +876,12 @@ class ScriptGenerationAgent(BaseAgent):
             return None, None
 
     @staticmethod
-    def _locator_entry_resolves(page, entry: dict) -> bool:
+    def _locator_entry_resolves(page, entry: dict, test_id_attribute: Optional[str] = None) -> bool:
         # Shared with HealingAgent (Phase 2): same count()==1 rule and the same fail-open on
-        # unknown types / errors, plus the optional `frame` / `scope` entry fields.
+        # unknown types / errors, plus the optional `frame` / `scope` entry fields. Phase 4: testid
+        # entries use the project's execution.test_id_attribute, like the TS runtime.
         from tools.test_creation.script_generator.locator_resolve import entry_resolves
-        return entry_resolves(page, entry)
+        return entry_resolves(page, entry, test_id_attribute)
 
     def _alt_llm(self, model: str, request: dict):
         try:

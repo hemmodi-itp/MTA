@@ -137,6 +137,22 @@ test_generation:
 test_execution:
   suite: YourProjectName
 
+# ── Playwright runtime (Phase 4) — every key optional; the values shown are the defaults
+# unless marked. See README "Playwright configuration".
+execution:
+  matrix: [chromium]                # + firefox | webkit | pixel-7 | iphone-14  (profile smoke → chromium only)
+  test_id_attribute: data-testid    # the attribute getByTestId reads (e.g. data-test, data-qa)
+  # locale: en-GB                   # → use.locale
+  # timezone_id: Europe/London      # → use.timezoneId
+  # trace: retain-on-failure        # video: retain-on-failure · screenshot: only-on-failure
+  # junit: true                     # reports/junit/{ts}.xml
+  # mta_reporter: true              # reports/mta/{ts}.mta_results.json (TC/AC-linked per-test results)
+  role_auth: false                  # true once auth.roles is filled in → logs every role in before each run
+                                    # so specs can use test.use({ role: 'admin' })
+  suite_mode: grep                  # template: test_suites/*.json run as one --grep (default: files)
+  # shards: 1                       # > 1 → N local shards + merge-reports
+  # max_parallel_shards: 1
+
 # ── Suites (optional) — named scenario groupings for `--suite` ──────────────
 # Define suites under test_suites/*.json (see test_suites/test_suites.md),
 # then run one with:

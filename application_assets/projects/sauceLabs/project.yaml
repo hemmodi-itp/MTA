@@ -37,3 +37,8 @@ modules:
 
 test_execution:
   suite: sauceLabs
+
+# Phase 4: saucedemo marks elements with data-test (not Playwright's default data-testid) —
+# getByTestId in the runtime and the Python locator check both read this attribute.
+execution:
+  test_id_attribute: data-test

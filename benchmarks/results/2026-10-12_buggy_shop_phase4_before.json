@@ -1,0 +1,2362 @@
+{
+  "meta": {
+    "date": "2026-10-12",
+    "commit": "9a382d7",
+    "label": "phase4_before",
+    "app": "buggy_shop",
+    "port": 8765,
+    "bugs_selected": [
+      "BUG_01",
+      "BUG_18",
+      "BUG_21"
+    ],
+    "repeat": 2,
+    "healing": false,
+    "skip_generate": true,
+    "generation_rc": null,
+    "notes": [
+      "Heal probe disabled (--no-healing).",
+      "--skip-generate: generation LLM usage/runtime are not part of this run."
+    ]
+  },
+  "metrics": {
+    "app": "buggy_shop",
+    "ac_extraction_recall": 0.6296,
+    "tests_total": 61,
+    "tests_executed": 61,
+    "requirement_coverage": {
+      "pct": 0.2593,
+      "covered": [
+        "AC-01.2",
+        "AC-03.1",
+        "AC-03.2",
+        "AC-03.3",
+        "AC-03.4",
+        "AC-03.6",
+        "AC-05.1"
+      ],
+      "uncovered": [
+        "AC-01.1",
+        "AC-01.3",
+        "AC-01.4",
+        "AC-02.1",
+        "AC-02.2",
+        "AC-02.3",
+        "AC-02.4",
+        "AC-02.5",
+        "AC-02.6",
+        "AC-03.5",
+        "AC-03.7",
+        "AC-04.1",
+        "AC-04.2",
+        "AC-05.2",
+        "AC-05.3",
+        "AC-05.4",
+        "AC-06.1",
+        "AC-06.2",
+        "AC-07.1",
+        "AC-08.1"
+      ],
+      "total_acs": 27,
+      "direct_pct": 0.2593,
+      "covered_direct": [
+        "AC-01.2",
+        "AC-03.1",
+        "AC-03.2",
+        "AC-03.3",
+        "AC-03.4",
+        "AC-03.6",
+        "AC-05.1"
+      ],
+      "note": null
+    },
+    "seeded_bug_detection": {
+      "rate": 1.0,
+      "caught": 3,
+      "evaluated": 3,
+      "enabled": 22,
+      "not_evaluated": [
+        "BUG_02",
+        "BUG_03",
+        "BUG_04",
+        "BUG_05",
+        "BUG_06",
+        "BUG_07",
+        "BUG_08",
+        "BUG_09",
+        "BUG_10",
+        "BUG_11",
+        "BUG_12",
+        "BUG_13",
+        "BUG_14",
+        "BUG_15",
+        "BUG_16",
+        "BUG_17",
+        "BUG_19",
+        "BUG_20",
+        "BUG_22"
+      ],
+      "by_category": {
+        "validation_boundary": {
+          "enabled": 1,
+          "caught": 1
+        },
+        "required_validation": {
+          "enabled": 1,
+          "caught": 1
+        },
+        "validation_numeric": {
+          "enabled": 1,
+          "caught": 1
+        }
+      },
+      "bugs": [
+        {
+          "id": "BUG_01",
+          "category": "validation_boundary",
+          "severity": "medium",
+          "affected_ac": "AC-03.2",
+          "how_detectable": "UI boundary-value analysis (name of exactly 50 characters)",
+          "evaluated": true,
+          "caught": true,
+          "caught_by": [
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 main flow: Name is required.",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max (50 chars) is accepted",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 main flow: Name must be 1\u201350 characters.",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.2 main flow: A name of exactly 50 characters is accepted.",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.2 main flow: Description is optional.",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\"."
+          ],
+          "note": null
+        },
+        {
+          "id": "BUG_02",
+          "category": "server_client_mismatch",
+          "severity": "high",
+          "affected_ac": "AC-03.3",
+          "how_detectable": "API only (POST /api/products with price -1)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_03",
+          "category": "calculation",
+          "severity": "high",
+          "affected_ac": "AC-05.2",
+          "how_detectable": "UI exact total assertion (1 x Gel Pen should total 1.01)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_04",
+          "category": "authorization_idor",
+          "severity": "critical",
+          "affected_ac": "AC-06.2",
+          "how_detectable": "Role / URL tampering (alice opens /orders/1)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_05",
+          "category": "security_xss",
+          "severity": "critical",
+          "affected_ac": "AC-03.5",
+          "how_detectable": "Security probe (script/img payload in description)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_06",
+          "category": "navigation",
+          "severity": "low",
+          "affected_ac": "AC-08.1",
+          "how_detectable": "Link check",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_07",
+          "category": "error_handling",
+          "severity": "high",
+          "affected_ac": "AC-02.4",
+          "how_detectable": "Edge-case input (search for %)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_08",
+          "category": "accessibility",
+          "severity": "medium",
+          "affected_ac": "AC-01.4",
+          "how_detectable": "Accessibility scan (label / accessible name check)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_09",
+          "category": "performance",
+          "severity": "medium",
+          "affected_ac": "AC-02.6",
+          "how_detectable": "Timing budget (2 s)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_10",
+          "category": "state_machine",
+          "severity": "high",
+          "affected_ac": "AC-05.4",
+          "how_detectable": "Invalid state transition (checkout with empty cart)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_11",
+          "category": "session",
+          "severity": "critical",
+          "affected_ac": "AC-01.3",
+          "how_detectable": "Reuse old session cookie / back button after logout",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_12",
+          "category": "concurrency",
+          "severity": "medium",
+          "affected_ac": "AC-03.6",
+          "how_detectable": "Double click / repeated submit",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_13",
+          "category": "wrong_message",
+          "severity": "medium",
+          "affected_ac": "AC-01.2",
+          "how_detectable": "Exact error text assertion",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_14",
+          "category": "sorting",
+          "severity": "low",
+          "affected_ac": "AC-02.3",
+          "how_detectable": "Order assertion on equal-price products",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_15",
+          "category": "pagination",
+          "severity": "medium",
+          "affected_ac": "AC-02.5",
+          "how_detectable": "Filter then paginate",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_16",
+          "category": "authorization_role",
+          "severity": "critical",
+          "affected_ac": "AC-07.1",
+          "how_detectable": "Role matrix (user opens /admin)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_17",
+          "category": "upload_validation",
+          "severity": "high",
+          "affected_ac": "AC-04.2",
+          "how_detectable": "Disallowed file type upload",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_18",
+          "category": "required_validation",
+          "severity": "medium",
+          "affected_ac": "AC-03.1",
+          "how_detectable": "Negative equivalence partition (empty name)",
+          "evaluated": true,
+          "caught": true,
+          "caught_by": [
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".",
+            "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\"."
+          ],
+          "note": null
+        },
+        {
+          "id": "BUG_19",
+          "category": "search",
+          "severity": "low",
+          "affected_ac": "AC-02.2",
+          "how_detectable": "Equivalence partition on letter case",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_20",
+          "category": "persistence",
+          "severity": "high",
+          "affected_ac": "AC-03.7",
+          "how_detectable": "Reload check after delete",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        },
+        {
+          "id": "BUG_21",
+          "category": "validation_numeric",
+          "severity": "high",
+          "affected_ac": "AC-05.1",
+          "how_detectable": "Boundary-value analysis (quantity 0 / -1)",
+          "evaluated": true,
+          "caught": true,
+          "caught_by": [
+            "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min-1 (0) is rejected",
+            "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: negative number is rejected"
+          ],
+          "note": null
+        },
+        {
+          "id": "BUG_22",
+          "category": "business_rule",
+          "severity": "high",
+          "affected_ac": "AC-05.3",
+          "how_detectable": "Repeat action (apply SAVE10 twice)",
+          "evaluated": false,
+          "caught": null,
+          "caught_by": [],
+          "note": null
+        }
+      ]
+    },
+    "false_failure": {
+      "rate": 0.1803,
+      "failing_tests": [
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: empty is rejected",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: empty is rejected",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 exception flow: violate \"Name is required.\"",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name length min-1 (0 chars) is rejected",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name: whitespace only is rejected",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts::AC-03.6.2 main flow: The Save button is disabled while saving.",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max (99) is accepted",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max-1 (98) is accepted",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: non-numeric text is rejected"
+      ]
+    },
+    "flaky": {
+      "rate": 0.0164,
+      "tests": [
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range nominal (50) is accepted"
+      ],
+      "clean_runs": 2
+    },
+    "heal_precision": {
+      "precision": null,
+      "applied": 0,
+      "wrong": 0,
+      "measured": false
+    },
+    "runtime_s": {
+      "generation": null,
+      "total": 6288.5,
+      "execution_median": 199.4,
+      "executions": 5,
+      "deep_discovery": null,
+      "discovery_by_module": null
+    },
+    "discovery": null,
+    "test_design": {
+      "profile": "standard",
+      "selected": 111,
+      "generated": 394,
+      "cut": 32,
+      "excluded_by_profile": 251,
+      "ac_coverage_pct": 100.0,
+      "acs_without_case": [],
+      "ac_coverage_pct_by_technique": 35.9,
+      "by_technique": {
+        "bva": 21,
+        "decision_table": 5,
+        "ep": 15,
+        "role_matrix": 14,
+        "state_transition": 7,
+        "use_case": 49
+      },
+      "by_priority": {
+        "P0": 21,
+        "P1": 61,
+        "P2": 15,
+        "P3": 14
+      },
+      "budget_respected": true,
+      "est_runtime_minutes": 17.18,
+      "bugs_targeted": 13,
+      "bugs_total": 22,
+      "acceptance_bugs_targeted": 4,
+      "acceptance_bugs_total": 5,
+      "acceptance_bugs_targeted_by_technique": 3,
+      "conflicts": 1,
+      "targeting": [
+        {
+          "id": "BUG_01",
+          "category": "validation_boundary",
+          "affected_ac": "AC-03.2",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-3afe22e2",
+            "TC-e84fd272",
+            "TC-2f3206e6",
+            "TC-2fb60334",
+            "TC-6e4cb70d",
+            "TC-bfa7c895",
+            "TC-d64e3230"
+          ],
+          "techniques": [
+            "bva"
+          ],
+          "cases_on_ac": 12,
+          "techniques_excl_use_case": [
+            "bva"
+          ]
+        },
+        {
+          "id": "BUG_02",
+          "category": "server_client_mismatch",
+          "affected_ac": "AC-03.3",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-cfd8a28e",
+            "TC-01297d75",
+            "TC-845e66df",
+            "TC-a21f1f4b",
+            "TC-ebab6bbe",
+            "TC-fdada7d0",
+            "TC-3835c2da",
+            "TC-8484870e",
+            "TC-aab6f171",
+            "TC-77348f2a"
+          ],
+          "techniques": [
+            "bva",
+            "ep"
+          ],
+          "cases_on_ac": 15,
+          "techniques_excl_use_case": [
+            "bva",
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_03",
+          "category": "calculation",
+          "affected_ac": "AC-05.2",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-185d30d1",
+            "TC-26ea21bf",
+            "TC-8ab2ab07",
+            "TC-9e1ec8f2"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 4,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_04",
+          "category": "authorization_idor",
+          "affected_ac": "AC-06.2",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-0c234c36",
+            "TC-3358fd9e",
+            "TC-2521c5fc",
+            "TC-18f51df0"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 7,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_05",
+          "category": "security_xss",
+          "affected_ac": "AC-03.5",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-bcb3449f",
+            "TC-799a9fa1",
+            "TC-7061132e"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 3,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_06",
+          "category": "navigation",
+          "affected_ac": "AC-08.1",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_07",
+          "category": "error_handling",
+          "affected_ac": "AC-02.4",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_08",
+          "category": "accessibility",
+          "affected_ac": "AC-01.4",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_09",
+          "category": "performance",
+          "affected_ac": "AC-02.6",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_10",
+          "category": "state_machine",
+          "affected_ac": "AC-05.4",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-8524baca",
+            "TC-d859aae3"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 2,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_11",
+          "category": "session",
+          "affected_ac": "AC-01.3",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-5a247930"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 1,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_12",
+          "category": "concurrency",
+          "affected_ac": "AC-03.6",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-2ba4b278",
+            "TC-a032451d"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 2,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_13",
+          "category": "wrong_message",
+          "affected_ac": "AC-01.2",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-4cf94cec",
+            "TC-66a3a2b1",
+            "TC-7717218a",
+            "TC-c683381f",
+            "TC-24bb2d3b",
+            "TC-603c72a8"
+          ],
+          "techniques": [
+            "ep",
+            "use_case"
+          ],
+          "cases_on_ac": 6,
+          "techniques_excl_use_case": [
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_14",
+          "category": "sorting",
+          "affected_ac": "AC-02.3",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_15",
+          "category": "pagination",
+          "affected_ac": "AC-02.5",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_16",
+          "category": "authorization_role",
+          "affected_ac": "AC-07.1",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_17",
+          "category": "upload_validation",
+          "affected_ac": "AC-04.2",
+          "in_acceptance": true,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_18",
+          "category": "required_validation",
+          "affected_ac": "AC-03.1",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-e84fd272",
+            "TC-9a6d0440",
+            "TC-820827e2",
+            "TC-726804cd",
+            "TC-83614b95"
+          ],
+          "techniques": [
+            "bva",
+            "ep",
+            "use_case"
+          ],
+          "cases_on_ac": 5,
+          "techniques_excl_use_case": [
+            "bva",
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_19",
+          "category": "search",
+          "affected_ac": "AC-02.2",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_20",
+          "category": "persistence",
+          "affected_ac": "AC-03.7",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-1aa82846",
+            "TC-ba2fb765",
+            "TC-e5292e66"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 3,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_21",
+          "category": "validation_numeric",
+          "affected_ac": "AC-05.1",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-22fa2254",
+            "TC-e64466e1",
+            "TC-438f31e4",
+            "TC-aba5a8a6",
+            "TC-dbd2a70f",
+            "TC-0bfe58e1",
+            "TC-200bf64c",
+            "TC-4313fd0d",
+            "TC-96b105f9",
+            "TC-d4bcbb85"
+          ],
+          "techniques": [
+            "bva",
+            "ep"
+          ],
+          "cases_on_ac": 13,
+          "techniques_excl_use_case": [
+            "bva",
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_22",
+          "category": "business_rule",
+          "affected_ac": "AC-05.3",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-37cd4c40",
+            "TC-e9f88327",
+            "TC-126dda49",
+            "TC-87611f8c",
+            "TC-ccf3fed4"
+          ],
+          "techniques": [
+            "decision_table",
+            "use_case"
+          ],
+          "cases_on_ac": 5,
+          "techniques_excl_use_case": [
+            "decision_table"
+          ]
+        }
+      ],
+      "cases_implemented": 60,
+      "ac_coverage_pct_implemented": 41.0,
+      "acceptance_bugs_targeted_implemented": 3,
+      "bugs_targeted_implemented": 6
+    },
+    "llm": {
+      "calls": 0,
+      "cache_hits": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "unpriced_models": []
+    },
+    "unknown_bug_ids": []
+  },
+  "run": {
+    "app": "buggy_shop",
+    "clean_runs": [
+      {
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: empty is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: more than 2 decimals is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max+1 (51 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max (50 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min+1 (2 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length nominal (26 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max-1 (49 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min (1 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 exception flow: violate \"Name is required.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 product-form on /products/new: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.2 main flow: A name of exactly 50 characters is accepted.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 main flow: Name is required.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 main flow: Name must be 1\u201350 characters.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.2 main flow: Description is optional.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /cart by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id} by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/new by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /checkout by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /upload by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name length min-1 (0 chars) is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name: whitespace only is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min-1 (-0.01) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: non-numeric text is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min+1 (0.01) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range nominal (0.10) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min (0.00) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max (500 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts::AC-03.6.2 main flow: The Save button is disabled while saving.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min-1 (0) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max+1 (100) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: decimal in an integer field is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: non-numeric text is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min+1 (2) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range nominal (50) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min (1) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max-1 (98) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max (99) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 user opening /cart by direct URL is allowed": "passed"
+      },
+      {
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: empty is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: more than 2 decimals is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max+1 (51 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max (50 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min+1 (2 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length nominal (26 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max-1 (49 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min (1 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 exception flow: violate \"Name is required.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 product-form on /products/new: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.2 main flow: A name of exactly 50 characters is accepted.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 main flow: Name is required.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 main flow: Name must be 1\u201350 characters.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.2 main flow: Description is optional.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /cart by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id} by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/new by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /checkout by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /upload by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name length min-1 (0 chars) is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name: whitespace only is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min-1 (-0.01) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: non-numeric text is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min+1 (0.01) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range nominal (0.10) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min (0.00) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max (500 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts::AC-03.6.2 main flow: The Save button is disabled while saving.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min-1 (0) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max+1 (100) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: decimal in an integer field is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: non-numeric text is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min+1 (2) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range nominal (50) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min (1) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max-1 (98) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max (99) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 user opening /cart by direct URL is allowed": "passed"
+      }
+    ],
+    "bug_runs": {
+      "BUG_01": {
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: empty is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: more than 2 decimals is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max+1 (51 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max (50 chars) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min+1 (2 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length nominal (26 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max-1 (49 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min (1 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 exception flow: violate \"Name is required.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 product-form on /products/new: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.2 main flow: A name of exactly 50 characters is accepted.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 main flow: Name is required.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 main flow: Name must be 1\u201350 characters.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.2 main flow: Description is optional.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /cart by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id} by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/new by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /checkout by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /upload by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name length min-1 (0 chars) is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name: whitespace only is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min-1 (-0.01) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: non-numeric text is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min+1 (0.01) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range nominal (0.10) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min (0.00) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max (500 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts::AC-03.6.2 main flow: The Save button is disabled while saving.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min-1 (0) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max+1 (100) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: decimal in an integer field is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: non-numeric text is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min+1 (2) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range nominal (50) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min (1) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max-1 (98) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max (99) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 user opening /cart by direct URL is allowed": "passed"
+      },
+      "BUG_18": {
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: empty is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: more than 2 decimals is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max+1 (51 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max (50 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min+1 (2 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length nominal (26 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max-1 (49 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min (1 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 exception flow: violate \"Name is required.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 product-form on /products/new: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.2 main flow: A name of exactly 50 characters is accepted.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 main flow: Name is required.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 main flow: Name must be 1\u201350 characters.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.2 main flow: Description is optional.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /cart by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id} by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/new by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /checkout by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /upload by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name length min-1 (0 chars) is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name: whitespace only is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min-1 (-0.01) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: non-numeric text is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min+1 (0.01) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range nominal (0.10) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min (0.00) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max (500 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts::AC-03.6.2 main flow: The Save button is disabled while saving.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min-1 (0) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max+1 (100) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: decimal in an integer field is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: non-numeric text is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min+1 (2) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range nominal (50) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min (1) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max-1 (98) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max (99) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 user opening /cart by direct URL is allowed": "passed"
+      },
+      "BUG_21": {
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: empty is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: empty is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: whitespace only is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: more than 2 decimals is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max+1 (51 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max (50 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min+1 (2 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length nominal (26 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max-1 (49 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min (1 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 exception flow: violate \"Name is required.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 product-form on /products/new: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.2 main flow: A name of exactly 50 characters is accepted.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 main flow: Name is required.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 main flow: Name must be 1\u201350 characters.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.2 main flow: Description is optional.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /cart by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id} by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/new by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /checkout by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /upload by direct URL is allowed": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name length min-1 (0 chars) is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name: whitespace only is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min-1 (-0.01) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: non-numeric text is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: negative number is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min+1 (0.01) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range nominal (0.10) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min (0.00) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products.": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\".": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max (500 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\"": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\").": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts::AC-03.6.2 main flow: The Save button is disabled while saving.": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min-1 (0) is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max+1 (100) is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: negative number is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: decimal in an integer field is rejected": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: non-numeric text is rejected": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min+1 (2) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range nominal (50) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min (1) is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max-1 (98) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max (99) is accepted": "failed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted": "passed",
+        "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 user opening /cart by direct URL is allowed": "passed"
+      }
+    },
+    "bug_run_errors": {},
+    "runtime_s": {
+      "executions": [
+        210.8,
+        199.4,
+        5490.8,
+        173.2,
+        199.2
+      ],
+      "generation": null,
+      "total": 6288.5
+    },
+    "tests": [
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: whitespace only is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-01.2.1 Password: whitespace only is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-01.2.1",
+          "AC-01.2.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_001",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-01.2.1 Password: whitespace only is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: empty is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-01.2.1 Username: empty is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-01.2.1",
+          "AC-01.2.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_002",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-01.2.1 Username: empty is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Password: empty is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-01.2.1 Password: empty is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-01.2.1",
+          "AC-01.2.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_003",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-01.2.1 Password: empty is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-01.2.1 Username: whitespace only is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-01.2.1 Username: whitespace only is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-01.2.1",
+          "AC-01.2.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_004",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-01.2.1 Username: whitespace only is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: empty is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.3.1 Price: empty is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.3.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_005",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price: empty is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: whitespace only is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.3.1 Price: whitespace only is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.3.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_006",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price: whitespace only is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 Price: more than 2 decimals is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.3.1 Price: more than 2 decimals is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.3.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_007",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price: more than 2 decimals is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max+1 (51 chars) is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 Name length max+1 (51 chars) is rejected",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1",
+          "AC-03.2.2",
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_008",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 Name length max+1 (51 chars) is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max (50 chars) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 Name length max (50 chars) is accepted",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1",
+          "AC-03.2.2",
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_009",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 Name length max (50 chars) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min+1 (2 chars) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 Name length min+1 (2 chars) is accepted",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1",
+          "AC-03.2.2",
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_010",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 Name length min+1 (2 chars) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length nominal (26 chars) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 Name length nominal (26 chars) is accepted",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1",
+          "AC-03.2.2",
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_011",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 Name length nominal (26 chars) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length max-1 (49 chars) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 Name length max-1 (49 chars) is accepted",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1",
+          "AC-03.2.2",
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_012",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 Name length max-1 (49 chars) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 Name length min (1 chars) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 Name length min (1 chars) is accepted",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1",
+          "AC-03.2.2",
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_013",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 Name length min (1 chars) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 exception flow: violate \"Name is required.\"",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 exception flow: violate \"Name is required.\"",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_014",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 exception flow: violate \"Name is required.\""
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\"",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_015",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 exception flow: violate \"Name must be 1\u201350 characters.\""
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more.",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.3.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_016",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 main flow: Price is required, numeric with at most 2 decimals, and must be zero or more."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 product-form on /products/new: all fields valid is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 product-form on /products/new: all fields valid is accepted",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1",
+          "AC-03.3.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_017",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 product-form on /products/new: all fields valid is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.2 main flow: A name of exactly 50 characters is accepted.",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.2 main flow: A name of exactly 50 characters is accepted.",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_018",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.2 main flow: A name of exactly 50 characters is accepted."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 main flow: Name is required.",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 main flow: Name is required.",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_019",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 main flow: Name is required."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.2.1 main flow: Name must be 1\u201350 characters.",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.2.1 main flow: Name must be 1\u201350 characters.",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.2.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_020",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.1 main flow: Name must be 1\u201350 characters."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\"",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.4.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_021",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.1 exception flow: violate \"Category must be one of Books, Electronics or Home (\"Please choose a category\").\""
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.2 main flow: Description is optional.",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.4.2 main flow: Description is optional.",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.4.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_022",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.2 main flow: Description is optional."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\").",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.4.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_023",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.1 main flow: Category must be one of Books, Electronics or Home (\"Please choose a category\")."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /cart by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 user opening /cart by direct URL is allowed",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_024",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 user opening /cart by direct URL is allowed"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id} by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 user opening /products/{id} by direct URL is allowed",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_025",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 user opening /products/{id} by direct URL is allowed"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 user opening /products by direct URL is allowed",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_026",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 user opening /products by direct URL is allowed"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_027",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 user opening /products/{id}/edit by direct URL is allowed"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /products/new by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 user opening /products/new by direct URL is allowed",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_028",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 user opening /products/new by direct URL is allowed"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /checkout by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 user opening /checkout by direct URL is allowed",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_029",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 user opening /checkout by direct URL is allowed"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts::AC-03.1.1 user opening /upload by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_001_create_a_product_with_valid_information.spec.ts",
+        "title": "AC-03.1.1 user opening /upload by direct URL is allowed",
+        "scenario_id": "M03_BS_001",
+        "ac_ids": [
+          "AC-03.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_030",
+        "text": "Create a Product with Valid Information [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}, {'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 user opening /upload by direct URL is allowed"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name length min-1 (0 chars) is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts",
+        "title": "AC-03.1.1 Name length min-1 (0 chars) is rejected",
+        "scenario_id": "M03_BS_002",
+        "ac_ids": [
+          "AC-03.1.1",
+          "AC-03.1.2",
+          "AC-03.2.1",
+          "AC-03.2.2",
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_031",
+        "text": "Validation Failure for Blank or Oversized Product Name [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 Name length min-1 (0 chars) is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.1 Name: whitespace only is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts",
+        "title": "AC-03.1.1 Name: whitespace only is rejected",
+        "scenario_id": "M03_BS_002",
+        "ac_ids": [
+          "AC-03.1.1",
+          "AC-03.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_032",
+        "text": "Validation Failure for Blank or Oversized Product Name [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.1 Name: whitespace only is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts",
+        "title": "AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\".",
+        "scenario_id": "M03_BS_002",
+        "ac_ids": [
+          "AC-03.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_033",
+        "text": "Validation Failure for Blank or Oversized Product Name [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.1.2 exception flow: An empty or blank name is rejected with \"Name is required\"."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts::AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_002_validation_failure_for_blank_or_oversized_product_name.spec.ts",
+        "title": "AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\".",
+        "scenario_id": "M03_BS_002",
+        "ac_ids": [
+          "AC-03.2.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_034",
+        "text": "Validation Failure for Blank or Oversized Product Name [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-002', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.2.3 exception flow: A name of 51 or more characters is rejected with \"Name must be at most 50 characters\"."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min-1 (-0.01) is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.1 Price range min-1 (-0.01) is rejected",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.1",
+          "AC-03.3.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_035",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price range min-1 (-0.01) is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: non-numeric text is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.1 Price: non-numeric text is rejected",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.1",
+          "AC-03.3.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_036",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price: non-numeric text is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price: negative number is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.1 Price: negative number is rejected",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.1",
+          "AC-03.3.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_037",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price: negative number is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min+1 (0.01) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.1 Price range min+1 (0.01) is accepted",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.1",
+          "AC-03.3.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_038",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price range min+1 (0.01) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range nominal (0.10) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.1 Price range nominal (0.10) is accepted",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.1",
+          "AC-03.3.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_039",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price range nominal (0.10) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.1 Price range min (0.00) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.1 Price range min (0.00) is accepted",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.1",
+          "AC-03.3.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_040",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.1 Price range min (0.00) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\"",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\"",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_041",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.3 exception flow: violate \"The server enforces price validation too, including POST /api/products.\""
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products.",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products.",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_042",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.3 main flow: The server enforces price validation too, including POST /api/products."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts::AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\".",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_003_validation_failure_for_negative_product_price.spec.ts",
+        "title": "AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\".",
+        "scenario_id": "M03_BS_003",
+        "ac_ids": [
+          "AC-03.3.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_043",
+        "text": "Validation Failure for Negative Product Price [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-003', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.3.2 exception flow: A negative price is rejected with \"Price must be zero or more\"."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts",
+        "title": "AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected",
+        "scenario_id": "M03_BS_004",
+        "ac_ids": [
+          "AC-03.4.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_044",
+        "text": "Validation Failure for Invalid Category or Excessively Long Description [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.3 Description (optional) length max+1 (501 chars) is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max (500 chars) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts",
+        "title": "AC-03.4.3 Description (optional) length max (500 chars) is accepted",
+        "scenario_id": "M03_BS_004",
+        "ac_ids": [
+          "AC-03.4.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_045",
+        "text": "Validation Failure for Invalid Category or Excessively Long Description [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.3 Description (optional) length max (500 chars) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts",
+        "title": "AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted",
+        "scenario_id": "M03_BS_004",
+        "ac_ids": [
+          "AC-03.4.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_046",
+        "text": "Validation Failure for Invalid Category or Excessively Long Description [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.3 Description (optional) length max-1 (499 chars) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\"",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts",
+        "title": "AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\"",
+        "scenario_id": "M03_BS_004",
+        "ac_ids": [
+          "AC-03.4.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_047",
+        "text": "Validation Failure for Invalid Category or Excessively Long Description [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.3 exception flow: violate \"Description must be at most 500 characters (\"Description must be at most 500 characters\").\""
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts::AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\").",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_004_validation_failure_for_invalid_category_or_excessively_long_description.spec.ts",
+        "title": "AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\").",
+        "scenario_id": "M03_BS_004",
+        "ac_ids": [
+          "AC-03.4.3"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_048",
+        "text": "Validation Failure for Invalid Category or Excessively Long Description [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-004', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.4.3 main flow: Description must be at most 500 characters (\"Description must be at most 500 characters\")."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts::AC-03.6.2 main flow: The Save button is disabled while saving.",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M03/test_M03_BS_006_duplicate_product_submission_prevention.spec.ts",
+        "title": "AC-03.6.2 main flow: The Save button is disabled while saving.",
+        "scenario_id": "M03_BS_006",
+        "ac_ids": [
+          "AC-03.6.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M03_TC_049",
+        "text": "Duplicate Product Submission Prevention [{'source_file': 'brd_M03.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-006', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-03.6.2 main flow: The Save button is disabled while saving."
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min-1 (0) is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity range min-1 (0) is rejected",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_001",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity range min-1 (0) is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max+1 (100) is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity range max+1 (100) is rejected",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_002",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity range max+1 (100) is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: negative number is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity: negative number is rejected",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_003",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity: negative number is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: decimal in an integer field is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity: decimal in an integer field is rejected",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_004",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity: decimal in an integer field is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity: non-numeric text is rejected",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity: non-numeric text is rejected",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_005",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity: non-numeric text is rejected"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min+1 (2) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity range min+1 (2) is accepted",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_006",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity range min+1 (2) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range nominal (50) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity range nominal (50) is accepted",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_007",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity range nominal (50) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range min (1) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity range min (1) is accepted",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_008",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity range min (1) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max-1 (98) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity range max-1 (98) is accepted",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_009",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity range max-1 (98) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 Quantity range max (99) is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 Quantity range max (99) is accepted",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1",
+          "AC-05.1.2"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_010",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 Quantity range max (99) is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_011",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted"
+      },
+      {
+        "id": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts::AC-05.1.1 user opening /cart by direct URL is allowed",
+        "spec_file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+        "title": "AC-05.1.1 user opening /cart by direct URL is allowed",
+        "scenario_id": "M04_BS_001",
+        "ac_ids": [
+          "AC-05.1.1"
+        ],
+        "ac_link": "direct",
+        "tc_id": "M04_TC_012",
+        "text": "Add product to cart or update cart quantity with valid integer quantity [{'source_file': 'brd_M04.md', 'page_number': None, 'section': '4. Requirements and acceptance criteria', 'requirement_id': 'REQ-001', 'jira_story_id': None, 'confluence_page_id': None, 'method_name': None}] AC-05.1.1 user opening /cart by direct URL is allowed"
+      }
+    ],
+    "ac_extraction": {
+      "total": 27,
+      "extracted": 17,
+      "recall": 0.6296,
+      "missed": [
+        "AC-02.1",
+        "AC-02.2",
+        "AC-02.3",
+        "AC-02.4",
+        "AC-02.5",
+        "AC-02.6",
+        "AC-04.1",
+        "AC-04.2",
+        "AC-07.1",
+        "AC-08.1"
+      ],
+      "agreement": {
+        "testability": 1.0,
+        "priority": 0.588,
+        "atomic": 0.706,
+        "risk_tags_jaccard": 0.912
+      },
+      "criteria_extracted": 56,
+      "unmatched_extractions": 3,
+      "unmatched_statements": [
+        "Only the login page, the help page and the health check are available without signing in; any other page redirects to the login page.",
+        "All API endpoints except `/api/health` require a signed-in session (otherwise HTTP 401).",
+        "POST /api/products accepts JSON {name, price, category, description} with the same validation as the form and returns 422 with errors on validation failure."
+      ]
+    },
+    "test_design": {
+      "profile": "standard",
+      "selected": 111,
+      "generated": 394,
+      "cut": 32,
+      "excluded_by_profile": 251,
+      "ac_coverage_pct": 100.0,
+      "acs_without_case": [],
+      "ac_coverage_pct_by_technique": 35.9,
+      "by_technique": {
+        "bva": 21,
+        "decision_table": 5,
+        "ep": 15,
+        "role_matrix": 14,
+        "state_transition": 7,
+        "use_case": 49
+      },
+      "by_priority": {
+        "P0": 21,
+        "P1": 61,
+        "P2": 15,
+        "P3": 14
+      },
+      "budget_respected": true,
+      "est_runtime_minutes": 17.18,
+      "bugs_targeted": 13,
+      "bugs_total": 22,
+      "acceptance_bugs_targeted": 4,
+      "acceptance_bugs_total": 5,
+      "acceptance_bugs_targeted_by_technique": 3,
+      "conflicts": 1,
+      "targeting": [
+        {
+          "id": "BUG_01",
+          "category": "validation_boundary",
+          "affected_ac": "AC-03.2",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-3afe22e2",
+            "TC-e84fd272",
+            "TC-2f3206e6",
+            "TC-2fb60334",
+            "TC-6e4cb70d",
+            "TC-bfa7c895",
+            "TC-d64e3230"
+          ],
+          "techniques": [
+            "bva"
+          ],
+          "cases_on_ac": 12,
+          "techniques_excl_use_case": [
+            "bva"
+          ]
+        },
+        {
+          "id": "BUG_02",
+          "category": "server_client_mismatch",
+          "affected_ac": "AC-03.3",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-cfd8a28e",
+            "TC-01297d75",
+            "TC-845e66df",
+            "TC-a21f1f4b",
+            "TC-ebab6bbe",
+            "TC-fdada7d0",
+            "TC-3835c2da",
+            "TC-8484870e",
+            "TC-aab6f171",
+            "TC-77348f2a"
+          ],
+          "techniques": [
+            "bva",
+            "ep"
+          ],
+          "cases_on_ac": 15,
+          "techniques_excl_use_case": [
+            "bva",
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_03",
+          "category": "calculation",
+          "affected_ac": "AC-05.2",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-185d30d1",
+            "TC-26ea21bf",
+            "TC-8ab2ab07",
+            "TC-9e1ec8f2"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 4,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_04",
+          "category": "authorization_idor",
+          "affected_ac": "AC-06.2",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-0c234c36",
+            "TC-3358fd9e",
+            "TC-2521c5fc",
+            "TC-18f51df0"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 7,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_05",
+          "category": "security_xss",
+          "affected_ac": "AC-03.5",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-bcb3449f",
+            "TC-799a9fa1",
+            "TC-7061132e"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 3,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_06",
+          "category": "navigation",
+          "affected_ac": "AC-08.1",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_07",
+          "category": "error_handling",
+          "affected_ac": "AC-02.4",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_08",
+          "category": "accessibility",
+          "affected_ac": "AC-01.4",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_09",
+          "category": "performance",
+          "affected_ac": "AC-02.6",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_10",
+          "category": "state_machine",
+          "affected_ac": "AC-05.4",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-8524baca",
+            "TC-d859aae3"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 2,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_11",
+          "category": "session",
+          "affected_ac": "AC-01.3",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-5a247930"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 1,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_12",
+          "category": "concurrency",
+          "affected_ac": "AC-03.6",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-2ba4b278",
+            "TC-a032451d"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 2,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_13",
+          "category": "wrong_message",
+          "affected_ac": "AC-01.2",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-4cf94cec",
+            "TC-66a3a2b1",
+            "TC-7717218a",
+            "TC-c683381f",
+            "TC-24bb2d3b",
+            "TC-603c72a8"
+          ],
+          "techniques": [
+            "ep",
+            "use_case"
+          ],
+          "cases_on_ac": 6,
+          "techniques_excl_use_case": [
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_14",
+          "category": "sorting",
+          "affected_ac": "AC-02.3",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_15",
+          "category": "pagination",
+          "affected_ac": "AC-02.5",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_16",
+          "category": "authorization_role",
+          "affected_ac": "AC-07.1",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_17",
+          "category": "upload_validation",
+          "affected_ac": "AC-04.2",
+          "in_acceptance": true,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_18",
+          "category": "required_validation",
+          "affected_ac": "AC-03.1",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-e84fd272",
+            "TC-9a6d0440",
+            "TC-820827e2",
+            "TC-726804cd",
+            "TC-83614b95"
+          ],
+          "techniques": [
+            "bva",
+            "ep",
+            "use_case"
+          ],
+          "cases_on_ac": 5,
+          "techniques_excl_use_case": [
+            "bva",
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_19",
+          "category": "search",
+          "affected_ac": "AC-02.2",
+          "in_acceptance": false,
+          "targeted": false,
+          "targeting_cases": [],
+          "techniques": [],
+          "cases_on_ac": 0,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_20",
+          "category": "persistence",
+          "affected_ac": "AC-03.7",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-1aa82846",
+            "TC-ba2fb765",
+            "TC-e5292e66"
+          ],
+          "techniques": [
+            "use_case"
+          ],
+          "cases_on_ac": 3,
+          "techniques_excl_use_case": []
+        },
+        {
+          "id": "BUG_21",
+          "category": "validation_numeric",
+          "affected_ac": "AC-05.1",
+          "in_acceptance": true,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-22fa2254",
+            "TC-e64466e1",
+            "TC-438f31e4",
+            "TC-aba5a8a6",
+            "TC-dbd2a70f",
+            "TC-0bfe58e1",
+            "TC-200bf64c",
+            "TC-4313fd0d",
+            "TC-96b105f9",
+            "TC-d4bcbb85"
+          ],
+          "techniques": [
+            "bva",
+            "ep"
+          ],
+          "cases_on_ac": 13,
+          "techniques_excl_use_case": [
+            "bva",
+            "ep"
+          ]
+        },
+        {
+          "id": "BUG_22",
+          "category": "business_rule",
+          "affected_ac": "AC-05.3",
+          "in_acceptance": false,
+          "targeted": true,
+          "targeting_cases": [
+            "TC-37cd4c40",
+            "TC-e9f88327",
+            "TC-126dda49",
+            "TC-87611f8c",
+            "TC-ccf3fed4"
+          ],
+          "techniques": [
+            "decision_table",
+            "use_case"
+          ],
+          "cases_on_ac": 5,
+          "techniques_excl_use_case": [
+            "decision_table"
+          ]
+        }
+      ],
+      "cases_implemented": 60,
+      "ac_coverage_pct_implemented": 41.0,
+      "acceptance_bugs_targeted_implemented": 3,
+      "bugs_targeted_implemented": 6
+    },
+    "llm_usage": {}
+  }
+}

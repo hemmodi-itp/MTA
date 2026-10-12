@@ -70,6 +70,8 @@ def iter_project_artifacts(project_dir: str) -> Iterator[Tuple[str, str]]:
         yield "playwright_report", path
     for path in sorted(glob.glob(os.path.join(project_dir, REPORTS_MTA, "*.execution_results.json"))):
         yield "execution_results", path
+    for path in sorted(glob.glob(os.path.join(project_dir, REPORTS_MTA, "*.mta_results.json"))):
+        yield "mta_results", path
 
 
 def project_dirs(root: str) -> List[str]:

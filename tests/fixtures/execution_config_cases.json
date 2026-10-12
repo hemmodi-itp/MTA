@@ -1,0 +1,329 @@
+[
+  {
+    "name": "no execution block",
+    "project": {},
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "full matrix with device aliases",
+    "project": {
+      "execution": {
+        "matrix": [
+          "iPhone 14",
+          "firefox",
+          "Pixel 7",
+          "webkit",
+          "chromium"
+        ]
+      }
+    },
+    "expected": {
+      "matrix": [
+        "iphone-14",
+        "firefox",
+        "pixel-7",
+        "webkit",
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium",
+        "firefox",
+        "webkit",
+        "pixel-7",
+        "iphone-14"
+      ]
+    }
+  },
+  {
+    "name": "chromium is always enabled",
+    "project": {
+      "execution": {
+        "matrix": [
+          "webkit"
+        ]
+      }
+    },
+    "expected": {
+      "matrix": [
+        "webkit"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium",
+        "webkit"
+      ]
+    }
+  },
+  {
+    "name": "profile smoke forces chromium only",
+    "project": {
+      "execution": {
+        "matrix": [
+          "firefox",
+          "webkit"
+        ]
+      },
+      "test_generation": {
+        "profile": "smoke"
+      }
+    },
+    "expected": {
+      "matrix": [
+        "firefox",
+        "webkit"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "unknown matrix entry ignored, string matrix accepted",
+    "project": {
+      "execution": {
+        "matrix": "edge"
+      }
+    },
+    "expected": {
+      "matrix": [],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "legacy data-test project with locale and timezone",
+    "project": {
+      "execution": {
+        "test_id_attribute": "data-test",
+        "locale": "en-GB",
+        "timezone_id": "Europe/London"
+      }
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-test",
+      "locale": "en-GB",
+      "timezone_id": "Europe/London",
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "evidence and reporters overridden",
+    "project": {
+      "execution": {
+        "trace": "on",
+        "video": "off",
+        "screenshot": "on",
+        "junit": false,
+        "mta_reporter": false
+      }
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "on",
+      "video": "off",
+      "screenshot": "on",
+      "junit": false,
+      "mta_reporter": false,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "role auth, grep suites, shards",
+    "project": {
+      "execution": {
+        "role_auth": true,
+        "role_auth_max_age_minutes": 5,
+        "suite_mode": "grep",
+        "shards": 4,
+        "max_parallel_shards": 2
+      }
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": true,
+      "role_auth_max_age_minutes": 5,
+      "suite_mode": "grep",
+      "shards": 4,
+      "max_parallel_shards": 2,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "invalid values fall back to defaults",
+    "project": {
+      "execution": {
+        "trace": "always",
+        "video": 3,
+        "junit": "yes",
+        "shards": 0,
+        "max_parallel_shards": 99,
+        "test_id_attribute": "bad attr",
+        "locale": "",
+        "suite_mode": "tags",
+        "role_auth_max_age_minutes": -1,
+        "matrix": {
+          "a": 1
+        }
+      }
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium"
+      ]
+    }
+  },
+  {
+    "name": "execution block that is not a mapping",
+    "project": {
+      "execution": "chromium"
+    },
+    "expected": {
+      "matrix": [
+        "chromium"
+      ],
+      "test_id_attribute": "data-testid",
+      "locale": null,
+      "timezone_id": null,
+      "trace": "retain-on-failure",
+      "video": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "junit": true,
+      "mta_reporter": true,
+      "role_auth": false,
+      "role_auth_max_age_minutes": 30,
+      "suite_mode": "files",
+      "shards": 1,
+      "max_parallel_shards": 1,
+      "projects": [
+        "chromium"
+      ]
+    }
+  }
+]

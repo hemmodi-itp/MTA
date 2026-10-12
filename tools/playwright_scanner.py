@@ -296,6 +296,14 @@ def rank_locator_candidates(candidates):
     return candidates
 
 
+def redact_setup_arg(arg):
+    """A setup step's argument as it may be logged: a fill's literal `value` (often a password) is
+    replaced by '***'; `value_env` names and selectors stay visible (Phase 4.3)."""
+    if isinstance(arg, dict) and "value" in arg:
+        return {**arg, "value": "***"}
+    return arg
+
+
 def execute_setup_steps(page, steps: list, logger: Optional[logging.Logger] = None) -> None:
     """Run a module's `setup:` steps (goto / fill / click / wait) on *page*. Shared by the
     scanner and Phase 2 role logins (strategy: setup). Failures are logged, never raised."""
@@ -306,7 +314,7 @@ def execute_setup_steps(page, steps: list, logger: Optional[logging.Logger] = No
             logger.warning(f"  Setup [{i}/{total}]: skipping non-dict step: {step!r}")
             continue
         action = next(iter(step))
-        logger.info(f"  Setup [{i}/{total}]: {action} → {step[action]!r}")
+        logger.info(f"  Setup [{i}/{total}]: {action} → {redact_setup_arg(step[action])!r}")
         try:
             if action == "goto":
                 page.goto(step["goto"], wait_until="domcontentloaded", timeout=30000)

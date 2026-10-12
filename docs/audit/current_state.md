@@ -82,6 +82,7 @@
 | Exit code 4 → warning, not success | **CORRECTED (partly)** | It warns, and synthesizes `failed` per spec when there are no results, but the returned `status` is still `"success"` (UI:515). |
 | Headed 3× close → headless; browser-close → skipped | **CONFIRMED** | UI:489, 565-626, 65-75, 791-811. |
 | `@playwright/test` version | — | `package.json ^1.49.0`; installed **1.61.0**. vitest 4.1.10. |
+| `@playwright/test` version (Phase 4.1, 2026-10-12) | **UPDATED** | Pinned to **`1.64.0`** (exact, no `^`; npm `latest` on 2026-10-12) + `yaml` `2.9.1`. Verified in the 1.64.0 package: test `tag`/`annotation` details, `toMatchAriaSnapshot`, `page.clock`, `failOnFlakyTests`, `blob` reporter + `merge-reports`, reporter `outcome()` = `flaky`. Python `playwright` stays 1.63.0 (`requirements.txt`). |
 | `testIdAttribute: data-test` | **CONFIRMED** | `playwright.config.ts:64`. |
 | `reports/index.json` | **NOT IN README** | **Two writers with conflicting schemas**: UI writes a list (UI:967-995); ReportingAgent writes a dict (`tools/test_execution/reports/index_manager.py:37-94`). Each run wipes the other's data. |
 

@@ -130,6 +130,12 @@ test_generation:
 test_execution:
   suite: myapp
 
+execution:                            # Phase 4 — see "Playwright configuration"; every key optional
+  matrix: [chromium]                  # + firefox | webkit | pixel-7 | iphone-14
+  test_id_attribute: data-testid      # default; e.g. data-test for saucedemo
+  role_auth: false                    # true → log in every auth.roles role before each run
+  suite_mode: files                   # files (default) | grep (test_suites/*.json → --grep)
+
 ns_config:
   base_url: http://localhost:8000     # optional — per-project NeuroStack override
 ```
@@ -388,19 +394,60 @@ test_scripts/
 TypeScript mode shells out via `subprocess.Popen`:
 
 ```
-npx playwright test <targets> --config playwright.config.ts --project=chromium
-  [--headed] --workers=<1|2> [--grep <pattern>] --output=<html_dir>
+npx playwright test <targets> --config playwright.config.ts --project=<each enabled project>
+  [--headed] --workers=<1|2> [--grep <pattern>] [--grep-invert <pattern>] [--shard=i/n]
+  --output=reports/test-results/<ts>
 ```
+
+Phase 4: the projects come from `execution.matrix` (default `chromium` only, exactly as before). `--output`
+(screenshots, traces, videos) has its own folder. It used to be the HTML report folder, which Playwright's HTML
+reporter empties when it writes the report, so failure evidence was deleted.
+
+Every run writes, per timestamp `<ts>`, under `test_execution/reports/`:
+
+| Output | File |
+|---|---|
+| Playwright JSON (healing reads it) | `json/<ts>_results.json` |
+| HTML report | `html/<ts>/` |
+| Failure evidence (retain-on-failure) | `test-results/<ts>/` |
+| JUnit XML (`execution.junit`) | `junit/<ts>.xml` |
+| MTA per-test results (`execution.mta_reporter`) | `mta/<ts>.mta_results.json` |
+| Normalised run record | `mta/<ts>.execution_results.json` |
+| Blob reports (sharded runs only) | `blob/<run_id>/shard-<i>/` |
+
+**MTA reporter** (`application_assets/_shared/runtime/reporters/mta-reporter.ts`, contract `mta_results`). One record per
+test with these fields:
+- test id, title, spec file, project
+- tags, plus the `tc` / `ac` / `case` / `scenario` annotations as `tc_id`, `ac_ids`, `case_id`, `scenario_id`
+- status: `passed | failed | flaky | skipped | timedOut | interrupted`. A fail-then-pass is `flaky`, never `passed`.
+- duration and every attempt (status, duration, error)
+- attachment paths (never their contents)
+
+`tools/execution/mta_results.py` converts it into the result shape `traceability.json` consumes.
+
+**Tags and suites (4.9).** `--grep` selects by title or tag: `python main.py --project X --grep "@smoke|@P0"`
+(`--grep-invert` excludes). With `execution.suite_mode: grep`, a `test_suites/<name>_suite.json` runs as **one**
+Playwright process. Its spec ids become a bounded regex that matches each spec's file name and describe title, so specs
+generated before Phase 1 work too. Its optional `tags: ["@smoke"]` / `grep` keys are ORed in. The default `files`
+mode keeps today's path targeting.
+
+**Shards (4.8).**
+- `--shards N` runs N local shards (`execution.max_parallel_shards` at a time), each with only the list and blob
+  reporters. `npx playwright merge-reports --config playwright.merge.config.ts` then merges them into the normal
+  outputs above, and the run gets one report-index entry.
+- `--shard i/n --run-id R` runs one CI shard. It writes the normal reports plus a blob.
+- `--merge-reports R` (or `python -m tools.execution.merge_reports --project X --run R`) merges the shard jobs.
+- Headed runs and healing re-runs never shard.
 
 | Situation | Response |
 |-----------|----------|
 | `node_modules/playwright/lib/program.js` absent | Fails fast — run `npm install` first. No installs during execution. |
-| Playwright Chromium binary missing | Fails fast — run `npx playwright install chromium` first. |
+| A browser binary missing | Fails fast, naming the browser — run `npx playwright install <chromium\|firefox\|webkit>` first. |
 | Exit code 4 (no tests collected) | Explicit warning log — NOT treated as success |
 | `KeyboardInterrupt` mid-run | Partial-results summary, not a crash |
 | Browser closed with no interaction (headed mode), 3× in a row | Auto-switches remaining specs to headless and re-runs them |
 | Browser-close error on an individual test | Reclassified as `"skipped"`, not `"failed"` |
-| Playwright's own `"flaky"` status (failed then passed on retry) | Counted as a pass (unreachable while `retries: 0`) |
+| Playwright's own `"flaky"` status (failed then passed on retry) | Counted as a pass by UIExecutionAgent (unreachable while `retries: 0`; the MTA reporter already records `flaky`). Changes with Phase 4.7 |
 | Base URL cannot be resolved | Fails fast (`blocking: True`) before Playwright starts — no default URL |
 | Specs span modules with different URLs | Split into one Playwright run per module, each with its own `BASE_URL`; results merged |
 
@@ -411,18 +458,29 @@ Also supports suite-scoped runs and direct `spec_files` targeting — used by He
 
 ### Playwright configuration (`playwright.config.ts`)
 
+`@playwright/test` is pinned to **1.64.0** (exact version). `playwright.config.ts` resolves the base URL, then calls
+`buildPlaywrightConfig()` (`application_assets/_shared/runtime/config/buildConfig.ts`). The builder reads
+`PW_PROJECT`'s `execution:` block with the `yaml` package. UIExecutionAgent resolves the same block in Python
+(`tools/execution/config.py`). Both sides are tested against `tests/fixtures/execution_config_cases.json`.
+
 | Setting | Value |
 |---------|-------|
 | `testMatch` | `**/test_scripts/**/*.spec.ts` |
-| `retries` | 0 — so Playwright never reports `flaky`, and `on-first-retry` video/trace never record (retry/flaky handling is Phase 4.7) |
+| `projects` | `chromium` always, plus `execution.matrix`: `firefox`, `webkit`, `pixel-7` (Pixel 7), `iphone-14` (iPhone 14). Profile `smoke` → chromium only |
+| `retries` | 0. Retries come with flaky classification (Phase 4.7). Until then a fail-then-pass would be counted as passed |
+| `fullyParallel` | off. It comes with per-test data isolation (Phase 4.4) |
+| `forbidOnly` | `!!process.env.CI` |
 | `workers` | 2 (1 on CI) |
 | `timeout` | 60s per test; `expect.timeout` 10s; `actionTimeout` 15s; `navigationTimeout` 30s |
-| `testIdAttribute` | `data-test` (not Playwright's default `data-testid`) |
-| `screenshot` | on failure only |
-| `video` / `trace` | on first retry |
+| `testIdAttribute` | `execution.test_id_attribute`, default `data-testid`. sauceLabs sets `data-test`. Python live locator validation and healing's checks read the same attribute |
+| `locale` / `timezoneId` | `execution.locale` / `execution.timezone_id` (unset by default) |
+| `trace` / `video` | `retain-on-failure` (`execution.trace` / `execution.video`) |
+| `screenshot` | `only-on-failure` (`execution.screenshot`) |
 | `baseURL` | `BASE_URL` env → `PW_PROJECT`'s `project.yaml` (`project.url`, else the single distinct module URL) → **error** (no `localhost:3000` fallback since Phase 0.6). New specs also pin their module URL with `test.use({ baseURL })` |
-| `storageState` | `PW_STORAGE_STATE` env, if present (auth) |
-| reporters | `list`, `json`, `html` (`open: 'never'`) |
+| `storageState` | `PW_STORAGE_STATE` env, if present (single-identity auth). `test.use({ role })` overrides it per test (see Auth Setup) |
+| reporters | `list`, `json`, `html` (`open: 'never'`), `junit`, MTA reporter, `blob` (when `PW_BLOB_DIR` is set). A local shard uses only `list` + `blob` |
+
+`playwright.merge.config.ts` holds only reporters, for `merge-reports`. It never resolves a base URL.
 
 ---
 
@@ -1073,6 +1131,10 @@ python cli_appevolve.py list modules
 python cli_appevolve.py test --level 3 --suite smoke --headed
 ```
 
+Level 3 runs as one Playwright `--grep` (Phase 4.9) in two cases: when the suite declares `tags` / `grep`, or when the
+project has no legacy `test_scripts/individual/` folder. Before Phase 4 the second case found no tests. Spec ids,
+including `SC-M01-003` ordinals, are resolved through `test_suite.json`. Levels 1, 2 and 4 are unchanged.
+
 `SuiteOrchestrator` can also be called directly from the orchestrator agent for selective re-execution: `from tools.suite_orchestrator import SuiteOrchestrator`.
 
 ---
@@ -1105,6 +1167,14 @@ python main.py --project AppEvolve --suite smoke
 
 # Print persistent project state and exit
 python main.py --project AppEvolve --show-state
+
+# Select tests by tag / title (Phase 4.9)
+python main.py --project AppEvolve --grep "@smoke|@P0"
+
+# Sharded runs (Phase 4.8): local N shards + merge, or CI jobs + a merge job
+python main.py --project AppEvolve --shards 2
+python main.py --project AppEvolve --shard 1/2 --run-id ci-42     # one CI job per shard
+python main.py --project AppEvolve --merge-reports ci-42          # the merge job
 
 # One-time auth capture (see Auth Setup below)
 python main.py --project AppEvolve --auth-setup
@@ -1204,6 +1274,35 @@ python main.py --project myapp --auth-setup
 
 Saves `auth.json` to `storage_state_path`. Re-run when your session expires. The DOM scanner and every generated spec automatically load it — no extra flags needed at pipeline run time.
 
+### 3. Several roles (Phase 4.3)
+
+Declare roles under `auth.roles`; they are read even when `auth.enabled` is false. These are the same roles Phase 2
+discovery uses. Strategies:
+- `credentials`: env-var credentials, live login
+- `storageState`: an existing file
+- `setup`: goto/fill/click steps
+- `anonymous: true`
+
+A spec picks a role:
+
+```ts
+test.describe('admin area', () => {
+  test.use({ role: 'admin' });                 // starts with .auth/admin.json; 'guest' (anonymous) starts empty
+  test('admin sees users', async ({ page }) => { … });
+});
+```
+
+The role files `application_assets/projects/<project>/.auth/<role>.json` are written **before** Playwright starts:
+- by UIExecutionAgent when `execution.role_auth: true` (a file younger than `role_auth_max_age_minutes`, default 30,
+  is reused);
+- by `python main.py --project X --auth-setup`, which captures every role;
+- by `python -m tools.auth.role_states --project X [--role admin] [--force]`.
+
+The login runs in Python, reusing Phase 2's role login, **outside** the test runner. Credentials therefore never reach
+a trace, video, screenshot or report. Setup-step values are also redacted from the logs. Projects without `auth.roles`
+work exactly as before, and a test without `role` keeps `PW_STORAGE_STATE`. A role whose file is missing fails its
+test with the command to run.
+
 ---
 
 ## Testing Requirements (Claude Code rule)
@@ -1221,4 +1320,5 @@ pip install -r requirements-dev.txt   # pytest + httpx (not in requirements.txt)
 python -m pytest tests/unit           # Python unit tests
 npm run test:unit                     # TypeScript/vitest unit tests (application_assets/_shared/runtime/**/*.test.ts)
 npx playwright test                   # Playwright integration / E2E tests (needs BASE_URL or PW_PROJECT)
+python -m pytest tests/integration/test_phase4_runtime_e2e.py -v   # Phase 4 runtime on buggy_shop (real Chromium)
 ```

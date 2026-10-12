@@ -281,3 +281,9 @@ design cases instead of the cluster/cap rules above:
   priority and technique (`@bva`, `@role_matrix`, … tag; `{type: "case"}` annotation).
 - Without the profile, or without `test_cases.json` (warning), generation is unchanged.
 
+
+## Test-id attribute (Phase 4)
+
+Live locator validation resolves `testid` entries with the project's `execution.test_id_attribute` (default
+`data-testid`), the attribute the TS runtime's `getByTestId` uses. Before Phase 4, Python checked `data-testid`
+while the runtime used `data-test`. The `count() == 1` rule is unchanged.

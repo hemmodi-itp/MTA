@@ -28,8 +28,8 @@ STEP_ARTIFACTS: Dict[str, List[str]] = {
     "test_design": ["test_cases", "locator_map"],
     "semantic_map": ["scenario_element_map"],
     "script_generation": ["test_plans", "test_suite", "locator_map", "traceability"],
-    "ui_execution": ["execution_results", "playwright_report", "traceability"],
-    "execution": ["execution_results", "playwright_report", "traceability"],
+    "ui_execution": ["execution_results", "mta_results", "playwright_report", "traceability"],
+    "execution": ["execution_results", "mta_results", "playwright_report", "traceability"],
     "healing": ["test_suite", "locator_map", "traceability"],
     "reporting": ["test_suite", "traceability"],
 }
@@ -55,6 +55,9 @@ def _paths_for(project_dir: str, name: str, result: Optional[Dict[str, Any]]) ->
     if name == "execution_results":
         latest = _latest(os.path.join(project_dir, REPORTS_MTA, "*.execution_results.json"))
         return [latest] if latest else []
+    if name == "mta_results":
+        path = (result or {}).get("mta_results")
+        return [path] if path and os.path.exists(path) else []
     path = artifact_path(project_dir, name, existing_only=True)
     return [path] if path else []
 

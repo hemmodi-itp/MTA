@@ -154,3 +154,7 @@ test_generation:
 
 test_execution:
   suite: {{PROJECT_NAME}}
+
+execution:           # Phase 4 Playwright runtime
+  role_auth: true    # log user/admin in once per run (.auth/<role>.json) for test.use({ role })
+  suite_mode: grep   # test_suites/*.json -> one --grep run

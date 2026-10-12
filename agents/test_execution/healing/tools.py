@@ -108,6 +108,15 @@ class HealingRunContext:
         self.validation_pages: Dict[str, Tuple[Any, Any]] = {}
         self._pw_executor: Optional[concurrent.futures.ThreadPoolExecutor] = None
 
+    def test_id_attribute(self) -> str:
+        """The project's execution.test_id_attribute (Phase 4) — the attribute the TS runtime's
+        getByTestId uses, so live checks look at the same attribute."""
+        if not hasattr(self, "_test_id_attribute"):
+            from tools.execution.config import load_execution_config
+            safe = "".join(c if (c.isalnum() or c in "-_") else "_" for c in self.project_name).strip("_")
+            self._test_id_attribute = load_execution_config(safe or "project")["test_id_attribute"]
+        return self._test_id_attribute
+
     def remaining_total(self) -> int:
         return sum(len(v) for v in self.remaining.values())
 
@@ -295,7 +304,8 @@ def _format_call(method: str, primary: str, role_name: Optional[str]) -> str:
     return f"page.{method}('{primary}')"
 
 
-def _build_python_locator(page, method: str, primary: str, role_name: Optional[str]):
+def _build_python_locator(page, method: str, primary: str, role_name: Optional[str],
+                           test_id_attribute: Optional[str] = None):
     if method == "getByPlaceholder":
         return page.get_by_placeholder(primary)
     if method == "getByRole":
@@ -305,10 +315,20 @@ def _build_python_locator(page, method: str, primary: str, role_name: Optional[s
     if method == "getByLabel":
         return page.get_by_label(primary)
     if method == "getByTestId":
-        return page.get_by_test_id(primary)
+        from tools.test_creation.script_generator.locator_resolve import by_test_id
+        return by_test_id(page, primary, test_id_attribute)
     if method == "locator":
         return page.locator(primary)
     return None
+
+
+def _ctx_test_id_attribute(ctx) -> Optional[str]:
+    """ctx.test_id_attribute(), tolerant of lightweight test doubles that lack it (-> Playwright default)."""
+    fn = getattr(ctx, "test_id_attribute", None)
+    try:
+        return fn() if callable(fn) else None
+    except Exception:
+        return None
 
 
 def _live_locator_resolves(ctx: "HealingRunContext", page, expr: str) -> bool:
@@ -318,7 +338,7 @@ def _live_locator_resolves(ctx: "HealingRunContext", page, expr: str) -> bool:
     method, primary, role_name = calls[0]
 
     def _check():
-        locator = _build_python_locator(page, method, primary, role_name)
+        locator = _build_python_locator(page, method, primary, role_name, _ctx_test_id_attribute(ctx))
         # A replacement candidate matching 2+ elements is exactly as broken
         # as one matching 0 — see _locator_entry_resolves for the same fix.
         return locator is not None and locator.count() == 1
@@ -431,13 +451,13 @@ def _read_failure_report(ctx: HealingRunContext) -> dict:
     }
 
 
-def _locator_entry_resolves(page, entry: dict) -> bool:
+def _locator_entry_resolves(page, entry: dict, test_id_attribute: Optional[str] = None) -> bool:
     """Same {type, locator, name?, frame?, scope?} -> Locator resolution LocatorManager.ts
     performs at test-run time, done in Python for a live dry-run check. Shared with
     ScriptGenerationAgent through tools/ (Phase 2) instead of two private copies; the
     count()==1 rule and the fail-open on unknown types / errors are unchanged."""
     from tools.test_creation.script_generator.locator_resolve import entry_resolves
-    return entry_resolves(page, entry)
+    return entry_resolves(page, entry, test_id_attribute)
 
 
 def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, test_name: str) -> dict:
@@ -466,7 +486,8 @@ def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, 
         if not entry:
             continue
         try:
-            resolves = ctx.pw_executor().submit(_locator_entry_resolves, page, entry).result()
+            resolves = ctx.pw_executor().submit(_locator_entry_resolves, page, entry,
+                                               _ctx_test_id_attribute(ctx)).result()
         except Exception:
             resolves = True
         if resolves:
@@ -542,7 +563,7 @@ def _propose_timing_fix(ctx: HealingRunContext, spec_file: str, test_name: str) 
     method, primary, role_name = calls[0]
 
     def _wait():
-        locator = _build_python_locator(page, method, primary, role_name)
+        locator = _build_python_locator(page, method, primary, role_name, _ctx_test_id_attribute(ctx))
         locator.wait_for(timeout=15000)
 
     try:

@@ -96,3 +96,35 @@ traceability uses `pw_status`, so a skipped test is recorded as skipped. After e
 HealingAgent's `run_tests` re-runs and per-module split runs) the results are folded into
 `test_creation/traceability.json` when `requirements.enabled` is on; a traceability failure is logged and never
 fails the run.
+
+## Playwright runtime (Phase 4)
+
+Configuration comes from the project's `execution:` block (`tools/execution/config.py`; the TS config builder
+resolves the same block) plus these request overrides:
+
+| Request key | Effect |
+|---|---|
+| `browsers` | Run these projects instead of the matrix: `chromium`, `firefox`, `webkit`, `pixel-7`, `iphone-14` |
+| `grep` / `grep_invert` | `--grep` / `--grep-invert`. ANDed with a suite's grep |
+| `shards` | Run N local shards (`--shard=i/N`, list + blob reporters only, `execution.max_parallel_shards` at a time), then `merge-reports` into the normal outputs |
+| `shard` + `run_id` | One CI shard: normal reports plus a blob in `reports/blob/<run_id>/shard-<i>/` |
+| `merge_run` | Merge `reports/blob/<run_id>/` (CI merge job). Playwright test is not run |
+
+Behaviour:
+- **Projects.** One `--project=` per enabled project (the matrix; `chromium` only by default). `MTA_PROJECTS` tells
+  the config builder which projects to define.
+- **Output folder.** `--output` is `reports/test-results/<ts>/`, no longer the HTML report folder, which the HTML
+  reporter empties.
+- **Report files.** `PW_JUNIT_REPORT` → `reports/junit/<ts>.xml`; `MTA_RESULTS_FILE` →
+  `reports/mta/<ts>.mta_results.json`. The MTA reporter writes per-test TC/AC ids, a status that keeps `flaky`
+  apart, attempts and attachment paths. Both paths are returned as `report_junit` / `mta_results` and recorded in
+  `execution_results`. A per-module split also returns `*_all` lists.
+- **Suites.** `execution.suite_mode: grep` turns a `suite` into one `--grep` run over its module folders
+  (`tools/execution/suite_grep.py`). The default `files` mode keeps per-file targeting.
+- **Role auth.** With `execution.role_auth: true`, every `auth.roles` role is logged in once per `execute()`, before
+  Playwright starts (`tools/auth/role_states.py`), so `test.use({ role })` finds `.auth/<role>.json`. The summary is
+  returned as `role_auth`; a failed role never fails the run.
+- **Never sharded:** headed runs and `spec_files` re-runs (healing).
+- **Error messages.** A missing browser binary names the browser to install. A grep that matches nothing returns
+  `status: skipped`.
+- **Unchanged until Phase 4.7:** `retries: 0`, and the flaky→pass counting in `status`.

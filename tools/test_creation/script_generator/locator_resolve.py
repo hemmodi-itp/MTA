@@ -10,6 +10,10 @@ Entry shape:
     + frame?: ["iframe#pay", ...]                — Phase 2: frameLocator chain from the page
     + scope?: {type, locator, name?}             — Phase 2: resolve the entry inside this container
 
+Phase 4: `testid` entries use the project's `execution.test_id_attribute` — the same attribute the TS
+runtime's getByTestId uses (playwright.config.ts testIdAttribute). Python Playwright's own default is
+data-testid, so before Phase 4 a data-test project's testid keys were validated against the wrong attribute.
+
 Rules kept from the original copies (do not change without changing both callers' contract):
   * a key passes only when it resolves to exactly ONE element (count() == 1) — a 2+ match is a
     Playwright strict-mode violation at run time;
@@ -25,7 +29,16 @@ class UnknownLocatorType(ValueError):
     pass
 
 
-def _on(base: Any, t: Optional[str], v: str, name: Optional[str]):
+def by_test_id(base: Any, value: str, attribute: Optional[str] = None):
+    """getByTestId with a configurable attribute. data-testid (or None) keeps get_by_test_id; any other
+    attribute is the equivalent exact attribute selector (CSS pierces open shadow roots like getByTestId)."""
+    if not attribute or attribute == "data-testid":
+        return base.get_by_test_id(value)
+    escaped = str(value).replace("\\", "\\\\").replace('"', '\\"')
+    return base.locator(f'[{attribute}="{escaped}"]')
+
+
+def _on(base: Any, t: Optional[str], v: str, name: Optional[str], test_id_attribute: Optional[str] = None):
     if t == "css":
         return base.locator(v)
     if t == "xpath":
@@ -37,26 +50,26 @@ def _on(base: Any, t: Optional[str], v: str, name: Optional[str]):
     if t == "label":
         return base.get_by_label(v)
     if t == "testid":
-        return base.get_by_test_id(v)
+        return by_test_id(base, v, test_id_attribute)
     if t == "placeholder":
         return base.get_by_placeholder(v)
     raise UnknownLocatorType(str(t))
 
 
-def resolve_entry(page: Any, entry: dict):
+def resolve_entry(page: Any, entry: dict, test_id_attribute: Optional[str] = None):
     """Build the Locator (raises UnknownLocatorType for an unknown entry or scope type)."""
     base: Any = page
     for sel in entry.get("frame") or []:
         base = base.frame_locator(sel)
     scope = entry.get("scope")
     if isinstance(scope, dict) and scope:
-        base = _on(base, scope.get("type"), scope.get("locator", ""), scope.get("name"))
-    return _on(base, entry.get("type"), entry.get("locator", ""), entry.get("name"))
+        base = _on(base, scope.get("type"), scope.get("locator", ""), scope.get("name"), test_id_attribute)
+    return _on(base, entry.get("type"), entry.get("locator", ""), entry.get("name"), test_id_attribute)
 
 
-def entry_resolves(page: Any, entry: dict) -> bool:
+def entry_resolves(page: Any, entry: dict, test_id_attribute: Optional[str] = None) -> bool:
     try:
-        locator = resolve_entry(page, entry)
+        locator = resolve_entry(page, entry, test_id_attribute)
     except UnknownLocatorType:
         return True  # unknown type — can't check, don't reject
     except Exception:

@@ -175,6 +175,12 @@ class SuiteOrchestrator:
         with open(suite_file, encoding="utf-8") as f:
             suite_config = json.load(f)
 
+        # Phase 4.9: a suite that selects by tag/grep, or a project without the legacy individual/
+        # layout (where the glob below finds nothing), runs as one Playwright --grep over the specs.
+        if (suite_config.get("tags") or suite_config.get("grep")
+                or not (self.test_scripts_dir / "individual").exists()):
+            return self._run_suite_grep(suite_name, suite_config, headless)
+
         test_files = self._resolve_suite_files(suite_config)
         if not test_files:
             return {
@@ -192,6 +198,33 @@ class SuiteOrchestrator:
         result["scenario_count"] = len(suite_config.get("scenarios", []))
         result["test_count"] = len(test_files)
         return result
+
+    def _run_suite_grep(self, suite_name: str, suite_config: dict, headless: bool = True) -> Dict[str, Any]:
+        """Level 3 via tools/execution/suite_grep.py: spec ids / tags / grep -> one --grep expression,
+        targets = the suite's module folders (or all of test_scripts/)."""
+        from tools.base_url import BaseUrlUnresolved
+        from tools.execution.suite_grep import build_suite_grep
+
+        sg = build_suite_grep(str(self.project_dir), suite_name)
+        base = {"level": 3, "suite": suite_name, "scenario_count": len(suite_config.get("scenarios", []))}
+        if sg.empty:
+            return {**base, "status": "no_tests", "unresolved": sg.unresolved}
+        dirs = [self.test_scripts_dir / m for m in sg.modules] if sg.modules else [self.test_scripts_dir]
+        targets = [str(d).replace(os.sep, "/") for d in dirs if d.exists()]
+        if not targets:
+            return {**base, "status": "no_tests", "unresolved": sg.unresolved}
+        workers = suite_config.get("execution", {}).get("parallel", 4)
+        args = ["npx", "playwright", "test", *targets, "--config", "playwright.config.ts", f"--workers={workers}",
+                *(["--grep", sg.grep] if sg.grep else []), *([] if headless else ["--headed"])]
+        try:
+            env = self._playwright_env(" ".join(targets))
+        except BaseUrlUnresolved as exc:
+            return {**base, "status": "error", "error": str(exc)}
+        # An argument list, not a shell string: grep expressions contain | ( < ! which cmd.exe would interpret.
+        import shutil
+        result = subprocess.run([shutil.which(args[0]) or args[0], *args[1:]], capture_output=True, text=True, env=env)
+        return {**base, "status": "passed" if result.returncode == 0 else "failed", "returncode": result.returncode,
+                "grep": sg.grep, "unresolved": sg.unresolved, "output": result.stdout + result.stderr}
 
     # ── Level 4: workflow ─────────────────────────────────────────────────
 

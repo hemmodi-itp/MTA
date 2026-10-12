@@ -14,6 +14,7 @@ import yaml
 
 from tools.constants import PROJECTS_BASE as _PROJECTS_DIR
 from tools.discovery.deep.config import resolve_discovery_config, resolve_roles
+from tools.execution.config import resolve_execution_config
 from tools.requirements.config import resolve_requirements_config
 from tools.safety.policy import SafetyPolicy, warn_if_unspecified
 from tools.test_design.config import resolve_design_config
@@ -58,6 +59,9 @@ def load_project_manifest(project_name: str) -> dict:
     flat["discovery"] = resolve_discovery_config(raw)
     # Phase 3 test design — on when `test_generation.profile` is set (see tools/test_design/config.py).
     flat["test_design"] = resolve_design_config(raw)
+    # Phase 4 Playwright runtime — `execution:` (matrix, test-id attribute, reporters, role auth,
+    # suite mode, shards; see tools/execution/config.py). Defaults keep today's behaviour.
+    flat["execution"] = resolve_execution_config(raw)
     roles = resolve_roles(raw)
     if roles:
         flat["auth_roles"] = roles

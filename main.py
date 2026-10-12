@@ -24,6 +24,31 @@ from tools.test_execution.reports.ns_report import write_ns_agents_report
 from workflows.workflow_loader import load_workflow
 
 
+def _auth_setup(project: str) -> int:
+    """--auth-setup: the single-identity `auth:` capture (unchanged) and, when project.yaml declares
+    `auth.roles`, one storage state per role (Phase 4.3; tools/auth/role_states.py)."""
+    from tools.auth.auth_setup import run_auth_setup
+    from tools.auth.role_states import ensure_role_states, project_roles
+    from tools.base_url import load_project_yaml
+    from tools.constants import PROJECTS_BASE
+
+    cfg = load_project_yaml(PROJECTS_BASE, project)
+    roles = project_roles(cfg)
+    rc = 0
+    if (cfg.get("auth") or {}).get("enabled") or not roles:
+        try:
+            run_auth_setup(project)
+        except (FileNotFoundError, ValueError, RuntimeError) as exc:
+            print(f"Auth setup failed: {exc}", file=sys.stderr)
+            rc = 1
+    if roles:
+        summary = ensure_role_states(project, roles, force=True)
+        for e in summary["roles"]:
+            print(f"  role {e['name']:<16} {e['strategy']:<13} {e['status']:<10} {e.get('path') or e.get('error', '')}")
+        rc = rc or (1 if summary["failed"] else 0)
+    return rc
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run an agentic QA workflow.")
     parser.add_argument("--project", "-p", required=True,
@@ -51,17 +76,28 @@ def main() -> int:
     parser.add_argument("--suite", "-s", default=None,
                         help="Run a named test suite (e.g. 'smoke', 'regression', 'module_01'). "
                              "Bypasses new_additions guard and filters execution to suite specs.")
+    # Phase 4 — Playwright runtime (tags, shards, merge); all optional, see README "Execution".
+    parser.add_argument("--grep", default=None,
+                        help="Only run tests whose title/tags match this regex, e.g. '@smoke|@P0' or '@AC-01.2'.")
+    parser.add_argument("--grep-invert", default=None, help="Skip tests matching this regex.")
+    parser.add_argument("--shard", default=None,
+                        help="Run one shard i/n (a CI job); its blob report is merged later with --merge-reports.")
+    parser.add_argument("--shards", type=int, default=None,
+                        help="Run the suite as N local shards and merge them into one report.")
+    parser.add_argument("--run-id", default=None,
+                        help="Shared run id of the --shard jobs of one CI run (names reports/blob/<run-id>/).")
+    parser.add_argument("--merge-reports", metavar="RUN_ID", default=None,
+                        help="Merge the blob reports of sharded run RUN_ID into the normal reports and exit.")
     args = parser.parse_args()
 
     # ── Auth setup and exit early ──────────────────────────────────────
     if args.auth_setup:
-        from tools.auth.auth_setup import run_auth_setup
-        try:
-            run_auth_setup(args.project)
-        except (FileNotFoundError, ValueError, RuntimeError) as exc:
-            print(f"Auth setup failed: {exc}", file=sys.stderr)
-            return 1
-        return 0
+        return _auth_setup(args.project)
+
+    # ── Merge the blob reports of a sharded run and exit early ─────────
+    if args.merge_reports:
+        from tools.execution.merge_reports import main as merge_main
+        return merge_main(["--project", args.project, "--run", args.merge_reports])
 
     # ── Interactive recording and exit early ────────────────────────────
     if args.record:
@@ -93,6 +129,10 @@ def main() -> int:
         "module_filter": args.module,
         "suite": args.suite,
     }
+    for key, value in (("grep", args.grep), ("grep_invert", args.grep_invert), ("shard", args.shard),
+                       ("shards", args.shards), ("run_id", args.run_id)):
+        if value:
+            request_payload[key] = value
     completed_steps = []
 
     def mark_done(label: str) -> None:

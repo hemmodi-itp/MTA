@@ -1,8 +1,10 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
 import { resolveBaseUrl } from './application_assets/_shared/runtime/baseUrl';
+import { buildPlaywrightConfig } from './application_assets/_shared/runtime/config/buildConfig';
+import { loadProjectYaml } from './application_assets/_shared/runtime/config/projectYaml';
 
 // Resolve the base URL Playwright navigates to (Phase 0.6 — fail fast, no default):
 //   1. BASE_URL env var — always set by ui_execution/agent.py (per module when a
@@ -19,73 +21,15 @@ function loadBaseUrl(): string {
   });
 }
 
-const BASE_URL = loadBaseUrl();
-
-export default defineConfig({
-  // Root directory where test specs are found — set per project at runtime
-  // UIExecutionAgent overrides testDir via CLI: --config playwright.config.ts --project chromium
-  testDir: process.env.PW_TEST_DIR || './application_assets',
-  testMatch: '**/test_scripts/**/*.spec.ts',
-
-  // Fail the build on CI if any test.only() is left accidentally
-  forbidOnly: !!process.env.CI,
-
-  // No retries (so Playwright never reports "flaky"; video/trace 'on-first-retry'
-  // therefore never record). Retry/flaky handling is Phase 4.7 of the v3 plan.
-  retries: 0,
-
-  // Parallel workers
-  workers: process.env.CI ? 1 : 2,
-
-  // Reporters
-  reporter: [
-    ['list'],
-    ['json', { outputFile: process.env.PW_JSON_REPORT || 'playwright-report/results.json' }],
-    ['html', { outputFolder: process.env.PW_HTML_REPORT || 'playwright-report/html', open: 'never' }],
-  ],
-
-  use: {
-    baseURL: BASE_URL,
-
-    // Match the app's data-test attribute instead of Playwright's default data-testid
-    testIdAttribute: 'data-test',
-
-    // Pre-load saved auth state (cookies + localStorage) when available.
-    // Set PW_STORAGE_STATE to an auth.json path produced by --auth-setup.
-    // All browser contexts in this run are pre-authenticated — no login redirect.
-    storageState: (() => {
-      const p = process.env.PW_STORAGE_STATE;
-      return (p && fs.existsSync(p)) ? p : undefined;
-    })(),
-
-    // Take screenshot only on failure
-    screenshot: 'only-on-failure',
-
-    // Record video on first retry of a failing test
-    video: 'on-first-retry',
-
-    // Collect trace on first retry
-    trace: 'on-first-retry',
-
-    // Default timeout per action
-    actionTimeout: 15_000,
-
-    // Page load timeout
-    navigationTimeout: 30_000,
-  },
-
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ],
-
-  // Global timeout per test
-  timeout: 60_000,
-
-  // Expect timeout
-  expect: {
-    timeout: 10_000,
-  },
-});
+// Everything else comes from PW_PROJECT's `execution:` block (Phase 4: browser/device matrix,
+// test-id attribute, locale/timezone, trace/video/screenshot, JUnit + MTA reporters) and the
+// env vars UIExecutionAgent sets — see application_assets/_shared/runtime/config/buildConfig.ts.
+export default defineConfig(
+  buildPlaywrightConfig({
+    env: process.env,
+    project: loadProjectYaml(process.env.PW_PROJECT),
+    baseURL: loadBaseUrl(),
+    mtaReporterPath: path.resolve(__dirname, 'application_assets/_shared/runtime/reporters/mta-reporter.ts'),
+    exists: fs.existsSync,
+  }),
+);

@@ -117,3 +117,9 @@ guard; the existing tool-surface boundary is unchanged.
 private copy of ScriptGenerationAgent's logic (a tools/ module, not a cross-agent import). Same `count() == 1` rule
 and fail-open behaviour; entries may now carry `frame` / `scope` (deep-discovery locators) and are resolved through
 them. No tool gained a new write path — the tool-surface boundary is unchanged.
+
+## Test-id attribute (Phase 4)
+
+The live locator checks (`_live_locator_resolves`, the action-library key check, the timing probe) resolve
+`getByTestId` / `testid` entries with the project's `execution.test_id_attribute`, matching the TS runtime. The
+tool surface and the `count() == 1` rule are unchanged.

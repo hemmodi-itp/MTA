@@ -216,6 +216,58 @@ class ExecutionResultsV2(Lenient):
     results: List[TestResult] = Field(default_factory=list)
 
 
+class MtaAttempt(Lenient):
+    retry: int = 0
+    status: str
+    duration_ms: Optional[Union[int, float]] = None
+    error: Optional[str] = None
+
+
+class MtaAttachment(Lenient):
+    name: str
+    content_type: Optional[str] = None
+    path: Optional[str] = None
+
+
+class MtaTest(Lenient):
+    """One test in the MTA Playwright reporter's output (Phase 4.2)."""
+    __test__ = False
+    test_id: str
+    title: str
+    title_path: List[str] = Field(default_factory=list)
+    spec_file: str
+    line: Optional[int] = None
+    project: Optional[str] = None
+    tags: List[str] = Field(default_factory=list)
+    annotations: List[Dict[str, Any]] = Field(default_factory=list)
+    tc_id: Optional[str] = None
+    case_id: Optional[str] = None
+    scenario_id: Optional[str] = None
+    ac_ids: List[str] = Field(default_factory=list)
+    status: Literal["passed", "failed", "flaky", "skipped", "timedOut", "interrupted"]
+    outcome: Optional[str] = None
+    expected_status: Optional[str] = None
+    retries: int = 0
+    duration_ms: Optional[Union[int, float]] = None
+    attempts: List[MtaAttempt] = Field(default_factory=list)
+    attachments: List[MtaAttachment] = Field(default_factory=list)
+
+
+class MtaResultsV2(Lenient):
+    """test_execution/reports/mta/{ts}.mta_results.json — written by
+    application_assets/_shared/runtime/reporters/mta-reporter.ts, read by tools/execution/mta_results.py."""
+    schema_version: Literal[2] = 2
+    artifact: Literal["mta_results"] = "mta_results"
+    run_id: Optional[str] = None
+    project: Optional[str] = None
+    shard: Optional[Dict[str, int]] = None
+    started_at: Optional[str] = None
+    finished_at: Optional[str] = None
+    status: Optional[str] = None
+    totals: Dict[str, int] = Field(default_factory=dict)
+    tests: List[MtaTest] = Field(default_factory=list)
+
+
 class PlaywrightReportLoose(Lenient):
     """Playwright's own JSON reporter output — a third-party format, checked loosely."""
     config: Optional[Dict[str, Any]] = None
