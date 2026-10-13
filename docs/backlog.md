@@ -22,3 +22,15 @@
 - Triage: reporter-side `network_error` annotation emission (triage reads it if present; message-text fallback only today)
 - Triage as its own registered agent/workflow step (currently runs as first phase of HealingAgent; needs scaffold + registry wiring)
 - `environment` verdict: health-check + one re-run; `healing.mode: off`; report-writer section for defects.json / proposals
+
+## Phase 7
+- Visual regression (toHaveScreenshot, baseline approval)
+- Performance budgets (project.yaml budgets + baseline.json)
+- Responsive/compatibility matrix (viewports, browsers, overflow detector)
+- Resilience / fault injection (page.route, offline, slow 3G)
+- i18n/l10n matrix
+- Active security probes (XSS, IDOR, SQLi, open redirect, CSRF)
+- A11y keyboard/focus/form-error checks and accepted-issues baseline (7.1); WCAG 2.2 tags
+- Passive: mixed content, stack-trace leaks, target=_blank noopener
+- Wire generate.py into the pipeline/orchestrator (currently CLI-only) and render nfr specs in traceability
+- Per-role storageState instead of replaying login steps in NFR specs

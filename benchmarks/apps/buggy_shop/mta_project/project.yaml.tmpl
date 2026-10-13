@@ -27,6 +27,10 @@ safety:
 contracts:
   enforce: block
 
+test_types:
+  accessibility: true      # Phase 7-mini: @a11y axe specs (tools/nonfunctional/generate.py)
+  security_passive: true   # Phase 7-mini: @security header/cookie/storage specs
+
 requirements:
   enabled: true      # Phase 1: requirements.json, AC-linked + tagged tests, traceability.json
 
