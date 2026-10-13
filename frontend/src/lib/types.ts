@@ -27,7 +27,8 @@ export type PipelineStage =
   | "output_validation"
   | "pass_fail"
   | "brd_compliance"
-  | "final_report";
+  | "final_report"
+  | "agent_quality";
 
 /** What the user told us about their agent when submitting it. */
 export type SubmissionMode = "brd_and_live" | "live_only" | "brd_only";

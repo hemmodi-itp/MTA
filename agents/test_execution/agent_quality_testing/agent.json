@@ -1,0 +1,27 @@
+{
+  "name": "AgentQualityTestingAgent",
+  "registry_key": "agent_quality_testing",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.agent_quality_testing.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Phase 9 AI-agent testing: runs the project's golden dataset (eval_sets/<agent>) against the live agent across 15 dimensions (task success, groundedness, hallucination, consistency, robustness, multi-turn, format, scope, direct/indirect injection, leakage, harmful requests, tool use, session isolation, latency/cost), deterministic checks first and a calibrated LLM judge (different model) for the rest, k runs per case with Wilson-interval gates, and a regression comparison with the previous run.",
+  "inputs": [
+    {"name": "live_url", "type": "string", "required": true, "description": "Deployed agent URL; skipped when absent or mode is brd_only"},
+    {"name": "mode", "type": "string", "required": true, "description": "Submission mode (brd_only skips)"},
+    {"name": "app_classification", "type": "object", "required": false, "description": "Runs for Chatbot / REST API / Hybrid (chat or API component) / Unknown apps"},
+    {"name": "github_url", "type": "string", "required": true, "description": "Resolved to an eval set through eval_sets/index.yaml (the opt-in)"},
+    {"name": "run_id", "type": "string", "required": true, "description": "Seeds per-run canary tokens and session ids"},
+    {"name": "cancel_event", "type": "threading.Event", "required": false, "description": "Stops between cases when set"},
+    {"name": "emit", "type": "callable", "required": false, "description": "Progress callback (message, level)"}
+  ],
+  "outputs": [
+    {"name": "agent_quality", "type": "object|null", "description": "Per-dimension defects, statistical verdict (pass rate, Wilson CI), failed cases with transcript / checks / judge reasoning, canary hits, per-AC counts, cuts, regression, artifact path"},
+    {"name": "agent_quality_rows", "type": "array", "description": "One TestCase row per case (category agent_quality), appended by api/pipeline.py"}
+  ],
+  "dependencies": [],
+  "skills": ["agent_quality_judging"],
+  "doc": "agent.md"
+}

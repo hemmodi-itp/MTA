@@ -87,6 +87,11 @@ steps:
     needs: [pass_fail]
     timeout_s: 1800
     provides: [execution_results, live_reachable, live_status, live_error, transport, connection_detail]
+  - name: agent_quality_testing
+    description: "Phase 9: the project's golden dataset (eval_sets/index.yaml) against the live agent — 15 AI-agent dimensions, statistical verdicts, safety, regression; skips when no eval set is registered"
+    needs: [live_agent_execution]   # after the fallback: latency is not measured under the browser's load
+    timeout_s: 2400
+    provides: [agent_quality, agent_quality_rows]
   - name: requirement_traceability
     description: "Per criterion: hybrid retrieval, verifier samples, validated citations, wiring proof → static verdict (runtime evidence merged later)"
     needs: [brd_builder, repo_intelligence]
@@ -100,7 +105,7 @@ steps:
     provides: [findings]
   - name: brd_compliance
     description: "Merge runtime evidence into the static trace, then the BRD compliance matrix: requirement → criterion → evidence → verdict, code-vs-runtime discrepancies"
-    needs: [requirement_traceability, live_agent_execution]
+    needs: [requirement_traceability, live_agent_execution, agent_quality_testing]
     timeout_s: 300
     provides: [brd_compliance, criterion_verdicts, evidence_items, traced_requirements]
   - name: compliance_scoring

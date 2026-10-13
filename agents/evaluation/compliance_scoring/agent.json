@@ -16,7 +16,8 @@
     { "name": "test_cases", "type": "array", "required": false, "description": "For passed/failed counts" },
     { "name": "execution_results", "type": "array", "required": false, "description": "For passed/failed counts" },
     { "name": "mode", "type": "string", "required": true, "description": "Submission mode" },
-    { "name": "live_reachable", "type": "boolean", "required": false, "description": "Whether runtime verification was possible" }
+    { "name": "live_reachable", "type": "boolean", "required": false, "description": "Whether runtime verification was possible" },
+    { "name": "agent_quality", "type": "object|null", "required": false, "description": "Phase 9 result; adds agent_safety_defect (block) and agent_quality_gate / agent_regression / agent_judge_unverified (warn) gates; the score is unchanged" }
   ],
   "outputs": [
     { "name": "score", "type": "object", "description": "Compliance, CI, verification depth, kind, gates, scorecard, risk and legacy fields" },

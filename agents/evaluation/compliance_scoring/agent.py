@@ -4,12 +4,16 @@ Quality Scorecard, gates and recommendations for a run.
 
 Pure Python (engines/scoring/v1.py): every LLM judgement already happened upstream, so the
 same verdicts and findings always produce the same score, and the scoring version is stored.
+
+Phase 9: with `agent_quality` present, its gates are appended (agent_safety_defect = block; agent_quality_gate,
+agent_regression, agent_judge_unverified = warn). The compliance score itself does not change.
 """
 
 from typing import Any, Dict, Optional
 
 from agents.base_agent import BaseAgent
 from agents.evaluation.compliance_scoring.tools import recommendations, score
+from tools.agent_tests.integration import apply_gates
 from tools.shared import get_logger
 
 
@@ -37,6 +41,7 @@ class ComplianceScoringAgent(BaseAgent):
             "discrepancies": (request.get("brd_compliance") or {}).get("discrepancies") or [],
         }
         result = score(reqs, verdicts, findings, request.get("scorecard"), context)
+        result = apply_gates(result, request.get("agent_quality"))  # Phase 9 gates; unchanged without agent_quality
         tests = request.get("test_cases") or []
         executed = {r.get("id"): r for r in request.get("execution_results") or []}
         result["passed"] = sum(1 for t in tests if (executed.get(t.get("id")) or {}).get("status") == "passed")

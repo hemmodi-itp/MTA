@@ -98,8 +98,38 @@ def build_report(ctx: Dict[str, Any]) -> Dict[str, Any]:
             "Compliance = priority-weighted mean of requirement scores (high 3, medium 2, low 1); the interval is a 90% bootstrap.",
         ],
     }
+    if ctx.get("agent_quality"):  # Phase 9 — only present for chat / agent apps with a registered eval set
+        report["agent_quality"] = _agent_quality(ctx["agent_quality"])
+        report["method"].append(
+            "AI agent quality (Phase 9): a reviewed golden dataset per dimension, deterministic checks first, an LLM "
+            "judge on a different model only for what they cannot decide (counted only where calibrated, Cohen's "
+            "kappa >= 0.6), k runs per case and a Wilson 95% lower-bound gate per dimension.")
     report["summary"] = _summary(report, sc, pf, bc, deployed)
     return report
+
+
+def _agent_quality(aq: Dict[str, Any]) -> Dict[str, Any]:
+    dims = aq.get("dimensions") or {}
+    return {
+        "agent": aq.get("agent"), "agent_version": aq.get("agent_version"), "judge": aq.get("judge"),
+        "requests": aq.get("requests"), "latency": aq.get("latency"),
+        "dimensions": [{"dimension": d, **{k: v.get(k) for k in ("outcome", "verdict", "pass_rate", "ci_low",
+                                                                  "ci_high", "n", "cases", "unverified_judge_runs",
+                                                                  "reason")}} for d, v in dims.items()],
+        "failed": [{k: f.get(k) for k in ("case_id", "dimension", "title", "ac_ids", "outcome", "failed_checks",
+                                          "judge", "transcript")} for f in (aq.get("failed") or [])[:15]],
+        "failed_total": aq.get("failed_total"), "canary_hits": aq.get("canary_hits") or [],
+        "regression": aq.get("regression"), "unreviewed_cases": aq.get("unreviewed_cases"),
+        "cut": len(aq.get("cut") or []),
+    }
+
+
+def _aq_cls(v: Optional[str]) -> str:
+    return {"pass": "ok", "fail": "bad", "non_deterministic": "bad"}.get(v or "", "warn" if v else "")
+
+
+def _aq_ci(d: Dict[str, Any]) -> str:
+    return f"{d['ci_low']:.2f}-{d['ci_high']:.2f}" if d.get("ci_low") is not None else "-"
 
 
 # ── sections ────────────────────────────────────────────────────────────────
@@ -331,6 +361,26 @@ def render_markdown(rep: Dict[str, Any]) -> str:
         for n in rt["not_run"]:
             L.append(f"- {n['count']} not run: {n['reason']}")
         L.append("")
+    aq = rep.get("agent_quality")
+    if aq:
+        L += ["## AI agent quality", "", f"Eval set `{aq['agent']}` · {aq['requests']} requests · judge "
+              f"{(aq.get('judge') or {}).get('model') or 'none'} · {aq.get('unreviewed_cases') or 0} unreviewed case(s)", "",
+              "| Dimension | Defects | Gate | Pass rate | 95% CI | n | Unverified judge runs |", "|---|---|---|---|---|---|---|"]
+        for d in aq["dimensions"]:
+            L.append(f"| {d['dimension']} | {d['outcome']} | {d['verdict']} | {d['pass_rate'] if d['pass_rate'] is not None else '-'} "
+                     f"| {_aq_ci(d)} | {d['n'] or 0} | {d['unverified_judge_runs'] or 0} |")
+        for f in aq["failed"]:
+            j = f.get("judge") or {}
+            L.append(f"- **{f['case_id']}** {f['dimension']} ({', '.join(f['ac_ids'] or [])}) {f['outcome']}: {f['title']}"
+                     + (f" — judge: {str(j.get('reasoning') or '')[:300]}" if j else "")
+                     + "".join(f"\n  - {c['name']}: {c['detail'][:200]}" for c in f.get("failed_checks") or []))
+        if aq["canary_hits"]:
+            L.append(f"- **Canary leaked** in {', '.join(sorted({h['case'] for h in aq['canary_hits']}))}")
+        reg = aq.get("regression") or {}
+        if reg and not reg.get("baseline"):
+            L.append("- Regression vs the previous run: " + ("none" if reg.get("ok") else ", ".join(
+                f"{r['dimension']} {r['delta_points']} pts" for r in reg.get("regressions") or [])))
+        L.append("")
     if rep["discrepancies"]:
         L += ["## Code vs runtime", ""] + [f"- **{x['kind'].replace('_', ' ')}** {x['criterion_code']} ({x['requirement_code']}): {x['detail']}"
                                              for x in rep["discrepancies"]] + [""]
@@ -438,6 +488,25 @@ def render_html(rep: Dict[str, Any]) -> str:
         for t in rt["passed"]:
             H.append(f"<li><span class='pill ok'>passed</span> <code>{e(t['test_code'] or '')}</code> ({e(t.get('criterion_code') or '')}) "
                      f"{e(t.get('title') or '')} · {t.get('score')} · {e(t.get('strength') or '')}</li>")
+        H.append("</ul>")
+    aq = rep.get("agent_quality")
+    if aq:
+        H.append(f"<h2>AI agent quality</h2><p class='muted'>Eval set <code>{e(str(aq['agent']))}</code> · {aq['requests']} requests"
+                 f" · judge {e(str((aq.get('judge') or {}).get('model') or 'none'))} · {aq.get('unreviewed_cases') or 0} unreviewed case(s)</p>"
+                 "<table><tr><th>Dimension</th><th>Defects</th><th>Gate</th><th>Pass rate</th><th>95% CI</th><th>n</th></tr>")
+        for d in aq["dimensions"]:
+            H.append(f"<tr><td>{e(d['dimension'])}</td><td><span class='pill {_aq_cls(d['outcome'])}'>{e(str(d['outcome']))}</span></td>"
+                     f"<td><span class='pill {_aq_cls(d['verdict'])}'>{e(str(d['verdict']))}</span></td>"
+                     f"<td>{'' if d['pass_rate'] is None else d['pass_rate']}</td><td>{_aq_ci(d)}</td><td>{d['n'] or 0}</td></tr>")
+        H.append("</table><ul>")
+        for f in aq["failed"]:
+            j = f.get("judge") or {}
+            convo = "".join(f"<br><span class='muted'>{e(t['session'])} user:</span> {e(t['user'][:300])}"
+                            f"<br><span class='muted'>agent:</span> {e(t['reply'][:400])}" for t in (f.get("transcript") or [])[:4])
+            H.append(f"<li><span class='pill bad'>{e(f['outcome'])}</span> <code>{e(f['case_id'])}</code> {e(f['dimension'])} "
+                     f"({e(', '.join(f['ac_ids'] or []))}) {e(f['title'])}"
+                     + "".join(f"<br>{e(c['name'])}: {e(c['detail'][:200])}" for c in f.get("failed_checks") or [])
+                     + (f"<br>judge: {e(str(j.get('reasoning') or '')[:300])}" if j else "") + convo + "</li>")
         H.append("</ul>")
     if rep["discrepancies"]:
         H.append("<h2>Code vs runtime</h2><ul>" + "".join(

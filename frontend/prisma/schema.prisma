@@ -46,6 +46,8 @@ enum PipelineStage {
   pass_fail
   brd_compliance
   final_report
+  // Phase 9: AI agent quality tests (agents/test_execution/agent_quality_testing)
+  agent_quality
 }
 
 // What the user told us about their agent at submission time.
