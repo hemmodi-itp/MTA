@@ -14,6 +14,7 @@ those files.
 """
 
 import concurrent.futures
+import difflib
 import json
 import os
 import re
@@ -81,6 +82,9 @@ class HealingRunContext:
         locator_map: Optional[Dict[str, Any]] = None,
         locator_map_path: str = "",
         comprehension_dir: str = "",
+        mode: str = "auto",
+        proposals_dir: str = "",
+        healable: Optional[set] = None,
     ):
         self.project_name = project_name
         self.scripts_dir = scripts_dir
@@ -99,6 +103,12 @@ class HealingRunContext:
         self.locator_map = locator_map or {}
         self.locator_map_path = locator_map_path
         self.comprehension_dir = comprehension_dir
+        # Phase 6-lean: "auto" applies patches; "propose" writes diffs to proposals_dir instead.
+        self.mode = mode
+        self.proposals_dir = proposals_dir
+        self.proposals: List[Dict[str, str]] = []
+        # {(spec_key, test_title)} triaged as test_defect.* -- None = no triage, heal everything.
+        self.healable = healable
 
         self.remaining: Dict[str, Dict[str, str]] = {}
         self.not_healable: List[Dict[str, str]] = []
@@ -141,6 +151,19 @@ class HealingRunContext:
                     except Exception:
                         pass
             self._pw_executor.shutdown(wait=False)
+
+
+def _write_proposal(ctx: HealingRunContext, rel_path: str, old: str, new: str, evidence: str) -> str:
+    """Write a unified diff (+ evidence) under proposals_dir; returns the diff path."""
+    diff = "".join(difflib.unified_diff(old.splitlines(True), new.splitlines(True),
+                                        fromfile=f"a/{rel_path}", tofile=f"b/{rel_path}"))
+    safe = re.sub(r"[^\w.-]+", "_", rel_path)
+    path = os.path.join(ctx.proposals_dir, safe + ".diff")
+    os.makedirs(ctx.proposals_dir, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(f"# evidence: {evidence}\n{diff}")
+    ctx.proposals.append({"target": rel_path, "diff": path})
+    return path
 
 
 # ── Report parsing (module-relative spec keys — fixes the old basename() bug) ──
@@ -450,8 +473,11 @@ def _read_failure_report(ctx: HealingRunContext) -> dict:
     for spec_key, test_names in failing.items():
         entry = {}
         for tn in test_names:
+            if ctx.healable is not None and (spec_key, tn) not in ctx.healable:
+                continue
             entry[tn] = _get_error_for_test(ctx.report_json, spec_key, tn)
-        ctx.remaining[spec_key] = entry
+        if entry:
+            ctx.remaining[spec_key] = entry
     return {
         "failing_tests": [
             {"spec_file": sf, "test_name": tn, "error_message": err}
@@ -504,7 +530,14 @@ def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, 
         if resolves:
             continue  # this key is fine — the failure is something else
 
-        repaired = repair_named_locator(ctx.locator_map_path, ctx.comprehension_dir, key)
+        target_path = ctx.locator_map_path
+        if ctx.mode == "propose":
+            # repair a scratch copy, then emit the delta as a diff -- locator_map.json stays untouched
+            os.makedirs(ctx.proposals_dir, exist_ok=True)
+            target_path = os.path.join(ctx.proposals_dir, "locator_map.proposed.json")
+            with open(ctx.locator_map_path, encoding="utf-8") as src, open(target_path, "w", encoding="utf-8") as dst:
+                dst.write(src.read())
+        repaired = repair_named_locator(target_path, ctx.comprehension_dir, key)
         if not repaired:
             return {
                 "resolved": False,
@@ -512,6 +545,17 @@ def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, 
                           "automatically (no confident match on re-scan) — needs a human to update "
                           "locator_map.json",
             }
+        if ctx.mode == "propose":
+            with open(ctx.locator_map_path, encoding="utf-8") as f:
+                old_text = f.read()
+            with open(target_path, encoding="utf-8") as f:
+                new_text = f.read()
+            os.remove(target_path)
+            _write_proposal(ctx, "locator_map.json", old_text, new_text, f"locator_key '{key}' failed live resolution")
+            for tn in list(ctx.remaining.get(spec_file, {})):
+                _mark_not_healable(ctx, spec_file, tn, "patch proposed (healing.mode=propose), not applied")
+            return {"resolved": True, "applied": False, "proposed": True, "repaired_key": key,
+                    "note": "propose mode: locator_map.json diff written to healing_proposals; nothing applied"}
         with open(ctx.locator_map_path, encoding="utf-8") as f:
             ctx.locator_map = json.load(f)
         return {
@@ -749,6 +793,11 @@ def _apply_patch(ctx: HealingRunContext, spec_file: str, test_name: str, new_blo
     new_content = content.replace(old_block, new_block, 1)
     if new_content == content:
         return {"applied": False, "reason": "replacement produced no change to the file"}
+
+    if ctx.mode == "propose":
+        path = _write_proposal(ctx, spec_file, content, new_content, f"test '{test_name}'")
+        _mark_not_healable(ctx, spec_file, test_name, "patch proposed (healing.mode=propose), not applied")
+        return {"applied": False, "proposed": True, "diff": path, "spec_file": spec_file, "test_name": test_name}
 
     tmp_path = spec_path + ".tmp"
     with open(tmp_path, "w", encoding="utf-8") as f:

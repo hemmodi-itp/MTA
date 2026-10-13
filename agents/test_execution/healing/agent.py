@@ -84,7 +84,26 @@ class HealingAgent(BaseAgent):
                 "message": "no failing tests",
             }
 
+        # Phase 6-lean: project.yaml `healing: {triage: bool, mode: auto|propose}`. No `healing` section =
+        # legacy behaviour (no triage, auto-apply); a section present defaults to triage on, mode propose.
+        hcfg = _load_healing_config(safe)
+        healable, triage_summary = None, None
+        if hcfg["triage"]:
+            from tools.triage.triage import DATA, LOCATOR, PRODUCT_DEFECT, write_triage
+            triage = write_triage(report_json, os.path.join(reports_dir, "triage.json"))
+            healable = {(t["spec_file"], t["test_name"]) for t in triage["tests"] if t["verdict"] in (LOCATOR, DATA)}
+            defects = [t for t in triage["tests"] if t["verdict"] == PRODUCT_DEFECT]
+            with open(os.path.join(reports_dir, "defects.json"), "w", encoding="utf-8") as f:
+                json.dump(defects, f, indent=2)
+            triage_summary = {"counts": triage["counts"], "defects": defects}
+            if not healable:
+                self._log(f"Triage: nothing healable ({triage['counts']})")
+                return {"module": "healing", "status": "success", "project": project_name, "specs_healed": 0,
+                        "tests_healed": 0, "not_healable": [], "triage": triage_summary,
+                        "message": "no test_defect failures to heal"}
+
         module_urls, default_url = _load_project_urls(safe)
+        run_id = os.path.splitext(os.path.basename(report_json))[0]
         ctx = HealingRunContext(
             project_name=project_name,
             scripts_dir=scripts_dir,
@@ -100,6 +119,9 @@ class HealingAgent(BaseAgent):
             locator_map=_load_json_or_empty(locator_map_path),
             locator_map_path=locator_map_path,
             comprehension_dir=comprehension_dir,
+            mode=hcfg["mode"],
+            proposals_dir=os.path.join(_ASSETS_BASE, safe, "test_creation", "healing_proposals", run_id),
+            healable=healable,
         )
 
         self._log(
@@ -150,6 +172,9 @@ class HealingAgent(BaseAgent):
             "not_healable": ctx.not_healable,
             "rounds": ctx.rounds,
             "remaining_failing_count": ctx.remaining_total(),
+            "mode": ctx.mode,
+            "proposals": ctx.proposals,
+            "triage": triage_summary,
         }
 
     def _run_adk_healing(self, ctx: HealingRunContext, model, max_iterations: int) -> None:
@@ -206,6 +231,20 @@ async def _drive_loop(loop_agent, app_name: str) -> None:
 
 
 # ── Loaders ────────────────────────────────────────────────────────────────────
+
+def _load_healing_config(safe_project: str) -> Dict[str, Any]:
+    import yaml
+    path = os.path.join(_ASSETS_BASE, safe_project, "project.yaml")
+    try:
+        with open(path, encoding="utf-8") as f:
+            raw = (yaml.safe_load(f) or {}).get("healing")
+    except Exception:
+        raw = None
+    if not isinstance(raw, dict):
+        return {"triage": False, "mode": "auto"}
+    mode = raw.get("mode", "propose")
+    return {"triage": bool(raw.get("triage", True)), "mode": mode if mode in ("auto", "propose") else "propose"}
+
 
 def _load_dom_elements(path: str) -> List[Dict[str, Any]]:
     if not os.path.exists(path):

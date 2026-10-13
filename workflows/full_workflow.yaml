@@ -161,8 +161,11 @@ steps:
     #   test_execution/reports/index.json        (updated, newest-first)
 
   - name: healing
-    description: "Heal failing test() blocks — root cause + blast radius + block-level patch"
+    description: "Triage failures (deterministic, tools/triage), then heal ONLY test_defect.* — block-level patch; mode auto|propose"
     depends_on: [ui_execution]
+    # Phase 6-lean: triage runs as the first phase of this step (project.yaml `healing: {triage, mode}`;
+    # absent section = legacy behaviour). Writes reports/triage.json + reports/defects.json (product_defect,
+    # never patched). mode=propose writes diffs to test_creation/healing_proposals/<run>/ instead of applying.
     # Inputs:
     #   test_execution/reports/json/{ts}_results.json   (latest — _find_latest_report)
     #   comprehension/dom_elements.json
