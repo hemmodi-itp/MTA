@@ -152,6 +152,9 @@ modules:
       - click: "#login-button"
       - wait: 500
 
+oracles:
+  enabled: true   # Phase 5: assertion linter + verifyNoNewConsoleErrors on every test (default off elsewhere)
+
 test_generation:
   profile: standard  # Phase 3: test design (techniques + risk + budget) → test_cases.json
   budget: { max_tests: 400, max_runtime_minutes: 45 }

@@ -16,6 +16,7 @@ from tools.test_creation.script_generator.build_dom_locator_map import (
 from tools.test_creation.script_generator.spec_renderer import (
     LOCATOR_FIRST_ACTIONS,
     LOCATOR_OR_NULL_ACTIONS,
+    ORACLE_REQUIRED_FIELDS,
     VALUE_REQUIRED_ACTIONS,
     render_flows_module,
     render_spec_from_plan,
@@ -28,6 +29,7 @@ __all__ = [
     "write_pages_module",
     "LOCATOR_FIRST_ACTIONS",
     "LOCATOR_OR_NULL_ACTIONS",
+    "ORACLE_REQUIRED_FIELDS",
     "VALUE_REQUIRED_ACTIONS",
     "render_flows_module",
     "render_spec_from_plan",

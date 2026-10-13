@@ -51,7 +51,7 @@ from tools.safety.plan_filter import filter_plan
 from tools.safety.policy import SafetyPolicy, load_safety_policy
 from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
 from agents.test_creation.script_generation.prompt import (
-    ACTION_LIBRARY_PROMPT, DESIGN_CASES_PROMPT, LOCATOR_RECONCILE_PROMPT,
+    ACTION_LIBRARY_PROMPT, DESIGN_CASES_PROMPT, LINT_FEEDBACK_BLOCK, LOCATOR_RECONCILE_PROMPT, ORACLE_PROMPT_BLOCK,
 )
 from tools.execution.config import load_execution_config
 from tools.test_creation.script_generator.compose import (
@@ -60,6 +60,7 @@ from tools.test_creation.script_generator.compose import (
 from agents.test_creation.script_generation.tools import (
     LOCATOR_FIRST_ACTIONS,
     LOCATOR_OR_NULL_ACTIONS,
+    ORACLE_REQUIRED_FIELDS,
     VALUE_REQUIRED_ACTIONS,
     render_flows_module,
     render_spec_from_plan,
@@ -67,6 +68,7 @@ from agents.test_creation.script_generation.tools import (
     write_named_locator_map,
     write_pages_module,
 )
+from tools.test_creation import assertion_linter
 from connectors.connector_registry import ConnectorRegistry
 from tools.config.agent_registry_config import fallback_enabled, python_stub_fallback_enabled
 from tools.config.test_generation_config import DEFAULT_TEST_GENERATION_CONFIG, load_test_generation_config
@@ -96,6 +98,8 @@ ALLOWED_ACTIONS = frozenset({
     "verifyContainsText", "verifyValue", "verifyEnabled", "verifyDisabled",
     "verifyChecked", "verifyCount", "verifyUrl", "verifyUrlContains", "verifyTitle",
     "verifyTitleContains", "takeScreenshot", "goBack", "reload", "verifyNoPageErrors", "useFlow",
+    # Phase 5 oracles (verifyNoNewConsoleErrors is renderer-appended, never planned)
+    "verifyRequest", "verifyNoRequest", "verifyFieldInvalid", "verifyNoDialog", "verifyNotInjected",
 })
 
 FIXED_SLEEP_ACTIONS = frozenset({"waitForTimeout"})
@@ -116,6 +120,7 @@ class ScriptGenerationAgent(BaseAgent):
         self.logger = get_logger("agent.script_generation")
         # Phase 1: set per execute() when requirements.enabled + requirements.json exist; None = untraced.
         self._tracer: Optional[PlanTracer] = None
+        self._oracles_on = False      # Phase 5: set per execute() from project.yaml `oracles.enabled`
 
     # ── Public entry point ─────────────────────────────────────────────────────
 
@@ -194,6 +199,7 @@ class ScriptGenerationAgent(BaseAgent):
         }
         # Phase 4.5: execution.test_steps / module_roles (+ modules[].role, auth.roles) shape the rendered spec.
         render_opts = _render_options(safe, request)
+        self._oracles_on = render_opts["oracles"]
 
         # Regenerate the Page-factory classes fresh every run — pure codegen
         # from locator_map.json, so it's always in sync with a human/HealingAgent
@@ -402,6 +408,14 @@ class ScriptGenerationAgent(BaseAgent):
                         _write_test_plans(test_plans, test_plans_path)
                         continue
 
+                    weak_names: List[str] = []
+                    assertion_median = None
+                    if render_opts["oracles"]:
+                        plan, weak_names, assertion_median = self._lint_and_regenerate(
+                            plan, request, scenario, allowed_locators, test_data, effective_url, flows_meta,
+                            gen_config, locator_map, design_cases, allowed_keys={e["key"] for e in allowed_locators},
+                        )
+
                     if self._tracer is not None:
                         plan = self._tracer.annotate(plan, scenario, module_id)
                         self._tracer.save()   # persist tc_id assignments with the plan that uses them
@@ -417,6 +431,7 @@ class ScriptGenerationAgent(BaseAgent):
                     plan if kind == "plan" else None, scenario, effective_url, spec_rel_path,
                     project=safe, flows_meta=flows_meta, module_setup=module_setup, role=role,
                     test_steps=render_opts["test_steps"], locator_map=locator_map,
+                    oracles=render_opts["oracles"],
                     raw_content=None if kind == "plan" else payload,
                 )
                 if role:
@@ -438,6 +453,8 @@ class ScriptGenerationAgent(BaseAgent):
                     "tier_used": tier_used,
                     "fallback_route": fallback_route,
                     "generation_mode": generation_mode,
+                    **({"weak_oracle": weak_names} if weak_names else {}),
+                    **({"assertion_score": assertion_median} if assertion_median is not None else {}),
                     "generated_at": datetime.now(timezone.utc).isoformat(),
                     "last_run": None,
                     "last_result": None,
@@ -649,6 +666,43 @@ class ScriptGenerationAgent(BaseAgent):
 
                 raise RuntimeError(f"Unhandled route '{route}'") from exc
 
+    def _lint_and_regenerate(self, plan, request, scenario, allowed_locators, test_data, base_url, flows_meta,
+                             gen_config, locator_map, design_cases, allowed_keys):
+        """Phase 5.3: score every test; regenerate the weak ones ONCE with the linter feedback; whatever is still
+        weak is marked "weak_oracle" (returned names -> test_suite.json). Returns (plan, weak_names, median)."""
+        sid = scenario.get("scenario_id", "")
+        report = assertion_linter.lint_plan(plan)
+        if report["weak"]:
+            self._log(f"{sid}: {len(report['weak'])} weak-oracle test(s) — regenerating once with linter feedback",
+                      level="warning")
+            try:
+                weak_cases = [c for c in design_cases or []
+                              if any(t.get("case_id") == c["id"] for t in plan["tests"]
+                                     if t.get("name") in {w["name"] for w in report["weak"]})]
+                retry = self._plan_via_llm(
+                    scenario, allowed_locators, test_data, base_url, flows_meta,
+                    llm=self._registry.get_llm(request.get("connector_mode")), gen_config=gen_config,
+                    locator_map=locator_map, design_cases=weak_cases or design_cases,
+                    lint_feedback=assertion_linter.feedback(report["weak"]),
+                )
+                if design_cases:
+                    retry = _reconcile_design_plan(retry, weak_cases or design_cases)
+                    weak_set = {w["name"] for w in report["weak"]}
+                    merged = [t for t in plan["tests"] if t.get("name") not in weak_set] + retry["tests"]
+                    candidate = {**plan, "tests": merged}
+                else:
+                    candidate = retry
+                candidate_report = assertion_linter.lint_plan(candidate)
+                if len(candidate_report["weak"]) < len(report["weak"]):
+                    plan, report = candidate, candidate_report
+            except Exception as exc:     # a failed regeneration keeps the original plan, flagged weak
+                self._log(f"{sid}: lint regeneration failed ({type(exc).__name__}: {exc})", level="warning")
+        weak_names = [w["name"] for w in report["weak"]]
+        for t in plan["tests"]:
+            if t.get("name") in weak_names:
+                t["weak_oracle"] = True
+        return plan, weak_names, report["median"]
+
     def _plan_via_llm(
         self,
         scenario: dict,
@@ -660,6 +714,7 @@ class ScriptGenerationAgent(BaseAgent):
         gen_config: Optional[dict] = None,
         locator_map: Optional[Dict[str, dict]] = None,
         design_cases: Optional[List[dict]] = None,
+        lint_feedback: str = "",
     ) -> dict:
         sid = scenario.get("scenario_id", "")
         gen_config = gen_config or dict(DEFAULT_TEST_GENERATION_CONFIG)
@@ -686,6 +741,8 @@ class ScriptGenerationAgent(BaseAgent):
             distinct_cluster_count=cluster_count,
             # Phase 1: the scenario's acceptance criteria (empty when untraced → prompt unchanged).
             acceptance_criteria_block=self._tracer.prompt_block(scenario) if self._tracer is not None else "",
+            oracle_block=(ORACLE_PROMPT_BLOCK if self._oracles_on else "")
+            + (LINT_FEEDBACK_BLOCK.substitute(feedback=lint_feedback) if lint_feedback else ""),
         )
 
         raw = llm.generate(prompt)
@@ -1199,6 +1256,7 @@ def _render_options(safe_project: str, request: Optional[dict] = None) -> Dict[s
     roles = ((raw.get("auth") or {}).get("roles") or {}) if isinstance(raw.get("auth"), dict) else {}
     return {
         "test_steps": cfg["test_steps"],
+        "oracles": bool((raw.get("oracles") or {}).get("enabled")) if isinstance(raw.get("oracles"), dict) else False,
         "enabled": cfg["module_roles"],
         "role_auth": cfg["role_auth"],
         "module_roles": {m["id"]: m.get("role") for m in modules if isinstance(m, dict) and m.get("id")},
@@ -1316,6 +1374,11 @@ def _validate_plan(
             # actions (see VALUE_REQUIRED_ACTIONS) — catch a missing value here,
             # while this can still route through retry/fallback, instead of
             # crashing render_spec_from_plan after validation already passed.
+            for field in ORACLE_REQUIRED_FIELDS.get(action, ()):
+                if not step.get(field):
+                    raise LLMResponseValidationError(
+                        f"{scenario_id}: step '{action}' is missing required '{field}' field"
+                    )
             if action in VALUE_REQUIRED_ACTIONS and step.get("value") is None:
                 raise LLMResponseValidationError(
                     f"{scenario_id}: step '{action}' is missing required 'value' field"

@@ -169,6 +169,28 @@ def _no_page_errors_args(step: dict, params: set) -> List[str]:
     return [_val(msg, params)] if msg else []
 
 
+def _msg_tail(step: dict, params: set) -> List[str]:
+    msg = step.get("message")
+    return [_val(msg, params)] if msg else []
+
+
+def _verify_request_args(step: dict, params: set) -> List[str]:
+    status = step.get("status")
+    args = [_val(str(step["method"]).upper(), params), _val(step["urlPattern"], params)]
+    msg = _msg_tail(step, params)
+    if status is not None or msg:
+        args.append(str(int(status)) if status is not None else "undefined")
+    return args + msg
+
+
+def _verify_no_request_args(step: dict, params: set) -> List[str]:
+    return [_val(str(step["method"]).upper(), params), _val(step["urlPattern"], params)] + _msg_tail(step, params)
+
+
+def _verify_not_injected_args(step: dict, params: set) -> List[str]:
+    return [_val(step["payloadMarker"], params)] + _msg_tail(step, params)
+
+
 # action -> function(step, params) -> list[str] of TS argument expressions,
 # NOT including the leading locator_key (added by _render_step below).
 ARG_BUILDERS = {
@@ -204,6 +226,13 @@ ARG_BUILDERS = {
     "takeScreenshot": _single_value_args,
     "goBack": _no_extra_args,
     "reload": _no_extra_args,
+    # Phase 5 oracles
+    "verifyRequest": _verify_request_args,
+    "verifyNoRequest": _verify_no_request_args,
+    "verifyFieldInvalid": _msg_tail,
+    "verifyNoDialog": _msg_tail,
+    "verifyNotInjected": _verify_not_injected_args,
+    "verifyNoNewConsoleErrors": _msg_tail,
 }
 
 # Actions whose first constructor argument is a locator_key.
@@ -213,7 +242,7 @@ LOCATOR_FIRST_ACTIONS = {
     "selectDropdownByValue", "scrollIntoView", "waitForElement",
     "uploadFile", "verifyVisible", "verifyHidden", "verifyText",
     "verifyContainsText", "verifyValue", "verifyEnabled", "verifyDisabled",
-    "verifyChecked", "verifyCount",
+    "verifyChecked", "verifyCount", "verifyFieldInvalid",
 }
 
 # pressKey takes a locator_key OR null (page-level key press) as first arg.
@@ -223,6 +252,7 @@ LOCATOR_OR_NULL_ACTIONS = {"pressKey"}
 NO_LOCATOR_ACTIONS = {
     "navigate", "waitForTimeout", "verifyUrl", "verifyUrlContains", "verifyTitle",
     "verifyTitleContains", "takeScreenshot", "goBack", "reload", "verifyNoPageErrors",
+    "verifyRequest", "verifyNoRequest", "verifyNoDialog", "verifyNotInjected", "verifyNoNewConsoleErrors",
 }
 
 # Actions whose ARG_BUILDERS entry does `step["value"]` (hard KeyError if
@@ -238,6 +268,13 @@ VALUE_REQUIRED_ACTIONS = {
     "selectDropdownByValue", "uploadFile", "verifyText", "verifyContainsText",
     "verifyValue", "verifyUrl", "verifyUrlContains", "verifyTitle",
     "verifyTitleContains", "verifyCount", "waitForTimeout",
+}
+
+# Phase 5: required step fields (not "value") per oracle action — checked by _validate_plan.
+ORACLE_REQUIRED_FIELDS = {
+    "verifyRequest": ("method", "urlPattern"),
+    "verifyNoRequest": ("method", "urlPattern"),
+    "verifyNotInjected": ("payloadMarker",),
 }
 
 # Deterministic tag appended by the renderer (never LLM-authored, so tagging
@@ -364,6 +401,8 @@ _VERB = {
     "verifyTitleContains": "Verify title contains {v}", "verifyNoPageErrors": "Verify no page errors",
     "takeScreenshot": "Take screenshot {v}", "goBack": "Go back", "reload": "Reload the page",
     "waitForTimeout": "Wait {n} ms (fixed sleep)",
+    "verifyFieldInvalid": "Verify {k} is invalid", "verifyNoDialog": "Verify no JS dialog fired",
+    "verifyNoNewConsoleErrors": "Verify no new console errors",
 }
 
 
@@ -416,6 +455,12 @@ def _step_phrase(step: dict, locator_map: Optional[dict], show_value: bool = Tru
         return f"Press {v}" + (f" in {k}" if key else "")
     if action == "waitForElement":
         return f"Wait for {k} to be {value or 'visible'}"
+    if action in ("verifyRequest", "verifyNoRequest"):
+        status = f" -> {step['status']}" if step.get("status") is not None else ""
+        neg = " no" if action == "verifyNoRequest" else ""
+        return f"Verify{neg} {step.get('method')} request {_ts_str(step.get('urlPattern'))}{status}"
+    if action == "verifyNotInjected":
+        return f"Verify payload {_ts_str(step.get('payloadMarker'))} is not injected"
     if action == "dragAndDrop":
         return f"Drag {k} onto {_ts_str(step.get('target_locator_key'))}"
     template = _VERB.get(action)
@@ -450,13 +495,17 @@ def _render_stepped(step: dict, index: int, flows_meta, locator_map) -> List[str
 
 
 def _render_test(test: dict, flows_meta: Optional[Dict[str, List[str]]], scenario_id: str = "",
-                 test_steps: bool = False, locator_map: Optional[dict] = None) -> str:
+                 test_steps: bool = False, locator_map: Optional[dict] = None, oracles: bool = False) -> str:
     name_ts = _ts_str(render_test_title(test))
     if _has_trace(test):
         lines = [f"  test({name_ts}, {render_test_details(test, scenario_id)}, async ({{ action }}) => {{"]
     else:
         lines = [f"  test({name_ts}, async ({{ action }}) => {{"]
-    for i, step in enumerate(test["steps"], start=1):
+    steps = list(test["steps"])
+    # Phase 5.2: every test ends with a "no new console errors" check (never LLM-authored) unless the plan has one.
+    if oracles and not any(st.get("action") == "verifyNoNewConsoleErrors" for st in steps):
+        steps.append({"action": "verifyNoNewConsoleErrors"})
+    for i, step in enumerate(steps, start=1):
         if test_steps:
             lines += _render_stepped(step, i, flows_meta, locator_map)
         else:
@@ -482,6 +531,7 @@ def render_spec_from_plan(
     flows_meta: Optional[Dict[str, List[str]]] = None,
     test_steps: bool = False,
     locator_map: Optional[dict] = None,
+    oracles: bool = False,
 ) -> str:
     """
     Pure, deterministic renderer — no LLM involved. Turns a validated JSON
@@ -492,6 +542,7 @@ def render_spec_from_plan(
     test_steps (Phase 4.5): wrap each plan step in `await test.step("<n>. <step in words>", ...)`
     (execution.test_steps). Off by default here, so legacy callers render byte-identical specs.
     locator_map: only used to mask secret-looking values in step titles.
+    oracles (Phase 5, project.yaml `oracles.enabled`): append verifyNoNewConsoleErrors to every test.
     """
     fixture_import = _import_path_to_shared_fixture(spec_rel_path)
 
@@ -522,7 +573,8 @@ def render_spec_from_plan(
     ]
 
     for test in plan.get("tests", []):
-        lines.append(_render_test(test, flows_meta, scenario_id, test_steps=test_steps, locator_map=locator_map))
+        lines.append(_render_test(test, flows_meta, scenario_id, test_steps=test_steps, locator_map=locator_map,
+                                 oracles=oracles))
         lines.append("")
 
     lines.append("});")

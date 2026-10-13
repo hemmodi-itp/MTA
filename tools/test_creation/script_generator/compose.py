@@ -156,6 +156,7 @@ def compose_spec(
     test_steps: bool = False,
     locator_map: Optional[Dict[str, Any]] = None,
     raw_content: Optional[str] = None,
+    oracles: bool = False,
 ) -> str:
     """Final spec text. `raw_content` (legacy tier-2 fallback output) replaces rendering; `role` (already resolved
     by module_role_for) replaces the setup steps."""
@@ -163,7 +164,7 @@ def compose_spec(
         content = raw_content
     else:
         content = render_spec_from_plan(plan, scenario, base_url, spec_rel_path, project=project,
-                                        flows_meta=flows_meta, test_steps=test_steps, locator_map=locator_map)
+                                        flows_meta=flows_meta, test_steps=test_steps, locator_map=locator_map, oracles=oracles)
     if role and raw_content is None:
         return inject_role(content, role)
     return inject_setup_steps(content, module_setup)

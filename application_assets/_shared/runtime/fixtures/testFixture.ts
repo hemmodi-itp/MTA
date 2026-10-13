@@ -167,9 +167,11 @@ export const test = base.extend<Fixtures & Options>({
         }
     }, { auto: true }],
 
-    action: async ({ page, safety }, use, testInfo) => {
+    action: async ({ page, safety, network, consoleGuard }, use, testInfo) => {
         const pageErrors: string[] = [];
         page.on('pageerror', (err) => pageErrors.push(err.message));
+        const dialogs: string[] = [];
+        page.on('dialog', (d) => { dialogs.push(`${d.type()}: ${d.message()}`); d.dismiss().catch(() => {}); });
 
         const moduleId = extractModuleId(testInfo.file);
         const registry = loadPageRegistry();
@@ -190,7 +192,7 @@ export const test = base.extend<Fixtures & Options>({
         }
         const pageObject = new PageClass(page) as Record<string, any>;
 
-        await use(new ActionEngine(page, pageObject, pageErrors, safety));
+        await use(new ActionEngine(page, pageObject, pageErrors, safety, { network, consoleGuard, dialogs }));
     },
 
     testData: async ({}, use, testInfo) => {

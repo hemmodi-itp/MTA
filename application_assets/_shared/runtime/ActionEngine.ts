@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import { expect, Locator, Page, test } from '@playwright/test';
 import { Logger } from './Logger';
 import { allowedHostsFromEnv, assertUrlAllowed, SafetyError } from './safety';
+import type { ConsoleGuard } from './fixtures/consoleGuard';
+import type { NetworkLog } from './fixtures/network';
 import { classifyStep, DestructivePolicy, LocatorEntryLike, PlanStep, refusalMessage, Rules } from './destructive';
 
 export interface VerifyOptions {
@@ -40,13 +42,25 @@ function annotate(type: string, description: string): void {
     }
 }
 
+/** Phase 5 oracle sources (fixtures/testFixture.ts); absent when an ActionEngine is built without them. */
+export interface OracleSources {
+    network?: NetworkLog;
+    consoleGuard?: ConsoleGuard;
+    dialogs?: string[];
+}
+
+function patternToRegExp(pattern: string): RegExp {
+    return new RegExp(pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*'));
+}
+
 export class ActionEngine {
 
     constructor(
         private readonly page: Page,
         private readonly pageObject: Record<string, Locator>,
         private readonly pageErrors: string[] = [],
-        private readonly safety: RuntimeSafety = { allowedHosts: allowedHostsFromEnv(), violations: [] }
+        private readonly safety: RuntimeSafety = { allowedHosts: allowedHostsFromEnv(), violations: [] },
+        private readonly oracles: OracleSources = {}
     ) { }
 
     /**
@@ -409,6 +423,74 @@ export class ActionEngine {
         await this.run(null, 'Verify No Page Errors', undefined, async () => {
             expect(this.pageErrors, message).toHaveLength(0);
         });
+    }
+
+    /** Phase 5: a request matching method + urlPattern ('*' wildcard) was made (and, if given, got `status`). */
+    async verifyRequest(method: string, urlPattern: string, status?: number, message?: string): Promise<void> {
+        await this.run(null, 'Verify Request', `${method} ${urlPattern}`, async () => {
+            const log = this.requireNetwork();
+            const re = patternToRegExp(urlPattern);
+            const hits = log.entries({ method, url: re });
+            expect(hits.length, message ?? `Expected a ${method} request matching ${urlPattern}`).toBeGreaterThan(0);
+            if (status !== undefined) {
+                expect(hits.map((h) => h.status), message ?? `Expected status ${status} for ${method} ${urlPattern}`).toContain(status);
+            }
+        });
+    }
+
+    /** Phase 5: no request matching method + urlPattern was made (negative tests: nothing was submitted). */
+    async verifyNoRequest(method: string, urlPattern: string, message?: string): Promise<void> {
+        await this.run(null, 'Verify No Request', `${method} ${urlPattern}`, async () => {
+            const hits = this.requireNetwork().entries({ method, url: patternToRegExp(urlPattern) });
+            expect(hits.length, message ?? `Expected no ${method} request matching ${urlPattern}`).toBe(0);
+        });
+    }
+
+    /** Phase 5: aria-invalid="true" or the native :invalid state. */
+    async verifyFieldInvalid(name: string, message?: string): Promise<void> {
+        await this.run(name, 'Verify Field Invalid', undefined, async () => {
+            const loc = this.resolve(name);
+            await expect(async () => {
+                const invalid = await loc.evaluate((el) =>
+                    el.getAttribute('aria-invalid') === 'true' || (el as HTMLElement).matches(':invalid'));
+                expect(invalid, message ?? `Expected '${name}' to be invalid`).toBe(true);
+            }).toPass({ timeout: 5_000 });
+        });
+    }
+
+    /** Phase 5: no alert/confirm/prompt/beforeunload dialog fired during the test (XSS check). */
+    async verifyNoDialog(message = 'No JS dialog should have fired'): Promise<void> {
+        await this.run(null, 'Verify No Dialog', undefined, async () => {
+            expect(this.oracles.dialogs ?? [], message).toHaveLength(0);
+        });
+    }
+
+    /** Phase 5: the payload is not executable — no new <script>, no inline event-handler attribute containing it. */
+    async verifyNotInjected(payloadMarker: string, message?: string): Promise<void> {
+        await this.run(null, 'Verify Not Injected', payloadMarker, async () => {
+            const found = await this.page.evaluate((marker) => {
+                const scripts = [...document.querySelectorAll('script')].filter((s) => (s.textContent ?? '').includes(marker));
+                const handlers = [...document.querySelectorAll('*')].filter((el) =>
+                    [...el.attributes].some((a) => /^on/i.test(a.name) && a.value.includes(marker)));
+                return scripts.length + handlers.length;
+            }, payloadMarker);
+            expect(found, message ?? `Payload '${payloadMarker}' must be rendered as text, not as script/handler`).toBe(0);
+        });
+    }
+
+    /** Phase 5: no console error / page error beyond the Phase 2 baseline (appended by the renderer to every test). */
+    async verifyNoNewConsoleErrors(message = 'No new console errors should occur'): Promise<void> {
+        await this.run(null, 'Verify No New Console Errors', undefined, async () => {
+            const guard = this.oracles.consoleGuard;
+            if (!guard) return;
+            const fresh = guard.newErrors().map((e) => `[${e.kind}] ${e.text.slice(0, 200)}`);
+            expect(fresh, message).toEqual([]);
+        });
+    }
+
+    private requireNetwork(): NetworkLog {
+        if (!this.oracles.network) throw new Error('ActionEngine: network oracle unavailable (execution.network is off)');
+        return this.oracles.network;
     }
 
     async takeScreenshot(fileName: string): Promise<void> {

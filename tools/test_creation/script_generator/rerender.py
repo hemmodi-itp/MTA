@@ -92,6 +92,7 @@ def rerender_project(safe: str, *, check: bool = False, only: Optional[List[str]
             os.path.join("projects", safe, "test_creation", "test_scripts", rel),
             project=safe, flows_meta=flows_meta, module_setup=module.get("setup"), role=role,
             test_steps=cfg["test_steps"], locator_map=locator_map,
+            oracles=bool((raw.get("oracles") or {}).get("enabled")) if isinstance(raw.get("oracles"), dict) else False,
         )
         with open(path, encoding="utf-8") as fh:
             current = fh.read()

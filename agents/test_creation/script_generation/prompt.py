@@ -60,7 +60,7 @@ project won't. Absence of these fields changes nothing about which keys are
 allowed.)
 
 == Allowed reusable flows (use ONLY these in a "useFlow" step's "flow") ==
-$valid_flows_json$acceptance_criteria_block
+$valid_flows_json$acceptance_criteria_block$oracle_block
 
 == Output format ==
 
@@ -386,6 +386,34 @@ Plan:
 4. Test names must clearly describe what is being tested, in the same style as the examples above.
 
 Return ONLY the JSON object described above. No markdown fences, no explanation, no extra text before or after it.
+""")
+
+
+# ── Phase 5: oracle actions (only injected when project.yaml `oracles.enabled`) ────────────────────────────
+
+ORACLE_PROMPT_BLOCK = """
+
+== Oracle actions (Phase 5) — a passing test must PROVE the behaviour ==
+- {"action": "verifyRequest", "method": "POST", "urlPattern": "/api/login", "status": 200}  ("*" wildcard; status optional)
+- {"action": "verifyNoRequest", "method": "POST", "urlPattern": "/api/login"}  — nothing was submitted
+- {"action": "verifyFieldInvalid", "locator_key": "<key>"}  — aria-invalid or native :invalid
+- {"action": "verifyNoDialog"}  — no alert/confirm/prompt fired
+- {"action": "verifyNotInjected", "payloadMarker": "<a distinctive part of the payload>"}  — payload rendered as text
+Oracle mapping from a test case's "oracles": error_text -> verifyContainsText on the error key (or verifyFieldInvalid);
+url_unchanged -> verifyUrlContains with the starting path AND verifyNoRequest for the submit call when it is known;
+submission_accepted -> the UI success signal AND verifyRequest with a 2xx status when the submit call is known.
+Rules the plan is linted against:
+- At least one assertion must be about the OUTCOME, not just the element you acted on (click X then verifyVisible X is weak).
+- A title-only assertion is rejected.
+- A negative test needs (error text OR verifyFieldInvalid) AND (verifyNoRequest OR a URL check).
+- An XSS / special-characters test needs verifyNoDialog AND verifyNotInjected.
+- Never use waitForTimeout. Do not add a console-error check; it is appended automatically.
+"""
+
+LINT_FEEDBACK_BLOCK = Template("""
+
+== Your previous plan had weak assertions — fix exactly these ==
+$feedback
 """)
 
 
