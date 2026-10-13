@@ -34,3 +34,15 @@
 - Passive: mixed content, stack-trace leaks, target=_blank noopener
 - Wire generate.py into the pipeline/orchestrator (currently CLI-only) and render nfr specs in traceability
 - Per-role storageState instead of replaying login steps in NFR specs
+
+## Phase 11
+- Top-5 risk areas and trend vs the last 5 runs in the executive summary (11.1)
+- Defects by severity (needs a severity on triage verdicts / plan tests)
+- Coverage dashboard: technique, element, page/state, transition, API, role, browser, code coverage (11.3)
+- XLSX export and interactive (filter/sort) traceability matrix (11.2)
+- Defect evidence: video, HAR excerpt, console log, environment/browser/role (11.4)
+- Jira / Azure DevOps-compatible defect JSON export (+ opt-in connector posting) (11.4)
+- Remaining gates: p1_pass_rate, max_critical_a11y, max_security_high, max_flaky_rate, perf_budget_regression_pct (11.5)
+- Wire the gate exit code into the orchestrator/CI entry point (today: `python -m tools.reporting.summary <report.json>`)
+- A11y/security counts from axe violations JSON / rule annotations instead of failed @a11y/@security tests
+- Add `yaml` to package.json devDependencies (Playwright config needs it; installed with --no-save here)
