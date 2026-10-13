@@ -640,6 +640,48 @@ def _errors_section(ev: dict) -> str:
 # Public API
 # ──────────────────────────────────────────────
 
+def _quality_sections(q: dict) -> str:
+    """Phase 11-lean: executive summary, not-tested list and defect list (only when report["quality"] is set)."""
+    if not q:
+        return ""
+    sm, gt = q.get("summary") or {}, q.get("gates") or {}
+    verdict = gt.get("verdict", "NO_GATES")
+    color = {"PASS": "#16a34a", "FAIL": "#dc2626"}.get(verdict, "#64748b")
+    gates = "".join(f'<div>{"✓" if g["ok"] else "✗"} {_esc(g["gate"])}: {_esc(g["actual"])} (need ≥ {_esc(g["threshold"])})</div>'
+                    for g in gt.get("gates") or []) or "No quality gates configured."
+    cov = sm.get("requirement_coverage")
+    prio = " &nbsp;".join(f'{p}: {("%s%% (%s/%s)" % (v["rate"], v["passed"], v["executed"])) if v else "n/a"}'
+                          for p, v in (sm.get("pass_rate_by_priority") or {}).items())
+    dims = sm.get("agent_dimensions")
+    dims_html = ", ".join(f"{_esc(d)}: {_esc(o)}" for d, o in dims.items()) if dims else "n/a"
+    na = lambda v: "n/a" if v is None else _esc(v)  # noqa: E731
+    csv_link = f' · <a href="{_esc(q["csv_path"])}">traceability CSV</a>' if q.get("csv_path") else ""
+    summary = f"""<div class="section">
+  <div class="sec-title">Executive Summary <span class="sec-cnt" style="color:{color}">Verdict: {verdict}</span></div>
+  <div style="padding:8px 24px;font-size:0.9rem;line-height:1.7">{gates}
+    <div>Requirement (AC) coverage: <strong>{na(cov)}{"%" if cov is not None else ""}</strong> ({na(sm.get("acs_covered"))}/{na(sm.get("acs_automatable"))}){csv_link}</div>
+    <div>Pass rate by priority: {prio}</div>
+    <div>Product defects (triage): <strong>{na(sm.get("product_defects"))}</strong> · Accessibility findings: <strong>{na(sm.get("a11y_findings"))}</strong> · Security findings: <strong>{na(sm.get("security_findings"))}</strong> · Weak oracles: <strong>{na(sm.get("weak_oracle"))}</strong></div>
+    <div>AI-agent dimensions: {dims_html}</div></div>
+</div>"""
+    nt = q.get("not_tested") or []
+    nt_rows = "".join(f'<tr><td>{_esc(n["id"])}</td><td>{_esc(n["priority"])}</td><td>{_esc(n["code"])}</td><td>{_esc(n["detail"])}</td></tr>' for n in nt)
+    not_tested = (f'<div class="section"><div class="sec-title">Not tested &amp; why <span class="sec-cnt">{len(nt)} AC(s)</span></div>'
+                  f'<table><thead><tr><th>AC</th><th>Priority</th><th>Reason</th><th>Detail</th></tr></thead><tbody>{nt_rows}</tbody></table></div>') if nt else ""
+    defects = q.get("defects") or []
+    blocks = ""
+    for d in defects:
+        ev = " · ".join(f'<a href="{_esc(d[k])}">{k}</a>' for k in ("screenshot", "trace") if d.get(k)) or "no evidence files"
+        steps = "".join(f"<li>{_esc(x)}</li>" for x in d.get("steps") or [])
+        blocks += (f'<div class="tc-inner" style="margin:0 24px 14px"><strong>{_esc(d.get("title"))}</strong> '
+                   f'<span style="color:#64748b">AC: {_esc(", ".join(d.get("ac_ids") or []) or "unlinked")}</span>'
+                   f'<ol>{steps}</ol><div><b>Expected:</b> {_esc(d.get("expected"))}</div>'
+                   f'<div><b>Actual:</b> {_esc(d.get("actual"))}</div><div>{ev}</div></div>')
+    defect_html = (f'<div class="section"><div class="sec-title" style="color:#dc2626">Defects '
+                   f'<span class="sec-cnt">{len(defects)}</span></div>{blocks}</div>') if defects else ""
+    return summary + not_tested + defect_html
+
+
 def build_html_report(report: dict) -> str:
     """Return a complete self-contained HTML QA report string."""
     project = _esc(report.get("project", "Unknown"))
@@ -659,6 +701,7 @@ def build_html_report(report: dict) -> str:
 </head>
 <body>
 {_header(report)}
+{_quality_sections(report.get("quality"))}
 {_pipeline_section(ws.get("steps", []))}
 {_artifacts_section(ag)}
 {_test_section(ter)}

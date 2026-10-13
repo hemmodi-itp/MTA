@@ -96,6 +96,7 @@ class ReportingAgent(BaseAgent):
             self.logger.warning(f"[ReportingAgent] Catalog refresh failed (non-fatal): {exc}")
 
         reports_dir = os.path.join(_ASSETS_BASE, safe, "test_execution", "reports")
+        gate_result = self._quality_section(report, outputs, safe, reports_dir, now)
         ts          = now.strftime("%Y%m%d_%H%M%S")
         base_name   = f"{ts}_{safe}"
 
@@ -147,6 +148,7 @@ class ReportingAgent(BaseAgent):
             "html_report_path":  html_path,
             "failures_log_path": failures_path,
             "index_path":        index_path,
+            "quality_gates":     gate_result,
             "details": {
                 "steps_executed":  state.get("completed_steps", []),
                 "workflow_status": report["workflow_status"],
@@ -154,3 +156,41 @@ class ReportingAgent(BaseAgent):
                 "outputs":         outputs,
             },
         }
+
+    def _quality_section(self, report: dict, outputs: dict, safe: str, reports_dir: str, now: datetime) -> Optional[dict]:
+        """Phase 11-lean: report["quality"] (summary, gates, not-tested, defects, traceability CSV) when
+        project.yaml `reporting.enhanced` is on; gates evaluated when `quality_gates` is set. Never raises."""
+        try:
+            from tools.reporting import summary as qs
+            pdir = os.path.join(_ASSETS_BASE, safe)
+            raw = qs.load_project_yaml(pdir)
+            gates = qs.gates_config(raw)
+            if not (qs.enhanced_enabled(raw) or gates):
+                return None
+
+            def _load(path):
+                try:
+                    with open(path, encoding="utf-8") as fh:
+                        return json.load(fh)
+                except (OSError, ValueError):
+                    return None
+            results = report["test_execution_report"].get("results") or []
+            trace = report.get("traceability")
+            plans = _load(os.path.join(pdir, "test_creation", "test_plans.json")) or {}
+            suite = _load(os.path.join(pdir, "test_creation", "test_suite.json")) or {}
+            triage = _load(os.path.join(reports_dir, "triage.json"))
+            aq = ((outputs or {}).get("agent_quality_testing") or {}).get("agent_quality")
+            summary = qs.compute_summary(results, trace, plans, suite, triage, aq)
+            gate_result = qs.evaluate_gates(summary, gates)
+            csv_dir = os.path.join(reports_dir, "csv")
+            os.makedirs(csv_dir, exist_ok=True)
+            csv_path = os.path.join(csv_dir, f"{now.strftime('%Y%m%d_%H%M%S')}_{safe}.traceability.csv")
+            with open(csv_path, "w", encoding="utf-8", newline="") as fh:
+                fh.write(qs.traceability_csv(trace))
+            report["quality"] = {"summary": summary, "gates": gate_result, "not_tested": qs.not_tested(trace),
+                                 "defects": qs.build_defects(results, triage, plans),
+                                 "csv_path": os.path.relpath(csv_path, os.path.join(reports_dir, "html"))}
+            return gate_result
+        except Exception as exc:
+            self.logger.warning(f"[ReportingAgent] Quality section failed (non-fatal): {exc}")
+            return None

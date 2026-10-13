@@ -173,3 +173,10 @@ execution:           # Phase 4 Playwright runtime
   module_roles: false  # true -> modules[].role renders test.use({ role }) instead of the setup login. Off here:
                        # buggy_shop keeps the flash message per session, so one shared role session leaks it
                        # between parallel tests, and the app restarts per bug (set role_auth_max_age_minutes: 0).
+
+reporting:
+  enhanced: true   # Phase 11-lean: executive summary, traceability CSV, defect list (default off elsewhere)
+
+quality_gates:     # Phase 11-lean: a failed gate -> `python -m tools.reporting.summary <report.json>` exits 1
+  p0_pass_rate: 100
+  requirement_coverage: 90
