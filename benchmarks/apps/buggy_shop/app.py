@@ -22,6 +22,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from benchmarks.apps.buggy_shop import templates as T
 from benchmarks.apps.buggy_shop.bugs import is_on
+from benchmarks.apps.buggy_shop.locator_changes import apply as apply_locator_changes
 from benchmarks.apps.buggy_shop.store import CATEGORIES, DISCOUNT_CODE, DISCOUNT_RATE, Product, Store
 
 # ── exact user-facing messages (kept identical to brd.md) ───────────────────
@@ -236,7 +237,8 @@ def create_app() -> FastAPI:
                user: Optional[dict] = None) -> HTMLResponse:
         html = T.page(title, body, user=user, flash=pop_flash(request) if user else None,
                       help_href="/helpp" if is_on("BUG_06") else "/help")
-        return HTMLResponse(html, status_code=status)
+        # Phase 6 healing benchmark: LOC_xx locator changes (off by default) + data-bench-id ground truth
+        return HTMLResponse(apply_locator_changes(html), status_code=status)
 
     def to_login(request: Request) -> RedirectResponse:
         target = request.url.path + (f"?{request.url.query}" if request.url.query else "")
@@ -261,7 +263,7 @@ def create_app() -> FastAPI:
             return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
         user = current_user(request)
         return HTMLResponse(
-            T.page("Page not found", T.error_body("Page not found", "Page not found"), user=user),
+            apply_locator_changes(T.page("Page not found", T.error_body("Page not found", "Page not found"), user=user)),
             status_code=404,
         )
 

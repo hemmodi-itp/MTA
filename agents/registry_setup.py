@@ -37,6 +37,7 @@ LEGACY_AGENTS: List[_Entry] = [
     # MODULE 3: test execution
     ("execution", "agents.test_execution.execution.agent", "ExecutionAgent", {}),
     ("ui_execution", "agents.test_execution.ui_execution.agent", "UIExecutionAgent", {}),
+    ("triage", "agents.test_execution.triage.agent", "TriageAgent", {}),   # Phase 6.1
     ("healing", "agents.test_execution.healing.agent", "HealingAgent", {}),
     ("reporting", "agents.test_execution.reporting.agent", "ReportingAgent", {}),
     ("locator", "agents.test_execution.locator.agent", "LocatorAgent", {}),

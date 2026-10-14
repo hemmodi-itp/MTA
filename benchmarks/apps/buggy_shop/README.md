@@ -95,3 +95,10 @@ python -m pytest tests/unit/test_bench_buggy_shop.py -q
 ```
 
 Every bug has a test asserting correct behaviour with its flag off and buggy behaviour with it on.
+
+## Locator changes (Phase 6 healing benchmark)
+
+`LOC_01`..`LOC_12` (same switches as the bugs, e.g. `LOC_03=1`) change locators without changing behaviour — renamed
+ids/test ids, a reworded button, wrappers, a moved link; `LOC_11`/`LOC_12` replace an element with a different one.
+While any is on, target elements carry `data-bench-id` (ground truth). Defined in `locator_changes.py`; used by
+`python -m tools.benchmark.healing_bench`.

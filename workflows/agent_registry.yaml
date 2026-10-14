@@ -108,6 +108,11 @@ agents:
     inputs: [project_name, scripts_path, suite]
     outputs: [execution_results]
 
+  triage:
+    connector_type: internal
+    inputs: [project_name, execution_results]
+    outputs: [triage_path, defects_path]
+
   healing:
     connector_type: internal
     inputs: [project_name, execution_results]

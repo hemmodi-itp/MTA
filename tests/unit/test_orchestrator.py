@@ -42,7 +42,7 @@ class OrchestratorTests(unittest.TestCase):
         self.assertEqual(
             workflow.steps,
             ["discovery", "testdata", "test_design", "semantic_map", "script_generation",
-             "ui_execution", "healing", "reporting"],
+             "ui_execution", "triage", "healing", "reporting"],
         )
         settings = {
             "execution": {"ns": {"registry": "__none__.yaml", "agent_registry": "__none__.yaml"}},

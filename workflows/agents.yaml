@@ -30,6 +30,9 @@ agents:
   execution:
     enabled: true
 
+  triage:
+    enabled: true   # Phase 6.1: classify failures before healing
+
   healing:
     enabled: true
 

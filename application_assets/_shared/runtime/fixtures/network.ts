@@ -250,6 +250,30 @@ export class NetworkLog {
   har(): Record<string, unknown> {
     return buildHar(this.entries());
   }
+
+  private readonly mocked: RegExp[] = [];
+
+  /** Phase 5 mockRoute: responses for these URLs were made up by the test, not served by the app. */
+  markMocked(pattern: RegExp): void {
+    this.mocked.push(pattern);
+  }
+
+  isMocked(url: string): boolean {
+    return this.mocked.some((re) => re.test(url));
+  }
+
+  /**
+   * Phase 6.1: `network_error` annotations for a failed test — every >= 400 response (page loads and API calls
+   * first, at most `limit`), URL redacted, "(mocked)" when the test answered it itself. Triage reads these.
+   */
+  errorAnnotations(limit = 10): Array<{ type: string; description: string }> {
+    const bad = this.entries().filter((e) => (e.status ?? 0) >= 400);
+    const rank = (e: NetEntry) => (['document', 'xhr', 'fetch'].includes(e.resource_type) ? 0 : 1);
+    return bad.sort((a, b) => rank(a) - rank(b)).slice(0, limit).map((e) => ({
+      type: 'network_error',
+      description: `${e.method} ${redactUrl(e.url)} -> ${e.status}${this.isMocked(e.url) ? ' (mocked)' : ''}`,
+    }));
+  }
 }
 
 export function shouldAttachHar(mode: NetworkMode, failed: boolean): boolean {

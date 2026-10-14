@@ -53,6 +53,52 @@ export interface OracleSources {
     api?: APIRequestContext;
     /** application_assets/projects/<project> — resolves verifyResponseSchema schemaRef paths. */
     projectDir?: string | null;
+    /** locator_map.json entry of a key (Phase 6.1 identity probe reads its `_fingerprint`). */
+    entryOf?: (key: string) => { _fingerprint?: Record<string, unknown> } | null | undefined;
+}
+
+const CLIENT_ERROR_RESOURCE = /^Failed to load resource: the server responded with a status of 4\d\d\b/;
+const NOT_FOUND = /element\(s\) not found|waiting for|Timeout \d+ms exceeded|resolved to 0 elements/i;
+let fingerprintSource: string | null | undefined;
+
+/** fixtures/fingerprint.js — the same identity function Python's healing uses (read once per worker). */
+function fingerprintJs(): string | null {
+    if (fingerprintSource === undefined) {
+        try {
+            fingerprintSource = fs.readFileSync(path.join(__dirname, 'fixtures', 'fingerprint.js'), 'utf8');
+        } catch {
+            fingerprintSource = null;
+        }
+    }
+    return fingerprintSource;
+}
+
+/**
+ * In-page check: is an element with this identity (same role/tag, similar accessible name or same label, visible)
+ * on the page? Name similarity = character-bigram Dice coefficient (>= 0.4).
+ */
+export function probeExpression(fpSource: string, fingerprint: Record<string, unknown>): string {
+    return `(() => {
+${fpSource}
+  const want = ${JSON.stringify(fingerprint)};
+  const norm = (t) => String(t || '').replace(/\\s+/g, ' ').trim().toLowerCase();
+  const grams = (t) => { const s = norm(t); const out = []; for (let i = 0; i < s.length - 1; i++) out.push(s.slice(i, i + 2)); return out; };
+  const dice = (a, b) => {
+    if (!norm(a) || !norm(b)) return 0;
+    if (norm(a) === norm(b)) return 1;
+    const ga = grams(a), gb = grams(b).slice(); let hit = 0;
+    for (const g of ga) { const i = gb.indexOf(g); if (i >= 0) { hit++; gb.splice(i, 1); } }
+    return (2 * hit) / (ga.length + grams(b).length || 1);
+  };
+  for (const el of document.querySelectorAll('body *')) {
+    if (!el.getClientRects().length) continue;
+    const fp = mtaFingerprint(el);
+    const sameKind = want.role ? fp.role === want.role : fp.tag === want.tag;
+    if (!sameKind) continue;
+    if (dice(want.name, fp.name) >= 0.4 || (want.label && norm(want.label) === norm(fp.label))) return true;
+  }
+  return false;
+})()`;
 }
 
 /** verifyApiState expectations; every given field must hold. `path` is a dot path into the JSON body ("items.0.name"). */
@@ -97,6 +143,9 @@ export function jsonAtPath(value: unknown, dotPath: string): unknown {
 }
 
 export class ActionEngine {
+
+    /** Phase 6.1: identity-probe results of this test (also recorded as `locator_probe` annotations). */
+    readonly probes: string[] = [];
 
     /** rememberCount baselines, per locator key (verifyCountChangedBy). */
     private readonly counts = new Map<string, number>();
@@ -155,10 +204,35 @@ export class ActionEngine {
             return result;
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : String(err);
+            if (locatorName && NOT_FOUND.test(message)) await this.probeIdentity(locatorName);
             throw new Error(
                 locatorName ? `[locator_key=${locatorName}] ${message}` : message
             );
         }
+    }
+
+    /**
+     * Phase 6.1: the element for `key` was not found. Is an element with its recorded identity on the page (the locator
+     * drifted — a test defect) or not (the expected element is missing — likely the product)? Recorded as a
+     * `locator_probe` annotation that triage reads. Never throws.
+     */
+    private async probeIdentity(key: string): Promise<void> {
+        const fp = this.oracles.entryOf?.(key)?._fingerprint;
+        const src = fingerprintJs();
+        let note: string;
+        if (!fp || !src) {
+            note = `${key}: no recorded identity`;
+        } else {
+            const present = await Promise.race([
+                this.page.evaluate(probeExpression(src, fp)).catch(() => null),
+                new Promise((r) => setTimeout(() => r(null), 3_000)),
+            ]);
+            note = present === null ? `${key}: probe failed`
+                : present ? `${key}: an element with the same identity is on the page — the locator drifted`
+                : `${key}: no element with this identity on the page`;
+        }
+        this.probes.push(note);
+        annotate('locator_probe', note);
     }
 
     /** Phase 4.4: refuse a destructive step unless safety.allow_destructive + a non-prod environment allow it. */
@@ -535,12 +609,19 @@ export class ActionEngine {
         });
     }
 
-    /** Phase 5: no console error / page error beyond the Phase 2 baseline (appended by the renderer to every test). */
+    /**
+     * Phase 5: no console error / page error beyond the Phase 2 baseline (appended by the renderer to every test).
+     * The browser's "Failed to load resource: ... status of 4xx" lines are not counted: a 4xx answer is often the
+     * expected outcome (a rejected form, a denied page) and the request oracles assert statuses. 5xx answers, JS
+     * console errors and uncaught page errors still fail the check.
+     */
     async verifyNoNewConsoleErrors(message = 'No new console errors should occur'): Promise<void> {
         await this.run(null, 'Verify No New Console Errors', undefined, async () => {
             const guard = this.oracles.consoleGuard;
             if (!guard) return;
-            const fresh = guard.newErrors().map((e) => `[${e.kind}] ${e.text.slice(0, 200)}`);
+            const fresh = guard.newErrors()
+                .filter((e) => !(e.kind === 'console' && CLIENT_ERROR_RESOURCE.test(e.text)))
+                .map((e) => `[${e.kind}] ${e.text.slice(0, 200)}`);
             expect(fresh, message).toEqual([]);
         });
     }
@@ -719,6 +800,7 @@ export class ActionEngine {
                 this.oracles.consoleGuard?.expectConsoleError(
                     new RegExp(`Failed to load resource: the server responded with a status of ${opts.status}\\b`));
             }
+            this.oracles.network?.markMocked(patternToRegExp(urlPattern));
             await this.page.route(patternToRegExp(urlPattern), async (route) => {
                 if (opts.delayMs) await new Promise((r) => setTimeout(r, opts.delayMs));
                 if (opts.status === undefined && opts.body === undefined) {

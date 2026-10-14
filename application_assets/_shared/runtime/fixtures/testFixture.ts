@@ -193,7 +193,7 @@ export const test = base.extend<Fixtures & Options>({
         const pageObject = new PageClass(page) as Record<string, any>;
 
         await use(new ActionEngine(page, pageObject, pageErrors, safety,
-            { network, consoleGuard, dialogs, api, projectDir: projectDir() }));
+            { network, consoleGuard, dialogs, api, projectDir: projectDir(), entryOf: locatorEntry }));
     },
 
     testData: async ({}, use, testInfo) => {
@@ -269,6 +269,9 @@ export const test = base.extend<Fixtures & Options>({
             context.on('requestfailed', (r) => log.onFailed(r));
         }
         await use(log);
+        if (mode !== 'off' && failed(testInfo)) {
+            testInfo.annotations.push(...log.errorAnnotations());
+        }
         if (shouldAttachHar(mode, failed(testInfo)) && log.entries().length) {
             // written next to the trace/video (retained evidence) and attached by path
             const file = testInfo.outputPath('network.har');

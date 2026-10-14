@@ -241,3 +241,44 @@ describe('fault injection', () => {
     await expect(engine(page).setClock('not a date')).rejects.toThrow(/not a valid date/);
   });
 });
+
+describe('identity probe on a missing element (Phase 6.1)', () => {
+  it('builds a syntactically valid in-page expression from fingerprint.js', async () => {
+    const fs = await import('fs');
+    const path = await import('path');
+    const { probeExpression } = await import('./ActionEngine');
+    const src = fs.readFileSync(path.join(__dirname, 'fixtures', 'fingerprint.js'), 'utf8');
+    const expr = probeExpression(src, { role: 'button', name: 'Save product', tag: 'button' });
+    expect(() => new Function(`return ${expr.replace(/\(\)\s*$/, '')}`)).not.toThrow();
+    expect(expr).toContain('replace(/\\s+/g');
+  });
+
+  it('records present / absent / no identity, and still throws the original error', async () => {
+    const missing = {
+      getAttribute: vi.fn().mockResolvedValue(null),
+      click: vi.fn().mockRejectedValue(new Error("Timeout 5000ms exceeded. waiting for getByTestId('save')")),
+    };
+    const mk = (present: boolean | null, fp?: object) => new ActionEngine(
+      { evaluate: vi.fn().mockResolvedValue(present) } as any, { save: missing }, [], SAFE,
+      { entryOf: () => (fp ? { _fingerprint: fp } : {}) });
+    const engines = [mk(true, { role: 'button', name: 'Save' }), mk(false, { role: 'button', name: 'Save' }), mk(null)];
+    for (const e of engines) await expect(e.click('save')).rejects.toThrow(/locator_key=save/);
+    expect(engines.map((e) => e.probes[0])).toEqual([
+      'save: an element with the same identity is on the page — the locator drifted',
+      'save: no element with this identity on the page',
+      'save: no recorded identity',
+    ]);
+  });
+});
+
+describe('verifyNoNewConsoleErrors', () => {
+  it('ignores 4xx resource lines (an expected rejection), fails on 5xx and JS errors', async () => {
+    const mk = (entries: Array<{ kind: string; text: string }>) =>
+      engine({}, {}, { consoleGuard: { newErrors: () => entries } as any });
+    await mk([{ kind: 'console', text: 'Failed to load resource: the server responded with a status of 400 (Bad Request)' }])
+      .verifyNoNewConsoleErrors();
+    await expect(mk([{ kind: 'console', text: 'Failed to load resource: the server responded with a status of 500 ()' }])
+      .verifyNoNewConsoleErrors()).rejects.toThrow(/No new console errors/);
+    await expect(mk([{ kind: 'pageerror', text: 'TypeError: x is undefined' }]).verifyNoNewConsoleErrors()).rejects.toThrow();
+  });
+});

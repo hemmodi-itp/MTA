@@ -223,6 +223,10 @@ class UIExecutionAgent(BaseAgent):
         self._projects = projects
         self._grep = request.get("grep") or None
         self._grep_invert = request.get("grep_invert") or None
+        # Phase 6: healing burn-in / triage flaky re-run — every test N times, no retries (a retry would hide it)
+        self._repeat_each = int(request.get("repeat_each") or 0) or None
+        # Phase 7.2: approve visual baselines (python -m tools.nonfunctional.visual approve)
+        self._update_snapshots = bool(request.get("update_snapshots"))
         self._shard = shard
         self._shards = shards if shard is None else 1
         self._run_id = str(request.get("run_id")) if request.get("run_id") else None
@@ -592,7 +596,9 @@ class UIExecutionAgent(BaseAgent):
             *[f"--project={p}" for p in projects],
             *(["--headed"] if not headless else []),
             # Phase 4.7: a human closing a headed window must not relaunch the test — no retries when headed.
-            *(["--retries=0"] if not headless else []),
+            *(["--retries=0"] if not headless or getattr(self, "_repeat_each", None) else []),
+            *([f"--repeat-each={self._repeat_each}"] if getattr(self, "_repeat_each", None) else []),
+            *(["--update-snapshots"] if getattr(self, "_update_snapshots", False) else []),
             f"--workers={workers}",
             *(["--grep", grep] if grep else []),
             *(["--grep-invert", grep_invert] if grep_invert else []),
@@ -1337,8 +1343,21 @@ def _trace_fields(spec: dict, test: dict) -> Dict:
         {"type": str(a.get("type", "")), "description": str(a.get("description", ""))}
         for a in (test.get("annotations") or []) if isinstance(a, dict)
     ]
+    # runtime annotations (testInfo.annotations.push during the run) are reported per attempt as well
+    seen = {(a["type"], a["description"]) for a in annotations}
+    for r in test.get("results") or []:
+        for a in r.get("annotations") or []:
+            item = {"type": str(a.get("type", "")), "description": str(a.get("description", ""))}
+            if (item["type"], item["description"]) not in seen:
+                seen.add((item["type"], item["description"]))
+                annotations.append(item)
+    last = (test.get("results") or [{}])[-1] or {}
+    # Phase 11.4: evidence of the last attempt (screenshot, trace, video, HAR, console log) for defect reports
+    attachments = [{"name": str(a.get("name", "")), "path": a.get("path"), "content_type": a.get("contentType", "")}
+                   for a in last.get("attachments") or [] if isinstance(a, dict) and a.get("path")]
     fields: Dict = {"pw_status": test.get("status", ""), "tags": list(spec.get("tags") or []),
-                    "annotations": annotations}
+                    "annotations": annotations, "browser": test.get("projectName") or "",
+                    "attachments": attachments}
     tc = [a["description"] for a in annotations if a["type"] == "tc"]
     if tc:
         fields["tc_id"] = tc[0]

@@ -18,6 +18,7 @@ export interface LocatorEntry {
     description?: string;
     frame?: string[];     // Phase 2: iframe selectors from the page down to the element's frame
     scope?: LocatorScope; // Phase 2: resolve inside this container (e.g. a named dialog)
+    _fingerprint?: Record<string, unknown>; // Phase 6.3: identity of the element while the locator worked
 }
 
 type LocatorBase = Page | FrameLocator | Locator;

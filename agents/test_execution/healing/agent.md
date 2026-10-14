@@ -83,14 +83,16 @@ surface has no path to those files), not by instruction text alone.
 `status` is `"partial"` (never `"failed"`) whenever attempts are exhausted but real failures remain —
 `"failed"` is reserved for genuine infra errors: no report found, or `GOOGLE_API_KEY`/ADK unavailable.
 
-Also updates `test_creation/test_suite.json` → `status: "healed"` on every spec with at least one
-patched block.
+Also updates `test_creation/test_suite.json` → `status: "healed"` on every spec whose fixed tests pass the
+burn-in (Phase 6.7), `"heal_unstable"` when they do not.
 
 ## Failure behaviour
 
-No CSS-based or other deterministic fallback exists for this agent. If Gemini/ADK is genuinely
-unavailable (missing `GOOGLE_API_KEY`, ADK import/runtime error), `execute()` returns
-`status: "failed"` with a clear error rather than silently degrading to a weaker healing strategy.
+No CSS-based or other deterministic fallback exists for this agent. Phase 6.8: the primary model
+(`connectors.llm`) is tried, then each connector mode in `adk.fallback` (models from `adk.models`, via LiteLLM).
+When none is usable — misconfigured, not installed, or failing before the loop changed anything — `execute()`
+returns `status: "skipped"` with `healing: "skipped (<reason per model>)"`, never a pipeline failure. A loop that
+fails after it started changing things still returns `status: "failed"` with the progress it made.
 
 ## Phase 0 notes
 
@@ -132,3 +134,26 @@ tool surface and the `count() == 1` rule are unchanged.
   `forbidden` note; it never suggests a sleep.
 - `run_tests`: a test that passes only on a retry (`flaky`) stays open ("flaky after the patch — not counted as healed").
 - `read_failure_report` still excludes Playwright-flaky tests (they recovered on their own).
+
+## Safe healing (Phase 6)
+
+- **Triage first** (`project.yaml healing.triage`, default on when a `healing:` section exists): the workflow's
+  `triage` step (TriageAgent) writes `reports/triage.json`; this agent reuses it when it was written for the same
+  report, else runs the same triage itself. Only `test_defect.locator` / `test_defect.data` failures reach the loop;
+  `product_defect`, `environment`, `flaky`, `known_issue` and `unknown` are never patched.
+- **Modes** (`healing.mode`): `auto` applies, `propose` (default) writes diffs to
+  `test_creation/healing_proposals/<run>/`, `off` = triage only (a bare `mode: off` in YAML is read as off).
+- **Locator identity (6.3)**: a broken locator_map key is repaired only when the replacement points at the SAME
+  element — fingerprint (role, accessible name, tag, label, landmark container, position) of the original
+  (`_fingerprint`, recorded by ScriptGeneration's live validation or `python -m tools.healing.identity capture
+  --project X`; else the DOM-scan element; else the entry itself) vs. the candidate, score >= 0.75, a clear margin
+  over the runner-up, and a similar accessible name. Two strategies: the DOM re-scan repair (on a scratch copy),
+  then a live search of the page. Anything else is refused and listed under `needs_review`.
+- **Blast radius (6.5)**: `run_tests` also re-runs every spec that uses a repaired key (directly or through a flow);
+  a fix that makes a previously passing test fail is reverted and the failure marked not healable.
+- **Burn-in (6.7)**: every test this run fixed is re-run `--repeat-each=3`; only specs whose fixed tests pass every
+  time get `status: "healed"`.
+- **Audit (6.9)**: every decision (applied, proposed, refused, reverted, verified, burn_in_failed) is appended to
+  `test_execution/reports/healing_audit.jsonl` with before/after, evidence, confidence and approver.
+- The validation page signs in with the module's `setup` steps and opens the entry's own `_page_url`.
+- Result adds: `triage`, `mode`, `model`, `burn_in {stable, unstable}`, `reverted`, `needs_review`, `audit_log`.

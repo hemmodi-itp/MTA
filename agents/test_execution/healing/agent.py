@@ -39,7 +39,7 @@ from typing import Any, Dict, List, Optional
 from agents.base_agent import BaseAgent
 from agents.test_execution.healing.prompt import SUPERVISOR_INSTRUCTION
 from agents.test_execution.healing.tools import HealingRunContext, _get_failing_tests, build_tools
-from connectors.adk_model import resolve_adk_model
+from connectors.adk_model import resolve_adk_model_chain
 from tools.constants import PROJECTS_BASE as _ASSETS_BASE
 from tools.discovery.paths import comprehension_scan_dir
 from tools.shared import get_logger
@@ -84,18 +84,25 @@ class HealingAgent(BaseAgent):
                 "message": "no failing tests",
             }
 
-        # Phase 6-lean: project.yaml `healing: {triage: bool, mode: auto|propose}`. No `healing` section =
+        # Phase 6: project.yaml `healing: {triage: bool, mode: auto|propose|off}`. No `healing` section =
         # legacy behaviour (no triage, auto-apply); a section present defaults to triage on, mode propose.
         hcfg = _load_healing_config(safe)
         healable, triage_summary = None, None
         if hcfg["triage"]:
-            from tools.triage.triage import DATA, LOCATOR, PRODUCT_DEFECT, write_triage
-            triage = write_triage(report_json, os.path.join(reports_dir, "triage.json"))
+            from agents.test_execution.triage.agent import load_fresh_triage, run_triage
+            from tools.triage.triage import DATA, LOCATOR, PRODUCT_DEFECT
+            # the workflow's triage step already wrote triage.json for this report — triage once per run
+            triage = load_fresh_triage(reports_dir, report_json) or run_triage(
+                project_name, report_json, settings=self.settings, logger=self.logger,
+                reruns=request.get("triage_reruns", True))
             healable = {(t["spec_file"], t["test_name"]) for t in triage["tests"] if t["verdict"] in (LOCATOR, DATA)}
             defects = [t for t in triage["tests"] if t["verdict"] == PRODUCT_DEFECT]
-            with open(os.path.join(reports_dir, "defects.json"), "w", encoding="utf-8") as f:
-                json.dump(defects, f, indent=2)
             triage_summary = {"counts": triage["counts"], "defects": defects}
+            if hcfg["mode"] == "off":
+                self._log(f"healing.mode=off — triage only ({triage['counts']})")
+                return {"module": "healing", "status": "success", "project": project_name, "specs_healed": 0,
+                        "tests_healed": 0, "not_healable": [], "triage": triage_summary, "mode": "off",
+                        "message": "healing.mode is off — triage only"}
             if not healable:
                 self._log(f"Triage: nothing healable ({triage['counts']})")
                 return {"module": "healing", "status": "success", "project": project_name, "specs_healed": 0,
@@ -104,6 +111,7 @@ class HealingAgent(BaseAgent):
 
         module_urls, default_url = _load_project_urls(safe)
         run_id = os.path.splitext(os.path.basename(report_json))[0]
+        test_creation_dir = os.path.join(_ASSETS_BASE, safe, "test_creation")
         ctx = HealingRunContext(
             project_name=project_name,
             scripts_dir=scripts_dir,
@@ -122,6 +130,9 @@ class HealingAgent(BaseAgent):
             mode=hcfg["mode"],
             proposals_dir=os.path.join(_ASSETS_BASE, safe, "test_creation", "healing_proposals", run_id),
             healable=healable,
+            run_id=run_id,
+            module_setups=_load_module_setups(safe),
+            flows_ts_path=os.path.join(test_creation_dir, "flows.generated.ts"),
         )
 
         self._log(
@@ -131,9 +142,30 @@ class HealingAgent(BaseAgent):
 
         max_iterations = self.settings.get("adk", {}).get("healing_max_iterations", 3)
 
+        # Phase 6.8: primary model, then adk.fallback; an unavailable model is skipped while nothing has changed yet.
+        attempts: List[str] = []
+        model_used = None
         try:
-            model = resolve_adk_model(self.settings)
-            self._run_adk_healing(ctx, model, max_iterations)
+            for label, model in resolve_adk_model_chain(self.settings):
+                if isinstance(model, Exception):
+                    attempts.append(f"{label}: {model}")
+                    continue
+                before = _progress(ctx)
+                try:
+                    self._run_adk_healing(ctx, model, max_iterations)
+                    model_used = label
+                    break
+                except Exception as exc:
+                    attempts.append(f"{label}: {type(exc).__name__}: {str(exc)[:200]}")
+                    if _progress(ctx) != before:
+                        raise           # it had started changing things — not a model-availability problem
+                    self._log(f"Healing model '{label}' unavailable ({exc}) — trying the next one", level="warning")
+            if model_used is None:
+                reason = "; ".join(attempts) or "no ADK model configured"
+                self._log(f"healing: skipped ({reason})", level="warning")
+                return {"module": "healing", "status": "skipped", "project": project_name,
+                        "healing": f"skipped ({reason})", "reason": reason, "specs_healed": 0, "tests_healed": 0,
+                        "not_healable": [], "triage": triage_summary, "mode": ctx.mode}
         except Exception as exc:
             self._log(f"ADK healing loop failed: {exc}", level="error")
             # Even on a crash mid-loop, ctx already holds whatever real
@@ -156,7 +188,10 @@ class HealingAgent(BaseAgent):
         finally:
             ctx.close()
 
-        _update_suite_status(suite_path, sorted(ctx.healed_specs), "healed")
+        # Phase 6.7: a healed spec is "healed" only after it passes --repeat-each=3; otherwise "heal_unstable".
+        burn_in = self._burn_in(ctx) if ctx.mode == "auto" and ctx.fixed else {"stable": [], "unstable": []}
+        _update_suite_status(suite_path, burn_in["stable"], "healed")
+        _update_suite_status(suite_path, burn_in["unstable"], "heal_unstable")
 
         status = "success" if not ctx.remaining else "partial"
         self._log(
@@ -175,7 +210,33 @@ class HealingAgent(BaseAgent):
             "mode": ctx.mode,
             "proposals": ctx.proposals,
             "triage": triage_summary,
+            "model": model_used,
+            "burn_in": burn_in,
+            "reverted": ctx.reverted,
+            "needs_review": ctx.review,
+            "audit_log": os.path.join(reports_dir, "healing_audit.jsonl"),
         }
+
+    def _burn_in(self, ctx: HealingRunContext) -> Dict[str, List[str]]:
+        """Re-run every test this run fixed --repeat-each=3; a spec whose fixed tests all pass every time is stable."""
+        from tools.healing import audit
+        from tools.triage.service import REPEAT, make_rerun
+        fixed = sorted(ctx.fixed)
+        try:
+            again = make_rerun(ctx.project_name, self.settings)(fixed, REPEAT)
+        except Exception as exc:
+            self._log(f"Burn-in re-run failed ({exc}) — healed specs stay unconfirmed", level="warning")
+            again = {}
+        stable, unstable = set(), set()
+        for spec, title in fixed:
+            sts = (again.get((spec, title)) or {}).get("statuses") or []
+            ok = len(sts) >= REPEAT and all(s in ("passed", "expected") for s in sts)
+            (stable if ok else unstable).add(spec)
+            audit.append(ctx.reports_dir, {"run_id": ctx.run_id, "mode": ctx.mode, "kind": "burn_in", "target": spec,
+                                           "test": title, "evidence": f"--repeat-each={REPEAT}: {sts or 'no result'}",
+                                           "outcome": "verified" if ok else "burn_in_failed"})
+        stable -= unstable
+        return {"stable": sorted(stable), "unstable": sorted(unstable)}
 
     def _run_adk_healing(self, ctx: HealingRunContext, model, max_iterations: int) -> None:
         """Build the LoopAgent(LlmAgent) and drive it via the single asyncio.run()
@@ -243,7 +304,27 @@ def _load_healing_config(safe_project: str) -> Dict[str, Any]:
     if not isinstance(raw, dict):
         return {"triage": False, "mode": "auto"}
     mode = raw.get("mode", "propose")
-    return {"triage": bool(raw.get("triage", True)), "mode": mode if mode in ("auto", "propose") else "propose"}
+    if mode is False:            # YAML reads a bare `mode: off` as the boolean false
+        mode = "off"
+    return {"triage": bool(raw.get("triage", True)),
+            "mode": mode if mode in ("auto", "propose", "off") else "propose"}
+
+
+def _progress(ctx: HealingRunContext) -> tuple:
+    """Anything the loop changed or decided — used to tell "model unavailable" from "failed half-way"."""
+    return (len(ctx.rounds), ctx.tests_healed, len(ctx.repaired), len(ctx.proposals), len(ctx.not_healable))
+
+
+def _load_module_setups(safe_project: str) -> Dict[str, list]:
+    """{module_id: setup steps} from project.yaml — the validation page signs in like the module's specs."""
+    import yaml
+    try:
+        with open(os.path.join(_ASSETS_BASE, safe_project, "project.yaml"), encoding="utf-8") as f:
+            cfg = yaml.safe_load(f) or {}
+    except Exception:
+        return {}
+    return {m["id"]: m["setup"] for m in cfg.get("modules") or []
+            if isinstance(m, dict) and m.get("id") and m.get("setup")}
 
 
 def _load_dom_elements(path: str) -> List[Dict[str, Any]]:

@@ -17,9 +17,22 @@ steps:
     #           test_execution/reports/html/{ts}/
     #           test_execution/reports/index.json
 
+  - name: triage
+    description: "Classify every failed test (product_defect | test_defect.* | environment | flaky | known_issue | unknown) with evidence"
+    depends_on: [ui_execution]
+    # Phase 6.1 (agents/test_execution/triage). Re-runs: environment after a health check, failures --repeat-each=3;
+    # an LLM only for what stays unknown, and only with quoted evidence.
+    # Inputs:
+    #   test_execution/reports/json/{ts}_results.json   (latest) + earlier reports (history)
+    #   known_issues.yaml                         (project root, optional)
+    #   project.yaml                              (healing.flaky_rerun / triage_llm, base URL)
+    # Outputs:
+    #   test_execution/reports/triage.json
+    #   test_execution/reports/defects.json       (product_defect — never healed)
+
   - name: healing
     description: "Heal failing test() blocks — root cause + blast radius + block-level patch"
-    depends_on: [ui_execution]
+    depends_on: [triage]
     # Inputs:   test_execution/reports/json/{ts}_results.json
     #           comprehension/dom_elements.json
     #           test_creation/test_scripts/*.spec.ts

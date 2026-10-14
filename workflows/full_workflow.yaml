@@ -1,4 +1,4 @@
-# full_workflow.yaml — 7-step TypeScript Playwright pipeline
+# full_workflow.yaml — 8-step TypeScript Playwright pipeline
 #
 # Step 1: discovery         — DOM scan + BRD comprehension → dom_elements.json + business_scenarios.json
 # Step 2: testdata          — scenarios → 8-10 test variant types per scenario
@@ -6,8 +6,9 @@
 # Step 3: semantic_map      — scenarios + dom_elements → scenario_element_map.json (1 LLM call)
 # Step 4: script_generation — scenario_element_map + test_data → TypeScript .spec.ts files
 # Step 5: ui_execution      — npx playwright test → Playwright JSON + HTML reports
-# Step 6: healing           — Playwright JSON → block-level .spec.ts patching + blast radius
-# Step 7: reporting         — Playwright JSON + test_suite.json → HTML + JSON reports
+# Step 6: triage            — failed tests → triage.json verdicts (product vs test defect)
+# Step 7: healing           — test defects only → identity-checked fixes + blast radius + burn-in
+# Step 8: reporting         — Playwright JSON + test_suite.json → HTML + JSON reports
 #
 # File paths below are relative to application_assets/projects/{project}/ unless noted.
 # Every path is taken directly from the agent that reads/writes it (agents/<category>/<agent>/agent.py) —
@@ -160,12 +161,27 @@ steps:
     #   test_execution/reports/html/{ts}/        (Playwright HTML report + traces)
     #   test_execution/reports/index.json        (updated, newest-first)
 
-  - name: healing
-    description: "Triage failures (deterministic, tools/triage), then heal ONLY test_defect.* — block-level patch; mode auto|propose"
+  - name: triage
+    description: "Classify every failed test (product_defect | test_defect.* | environment | flaky | known_issue | unknown) with evidence"
     depends_on: [ui_execution]
-    # Phase 6-lean: triage runs as the first phase of this step (project.yaml `healing: {triage, mode}`;
-    # absent section = legacy behaviour). Writes reports/triage.json + reports/defects.json (product_defect,
-    # never patched). mode=propose writes diffs to test_creation/healing_proposals/<run>/ instead of applying.
+    # Phase 6.1 (agents/test_execution/triage). Re-runs: environment after a health check, failures --repeat-each=3;
+    # an LLM only for what stays unknown, and only with quoted evidence.
+    # Inputs:
+    #   test_execution/reports/json/{ts}_results.json   (latest) + earlier reports (history)
+    #   known_issues.yaml                         (project root, optional)
+    #   project.yaml                              (healing.flaky_rerun / triage_llm, base URL)
+    # Outputs:
+    #   test_execution/reports/triage.json
+    #   test_execution/reports/defects.json       (product_defect — never healed)
+
+  - name: healing
+    description: "Heal ONLY test_defect.* failures (from triage.json) — identity-checked locator fixes, blast-radius re-run, burn-in; mode auto|propose|off"
+    depends_on: [triage]
+    # Phase 6: reuses the triage step's triage.json (triages itself when run standalone). product_defect /
+    # environment / flaky / known_issue are never patched. Locator fixes must pass the identity check (same element),
+    # every spec using a repaired key is re-run (a fix that breaks a passing test is reverted), and healed specs get
+    # status "healed" only after a --repeat-each=3 burn-in. Every decision -> reports/healing_audit.jsonl.
+    # mode=propose writes diffs to test_creation/healing_proposals/<run>/; mode=off = triage only.
     # Inputs:
     #   test_execution/reports/json/{ts}_results.json   (latest — _find_latest_report)
     #   comprehension/dom_elements.json

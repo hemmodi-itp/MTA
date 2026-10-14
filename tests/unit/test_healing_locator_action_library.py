@@ -34,6 +34,18 @@ def _ctx(tmp, generation_modes, locator_map, scripts_dir):
     )
 
 
+class _Inline:
+    """A pw_executor stand-in that runs the call on the spot."""
+
+    def submit(self, fn, *args, **kwargs):
+        fut = MagicMock()
+        fut.result.return_value = fn(*args, **kwargs)
+        return fut
+
+    def shutdown(self, wait=False):
+        pass
+
+
 def _write_spec(scripts_dir, spec_file, content):
     path = os.path.join(scripts_dir, spec_file)
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -76,24 +88,88 @@ class ProposeLocatorFixActionLibraryTests(unittest.TestCase):
         self.scripts_dir = os.path.join(self.tmp, "test_scripts")
         _write_spec(self.scripts_dir, "M01/test_x.spec.ts", _ACTION_LIBRARY_SPEC)
 
+    def _broken_map(self, fingerprint=None):
+        entry = {"type": "css", "locator": "#username", "_module_id": "M01", "_source_locator_id": "LOC-0001",
+                 "description": "Username field"}
+        if fingerprint:
+            entry["_fingerprint"] = fingerprint
+        locator_map = {"username_input": entry}
+        with open(os.path.join(self.tmp, "locator_map.json"), "w", encoding="utf-8") as f:
+            json.dump(locator_map, f)
+        return locator_map
+
+    def _rescan_to(self, new_locator):
+        """repair_named_locator stand-in: rewrites the key in the (scratch) map it is given."""
+        def _repair(path, _comp, key):
+            with open(path, encoding="utf-8") as f:
+                m = json.load(f)
+            m[key].update(new_locator)
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(m, f)
+            return True
+        return _repair
+
+    def _audit(self):
+        with open(os.path.join(self.tmp, "reports", "healing_audit.jsonl"), encoding="utf-8") as f:
+            return [json.loads(line) for line in f]
+
     def test_branches_to_action_library_path_when_generation_mode_matches(self):
-        locator_map = {
-            "username_input": {"type": "css", "locator": "#username", "_module_id": "M01", "_source_locator_id": "LOC-0001"},
-        }
+        """Phase 6.3: the DOM re-scan repair runs on a scratch copy; it is applied only because the live element it
+        points at has the original's identity. The real locator_map.json gets the new locator, keeps the meta."""
+        fp = {"tag": "input", "role": "textbox", "name": "Username", "label": "Username", "container": "form|",
+              "position": [0, 2]}
+        locator_map = self._broken_map(fp)
         ctx = _ctx(self.tmp, {"M01/test_x.spec.ts": "action_library"}, locator_map, self.scripts_dir)
+        ctx._pw_executor = _Inline()
 
         page = MagicMock()
         page.locator.return_value.count.return_value = 0  # broken
+        with patch("agents.test_execution.healing.tools._get_validation_page", return_value=(None, page)), \
+                patch("agents.test_execution.healing.tools.repair_named_locator",
+                      side_effect=self._rescan_to({"type": "testid", "locator": "user-name"})) as repair, \
+                patch("tools.healing.identity.live_fingerprint", return_value=dict(fp)):
+            result = _propose_locator_fix(ctx, "M01/test_x.spec.ts", "positive — login @smoke")
 
-        with patch("agents.test_execution.healing.tools._get_validation_page", return_value=(None, page)):
-            with patch("agents.test_execution.healing.tools.repair_named_locator", return_value=True) as repair:
-                with patch("builtins.open", side_effect=_open_locator_map_stub(locator_map)):
-                    result = _propose_locator_fix(ctx, "M01/test_x.spec.ts", "positive — login @smoke")
-
-        repair.assert_called_once_with(ctx.locator_map_path, ctx.comprehension_dir, "username_input")
-        self.assertTrue(result["resolved"])
-        self.assertTrue(result["applied"])
+        repair.assert_called_once()
+        self.assertNotEqual(repair.call_args[0][0], ctx.locator_map_path)     # a scratch copy, never in place
+        self.assertTrue(result["resolved"] and result["applied"])
         self.assertEqual(result["repaired_key"], "username_input")
+        self.assertEqual(result["identity_score"], 1.0)
+        with open(ctx.locator_map_path, encoding="utf-8") as f:
+            saved = json.load(f)["username_input"]
+        self.assertEqual((saved["type"], saved["locator"]), ("testid", "user-name"))
+        self.assertEqual(saved["_fingerprint"], fp)                           # original identity kept
+        self.assertIn("username_input", ctx.repaired)
+        self.assertEqual([r["outcome"] for r in self._audit()], ["applied"])
+
+    def test_wrong_element_is_refused_and_map_untouched(self):
+        """The re-scan points at a different element (another field) and the live search finds nothing better:
+        nothing is changed, the refusal is audited and listed for review."""
+        fp = {"tag": "input", "role": "textbox", "name": "Username", "label": "Username", "container": "form|",
+              "position": [0, 2]}
+        locator_map = self._broken_map(fp)
+        with open(os.path.join(self.tmp, "locator_map.json"), encoding="utf-8") as f:
+            before = f.read()
+        ctx = _ctx(self.tmp, {"M01/test_x.spec.ts": "action_library"}, locator_map, self.scripts_dir)
+        ctx._pw_executor = _Inline()
+        password = {"tag": "input", "role": "textbox", "name": "Password", "label": "Password", "container": "form|",
+                    "position": [1, 2]}
+        page = MagicMock()
+        page.locator.return_value.count.return_value = 0
+        with patch("agents.test_execution.healing.tools._get_validation_page", return_value=(None, page)), \
+                patch("agents.test_execution.healing.tools.repair_named_locator",
+                      side_effect=self._rescan_to({"type": "css", "locator": "#password"})), \
+                patch("tools.healing.identity.live_fingerprint", return_value=password), \
+                patch("tools.healing.identity.live_candidates",
+                      return_value=[{"fingerprint": password, "entry": {"type": "css", "locator": "#password"}}]):
+            result = _propose_locator_fix(ctx, "M01/test_x.spec.ts", "positive — login @smoke")
+
+        self.assertFalse(result["resolved"])
+        self.assertIn("identity check", result["reason"])
+        with open(ctx.locator_map_path, encoding="utf-8") as f:
+            self.assertEqual(f.read(), before)
+        self.assertEqual(ctx.review[0]["key"], "username_input")
+        self.assertEqual(self._audit()[-1]["outcome"], "refused")
 
     def test_key_that_already_resolves_is_not_touched(self):
         locator_map = {

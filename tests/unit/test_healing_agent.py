@@ -436,7 +436,7 @@ class HealingAgentExecuteFastPathsTests(unittest.TestCase):
         self.assertEqual(result["status"], "success")
         self.assertEqual(result["tests_healed"], 0)
 
-    def test_unresolvable_connector_mode_returns_failed_without_adk(self):
+    def test_unresolvable_connector_mode_is_skipped_without_adk(self):
         report_path = os.path.join(self.reports_dir, "20260101_000000_results.json")
         with open(report_path, "w", encoding="utf-8") as f:
             json.dump(_report(self.spec_filename), f)
@@ -445,10 +445,11 @@ class HealingAgentExecuteFastPathsTests(unittest.TestCase):
         with patch("agents.test_execution.healing.agent.HealingAgent._run_adk_healing") as mock_run:
             result = self.agent.execute({"project_name": "proj"}, {})
         mock_run.assert_not_called()
-        self.assertEqual(result["status"], "failed")
-        self.assertIn("internal", result["error"])
+        # Phase 6.8: no usable model -> "healing: skipped (reason)", not a pipeline failure
+        self.assertEqual(result["status"], "skipped")
+        self.assertIn("internal", result["healing"])
 
-    def test_adk_exception_is_caught_and_reported_as_failed(self):
+    def test_adk_exception_before_any_progress_is_skipped_with_reason(self):
         report_path = os.path.join(self.reports_dir, "20260101_000000_results.json")
         with open(report_path, "w", encoding="utf-8") as f:
             json.dump(_report(self.spec_filename), f)
@@ -458,8 +459,9 @@ class HealingAgentExecuteFastPathsTests(unittest.TestCase):
             side_effect=RuntimeError("adk boom"),
         ):
             result = self.agent.execute({"project_name": "proj"}, {})
-        self.assertEqual(result["status"], "failed")
-        self.assertIn("adk boom", result["error"])
+        # Phase 6.8: the model failed before changing anything — treated as unavailable, the step is skipped
+        self.assertEqual(result["status"], "skipped")
+        self.assertIn("adk boom", result["healing"])
 
     def test_adk_exception_preserves_ctx_progress_in_returned_dict(self):
         """The key regression test: a crash mid-loop must not discard whatever

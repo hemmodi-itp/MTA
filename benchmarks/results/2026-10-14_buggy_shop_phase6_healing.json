@@ -1,0 +1,641 @@
+{
+  "date": "2026-10-14",
+  "locators": [
+    {
+      "flag": "LOC_01",
+      "control": false,
+      "broken_key": "login_button",
+      "spec": "L_BS_001",
+      "failed_tests": 3,
+      "triage": {
+        "L/test_BUG_13_bug_13.spec.ts :: a wrong password shows the generic message @smoke": "test_defect.locator",
+        "L/test_L_BS_001_login.spec.ts :: log in as alice @smoke": "test_defect.locator",
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "flaky"
+      },
+      "proposals": [
+        {
+          "test": "L/test_BUG_13_bug_13.spec.ts :: a wrong password shows the generic message @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "login_button",
+          "identity_score": 0.95,
+          "blast_radius": [
+            "L/test_BUG_13_bug_13.spec.ts",
+            "L/test_L_BS_001_login.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "login_button"
+      ],
+      "truth": {
+        "login_button": "login_button"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_02",
+      "control": false,
+      "broken_key": "username",
+      "spec": "L_BS_001",
+      "failed_tests": 3,
+      "triage": {
+        "L/test_BUG_13_bug_13.spec.ts :: a wrong password shows the generic message @smoke": "test_defect.locator",
+        "L/test_L_BS_001_login.spec.ts :: log in as alice @smoke": "test_defect.locator",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "flaky"
+      },
+      "proposals": [
+        {
+          "test": "L/test_BUG_13_bug_13.spec.ts :: a wrong password shows the generic message @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "username",
+          "identity_score": 1.0,
+          "blast_radius": [
+            "L/test_BUG_13_bug_13.spec.ts",
+            "L/test_L_BS_001_login.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "username"
+      ],
+      "truth": {
+        "username": "username"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_03",
+      "control": false,
+      "broken_key": "password",
+      "spec": "L_BS_001",
+      "failed_tests": 3,
+      "triage": {
+        "L/test_BUG_13_bug_13.spec.ts :: a wrong password shows the generic message @smoke": "test_defect.locator",
+        "L/test_L_BS_001_login.spec.ts :: log in as alice @smoke": "test_defect.locator",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "flaky"
+      },
+      "proposals": [
+        {
+          "test": "L/test_BUG_13_bug_13.spec.ts :: a wrong password shows the generic message @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "password",
+          "identity_score": 1.0,
+          "blast_radius": [
+            "L/test_BUG_13_bug_13.spec.ts",
+            "L/test_L_BS_001_login.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "password"
+      ],
+      "truth": {
+        "password": "password"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_04",
+      "control": false,
+      "broken_key": "save_product",
+      "spec": "P_BS_002",
+      "failed_tests": 4,
+      "triage": {
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "test_defect.locator",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "test_defect.locator",
+        "P/test_BUG_18_bug_18.spec.ts :: an empty name is refused @smoke": "test_defect.locator",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "save_product",
+          "identity_score": 0.821,
+          "blast_radius": [
+            "P/test_BUG_01_bug_01.spec.ts",
+            "P/test_BUG_05_bug_05.spec.ts",
+            "P/test_BUG_18_bug_18.spec.ts",
+            "P/test_P_BS_002_product_form.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        },
+        {
+          "test": "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke",
+          "resolved": false,
+          "reason": "every locator_key in the failing block already resolves live \u2014 the failure is likely not a locator issue"
+        },
+        {
+          "test": "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke",
+          "resolved": false,
+          "reason": "every locator_key in the failing block already resolves live \u2014 the failure is likely not a locator issue"
+        },
+        {
+          "test": "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke",
+          "resolved": false,
+          "reason": "every locator_key in the failing block already resolves live \u2014 the failure is likely not a locator issue"
+        }
+      ],
+      "changed_keys": [
+        "save_product"
+      ],
+      "truth": {
+        "save_product": "save_product"
+      },
+      "wrong_element": [],
+      "verified_after_heal": false,
+      "not_healable": [
+        {
+          "spec_file": "P/test_BUG_01_bug_01.spec.ts",
+          "test_name": "a 50-character name is accepted @smoke",
+          "reason": "every locator_key in the failing block already resolves live \u2014 the failure is likely not a locator issue"
+        },
+        {
+          "spec_file": "P/test_BUG_05_bug_05.spec.ts",
+          "test_name": "a description is shown as text, never run @smoke",
+          "reason": "every locator_key in the failing block already resolves live \u2014 the failure is likely not a locator issue"
+        },
+        {
+          "spec_file": "P/test_P_BS_002_product_form.spec.ts",
+          "test_name": "create a product @smoke",
+          "reason": "every locator_key in the failing block already resolves live \u2014 the failure is likely not a locator issue"
+        }
+      ],
+      "outcome": "not healed"
+    },
+    {
+      "flag": "LOC_05",
+      "control": false,
+      "broken_key": "product_name",
+      "spec": "P_BS_002",
+      "failed_tests": 4,
+      "triage": {
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "test_defect.locator",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "test_defect.locator",
+        "P/test_BUG_18_bug_18.spec.ts :: an empty name is refused @smoke": "test_defect.locator",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "product_name",
+          "identity_score": 1.0,
+          "blast_radius": [
+            "P/test_BUG_01_bug_01.spec.ts",
+            "P/test_BUG_05_bug_05.spec.ts",
+            "P/test_BUG_18_bug_18.spec.ts",
+            "P/test_P_BS_002_product_form.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "product_name"
+      ],
+      "truth": {
+        "product_name": "product_name"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_06",
+      "control": false,
+      "broken_key": "price",
+      "spec": "P_BS_002",
+      "failed_tests": 4,
+      "triage": {
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "test_defect.locator",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "test_defect.locator",
+        "P/test_BUG_18_bug_18.spec.ts :: an empty name is refused @smoke": "test_defect.locator",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "price",
+          "identity_score": 1.0,
+          "blast_radius": [
+            "P/test_BUG_01_bug_01.spec.ts",
+            "P/test_BUG_05_bug_05.spec.ts",
+            "P/test_BUG_18_bug_18.spec.ts",
+            "P/test_P_BS_002_product_form.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "price"
+      ],
+      "truth": {
+        "price": "price"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_07",
+      "control": false,
+      "broken_key": "category",
+      "spec": "P_BS_002",
+      "failed_tests": 4,
+      "triage": {
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "test_defect.locator",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "test_defect.locator",
+        "P/test_BUG_18_bug_18.spec.ts :: an empty name is refused @smoke": "test_defect.locator",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "category",
+          "identity_score": 1.0,
+          "blast_radius": [
+            "P/test_BUG_01_bug_01.spec.ts",
+            "P/test_BUG_05_bug_05.spec.ts",
+            "P/test_BUG_18_bug_18.spec.ts",
+            "P/test_P_BS_002_product_form.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "category"
+      ],
+      "truth": {
+        "category": "category"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_08",
+      "control": false,
+      "broken_key": "search",
+      "spec": "P_BS_003",
+      "failed_tests": 3,
+      "triage": {
+        "P/test_BUG_07_bug_07.spec.ts :: searching for 50% works @smoke": "test_defect.locator",
+        "P/test_BUG_19_bug_19.spec.ts :: search ignores case @smoke": "test_defect.locator",
+        "P/test_P_BS_003_search.spec.ts :: search finds a product @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_07_bug_07.spec.ts :: searching for 50% works @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "search",
+          "identity_score": 1.0,
+          "blast_radius": [
+            "P/test_BUG_07_bug_07.spec.ts",
+            "P/test_BUG_19_bug_19.spec.ts",
+            "P/test_P_BS_003_search.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "search"
+      ],
+      "truth": {
+        "search": "search"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_09",
+      "control": false,
+      "broken_key": "add_to_cart",
+      "spec": "P_BS_004",
+      "failed_tests": 2,
+      "triage": {
+        "P/test_BUG_21_bug_21.spec.ts :: quantity 0 is refused @smoke": "test_defect.locator",
+        "P/test_P_BS_004_cart.spec.ts :: add a product to the cart @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_21_bug_21.spec.ts :: quantity 0 is refused @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "add_to_cart",
+          "identity_score": 0.95,
+          "blast_radius": [
+            "P/test_BUG_21_bug_21.spec.ts",
+            "P/test_P_BS_004_cart.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "add_to_cart"
+      ],
+      "truth": {
+        "add_to_cart": "add_to_cart"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_10",
+      "control": false,
+      "broken_key": "help_link",
+      "spec": "P_BS_005",
+      "failed_tests": 2,
+      "triage": {
+        "P/test_BUG_06_bug_06.spec.ts :: the footer help link opens help @smoke": "test_defect.locator",
+        "P/test_P_BS_005_help.spec.ts :: help link opens the help page @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_06_bug_06.spec.ts :: the footer help link opens help @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "help_link",
+          "identity_score": 0.815,
+          "blast_radius": [
+            "P/test_BUG_06_bug_06.spec.ts",
+            "P/test_P_BS_005_help.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "help_link"
+      ],
+      "truth": {
+        "help_link": "help_link"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    },
+    {
+      "flag": "LOC_11",
+      "control": true,
+      "broken_key": "save_product",
+      "spec": "P_BS_002",
+      "failed_tests": 4,
+      "triage": {
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "product_defect",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "product_defect",
+        "P/test_BUG_18_bug_18.spec.ts :: an empty name is refused @smoke": "product_defect",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "product_defect"
+      },
+      "proposals": [],
+      "changed_keys": [],
+      "truth": {},
+      "wrong_element": [],
+      "verified_after_heal": false,
+      "not_healable": [],
+      "outcome": "refused"
+    },
+    {
+      "flag": "LOC_12",
+      "control": true,
+      "broken_key": "product_name",
+      "spec": "P_BS_002",
+      "failed_tests": 4,
+      "triage": {
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "test_defect.locator",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "test_defect.locator",
+        "P/test_BUG_18_bug_18.spec.ts :: an empty name is refused @smoke": "product_defect",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke",
+          "resolved": false,
+          "reason": "locator_key 'product_name' is broken and no replacement passed the identity check (no candidate element on the page with a similar name; fingerprint from recorded) \u2014 needs a human to update locator_map.json",
+          "identity_score": null
+        },
+        {
+          "test": "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke",
+          "resolved": false,
+          "reason": "locator_key 'product_name' is broken and no replacement passed the identity check (no candidate element on the page with a similar name; fingerprint from recorded) \u2014 needs a human to update locator_map.json",
+          "identity_score": null
+        },
+        {
+          "test": "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke",
+          "resolved": false,
+          "reason": "locator_key 'product_name' is broken and no replacement passed the identity check (no candidate element on the page with a similar name; fingerprint from recorded) \u2014 needs a human to update locator_map.json",
+          "identity_score": null
+        }
+      ],
+      "changed_keys": [],
+      "truth": {},
+      "wrong_element": [],
+      "verified_after_heal": false,
+      "not_healable": [
+        {
+          "spec_file": "P/test_BUG_01_bug_01.spec.ts",
+          "test_name": "a 50-character name is accepted @smoke",
+          "reason": "locator_key 'product_name' is broken and no replacement passed the identity check (no candidate element on the page with a similar name; fingerprint from recorded) \u2014 needs a human to update locator_map.json"
+        },
+        {
+          "spec_file": "P/test_BUG_05_bug_05.spec.ts",
+          "test_name": "a description is shown as text, never run @smoke",
+          "reason": "locator_key 'product_name' is broken and no replacement passed the identity check (no candidate element on the page with a similar name; fingerprint from recorded) \u2014 needs a human to update locator_map.json"
+        },
+        {
+          "spec_file": "P/test_P_BS_002_product_form.spec.ts",
+          "test_name": "create a product @smoke",
+          "reason": "locator_key 'product_name' is broken and no replacement passed the identity check (no candidate element on the page with a similar name; fingerprint from recorded) \u2014 needs a human to update locator_map.json"
+        }
+      ],
+      "outcome": "refused"
+    }
+  ],
+  "bugs": [
+    {
+      "bug": "BUG_01",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "an assertion's element never appeared, after every earlier step passed \u2014 the expected outcome is missing (no recorded identity to tell a moved element from a missing one)",
+          "history: 1/3 previous run(s) passed"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_05",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "new console error(s): ['[console] http://127.0.0.1:60617/products/24: Failed to load resource: the server responded with a status of 422 (Unprocessable Content)', '[console] http://127.0.0.1:60617/products/24: Failed to load resource: the server responded with a status of 422 (Unprocessable Content)', '[console] http://127.0.0.1:60617/products/24: Failed to load resource: the server responded with a status of 422 (Unprocessable Content)']",
+          "history: 1/3 previous run(s) passed"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_06",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "new console error(s): ['[console] http://127.0.0.1:60822/helpp: Failed to load resource: the server responded with a status of 404 (Not Found)', '[console] http://127.0.0.1:60822/helpp: Failed to load resource: the server responded with a status of 404 (Not Found)', '[console] http://127.0.0.1:60822/helpp: Failed to load resource: the server responded with a status of 404 (Not Found)']",
+          "history: 3/3 previous run(s) passed (passed last time \u2014 a new failure)"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_07",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "unexpected 5xx response(s): ['GET http://127.0.0.1:65205/products?q=50%25&category=&sort= -> 500', 'GET http://127.0.0.1:65205/products?q=50%25&category=&sort= -> 500', 'GET http://127.0.0.1:65205/products?q=50%25&category=&sort= -> 500']",
+          "new console error(s): ['[console] http://127.0.0.1:65205/products?q=50%25&category=&sort=: Failed to load resource: the server responded with a status of 500 (Internal Server Error)', '[console] http://127.0.0.1:65205/products?q=50%25&category=&sort=: Failed to load resource: the server responded with a status of 500 (Internal Server Error)', '[console] http://127.0.0.1:65205/products?q=50%25&category=&sort=: Failed to load resource: the server responded with a status of 500 (Internal Server Error)']",
+          "history: 2/2 previous run(s) passed (passed last time \u2014 a new failure)"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_13",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "new console error(s): ['[console] http://127.0.0.1:55211/login: Failed to load resource: the server responded with a status of 401 (Unauthorized)', '[console] http://127.0.0.1:55211/login: Failed to load resource: the server responded with a status of 401 (Unauthorized)', '[console] http://127.0.0.1:55211/login: Failed to load resource: the server responded with a status of 401 (Unauthorized)']",
+          "history: 1/1 previous run(s) passed (passed last time \u2014 a new failure)"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_16",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "an assertion's element never appeared, after every earlier step passed \u2014 the expected outcome is missing (no recorded identity to tell a moved element from a missing one)"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_17",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "an assertion's element never appeared, after every earlier step passed \u2014 the expected outcome is missing (no recorded identity to tell a moved element from a missing one)"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_18",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "an assertion's element never appeared, after every earlier step passed \u2014 the expected outcome is missing (no recorded identity to tell a moved element from a missing one)"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_19",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "identity probe: product_list: no element with this identity on the page \u2014 the expected element is missing, not just its locator"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_21",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "an assertion's element never appeared, after every earlier step passed \u2014 the expected outcome is missing (no recorded identity to tell a moved element from a missing one)"
+        ]
+      ],
+      "healable": 0
+    }
+  ],
+  "clean": {
+    "passed": 14,
+    "failed": 0,
+    "failing": [
+      "a description is shown as text, never run @smoke: Error: [locator_key=flash] expect(locator).toContainText(expected) failed\n\nLocator: getByTestId('flash')\nExpected substring: \"Product created\"\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" getByTestId('flash') with timeout 10000ms\n  - waiting for getByTestId('fla"
+    ]
+  },
+  "fingerprints_recorded": 16,
+  "summary": {
+    "locator_changes": 10,
+    "healed": 9,
+    "heal_success_pct": 90.0,
+    "wrong_element_heals": 0,
+    "controls_refused": 2,
+    "controls": 2,
+    "bugs": 10,
+    "bugs_detected": 10,
+    "bugs_all_product_defect": 10,
+    "bug_failures_healable": 0,
+    "pass": true
+  }
+}

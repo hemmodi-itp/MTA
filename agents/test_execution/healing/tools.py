@@ -20,6 +20,8 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from tools.healing import audit, identity
+from tools.healing.blast import specs_using_keys
 from tools.test_creation.script_generator.build_dom_locator_map import get_playwright_expr, repair_named_locator
 
 _SPEC_SCRIPTS_MARKER = "test_creation/test_scripts/"
@@ -85,6 +87,9 @@ class HealingRunContext:
         mode: str = "auto",
         proposals_dir: str = "",
         healable: Optional[set] = None,
+        run_id: str = "",
+        module_setups: Optional[Dict[str, list]] = None,
+        flows_ts_path: str = "",
     ):
         self.project_name = project_name
         self.scripts_dir = scripts_dir
@@ -109,6 +114,16 @@ class HealingRunContext:
         self.proposals: List[Dict[str, str]] = []
         # {(spec_key, test_title)} triaged as test_defect.* -- None = no triage, heal everything.
         self.healable = healable
+        # Phase 6.5-6.9: audit rows carry the run id; module setup steps sign the validation page in;
+        # repaired locator keys (before/after) drive the blast-radius re-run and a revert on regression.
+        self.run_id = run_id
+        self.module_setups = module_setups or {}
+        self.flows_ts_path = flows_ts_path
+        self.repaired: Dict[str, Dict[str, Any]] = {}
+        self.reverted: List[Dict[str, Any]] = []
+        self.fixed: set = set()          # (spec_key, title) that failed and passed after a fix (burn-in input)
+        self.review: List[Dict[str, Any]] = []
+        self.passing_before: set = _passing_tests(report_json)
 
         self.remaining: Dict[str, Dict[str, str]] = {}
         self.not_healable: List[Dict[str, str]] = []
@@ -116,6 +131,9 @@ class HealingRunContext:
         self.tests_healed: int = 0
         self.rounds: List[Dict[str, Any]] = []
         self.validation_pages: Dict[str, Tuple[Any, Any]] = {}
+        # one Playwright + browser per run (sync Playwright allows one per thread); one context per module (its login)
+        self._scanner = None
+        self._contexts: Dict[str, Any] = {}
         self._pw_executor: Optional[concurrent.futures.ThreadPoolExecutor] = None
 
     def test_id_attribute(self) -> str:
@@ -144,12 +162,12 @@ class HealingRunContext:
     def close(self) -> None:
         """Close every launched browser and shut down the worker thread."""
         if self._pw_executor is not None:
-            for scanner, _page in self.validation_pages.values():
-                if scanner is not None:
-                    try:
-                        self._pw_executor.submit(scanner.close).result(timeout=10)
-                    except Exception:
-                        pass
+            scanners = {id(sc): sc for sc, _page in self.validation_pages.values() if sc is not None}
+            for scanner in scanners.values():
+                try:
+                    self._pw_executor.submit(scanner.close).result(timeout=10)
+                except Exception:
+                    pass
             self._pw_executor.shutdown(wait=False)
 
 
@@ -212,6 +230,25 @@ def _get_failing_tests(report_json: str, logger) -> Dict[str, List[str]]:
                 if status not in ("passed", "expected", "flaky"):
                     failing.setdefault(spec_key, []).append(spec.get("title", ""))
     return failing
+
+
+def _passing_tests(report_json: str) -> set:
+    """{(spec_key, title)} that passed in the run being healed — a blast-radius re-run must keep them passing."""
+    if not report_json or not os.path.exists(report_json):
+        return set()
+    try:
+        with open(report_json, encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return set()
+    out = set()
+    for suite in _iter_suites(data.get("suites", [])):
+        for spec in suite.get("specs", []):
+            key = _spec_key_from_report_path(spec.get("file", ""))
+            for test in spec.get("tests", []):
+                if test.get("status") in ("passed", "expected"):
+                    out.add((key, spec.get("title", "")))
+    return out
 
 
 def _get_error_for_test(report_json: str, spec_key: str, test_name: str) -> str:
@@ -397,20 +434,35 @@ def _url_for_spec_file(ctx: HealingRunContext, spec_file: str) -> str:
     return ctx.module_urls.get(module_id) or ctx.default_url
 
 
-def _get_validation_page(ctx: HealingRunContext, module_id: str = ""):
-    """Lazily launch (and cache, per module) one headless page for live
+def _get_validation_page(ctx: HealingRunContext, module_id: str = "", page_url: str = ""):
+    """Lazily launch (and cache, per module + page) one headless page for live
     locator dry-run checks — reused across every tool call in this run that
-    targets the same module. Returns (scanner, page), both None if a browser
-    genuinely can't be launched — callers must treat that as 'can't verify',
-    not a rejection."""
-    if module_id in ctx.validation_pages:
-        return ctx.validation_pages[module_id]
+    targets the same page. The module's setup steps (its login) run first, so
+    a page behind a login is checked signed in. Returns (scanner, page), both
+    None if a browser genuinely can't be launched — callers must treat that
+    as 'can't verify', not a rejection."""
+    cache_key = f"{module_id}|{page_url}" if page_url else module_id
+    if cache_key in ctx.validation_pages:
+        return ctx.validation_pages[cache_key]
 
     def _launch():
         from tools.playwright_scanner import PlaywrightScanner
-        scanner = PlaywrightScanner(headless=True)
-        page = scanner.launch()
-        url = ctx.module_urls.get(module_id) or ctx.default_url
+        scanner = getattr(ctx, "_scanner", None)
+        if scanner is None:
+            scanner = PlaywrightScanner(headless=True)
+            first_page = scanner.launch()
+            ctx._scanner = scanner
+            ctx._contexts[module_id] = scanner.context
+            page, fresh = first_page, True
+        elif module_id in ctx._contexts:
+            page, fresh = ctx._contexts[module_id].new_page(), False      # same module: already signed in
+        else:
+            ctx._contexts[module_id] = scanner.browser.new_context()
+            page, fresh = ctx._contexts[module_id].new_page(), True
+        setup = ctx.module_setups.get(module_id)
+        if setup and fresh:
+            scanner._execute_setup_steps(page, setup)
+        url = page_url or ctx.module_urls.get(module_id) or ctx.default_url
         if url:
             page.goto(url, wait_until="domcontentloaded", timeout=30000)
             try:
@@ -420,11 +472,11 @@ def _get_validation_page(ctx: HealingRunContext, module_id: str = ""):
         return scanner, page
 
     try:
-        ctx.validation_pages[module_id] = ctx.pw_executor().submit(_launch).result()
+        ctx.validation_pages[cache_key] = ctx.pw_executor().submit(_launch).result()
     except Exception as exc:
         ctx.logger.warning(f"Locator dry-run page unavailable for module '{module_id}': {exc}")
-        ctx.validation_pages[module_id] = (None, None)
-    return ctx.validation_pages[module_id]
+        ctx.validation_pages[cache_key] = (None, None)
+    return ctx.validation_pages[cache_key]
 
 
 def _element_text_blob(el: dict) -> str:
@@ -497,15 +549,85 @@ def _locator_entry_resolves(page, entry: dict, test_id_attribute: Optional[str] 
     return entry_resolves(page, entry, test_id_attribute)
 
 
+_LOCATOR_FIELDS = ("type", "locator", "name", "scope", "frame")
+
+
+def _dom_element_for(ctx: HealingRunContext, entry: dict) -> Optional[dict]:
+    sid = entry.get("_source_locator_id")
+    return next((el for el in ctx.dom_elements if sid and el.get("locator_id") == sid), None)
+
+
+def _with_locator(entry: dict, new_locator: dict) -> dict:
+    """The entry with only its locator fields replaced — description, module, page and the recorded
+    `_fingerprint` (the identity of the ORIGINAL element) stay."""
+    out = {k: v for k, v in entry.items() if k not in _LOCATOR_FIELDS}
+    out.update({k: v for k, v in new_locator.items() if k in _LOCATOR_FIELDS})
+    return out
+
+
+def _find_same_element(ctx: HealingRunContext, page, key: str, entry: dict) -> dict:
+    """Phase 6.3: a replacement locator for `key` that points at the SAME element (identity score >= threshold).
+    Tries the DOM re-scan repair first, then a live identity search; never accepts a mere "something resolves"."""
+    tid = _ctx_test_id_attribute(ctx)
+    original, source = identity.original_fingerprint(entry, key, _dom_element_for(ctx, entry))
+    best_seen = None
+    # 1. DOM re-scan repair (repair_named_locator), on a scratch copy — then the identity check on the live page.
+    if ctx.locator_map_path and os.path.exists(ctx.locator_map_path):
+        scratch_dir = ctx.proposals_dir or ctx.reports_dir
+        os.makedirs(scratch_dir, exist_ok=True)
+        scratch = os.path.join(scratch_dir, f".heal_scratch_{key}.json")
+        with open(ctx.locator_map_path, encoding="utf-8") as src, open(scratch, "w", encoding="utf-8") as dst:
+            dst.write(src.read())
+        try:
+            if repair_named_locator(scratch, ctx.comprehension_dir, key):
+                with open(scratch, encoding="utf-8") as f:
+                    candidate = (json.load(f) or {}).get(key) or {}
+                cand_loc = {k: candidate[k] for k in _LOCATOR_FIELDS if k in candidate}
+                if cand_loc and cand_loc != {k: entry[k] for k in _LOCATOR_FIELDS if k in entry}:
+                    fp = ctx.pw_executor().submit(identity.live_fingerprint, page, cand_loc, tid).result()
+                    if fp:
+                        sc = identity.identity_score(original, fp)
+                        best_seen = sc["score"]
+                        if sc["eligible"] and sc["score"] >= identity.THRESHOLD:
+                            return {"accepted": True, "locator": cand_loc, "score": sc["score"], "parts": sc["parts"],
+                                    "method": "dom_rescan", "fingerprint_source": source}
+        finally:
+            if os.path.exists(scratch):
+                os.remove(scratch)
+    # 2. Live identity search over the page's elements.
+    res = ctx.pw_executor().submit(identity.heal_live, page, original, tid).result()
+    best = res.get("best") or {}
+    if res.get("accepted"):
+        return {"accepted": True, "locator": res["entry"], "score": best.get("score"), "parts": best.get("parts"),
+                "runner_up": res.get("runner_up_score"), "method": "live_identity", "fingerprint_source": source}
+    return {"accepted": False, "reason": res.get("reason"), "score": best.get("score", best_seen),
+            "runner_up": res.get("runner_up_score"), "fingerprint_source": source,
+            "best_candidate": best.get("entry")}
+
+
+def _refuse(ctx: HealingRunContext, spec_file: str, test_name: str, key: str, found: dict) -> dict:
+    reason = (f"locator_key '{key}' is broken and no replacement passed the identity check "
+              f"({found.get('reason')}; fingerprint from {found.get('fingerprint_source')}) — needs a human to update "
+              "locator_map.json")
+    audit.append(ctx.reports_dir, {"run_id": ctx.run_id, "mode": ctx.mode, "kind": "locator_map", "target": key,
+                                   "test": f"{spec_file} :: {test_name}", "before": ctx.locator_map.get(key),
+                                   "after": found.get("best_candidate"), "evidence": found.get("reason"),
+                                   "confidence": found.get("score"), "outcome": "refused"})
+    ctx.review.append({"key": key, "spec_file": spec_file, "test_name": test_name, "reason": found.get("reason"),
+                       "score": found.get("score")})
+    return {"resolved": False, "reason": reason, "identity_score": found.get("score")}
+
+
 def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, test_name: str) -> dict:
     """Locator diagnosis/repair for a plan-rendered (generation_mode ==
     "action_library") spec: extract the implicated locator_key(s) from
-    `action.<verb>('key', ...)` calls (not raw page.getBy*(...) — those don't
-    appear in this spec shape), live-check each against locator_map.json, and
-    — unlike the legacy path — repair a confirmed-broken key directly via
-    repair_named_locator instead of proposing a .spec.ts patch. No block
-    replacement needed: fixing the one shared locator_map.json entry fixes
-    every spec that references the key."""
+    `action.<verb>('key', ...)` calls, live-check each against locator_map.json, and
+    repair a confirmed-broken key in the one shared locator_map.json entry — which fixes
+    every spec that references the key, so every such spec is re-run (blast radius, 6.5).
+
+    Phase 6.3: the replacement must be the SAME element — its fingerprint (role, accessible name, tag, label,
+    container, position) has to match the original's above the identity threshold. Otherwise nothing is changed
+    and the key goes to human review. Every decision is written to healing_audit.jsonl (6.9)."""
     block = _read_test_block(ctx, spec_file, test_name)
     if block is None:
         return {"resolved": False, "reason": f"test block '{test_name}' not found in {spec_file}"}
@@ -514,14 +636,16 @@ def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, 
     if not keys:
         return {"resolved": False, "reason": "no action.<verb>('locator_key', ...) call in the failing block"}
 
-    _scanner, page = _get_validation_page(ctx, _module_id_from_spec_file(spec_file))
-    if page is None:
-        return {"resolved": False, "reason": "headless validation page unavailable — cannot live-check locators"}
-
-    for key in keys:
+    module_id = _module_id_from_spec_file(spec_file)
+    for key in dict.fromkeys(keys):
         entry = ctx.locator_map.get(key)
-        if not entry:
+        if not entry or entry.get("_dynamic"):
+            # a `_dynamic` element (a message, an error area) appears only after an action — absent on a fresh
+            # page load is expected, so a load-time check can never call it broken (same rule as ScriptGeneration)
             continue
+        _scanner, page = _get_validation_page(ctx, entry.get("_module_id") or module_id, entry.get("_page_url") or "")
+        if page is None:
+            return {"resolved": False, "reason": "headless validation page unavailable — cannot live-check locators"}
         try:
             resolves = ctx.pw_executor().submit(_locator_entry_resolves, page, entry,
                                                _ctx_test_id_attribute(ctx)).result()
@@ -530,39 +654,45 @@ def _propose_locator_fix_action_library(ctx: HealingRunContext, spec_file: str, 
         if resolves:
             continue  # this key is fine — the failure is something else
 
-        target_path = ctx.locator_map_path
+        found = _find_same_element(ctx, page, key, entry)
+        if not found["accepted"]:
+            return _refuse(ctx, spec_file, test_name, key, found)
+
+        new_entry = _with_locator(entry, found["locator"])
+        blast = specs_using_keys(ctx.scripts_dir, [key], ctx.flows_ts_path)
+        row = {"run_id": ctx.run_id, "mode": ctx.mode, "kind": "locator_map", "target": key,
+               "test": f"{spec_file} :: {test_name}", "before": entry, "after": new_entry,
+               "evidence": f"locator_key '{key}' failed live resolution; replacement found by {found['method']} "
+                           f"(identity parts {found.get('parts')}, fingerprint from {found['fingerprint_source']})",
+               "confidence": found["score"], "blast_radius": blast}
+        with open(ctx.locator_map_path, encoding="utf-8") as f:
+            old_text = f.read()
+        full = json.loads(old_text)
+        full[key] = new_entry
+        new_text = json.dumps(full, indent=2)
         if ctx.mode == "propose":
-            # repair a scratch copy, then emit the delta as a diff -- locator_map.json stays untouched
-            os.makedirs(ctx.proposals_dir, exist_ok=True)
-            target_path = os.path.join(ctx.proposals_dir, "locator_map.proposed.json")
-            with open(ctx.locator_map_path, encoding="utf-8") as src, open(target_path, "w", encoding="utf-8") as dst:
-                dst.write(src.read())
-        repaired = repair_named_locator(target_path, ctx.comprehension_dir, key)
-        if not repaired:
-            return {
-                "resolved": False,
-                "reason": f"locator_key '{key}' failed live resolution and could not be repaired "
-                          "automatically (no confident match on re-scan) — needs a human to update "
-                          "locator_map.json",
-            }
-        if ctx.mode == "propose":
-            with open(ctx.locator_map_path, encoding="utf-8") as f:
-                old_text = f.read()
-            with open(target_path, encoding="utf-8") as f:
-                new_text = f.read()
-            os.remove(target_path)
-            _write_proposal(ctx, "locator_map.json", old_text, new_text, f"locator_key '{key}' failed live resolution")
+            _write_proposal(ctx, "locator_map.json", old_text, new_text,
+                            f"locator_key '{key}' failed live resolution; identity score {found['score']}")
+            audit.append(ctx.reports_dir, {**row, "outcome": "proposed"})
             for tn in list(ctx.remaining.get(spec_file, {})):
                 _mark_not_healable(ctx, spec_file, tn, "patch proposed (healing.mode=propose), not applied")
             return {"resolved": True, "applied": False, "proposed": True, "repaired_key": key,
+                    "identity_score": found["score"], "blast_radius": blast,
                     "note": "propose mode: locator_map.json diff written to healing_proposals; nothing applied"}
-        with open(ctx.locator_map_path, encoding="utf-8") as f:
-            ctx.locator_map = json.load(f)
+        with open(ctx.locator_map_path, "w", encoding="utf-8") as f:
+            f.write(new_text)
+        ctx.locator_map = full
+        ctx.repaired[key] = {"before": entry, "after": new_entry, "spec_file": spec_file, "test_name": test_name,
+                             "score": found["score"], "blast_radius": blast, "verified": False}
+        audit.append(ctx.reports_dir, {**row, "outcome": "applied"})
         return {
             "resolved": True,
             "applied": True,
             "repaired_key": key,
-            "note": "locator_map.json entry repaired directly — no apply_patch needed for this fix, call run_tests next",
+            "identity_score": found["score"],
+            "blast_radius": blast,
+            "note": "locator_map.json entry repaired directly — no apply_patch needed for this fix. Call run_tests "
+                    "next; it re-runs every spec in blast_radius automatically.",
         }
 
     return {
@@ -587,19 +717,48 @@ def _propose_locator_fix(ctx: HealingRunContext, spec_file: str, test_name: str)
     if page is None:
         return {"resolved": False, "reason": "headless validation page unavailable — cannot live-check locators"}
 
+    refused = None
     for method, primary, role_name in calls:
+        original = _fingerprint_of_call(method, primary, role_name)
         candidates = _rank_candidate_elements(ctx.dom_elements, primary, role_name)
         for el in candidates:
             expr = get_playwright_expr(el)
             if not expr:
+                continue
+            # Phase 6.3: the replacement must be the same element, not just one that exists.
+            sc = identity.identity_score(original, identity.fingerprint_from_dom_element(el))
+            score = sc["score"]
+            if not sc["eligible"] or score < identity.THRESHOLD:
+                refused = refused or (expr, score)
                 continue
             if _live_locator_resolves(ctx, page, expr):
                 return {
                     "resolved": True,
                     "old_call": _format_call(method, primary, role_name),
                     "new_expr": expr,
+                    "identity_score": score,
                 }
+    if refused:
+        audit.append(ctx.reports_dir, {"run_id": ctx.run_id, "mode": ctx.mode, "kind": "spec_patch",
+                                       "target": spec_file, "test": test_name, "after": refused[0],
+                                       "evidence": "candidate failed the identity check", "confidence": refused[1],
+                                       "outcome": "refused"})
+        return {"resolved": False, "reason": f"the closest replacement ({refused[0]}) scored {refused[1]} on the "
+                                             f"identity check (< {identity.THRESHOLD}) — not the same element; "
+                                             "needs human review"}
     return {"resolved": False, "reason": "no DOM element resolved a working replacement locator"}
+
+
+def _fingerprint_of_call(method: str, primary: str, role_name: Optional[str]) -> dict:
+    """What a raw page.getBy*(...) call says about its element (the weakest fingerprint source)."""
+    if method == "getByRole":
+        return {"role": primary, "name": role_name or "", "position": None}
+    if method in ("getByText", "getByPlaceholder"):
+        return {"name": primary, "position": None}
+    if method == "getByLabel":
+        return {"name": primary, "label": primary, "position": None}
+    return {"name": re.sub(r"[#.\[\]=\"'_-]+", " ", primary).strip(), "attrs": {"testid": primary, "id": primary.lstrip("#")},
+            "position": None}
 
 
 def _propose_timing_fix(ctx: HealingRunContext, spec_file: str, test_name: str) -> dict:
@@ -794,8 +953,11 @@ def _apply_patch(ctx: HealingRunContext, spec_file: str, test_name: str, new_blo
     if new_content == content:
         return {"applied": False, "reason": "replacement produced no change to the file"}
 
+    row = {"run_id": ctx.run_id, "mode": ctx.mode, "kind": "spec_patch", "target": spec_file, "test": test_name,
+           "before": old_block, "after": new_block, "evidence": ctx.remaining.get(spec_file, {}).get(test_name, "")}
     if ctx.mode == "propose":
         path = _write_proposal(ctx, spec_file, content, new_content, f"test '{test_name}'")
+        audit.append(ctx.reports_dir, {**row, "outcome": "proposed", "diff": path})
         _mark_not_healable(ctx, spec_file, test_name, "patch proposed (healing.mode=propose), not applied")
         return {"applied": False, "proposed": True, "diff": path, "spec_file": spec_file, "test_name": test_name}
 
@@ -803,6 +965,7 @@ def _apply_patch(ctx: HealingRunContext, spec_file: str, test_name: str, new_blo
     with open(tmp_path, "w", encoding="utf-8") as f:
         f.write(new_content)
     os.replace(tmp_path, spec_path)
+    audit.append(ctx.reports_dir, {**row, "outcome": "applied"})
 
     ctx.healed_specs.add(spec_file)
     ctx.tests_healed += 1
@@ -820,6 +983,10 @@ def _remaining_summary(ctx: HealingRunContext) -> List[dict]:
 def _run_tests(ctx: HealingRunContext, spec_files: List[str]) -> dict:
     from agents.test_execution.ui_execution.agent import UIExecutionAgent
 
+    # Phase 6.5: a repaired locator_map key changes every spec that uses it — all of them run, not only these.
+    pending = {k: r for k, r in ctx.repaired.items() if not r.get("verified")}
+    blast = sorted({sf for r in pending.values() for sf in r.get("blast_radius") or []})
+    spec_files = list(dict.fromkeys(list(spec_files) + blast))
     agent = UIExecutionAgent(settings=ctx.settings)
     result = agent.execute(
         {"project_name": ctx.project_name, "spec_files": spec_files, "headless": True},
@@ -848,6 +1015,8 @@ def _run_tests(ctx: HealingRunContext, spec_files: List[str]) -> dict:
             spec_key = os.path.basename(r.get("spec_file", ""))
         title = r.get("test_title", "")
         if r.get("status") == "success":
+            if title in ctx.remaining.get(spec_key, {}):
+                ctx.fixed.add((spec_key, title))
             ctx.remaining.get(spec_key, {}).pop(title, None)
         elif r.get("status") == "flaky" and spec_key in ctx.remaining and title in ctx.remaining[spec_key]:
             # Phase 4.7: passing only on a retry is not a verified fix — keep it open, say why.
@@ -857,6 +1026,7 @@ def _run_tests(ctx: HealingRunContext, spec_files: List[str]) -> dict:
             ctx.remaining[spec_key][title] = "; ".join(r.get("errors", [])) or r.get("comment", "")
 
     ctx.remaining = {sf: tests for sf, tests in ctx.remaining.items() if tests}
+    regressions = _check_blast_radius(ctx, pending, result.get("results", []))
     ctx.rounds.append({
         "round": len(ctx.rounds) + 1,
         "spec_files": list(spec_files),
@@ -864,14 +1034,52 @@ def _run_tests(ctx: HealingRunContext, spec_files: List[str]) -> dict:
         "passed": result.get("passed", 0),
         "failed": result.get("failed", 0),
         "remaining_after": ctx.remaining_total(),
+        "blast_radius": blast,
+        "reverted": [r["key"] for r in regressions],
     })
     return {
         "ran": True,
+        "blast_radius": blast,
+        "reverted_keys": regressions,
         "passed": result.get("passed", 0),
         "failed": result.get("failed", 0),
         "still_failing": _remaining_summary(ctx),
         "all_resolved": not ctx.remaining,
     }
+
+
+def _check_blast_radius(ctx: HealingRunContext, pending: Dict[str, Dict[str, Any]], results: List[dict]) -> List[dict]:
+    """A test that passed before the heal and fails now, in a spec using a repaired key, means the fix broke it:
+    the key is reverted (the original entry restored) and audited. Returns [{key, broke: [...]}]."""
+    if not pending:
+        return []
+    now_failing = set()
+    for r in results:
+        if r.get("status") not in ("success", "flaky"):
+            now_failing.add((_spec_key_from_report_path(r.get("spec_file", "")), r.get("test_title", "")))
+    out = []
+    for key, rep_ in pending.items():
+        specs = set(rep_.get("blast_radius") or [])
+        broke = sorted(f"{sf} :: {t}" for sf, t in now_failing & ctx.passing_before if sf in specs)
+        if not broke:
+            rep_["verified"] = True
+            continue
+        full = dict(ctx.locator_map)
+        full[key] = rep_["before"]
+        with open(ctx.locator_map_path, "w", encoding="utf-8") as f:
+            json.dump(full, f, indent=2)
+        ctx.locator_map = full
+        del ctx.repaired[key]
+        ctx.reverted.append({"key": key, "broke": broke})
+        audit.append(ctx.reports_dir, {"run_id": ctx.run_id, "mode": ctx.mode, "kind": "locator_map", "target": key,
+                                       "before": rep_["after"], "after": rep_["before"], "outcome": "reverted",
+                                       "evidence": f"the fix broke previously passing test(s): {broke[:5]}"})
+        tests = ctx.remaining.setdefault(rep_["spec_file"], {})
+        tests.pop(rep_["test_name"], None)
+        _mark_not_healable(ctx, rep_["spec_file"], rep_["test_name"],
+                           f"locator fix for '{key}' was reverted: it broke {len(broke)} passing test(s)")
+        out.append({"key": key, "broke": broke})
+    return out
 
 
 def _mark_not_healable(ctx: HealingRunContext, spec_file: str, test_name: str, reason: str) -> dict:

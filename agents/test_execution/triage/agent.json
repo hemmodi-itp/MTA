@@ -1,0 +1,24 @@
+{
+  "name": "TriageAgent",
+  "registry_key": "triage",
+  "category": "test_execution",
+  "module_path": "agents.test_execution.triage.agent",
+  "version": "1.0.0",
+  "status": "active",
+  "base_class": "BaseAgent",
+  "llm_calls": true,
+  "description": "Classifies every failed test of the latest Playwright run (product_defect, test_defect.locator/data, environment, flaky, known_issue, unknown) with evidence, before healing; re-runs environment and flaky candidates and asks an LLM, with cited evidence, only for what stays unknown.",
+  "inputs": [
+    { "name": "project_name", "type": "string", "required": true, "description": "Project under application_assets/projects/" },
+    { "name": "report_json", "type": "string", "required": false, "description": "Playwright JSON report to triage (default: latest in test_execution/reports/json)" },
+    { "name": "triage_reruns", "type": "boolean", "required": false, "description": "false = classify only, no health check / re-runs / LLM (default true)" }
+  ],
+  "outputs": [
+    { "name": "counts", "type": "object", "description": "Number of failures per verdict" },
+    { "name": "triage", "type": "string", "description": "Path of test_execution/reports/triage.json (verdict + evidence per failed test)" },
+    { "name": "defects", "type": "string", "description": "Path of test_execution/reports/defects.json (product_defect failures, never healed)" }
+  ],
+  "dependencies": ["UIExecutionAgent"],
+  "skills": [],
+  "doc": "agent.md"
+}

@@ -81,3 +81,19 @@ def resolve_adk_model(settings: dict) -> Any:
 
     extra_kwargs = _bedrock_credential_kwargs() if connector_mode == "aws" else {}
     return LiteLlm(model=model_id, **extra_kwargs)
+
+
+def resolve_adk_model_chain(settings: dict) -> list:
+    """Phase 6.8: the primary model, then each connector mode listed in settings['adk']['fallback'] (models from
+    adk.models, through LiteLLM). Returns [(label, model_or_exception)] — a model that cannot be resolved is kept
+    as its exception, so the caller can report why it was skipped."""
+    primary = (settings.get("connectors") or {}).get("llm", "gemini")
+    modes = [primary] + [m for m in ((settings.get("adk") or {}).get("fallback") or []) if m != primary]
+    chain = []
+    for mode in dict.fromkeys(modes):
+        conn = dict(settings.get("connectors") or {}, llm=mode)
+        try:
+            chain.append((mode, resolve_adk_model({**settings, "connectors": conn})))
+        except Exception as exc:          # misconfigured / not installed — recorded, next one is tried
+            chain.append((mode, exc))
+    return chain

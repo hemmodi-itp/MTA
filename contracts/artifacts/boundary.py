@@ -30,6 +30,7 @@ STEP_ARTIFACTS: Dict[str, List[str]] = {
     "script_generation": ["test_plans", "test_suite", "locator_map", "traceability"],
     "ui_execution": ["execution_results", "mta_results", "playwright_report", "traceability"],
     "execution": ["execution_results", "mta_results", "playwright_report", "traceability"],
+    "triage": [],          # Phase 6.1: writes reports/triage.json + defects.json (reports, not contract artifacts)
     "healing": ["test_suite", "locator_map", "traceability"],
     "reporting": ["test_suite", "traceability"],
 }

@@ -21,6 +21,7 @@ class WorkflowLoaderTests(unittest.TestCase):
                 "semantic_map",
                 "script_generation",
                 "ui_execution",
+                "triage",
                 "healing",
                 "reporting",
             ],
@@ -47,7 +48,7 @@ class WorkflowLoaderTests(unittest.TestCase):
 
     def test_load_test_execution_and_healing(self):
         workflow = load_workflow("test_execution_and_healing")
-        self.assertEqual(workflow.steps, ["ui_execution", "healing", "reporting"])
+        self.assertEqual(workflow.steps, ["ui_execution", "triage", "healing", "reporting"])
         self.assertEqual(workflow.always_run, {"reporting"})
 
     def test_retired_workflows_no_longer_exist(self):

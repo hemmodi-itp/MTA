@@ -70,3 +70,26 @@ describe('HAR', () => {
     expect(shouldAttachHar('off', true)).toBe(false);
   });
 });
+
+describe('network_error annotations (Phase 6.1 triage input)', () => {
+  it('lists >= 400 responses, page/API first, redacted, mocked ones marked', () => {
+    const log = new NetworkLog(() => 1);
+    const add = (method: string, url: string, status: number, type = 'fetch') => {
+      const r = { ...req(method, url, {}, null), resourceType: () => type };
+      log.onRequest(r);
+      log.onResponse({ request: () => r, status: () => status, statusText: () => '', headers: () => ({}) });
+    };
+    add('GET', 'http://h/logo.png', 404, 'image');
+    add('POST', 'http://h/api/save?token=abc', 500);
+    add('GET', 'http://h/ok', 200);
+    add('GET', 'http://h/api/x', 503);
+    log.markMocked(/\/api\/x/);
+    const ann = log.errorAnnotations();
+    expect(ann.map((a) => a.description)).toEqual([
+      'POST http://h/api/save?token=%5BREDACTED%5D -> 500',
+      'GET http://h/api/x -> 503 (mocked)',
+      'GET http://h/logo.png -> 404',
+    ]);
+    expect(ann.every((a) => a.type === 'network_error')).toBe(true);
+  });
+});

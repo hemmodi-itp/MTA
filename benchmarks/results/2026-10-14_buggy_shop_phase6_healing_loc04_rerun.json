@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-14",
+  "locators": [
+    {
+      "flag": "LOC_04",
+      "control": false,
+      "broken_key": "save_product",
+      "spec": "P_BS_002",
+      "failed_tests": 4,
+      "triage": {
+        "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke": "test_defect.locator",
+        "P/test_BUG_05_bug_05.spec.ts :: a description is shown as text, never run @smoke": "test_defect.locator",
+        "P/test_BUG_18_bug_18.spec.ts :: an empty name is refused @smoke": "test_defect.locator",
+        "P/test_P_BS_002_product_form.spec.ts :: create a product @smoke": "test_defect.locator"
+      },
+      "proposals": [
+        {
+          "test": "P/test_BUG_01_bug_01.spec.ts :: a 50-character name is accepted @smoke",
+          "resolved": true,
+          "applied": true,
+          "repaired_key": "save_product",
+          "identity_score": 0.821,
+          "blast_radius": [
+            "P/test_BUG_01_bug_01.spec.ts",
+            "P/test_BUG_05_bug_05.spec.ts",
+            "P/test_BUG_18_bug_18.spec.ts",
+            "P/test_P_BS_002_product_form.spec.ts"
+          ],
+          "note": "locator_map.json entry repaired directly \u2014 no apply_patch needed for this fix. Call run_tests next; it re-runs every spec in blast_radius automatically."
+        }
+      ],
+      "changed_keys": [
+        "save_product"
+      ],
+      "truth": {
+        "save_product": "save_product"
+      },
+      "wrong_element": [],
+      "verified_after_heal": true,
+      "not_healable": [],
+      "outcome": "healed"
+    }
+  ],
+  "bugs": [
+    {
+      "bug": "BUG_01",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "an assertion's element never appeared, after every earlier step passed \u2014 the expected outcome is missing (no recorded identity to tell a moved element from a missing one)",
+          "history: 2/3 previous run(s) passed, status flipped 2x \u2014 intermittent"
+        ]
+      ],
+      "healable": 0
+    },
+    {
+      "bug": "BUG_05",
+      "failed": 1,
+      "verdicts": [
+        "product_defect"
+      ],
+      "evidence": [
+        [
+          "new console error(s): ['[console] http://127.0.0.1:51437/products/24: Failed to load resource: the server responded with a status of 422 (Unprocessable Content)', '[console] http://127.0.0.1:51437/products/24: Failed to load resource: the server responded with a status of 422 (Unprocessable Content)', '[console] http://127.0.0.1:51437/products/24: Failed to load resource: the server responded with a status of 422 (Unprocessable Content)']",
+          "history: 2/3 previous run(s) passed, status flipped 2x \u2014 intermittent"
+        ]
+      ],
+      "healable": 0
+    }
+  ],
+  "clean": {
+    "passed": 15,
+    "failed": 0,
+    "failing": []
+  },
+  "fingerprints_recorded": 16,
+  "summary": {
+    "locator_changes": 1,
+    "healed": 1,
+    "heal_success_pct": 100.0,
+    "wrong_element_heals": 0,
+    "controls_refused": 0,
+    "controls": 0,
+    "bugs": 2,
+    "bugs_detected": 2,
+    "bugs_all_product_defect": 2,
+    "bug_failures_healable": 0,
+    "pass": true
+  }
+}
