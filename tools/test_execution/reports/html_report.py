@@ -215,6 +215,21 @@ function toggleRow(id) {
 }
 function expandAll()  { document.querySelectorAll('.tc-detail').forEach(function(e){ e.style.display='table-row'; }); }
 function collapseAll(){ document.querySelectorAll('.tc-detail').forEach(function(e){ e.style.display='none'; }); }
+function filterTable(id, q) {
+  q = (q || '').toLowerCase();
+  document.querySelectorAll('#' + id + ' tbody tr').forEach(function(r){
+    r.style.display = r.textContent.toLowerCase().indexOf(q) >= 0 ? '' : 'none';
+  });
+}
+function sortTable(id, col) {
+  var t = document.getElementById(id), body = t.tBodies[0];
+  var dir = t.getAttribute('data-sort') === col + ':asc' ? -1 : 1;
+  t.setAttribute('data-sort', col + (dir === 1 ? ':asc' : ':desc'));
+  Array.prototype.slice.call(body.rows).sort(function(a, b){
+    var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
+    return x.localeCompare(y, undefined, {numeric: true}) * dir;
+  }).forEach(function(r){ body.appendChild(r); });
+}
 </script>"""
 
 
@@ -492,6 +507,38 @@ def _test_section(ter: dict) -> str:
 </div>"""
 
 
+def _healing_phase6(hr: dict) -> str:
+    """Phase 6: triage verdicts, product defects (never healed), heals refused for review, reverts, proposals, burn-in."""
+    parts = []
+    tc = hr.get("triage_counts") or {}
+    if tc:
+        chips = " · ".join(f"{_esc(k)}: <strong>{_esc(v)}</strong>" for k, v in sorted(tc.items()))
+        parts.append(f'<div><b>Triage</b> — {chips}'
+                     + (f' · mode: {_esc(hr.get("mode"))}' if hr.get("mode") else "") + "</div>")
+    if hr.get("skipped_reason"):
+        parts.append(f'<div style="color:#d97706"><b>Healing skipped</b> — {_esc(hr["skipped_reason"])}</div>')
+    for d in hr.get("defects") or []:
+        parts.append(f'<div style="color:#dc2626">Product defect (not healed): {_esc(d.get("spec_file"))} — '
+                     f'{_esc(d.get("test_name"))} <span class="s-err">{_esc("; ".join(d.get("evidence") or []))}</span></div>')
+    for r in hr.get("needs_review") or []:
+        parts.append(f'<div style="color:#d97706">Needs review: locator <code>{_esc(r.get("key"))}</code> — '
+                     f'{_esc(r.get("reason"))}</div>')
+    for r in hr.get("reverted") or []:
+        parts.append(f'<div style="color:#d97706">Reverted fix for <code>{_esc(r.get("key"))}</code> — it broke '
+                     f'{_esc(", ".join(r.get("broke") or []))}</div>')
+    for pr in hr.get("proposals") or []:
+        parts.append(f'<div>Proposed (not applied): {_esc(pr.get("target"))} → <a href="{_esc(pr.get("diff"))}">diff</a></div>')
+    bi = hr.get("burn_in") or {}
+    if bi.get("stable") or bi.get("unstable"):
+        parts.append(f'<div><b>Burn-in</b> (--repeat-each=3) — healed: {_esc(", ".join(bi.get("stable") or []) or "none")}'
+                     f' · unstable: {_esc(", ".join(bi.get("unstable") or []) or "none")}</div>')
+    if hr.get("audit_log"):
+        parts.append(f'<div style="color:#64748b">Audit log: {_esc(hr["audit_log"])}</div>')
+    if not parts:
+        return ""
+    return '<div style="padding:8px 24px;font-size:0.88rem;line-height:1.7">' + "".join(parts) + "</div>"
+
+
 def _healing_section(hr: dict) -> str:
     if not hr:
         return ""
@@ -536,8 +583,10 @@ def _healing_section(hr: dict) -> str:
     {nh_rows}
   </div>"""
 
+    phase6_html = _healing_phase6(hr)
     return f"""<div class="section">
   <div class="sec-title">🩹 4. Healing Report <span class="sec-cnt">{len(rounds)} round(s)</span></div>
+{phase6_html}
 {rounds_html}
 {not_healable_html}
   <div class="suite-bar" style="border-top:2px solid #e2e8f0">
@@ -585,7 +634,7 @@ def _traceability_section(tr: dict) -> str:
 
     by_reason = s.get("by_reason") or {}
     reasons_html = ", ".join(f"{_esc(k)}: {v}" for k, v in by_reason.items()) or "none"
-    return f"""<div class="section">
+    return f"""<div class="section" id="traceability">
   <div class="sec-title">📋 Requirements Traceability <span class="sec-cnt">{len(tr.get("uncovered") or [])} AC(s) with no test</span></div>
   <div class="suite-bar">
     <div class="stat-block"><div class="num" style="color:#4361ee">{pct_html}</div><div class="lbl">AC Coverage (automatable)</div></div>
@@ -594,8 +643,10 @@ def _traceability_section(tr: dict) -> str:
     <div class="stat-block"><div class="num nfail">{s.get("acs_failing", 0)}</div><div class="lbl">ACs Failing</div></div>
   </div>
   <div style="padding:8px 24px;color:#475569;font-size:0.85rem">Not tested, by reason: {reasons_html}</div>
-  <table>
-    <thead><tr><th>AC</th><th>Priority</th><th>Testability</th><th>Criterion</th><th>Status</th><th>Tests (latest result)</th><th>Why untested</th></tr></thead>
+  <div style="padding:4px 24px"><input type="search" placeholder="Filter the matrix (AC, text, status, test id)…"
+    oninput="filterTable('trace-matrix', this.value)" style="width:100%;max-width:480px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:6px"></div>
+  <table id="trace-matrix">
+    <thead><tr>{''.join(f'<th onclick="sortTable(\'trace-matrix\', {i})" style="cursor:pointer" title="Sort">{h} ⇅</th>' for i, h in enumerate(("AC", "Priority", "Testability", "Criterion", "Status", "Tests (latest result)", "Why untested")))}</tr></thead>
     <tbody>
 {chr(10).join(rows)}
     </tbody>
@@ -641,53 +692,156 @@ def _errors_section(ev: dict) -> str:
 # ──────────────────────────────────────────────
 
 def _quality_sections(q: dict) -> str:
-    """Phase 11-lean: executive summary, not-tested list and defect list (only when report["quality"] is set)."""
+    """Phase 11: executive summary (every number links to its evidence below), risk areas, trend, defects with
+    evidence, not-tested list, potential defects, coverage dashboard and the 29119-3 test summary report."""
     if not q:
         return ""
     sm, gt = q.get("summary") or {}, q.get("gates") or {}
     verdict = gt.get("verdict", "NO_GATES")
     color = {"PASS": "#16a34a", "FAIL": "#dc2626"}.get(verdict, "#64748b")
-    gates = "".join(f'<div>{"✓" if g["ok"] else "✗"} {_esc(g["gate"])}: {_esc(g["actual"])} (need ≥ {_esc(g["threshold"])})</div>'
-                    for g in gt.get("gates") or []) or "No quality gates configured."
+    na = lambda v: "n/a" if v is None else _esc(v)  # noqa: E731
+    link = lambda anchor, text: f'<a href="#{anchor}">{text}</a>'  # noqa: E731
+    gates = "".join(
+        f'<div>{"✓" if g["ok"] else "✗"} <strong>{_esc(g["gate"])}</strong>: {na(g["actual"])} '
+        f'(need {"≤" if g.get("kind") == "max" else "≥"} {_esc(g["threshold"])})</div>'
+        for g in gt.get("gates") or []) or "No quality gates configured."
     cov = sm.get("requirement_coverage")
     prio = " &nbsp;".join(f'{p}: {("%s%% (%s/%s)" % (v["rate"], v["passed"], v["executed"])) if v else "n/a"}'
                           for p, v in (sm.get("pass_rate_by_priority") or {}).items())
+    sev = sm.get("defects_by_severity") or {}
+    sev_html = " · ".join(f"{_esc(k)} {link('defects', _esc(v))}" for k, v in sev.items()) or "none"
     dims = sm.get("agent_dimensions")
     dims_html = ", ".join(f"{_esc(d)}: {_esc(o)}" for d, o in dims.items()) if dims else "n/a"
-    na = lambda v: "n/a" if v is None else _esc(v)  # noqa: E731
-    csv_link = f' · <a href="{_esc(q["csv_path"])}">traceability CSV</a>' if q.get("csv_path") else ""
-    summary = f"""<div class="section">
+    files = " · ".join(f'<a href="{_esc(q[k])}">{label}</a>' for k, label in
+                       (("csv_path", "traceability CSV"), ("xlsx_path", "XLSX"), ("tsr_path", "test summary report (md)"))
+                       if q.get(k))
+    exports = " · ".join(f'<a href="{_esc(v)}">{_esc(k)} export</a>' for k, v in (q.get("exports") or {}).items())
+    nt = q.get("not_tested") or []
+    summary = f"""<div class="section" id="summary">
   <div class="sec-title">Executive Summary <span class="sec-cnt" style="color:{color}">Verdict: {verdict}</span></div>
   <div style="padding:8px 24px;font-size:0.9rem;line-height:1.7">{gates}
-    <div>Requirement (AC) coverage: <strong>{na(cov)}{"%" if cov is not None else ""}</strong> ({na(sm.get("acs_covered"))}/{na(sm.get("acs_automatable"))}){csv_link}</div>
+    <div>Requirement (AC) coverage: <strong>{link('traceability', na(cov) + ('%' if cov is not None else ''))}</strong> ({na(sm.get("acs_covered"))}/{na(sm.get("acs_automatable"))}) · not tested: {link('not-tested', str(len(nt)))}</div>
     <div>Pass rate by priority: {prio}</div>
-    <div>Product defects (triage): <strong>{na(sm.get("product_defects"))}</strong> · Accessibility findings: <strong>{na(sm.get("a11y_findings"))}</strong> · Security findings: <strong>{na(sm.get("security_findings"))}</strong> · Weak oracles: <strong>{na(sm.get("weak_oracle"))}</strong> · Low-confidence (LLM-inferred) oracles: <strong>{na(sm.get("low_confidence_oracles"))}</strong></div>
-    <div>AI-agent dimensions: {dims_html}</div></div>
+    <div>Product defects: <strong>{link('defects', na(sm.get("product_defects")))}</strong> — by severity: {sev_html} · potential (BRD vs observed): {link('potential-defects', na(sm.get("potential_defects")))}</div>
+    <div>Critical a11y: <strong>{na(sm.get("critical_a11y"))}</strong> · High security: <strong>{na(sm.get("high_security"))}</strong> · Worst perf regression: {na(sm.get("perf_regression_pct"))}% · Flaky rate: {na(sm.get("flaky_rate"))}% · Weak oracles: {na(sm.get("weak_oracle"))} · Low-confidence (LLM-inferred) oracles: {na(sm.get("low_confidence_oracles"))}</div>
+    <div>AI-agent dimensions: {dims_html}</div>
+    <div style="color:#64748b">{files}{(' · ' + exports) if exports else ''}</div></div>
 </div>"""
-    nt = q.get("not_tested") or []
-    nt_rows = "".join(f'<tr><td>{_esc(n["id"])}</td><td>{_esc(n["priority"])}</td><td>{_esc(n["code"])}</td><td>{_esc(n["detail"])}</td></tr>' for n in nt)
-    not_tested = (f'<div class="section"><div class="sec-title">Not tested &amp; why <span class="sec-cnt">{len(nt)} AC(s)</span></div>'
-                  f'<table><thead><tr><th>AC</th><th>Priority</th><th>Reason</th><th>Detail</th></tr></thead><tbody>{nt_rows}</tbody></table></div>') if nt else ""
-    defects = q.get("defects") or []
+    return (summary + _risk_trend_html(q) + _defects_html(q.get("defects") or []) + _not_tested_html(nt)
+            + _potential_html(q.get("potential_defects") or []) + _coverage_html(q.get("coverage")) + _tsr_html(q))
+
+
+def _risk_trend_html(q: dict) -> str:
+    risks = q.get("risk_areas") or []
+    rows = "".join(f'<tr><td>{_esc(r["area"])}</td><td>{_esc(r["score"])}</td><td>{_esc(", ".join(r["why"]))}</td></tr>'
+                   for r in risks)
+    risk = (f'<div class="section" id="risk"><div class="sec-title">Top risk areas</div><table><thead><tr><th>Area</th>'
+            f'<th>Risk score</th><th>Why</th></tr></thead><tbody>{rows}</tbody></table></div>') if risks else ""
+    tr = q.get("trend") or {}
+    runs = tr.get("runs") or []
+    delta = tr.get("delta") or {}
+    arrow = lambda v: "" if v is None else (f' <span style="color:#64748b">({"+" if v > 0 else ""}{v})</span>')  # noqa: E731
+    trows = "".join(f'<tr><td>{_esc(r.get("run"))}</td><td>{_esc(r.get("pass_rate"))}</td>'
+                    f'<td>{_esc(r.get("requirement_coverage"))}</td><td>{_esc(r.get("product_defects"))}</td>'
+                    f'<td>{_esc(r.get("flaky"))}</td><td>{_esc(r.get("verdict"))}</td></tr>' for r in runs)
+    trend = ""
+    if runs or delta:
+        trend = (f'<div class="section" id="trend"><div class="sec-title">Trend vs the last {len(runs)} run(s)</div>'
+                 f'<div style="padding:8px 24px;font-size:0.88rem">Change since the previous run: pass rate'
+                 f'{arrow(delta.get("pass_rate"))} · coverage{arrow(delta.get("requirement_coverage"))} · defects'
+                 f'{arrow(delta.get("product_defects"))} · flaky{arrow(delta.get("flaky"))}</div>'
+                 f'<table><thead><tr><th>Run</th><th>Pass %</th><th>Coverage %</th><th>Defects</th><th>Flaky</th>'
+                 f'<th>Verdict</th></tr></thead><tbody>{trows}</tbody></table></div>')
+    return risk + trend
+
+
+def _defects_html(defects: list) -> str:
+    if not defects:
+        return ""
     blocks = ""
     for d in defects:
-        ev = " · ".join(f'<a href="{_esc(d[k])}">{k}</a>' for k in ("screenshot", "trace") if d.get(k)) or "no evidence files"
+        ev = d.get("evidence") or {}
+        files = " · ".join(f'<a href="{_esc(ev[k])}">{k}</a>' for k in ("screenshot", "trace", "video", "har", "console")
+                           if ev.get(k)) or "no evidence files"
+        ctx = " · ".join(f"{k}: {_esc(ev[k])}" for k in ("browser", "role", "environment", "run") if ev.get(k))
+        har = "".join(f"<li>{_esc(x)}</li>" for x in ev.get("har_excerpt") or [])
         steps = "".join(f"<li>{_esc(x)}</li>" for x in d.get("steps") or [])
         blocks += (f'<div class="tc-inner" style="margin:0 24px 14px"><strong>{_esc(d.get("title"))}</strong> '
-                   f'<span style="color:#64748b">AC: {_esc(", ".join(d.get("ac_ids") or []) or "unlinked")}</span>'
-                   f'<ol>{steps}</ol><div><b>Expected:</b> {_esc(d.get("expected"))}</div>'
-                   f'<div><b>Actual:</b> {_esc(d.get("actual"))}</div><div>{ev}</div></div>')
-    defect_html = (f'<div class="section"><div class="sec-title" style="color:#dc2626">Defects '
-                   f'<span class="sec-cnt">{len(defects)}</span></div>{blocks}</div>') if defects else ""
-    pd = q.get("potential_defects") or []
-    pd_rows = "".join(f'<tr><td>{_esc(c.get("ac_id"))}</td><td>{_esc(c.get("where"))}</td><td>{_esc(c.get("field"))}</td>'
-                      f'<td>{_esc(c.get("brd"))}</td><td>{_esc(c.get("observed"))}</td></tr>' for c in pd)
-    potential = (f'<div class="section"><div class="sec-title" style="color:#d97706">Potential defects — BRD vs observed '
-                 f'<span class="sec-cnt">{len(pd)} for human review</span></div>'
-                 f'<table><thead><tr><th>AC</th><th>Where</th><th>Field / role</th><th>BRD says</th><th>App did</th></tr>'
-                 f'</thead><tbody>{pd_rows}</tbody></table></div>') if pd else ""
-    return summary + not_tested + defect_html + potential
+                   f'{_chip("failure")} <span style="color:#64748b">severity {_esc(d.get("severity"))} · '
+                   f'AC: {_esc(", ".join(d.get("ac_ids") or []) or "unlinked")}</span>'
+                   f'<ol>{steps}</ol><div><b>Expected</b> ({_esc(d.get("expected_source") or "")}): {_esc(d.get("expected"))}</div>'
+                   f'<div><b>Actual:</b> {_esc(d.get("actual"))}</div><div>{files}</div>'
+                   + (f'<div style="color:#64748b">{ctx}</div>' if ctx else "")
+                   + (f'<div>Failed requests:<ul>{har}</ul></div>' if har else "") + '</div>')
+    return (f'<div class="section" id="defects"><div class="sec-title" style="color:#dc2626">Defects '
+            f'<span class="sec-cnt">{len(defects)}</span></div>{blocks}</div>')
 
+
+def _not_tested_html(nt: list) -> str:
+    if not nt:
+        return ""
+    rows = "".join(f'<tr><td>{_esc(n["id"])}</td><td>{_esc(n["priority"])}</td><td>{_esc(n["code"])}</td>'
+                   f'<td>{_esc(n["detail"])}</td></tr>' for n in nt)
+    return (f'<div class="section" id="not-tested"><div class="sec-title">Not tested &amp; why <span class="sec-cnt">'
+            f'{len(nt)} AC(s)</span></div><table><thead><tr><th>AC</th><th>Priority</th><th>Reason</th><th>Detail</th>'
+            f'</tr></thead><tbody>{rows}</tbody></table></div>')
+
+
+def _potential_html(pd: list) -> str:
+    if not pd:
+        return ""
+    rows = "".join(f'<tr><td>{_esc(c.get("ac_id"))}</td><td>{_esc(c.get("where"))}</td><td>{_esc(c.get("field"))}</td>'
+                   f'<td>{_esc(c.get("brd"))}</td><td>{_esc(c.get("observed"))}</td></tr>' for c in pd)
+    return (f'<div class="section" id="potential-defects"><div class="sec-title" style="color:#d97706">Potential defects — '
+            f'BRD vs observed <span class="sec-cnt">{len(pd)} for human review</span></div>'
+            f'<table><thead><tr><th>AC</th><th>Where</th><th>Field / role</th><th>BRD says</th><th>App did</th></tr>'
+            f'</thead><tbody>{rows}</tbody></table></div>')
+
+
+def _coverage_html(cov) -> str:
+    if not cov:
+        return ""
+    pct = lambda d: f'{_esc(d.get("pct"))}%' if d and d.get("pct") is not None else "n/a"  # noqa: E731
+    tech = " · ".join(f'{_esc(k)} {v.get("selected", 0)}/{v.get("selected", 0) + v.get("cut", 0)}'
+                      for k, v in (cov.get("technique") or {}).items()) or "no test design (test_cases.json)"
+    ps = cov.get("page_state") or {}
+    untested = ", ".join(_esc(x) for x in ps.get("untested") or [])
+    rows = [
+        ("Requirement (AC)", f'{_esc((cov.get("requirement") or {}).get("covered"))}/{_esc((cov.get("requirement") or {}).get("total"))} — {pct(cov.get("requirement"))}'),
+        ("Technique (selected / designed)", tech),
+        ("Element (locator keys used)", f'{_esc((cov.get("element") or {}).get("used"))}/{_esc((cov.get("element") or {}).get("total"))} — {pct(cov.get("element"))}'),
+        ("Page / state", f'{_esc(ps.get("tested"))}/{_esc(ps.get("total"))} — {pct(ps)}' + (f'<br><span style="color:#64748b">untested: {untested}</span>' if untested else "")),
+        ("Transition", f'{_esc((cov.get("transition") or {}).get("cases"))} state-transition case(s), {_esc((cov.get("transition") or {}).get("known"))} known transition(s)'),
+        ("API endpoint", f'{_esc((cov.get("api") or {}).get("referenced"))}/{_esc((cov.get("api") or {}).get("total"))} — {pct(cov.get("api"))}'),
+        ("Role matrix", f'{_esc(", ".join((cov.get("role_matrix") or {}).get("roles") or []) or "none")} ({_esc((cov.get("role_matrix") or {}).get("cases"))} case(s))'),
+        ("Browser / device", " · ".join(f"{_esc(k)}: {v}" for k, v in (cov.get("browser") or {}).items()) or "n/a"),
+        ("Test type", " · ".join(f"{_esc(k)}: {v}" for k, v in (cov.get("test_type") or {}).items()) or "n/a"),
+        ("Code", _esc(cov.get("code"))),
+    ]
+    body = "".join(f"<tr><td><strong>{k}</strong></td><td>{v}</td></tr>" for k, v in rows)
+    return (f'<div class="section" id="coverage"><div class="sec-title">Coverage dashboard</div>'
+            f'<table><tbody>{body}</tbody></table></div>')
+
+
+def _tsr_html(q: dict) -> str:
+    t = q.get("test_summary_report")
+    if not t:
+        return ""
+    r = t.get("results") or {}
+    lis = lambda xs: "".join(f"<li>{_esc(x)}</li>" for x in xs) or "<li>none</li>"  # noqa: E731
+    sev = ", ".join(f"{_esc(k)} {v}" for k, v in ((t.get("defects") or {}).get("by_severity") or {}).items())
+    return f"""<div class="section" id="tsr">
+  <div class="sec-title">Test Summary Report <span class="sec-cnt">ISO/IEC/IEEE 29119-3</span></div>
+  <div style="padding:8px 24px;font-size:0.88rem;line-height:1.6">
+    <div><b>Scope.</b> {_esc(t.get("scope"))}</div>
+    <div><b>Approach.</b> {_esc(t.get("approach"))}</div>
+    <div><b>Deviations.</b><ul>{lis(t.get("deviations") or [])}</ul></div>
+    <div><b>Results.</b> {r.get("executed", 0)} executed: {r.get("passed", 0)} passed, {r.get("failed", 0)} failed, {r.get("flaky", 0)} flaky, {r.get("skipped", 0)} skipped.</div>
+    <div><b>Defects.</b> {(t.get("defects") or {}).get("total", 0)} ({sev})</div>
+    <div><b>Residual risk.</b><ul>{lis(t.get("residual_risk") or [])}</ul></div>
+    <div><b>Recommendation.</b> <strong>{_esc(t.get("verdict"))}</strong> — {_esc(t.get("recommendation"))}</div>
+  </div>
+</div>"""
 
 def build_html_report(report: dict) -> str:
     """Return a complete self-contained HTML QA report string."""

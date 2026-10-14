@@ -1,8 +1,16 @@
-"""Phase 11-lean: executive summary metrics, traceability CSV, defect list and quality gates. Pure Python.
+"""Phase 11: executive summary metrics, traceability CSV, defect list and quality gates. Pure Python.
+(Risk areas, trend, coverage dashboard, exports and the 29119-3 summary: tools/reporting/insights.py.)
 
 Flags in project.yaml (absent = OFF):
     reporting:     {enhanced: true}                       # executive summary / defects / CSV in the report
-    quality_gates: {p0_pass_rate: 100, requirement_coverage: 90}   # failed gate -> exit code 1 (CLI below)
+    quality_gates:                                        # any subset; a failed gate -> exit code 1
+      p0_pass_rate: 100            # minimum %, P0 tests
+      p1_pass_rate: 95             # minimum %, P1 tests
+      requirement_coverage: 90     # minimum %, automatable ACs with a test
+      max_critical_a11y: 0         # maximum critical/serious axe violations (from the attached findings)
+      max_security_high: 0         # maximum failing passive-security findings
+      max_flaky_rate: 2            # maximum % of tests that were flaky
+      perf_budget_regression_pct: 20   # maximum % a performance metric got worse than the baseline
 
 CLI: python -m tools.reporting.summary <report.json>   (exit 0 = gates passed or none configured, 1 = failed)
 """
@@ -15,7 +23,9 @@ import sys
 from typing import Any, Dict, List, Optional
 
 PRIORITIES = ("P0", "P1", "P2", "P3")
-_GATE_KEYS = ("p0_pass_rate", "requirement_coverage")
+_MIN_GATES = ("p0_pass_rate", "p1_pass_rate", "requirement_coverage")
+_MAX_GATES = ("max_critical_a11y", "max_security_high", "max_flaky_rate", "perf_budget_regression_pct")
+_GATE_KEYS = _MIN_GATES + _MAX_GATES
 
 
 def load_project_yaml(project_dir: str) -> dict:
@@ -89,12 +99,22 @@ def compute_summary(results: List[dict], trace: Optional[dict], plans: dict, sui
               and str(r.get("pw_status") or "").lower() != "flaky"]
     tag_fail = lambda tag: sum(1 for r in failed if tag in (r.get("tags") or []))  # noqa: E731
     dims = ((agent_quality or {}).get("dimensions") or {})
+    from tools.reporting.insights import nfr_counts
+    nfr = nfr_counts(results)
+    has_findings = any(str(a.get("name")) in ("a11y-findings.json", "security-findings.json")
+                       for r in results for a in r.get("attachments") or [])
+    flaky = sum(1 for r in results if str(r.get("pw_status") or r.get("status") or "").lower() == "flaky")
     return {
         "requirement_coverage": ts.get("coverage_pct"),
         "acs_covered": ts.get("acs_covered"), "acs_automatable": ts.get("acs_automatable"),
         "pass_rate_by_priority": pass_rate_by_priority(results, _priority_by_tc(plans)),
         "product_defects": (triage["counts"].get("product_defect", 0) if triage else None),
-        "a11y_findings": tag_fail("@a11y"), "security_findings": tag_fail("@security"),
+        # counted from the findings the NFR specs attach; failed @a11y/@security tests only as a fallback
+        "a11y_findings": nfr["critical_a11y"] if has_findings else tag_fail("@a11y"),
+        "security_findings": nfr["high_security"] if has_findings else tag_fail("@security"),
+        "critical_a11y": nfr["critical_a11y"], "high_security": nfr["high_security"],
+        "perf_regression_pct": nfr["perf_regression_pct"],
+        "flaky_rate": round(100.0 * flaky / len(results), 1) if results else None,
         "weak_oracle": weak,
         # Phase 5.2: expected values only an LLM inferred (reported, not BRD-backed) and BRD-vs-observed conflicts
         "low_confidence_oracles": sum(1 for t in _plan_tests(plans) if t.get("oracle_confidence") == "low"),
@@ -104,18 +124,31 @@ def compute_summary(results: List[dict], trace: Optional[dict], plans: dict, sui
 
 
 def evaluate_gates(summary: dict, gates: Dict[str, float]) -> Dict[str, Any]:
-    """{verdict: PASS|FAIL|NO_GATES, gates: [{gate, threshold, actual, ok}]}. Missing data fails (no silent pass),
-    except a P0 rate with zero executed P0 tests (nothing to fail)."""
+    """{verdict: PASS|FAIL|NO_GATES, gates: [{gate, threshold, actual, ok, kind}]}. Missing data fails (no silent
+    pass), except a P0/P1 rate with zero executed tests of that priority, and a perf regression with no perf run."""
     rows = []
     for gate, thr in gates.items():
-        if gate == "p0_pass_rate":
-            p0 = summary["pass_rate_by_priority"].get("P0")
-            actual = p0["rate"] if p0 else None
-            ok = True if p0 is None else actual >= thr
-        else:
+        if gate in ("p0_pass_rate", "p1_pass_rate"):
+            p = summary["pass_rate_by_priority"].get(gate[:2].upper())
+            actual = p["rate"] if p else None
+            ok = True if p is None else actual >= thr
+        elif gate == "requirement_coverage":
             actual = summary.get("requirement_coverage")
             ok = actual is not None and actual >= thr
-        rows.append({"gate": gate, "threshold": thr, "actual": actual, "ok": ok})
+        elif gate == "max_critical_a11y":
+            actual = summary.get("critical_a11y")
+            ok = actual is not None and actual <= thr
+        elif gate == "max_security_high":
+            actual = summary.get("high_security")
+            ok = actual is not None and actual <= thr
+        elif gate == "max_flaky_rate":
+            actual = summary.get("flaky_rate")
+            ok = actual is not None and actual <= thr
+        else:   # perf_budget_regression_pct
+            actual = summary.get("perf_regression_pct")
+            ok = actual is None or actual <= thr
+        rows.append({"gate": gate, "threshold": thr, "actual": actual, "ok": ok,
+                     "kind": "min" if gate in _MIN_GATES else "max"})
     verdict = "NO_GATES" if not rows else ("PASS" if all(r["ok"] for r in rows) else "FAIL")
     return {"verdict": verdict, "gates": rows}
 
@@ -142,6 +175,35 @@ def traceability_csv(trace: Optional[dict]) -> str:
     return buf.getvalue()
 
 
+def traceability_xlsx(trace: Optional[dict], path: str) -> Optional[str]:
+    """The traceability matrix as .xlsx (same rows as the CSV) with a header filter; None when openpyxl is missing."""
+    try:
+        from openpyxl import Workbook
+        from openpyxl.styles import Font, PatternFill
+    except ImportError:
+        return None
+    rows = list(csv.reader(io.StringIO(traceability_csv(trace))))
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Traceability"
+    for row in rows:
+        ws.append(row)
+    fill = {"failed": "FECACA", "passed": "BBF7D0", "flaky": "FDE68A", "not_run": "E5E7EB"}
+    for cell in ws[1]:
+        cell.font = Font(bold=True)
+    for r in ws.iter_rows(min_row=2):
+        color = fill.get(str(r[6].value or ""))
+        if color:
+            r[6].fill = PatternFill("solid", fgColor=color)
+    ws.auto_filter.ref = ws.dimensions
+    ws.freeze_panes = "A2"
+    for col, width in zip("ABCDEFGH", (12, 9, 60, 12, 16, 50, 12, 22)):
+        ws.column_dimensions[col].width = width
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    wb.save(path)
+    return path
+
+
 def not_tested(trace: Optional[dict]) -> List[dict]:
     return [{"id": u.get("id"), "priority": u.get("priority"), "code": u.get("code") or "unknown",
              "detail": u.get("detail") or ""} for u in (trace or {}).get("uncovered") or []]
@@ -152,11 +214,22 @@ def _step_text(s: dict) -> str:
     return " ".join(p for p in parts if p)
 
 
-def _plan_test(plans: dict, tc_id: str) -> Optional[dict]:
-    for plan in ((plans or {}).get("plans") or {}).values():
-        for t in (plan.get("tests") or []) if isinstance(plan, dict) else []:
-            if isinstance(t, dict) and t.get("tc_id") == tc_id:
-                return t
+def _plan_test(plans: dict, tc_id: str, title: str = "") -> Optional[dict]:
+    """The plan test of a result: by tc_id (traced projects), else by its rendered title (untraced)."""
+    from tools.test_creation.script_generator.spec_renderer import render_test_title
+    tests = [t for plan in ((plans or {}).get("plans") or plans or {}).values() if isinstance(plan, dict)
+             for t in plan.get("tests") or [] if isinstance(t, dict)]
+    if tc_id:
+        hit = next((t for t in tests if t.get("tc_id") == tc_id), None)
+        if hit:
+            return hit
+    if title:
+        for t in tests:
+            try:
+                if t.get("title") == title or (t.get("name") and render_test_title(t) == title):
+                    return t
+            except KeyError:
+                continue
     return None
 
 
@@ -168,27 +241,41 @@ def _first_line(errors: list) -> str:
     return ""
 
 
-def build_defects(results: List[dict], triage: Optional[dict], plans: dict) -> List[dict]:
+def _expected_source(plan_test: dict) -> str:
+    """Where the expected value came from (plan 5.2 precedence) — BRD unless the oracle was only LLM-inferred."""
+    if plan_test.get("oracle_confidence") == "low":
+        return "llm_inferred (low confidence)"
+    return "brd" if plan_test.get("ac_ids") else "observed / generated"
+
+
+def build_defects(results: List[dict], triage: Optional[dict], plans: dict, run: Optional[str] = None,
+                  environment: str = "") -> List[dict]:
     """One entry per triaged product_defect: title, linked ACs, steps (from the plan), expected vs actual, evidence."""
     if not triage:
         return []
     from tools.triage.triage import PRODUCT_DEFECT, _spec_key
-    bad = {(_spec_key(t["spec_file"]), t["test_name"]) for t in triage["tests"] if t["verdict"] == PRODUCT_DEFECT}
+    # triage.json already holds spec keys ("M02/a.spec.ts"); a result holds Playwright's path — compare keys, never
+    # basenames (two modules may have a spec with the same file name)
+    bad = {(str(t["spec_file"]).replace("\\", "/"), t["test_name"]) for t in triage["tests"]
+           if t["verdict"] == PRODUCT_DEFECT}
     out = []
     for r in results:
         if (_spec_key(r.get("spec_file") or ""), r.get("test_title")) not in bad:
             continue
-        pt = _plan_test(plans, r.get("tc_id") or "") or {}
+        pt = _plan_test(plans, r.get("tc_id") or "", r.get("test_title") or "") or {}
         steps = [_step_text(s) for s in pt.get("steps") or [] if isinstance(s, dict)]
         expected = "; ".join(f"{s.get('message') or _step_text(s)}" for s in pt.get("steps") or []
                              if isinstance(s, dict) and str(s.get("action", "")).startswith("verify"))
         atts = r.get("attachments") or []
         link = lambda kind: next((a.get("path") for a in atts if kind in str(a.get("name", "")).lower()  # noqa: E731
                                   or kind in str(a.get("content_type", "")).lower()), None)
-        out.append({"title": r.get("test_title"), "tc_id": r.get("tc_id"),
+        from tools.reporting.insights import evidence, severity_of
+        ev = evidence(r, run=run, environment=environment)
+        out.append({"title": r.get("test_title"), "tc_id": r.get("tc_id"), "severity": severity_of(r, pt),
+                    "priority": pt.get("priority"),
                     "ac_ids": r.get("ac_ids") or pt.get("ac_ids") or [], "steps": steps,
-                    "expected": expected, "actual": _first_line(r.get("errors")),
-                    "screenshot": link("screenshot") or link("image"), "trace": link("trace")})
+                    "expected": expected, "expected_source": _expected_source(pt), "actual": _first_line(r.get("errors")),
+                    "screenshot": link("screenshot") or link("image"), "trace": link("trace"), "evidence": ev})
     return out
 
 
@@ -201,7 +288,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         gates = (json.load(fh).get("quality") or {}).get("gates")
     if gates:
         for g in gates["gates"]:
-            print(f"{'PASS' if g['ok'] else 'FAIL'} {g['gate']}: {g['actual']} (need >= {g['threshold']})")
+            op = "<=" if g.get("kind") == "max" else ">="
+            print(f"{'PASS' if g['ok'] else 'FAIL'} {g['gate']}: {g['actual']} (need {op} {g['threshold']})")
     return gate_exit_code(gates)
 
 

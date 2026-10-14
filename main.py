@@ -86,6 +86,8 @@ def main() -> int:
                         help="Run the suite as N local shards and merge them into one report.")
     parser.add_argument("--run-id", default=None,
                         help="Shared run id of the --shard jobs of one CI run (names reports/blob/<run-id>/).")
+    parser.add_argument("--ignore-gates", action="store_true",
+                        help="Exit 0 even when a project.yaml quality gate fails (default: exit 1).")
     parser.add_argument("--merge-reports", metavar="RUN_ID", default=None,
                         help="Merge the blob reports of sharded run RUN_ID into the normal reports and exit.")
     args = parser.parse_args()
@@ -222,7 +224,24 @@ def main() -> int:
 
     print(f"Run saved to: {os.path.relpath(run_file)}")
 
-    return 0
+    return gate_exit(outputs, ignore=args.ignore_gates)
+
+
+def gate_exit(outputs: dict, ignore: bool = False) -> int:
+    """Phase 11.5: a failed project.yaml quality gate makes the run exit 1 (CI fails), naming the gate."""
+    gates = ((outputs or {}).get("reporting") or {}).get("quality_gates") or {}
+    if gates.get("verdict") != "FAIL":
+        if gates.get("verdict") == "PASS":
+            print("Quality gates: PASS")
+        return 0
+    for g in gates.get("gates") or []:
+        if not g.get("ok"):
+            op = "<=" if g.get("kind") == "max" else ">="
+            print(f"Quality gate FAILED: {g['gate']} = {g.get('actual')} (need {op} {g.get('threshold')})")
+    if ignore:
+        print("--ignore-gates: exiting 0 anyway")
+        return 0
+    return 1
 
 
 if __name__ == "__main__":

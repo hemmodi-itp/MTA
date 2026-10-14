@@ -46,3 +46,27 @@ passing / failing, reasons), every AC with its tests and latest result, **every 
 `placeholder_negative_dropped`, `locator_type_mismatch`, `budget`, `generation_failed`, `no_test_targets_ac`),
 and the tests linked to no AC. The HTML report renders it as "Requirements Traceability". A failure here is
 logged; reporting continues.
+
+## Quality section (Phase 11, `reporting.enhanced` / `quality_gates`)
+
+`report["quality"]` and the top of the HTML report (`tools/reporting/summary.py`, `tools/reporting/insights.py`):
+
+- **Executive summary** — gate verdict, AC coverage, pass rate by priority, product defects by severity (P0→critical …
+  P3→low; @a11y/@security → high), critical a11y / high security findings (read from the `a11y-findings.json` /
+  `security-findings.json` the NFR specs attach), worst performance regression, flaky rate. Every number links to the
+  section that lists its evidence.
+- **Top 5 risk areas** (failures by priority, untested P0/P1 criteria, flaky) and **trend vs the last 5 runs**
+  (`reports/history.json`, one row per run, last 50 kept).
+- **Defects** with steps, expected (and where the expected value came from), actual, severity, and evidence:
+  screenshot, trace, video, HAR (plus the failed requests), console log, browser, role, environment, run id.
+  Exports for trackers: `reports/defects/<ts>_<project>.jira.json` (Jira REST create-issue payloads; key from
+  `reporting.jira_project`) and `.ado.json` (Azure DevOps JSON-Patch). Nothing is posted to a tracker.
+- **Traceability matrix**: filterable, sortable HTML table, CSV and XLSX (`reports/csv/`).
+- **Coverage dashboard**: requirement, technique, element, page/state, transition, API endpoint, role matrix,
+  browser, test type; code coverage is reported as not measured.
+- **Test Summary Report** (ISO/IEC/IEEE 29119-3: scope, approach, deviations, coverage, results, defects, residual risk,
+  recommendation) in the HTML and as `reports/summary/<ts>_<project>.test_summary_report.md`.
+- **Quality gates**: `p0_pass_rate`, `p1_pass_rate`, `requirement_coverage` (minimums) and `max_critical_a11y`,
+  `max_security_high`, `max_flaky_rate`, `perf_budget_regression_pct` (maximums). `python main.py` exits 1 when a gate
+  fails and prints the gate (`--ignore-gates` to exit 0); `python -m tools.reporting.summary <report.json>` does the
+  same for a saved report.

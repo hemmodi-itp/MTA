@@ -158,8 +158,9 @@ class ReportingAgent(BaseAgent):
         }
 
     def _quality_section(self, report: dict, outputs: dict, safe: str, reports_dir: str, now: datetime) -> Optional[dict]:
-        """Phase 11-lean: report["quality"] (summary, gates, not-tested, defects, traceability CSV) when
-        project.yaml `reporting.enhanced` is on; gates evaluated when `quality_gates` is set. Never raises."""
+        """Phase 11: report["quality"] (summary, gates, not-tested, defects with severity + evidence, risk areas,
+        trend, coverage dashboard, 29119-3 summary, CSV/XLSX matrix, Jira/ADO exports) when project.yaml
+        `reporting.enhanced` is on; gates evaluated when `quality_gates` is set. Never raises."""
         try:
             from tools.reporting import summary as qs
             pdir = os.path.join(_ASSETS_BASE, safe)
@@ -174,7 +175,10 @@ class ReportingAgent(BaseAgent):
                         return json.load(fh)
                 except (OSError, ValueError):
                     return None
-            results = report["test_execution_report"].get("results") or []
+            # the execution step's own rows (spec_file, test_title, tc_id, tags, pw_status, browser, attachments) —
+            # report["test_execution_report"]["results"] keeps only a display subset of them
+            exec_out = (outputs or {}).get("execution") or (outputs or {}).get("ui_execution") or {}
+            results = exec_out.get("results") or report["test_execution_report"].get("results") or []
             trace = report.get("traceability")
             plans = _load(os.path.join(pdir, "test_creation", "test_plans.json")) or {}
             suite = _load(os.path.join(pdir, "test_creation", "test_suite.json")) or {}
@@ -183,16 +187,66 @@ class ReportingAgent(BaseAgent):
             test_cases = _load(os.path.join(pdir, "test_creation", "test_cases.json"))
             summary = qs.compute_summary(results, trace, plans, suite, triage, aq, test_cases)
             gate_result = qs.evaluate_gates(summary, gates)
+            from tools.reporting import insights
+            stamp = now.strftime('%Y%m%d_%H%M%S')
+            html_dir = os.path.join(reports_dir, "html")
+            rel = lambda path: os.path.relpath(path, html_dir).replace(os.sep, "/")   # noqa: E731 — links from the HTML
             csv_dir = os.path.join(reports_dir, "csv")
             os.makedirs(csv_dir, exist_ok=True)
-            csv_path = os.path.join(csv_dir, f"{now.strftime('%Y%m%d_%H%M%S')}_{safe}.traceability.csv")
+            csv_path = os.path.join(csv_dir, f"{stamp}_{safe}.traceability.csv")
             with open(csv_path, "w", encoding="utf-8", newline="") as fh:
                 fh.write(qs.traceability_csv(trace))
-            report["quality"] = {"summary": summary, "gates": gate_result, "not_tested": qs.not_tested(trace),
-                                 "defects": qs.build_defects(results, triage, plans),
-                                 "potential_defects": qs.potential_defects(test_cases),
-                                 "csv_path": os.path.relpath(csv_path, os.path.join(reports_dir, "html"))}
+            xlsx_path = qs.traceability_xlsx(trace, os.path.join(csv_dir, f"{stamp}_{safe}.traceability.xlsx"))
+            run_id = report["test_execution_report"].get("run_id") or stamp
+            environment = str(raw.get("environment") or "")
+            defects = qs.build_defects(results, triage, plans, run=run_id, environment=environment)
+            summary["defects_by_severity"] = insights.defects_by_severity(defects)
+            not_tested = qs.not_tested(trace)
+            risks = insights.risk_areas(results, trace, plans)
+            history = insights.record_history(reports_dir, summary, gate_result, results, run=stamp)
+            comp = os.path.join(pdir, "test_comprehension")
+            spec_texts = _spec_texts(os.path.join(pdir, "test_creation", "test_scripts"))
+            coverage = insights.coverage_dashboard(
+                results, trace, plans, test_cases, _load(os.path.join(pdir, "test_creation", "locator_map.json")),
+                _load(os.path.join(comp, "app_map.json")), _load(os.path.join(comp, "api_inventory.json")), spec_texts)
+            exports = {}
+            if defects:
+                ddir = os.path.join(reports_dir, "defects")
+                os.makedirs(ddir, exist_ok=True)
+                key = str((raw.get("reporting") or {}).get("jira_project") or "QA")
+                for kind, payload in (("jira", insights.jira_issues(defects, key)), ("ado", insights.ado_work_items(defects))):
+                    path = os.path.join(ddir, f"{stamp}_{safe}.{kind}.json")
+                    with open(path, "w", encoding="utf-8") as fh:
+                        json.dump(payload, fh, indent=2)
+                    exports[kind] = rel(path)
+            deviations = [w for step in (outputs or {}).values() if isinstance(step, dict) for w in step.get("warnings") or []][:10]
+            tsr = insights.test_summary_report(safe, summary, gate_result, results, defects, not_tested, coverage, risks,
+                                               deviations)
+            tsr_path = os.path.join(reports_dir, "summary", f"{stamp}_{safe}.test_summary_report.md")
+            os.makedirs(os.path.dirname(tsr_path), exist_ok=True)
+            with open(tsr_path, "w", encoding="utf-8") as fh:
+                fh.write(insights.summary_markdown(tsr, safe))
+            report["quality"] = {"summary": summary, "gates": gate_result, "not_tested": not_tested,
+                                 "defects": defects, "potential_defects": qs.potential_defects(test_cases),
+                                 "risk_areas": risks, "trend": insights.trend(history), "coverage": coverage,
+                                 "test_summary_report": tsr, "exports": exports,
+                                 "csv_path": rel(csv_path), "xlsx_path": rel(xlsx_path) if xlsx_path else None,
+                                 "tsr_path": rel(tsr_path)}
             return gate_result
         except Exception as exc:
             self.logger.warning(f"[ReportingAgent] Quality section failed (non-fatal): {exc}")
             return None
+
+
+def _spec_texts(scripts_dir: str) -> dict:
+    """{relative spec path: text} — the coverage dashboard looks for locator keys, pages and API paths in them."""
+    out = {}
+    for root, _dirs, files in os.walk(scripts_dir):
+        for f in files:
+            if f.endswith(".spec.ts"):
+                try:
+                    with open(os.path.join(root, f), encoding="utf-8") as fh:
+                        out[os.path.relpath(os.path.join(root, f), scripts_dir)] = fh.read()
+                except OSError:
+                    continue
+    return out

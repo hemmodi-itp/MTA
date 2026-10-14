@@ -288,7 +288,27 @@ def build_report_dict(
                 "total":     final_total,
                 "pass_rate": f"{round(final_passed / final_total * 100)}%" if final_total else "N/A",
             },
+            # Phase 6: what triage decided, what was refused / reverted / proposed, and the burn-in verdict
+            "mode":           healing_out.get("mode"),
+            "skipped_reason": healing_out.get("reason") if healing_out.get("status") == "skipped" else None,
+            "triage_counts":  ((healing_out.get("triage") or {}).get("counts")) or {},
+            "defects":        [{"spec_file": d.get("spec_file"), "test_name": d.get("test_name"),
+                                "evidence": d.get("evidence") or []}
+                               for d in (healing_out.get("triage") or {}).get("defects") or []],
+            "needs_review":   healing_out.get("needs_review") or [],
+            "reverted":       healing_out.get("reverted") or [],
+            "proposals":      healing_out.get("proposals") or [],
+            "burn_in":        healing_out.get("burn_in") or {},
+            "audit_log":      healing_out.get("audit_log"),
         }
+
+    triage_out = outputs.get("triage")
+    if isinstance(triage_out, dict) and triage_out.get("counts") is not None:
+        if healing_report is None:
+            healing_report = {"status": "not_run", "rounds": [], "not_healable": [], "final_result": {},
+                              "triage_counts": triage_out.get("counts") or {}}
+        elif not healing_report.get("triage_counts"):
+            healing_report["triage_counts"] = triage_out.get("counts") or {}
 
     # ── Section 4: Errors and Validation ──────────────────────────────────
     # Collect validation warnings from step outputs (orphaned intents, etc.)

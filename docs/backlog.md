@@ -6,36 +6,31 @@ All lean-pass items are done (docs/phases/phase-5-report.md). Still open:
 - `verifyResponseSchema` schemas from an OpenAPI spec (Phase 8); today only inline `schema` / `schemaRef` files.
 
 ## Phase 6
-- Locator identity fingerprint check for healed locators (6.3)
-- Blast-radius re-run of every spec using a fixed locator_map key (6.5)
-- Burn-in (`--repeat-each=3`) before a healed spec gets `status: healed` (6.7)
-- Model fallback via LiteLLM / `healing: skipped (reason)` (6.8)
-- Heal audit log `healing_audit.jsonl` (6.9)
-- Triage: `known_issue` (known_issues.yaml), `--repeat-each=3` flaky re-run, cross-browser/history signals, LLM for ambiguous (`unknown`)
-- Triage: reporter-side `network_error` annotation emission (triage reads it if present; message-text fallback only today)
-- Triage as its own registered agent/workflow step (currently runs as first phase of HealingAgent; needs scaffold + registry wiring)
-- `environment` verdict: health-check + one re-run; `healing.mode: off`; report-writer section for defects.json / proposals
+All lean-pass items are done (docs/phases/phase-6-report.md). Still open:
+- Fingerprints for elements that only appear after an action (`_dynamic` keys: flash messages, error areas) — not
+  captured on page load, so a renamed one cannot be healed and a missing one is judged by the assertion rule only.
+- Identity cannot tell two same-verb controls apart in the same slot ("Save product" vs "Save draft"); a `type`
+  (submit vs button) signal would help.
+- The full LLM-driven loop (ADK) was not part of the benchmark run — the benchmark calls the same deterministic
+  tools the loop calls.
 
 ## Phase 7
-- Visual regression (toHaveScreenshot, baseline approval)
-- Performance budgets (project.yaml budgets + baseline.json)
-- Responsive/compatibility matrix (viewports, browsers, overflow detector)
-- Resilience / fault injection (page.route, offline, slow 3G)
-- i18n/l10n matrix
-- Active security probes (XSS, IDOR, SQLi, open redirect, CSRF)
-- A11y keyboard/focus/form-error checks and accepted-issues baseline (7.1); WCAG 2.2 tags
-- Passive: mixed content, stack-trace leaks, target=_blank noopener
-- Wire generate.py into the pipeline/orchestrator (currently CLI-only) and render nfr specs in traceability
-- Per-role storageState instead of replaying login steps in NFR specs
+Done in Phase 7 (docs/phases/phase-7-report.md): accessibility (WCAG 2.2 tags, keyboard, form errors, accepted
+baseline), visual (baseline on first run + approve command), performance budgets/regression, passive security
+additions (stack traces, mixed content, target=_blank), responsive matrix, resilience (offline, slow network,
+unusual input), i18n matrix, pipeline wiring + traceability, per-role storage state. Still open:
+- **Active security probes** (reflected/stored XSS payloads, SQL/NoSQL injection, open redirect, IDOR, auth bypass,
+  CSRF token, login rate limit) — not built in this pass; needs an explicit decision on scope and safeguards
+  (non-prod only, `safety.allow_security_probes`). XSS is partly covered by the Phase 5 functional oracles
+  (verifyNoDialog / verifyNotInjected on design cases).
+- Resilience fault injection per API endpoint (500/503/timeout/malformed JSON) — buggy_shop has no fetch/XHR APIs to
+  exercise; the generic offline/slow-network/unusual-input checks run instead.
+- i18n: date/number/currency format checks and Unicode-normalization search equivalence (only layout checks today).
+- Optional Lighthouse CI / OWASP ZAP integrations.
 
 ## Phase 11
-- Top-5 risk areas and trend vs the last 5 runs in the executive summary (11.1)
-- Defects by severity (needs a severity on triage verdicts / plan tests)
-- Coverage dashboard: technique, element, page/state, transition, API, role, browser, code coverage (11.3)
-- XLSX export and interactive (filter/sort) traceability matrix (11.2)
-- Defect evidence: video, HAR excerpt, console log, environment/browser/role (11.4)
-- Jira / Azure DevOps-compatible defect JSON export (+ opt-in connector posting) (11.4)
-- Remaining gates: p1_pass_rate, max_critical_a11y, max_security_high, max_flaky_rate, perf_budget_regression_pct (11.5)
-- Wire the gate exit code into the orchestrator/CI entry point (today: `python -m tools.reporting.summary <report.json>`)
-- A11y/security counts from axe violations JSON / rule annotations instead of failed @a11y/@security tests
-- Add `yaml` to package.json devDependencies (Playwright config needs it; installed with --no-save here)
+All lean-pass items are done (docs/phases/phase-11-report.md). Still open:
+- Posting defects to Jira / Azure DevOps through a connector (opt-in, needs credentials) — exports only today.
+- Code coverage needs the application under test to be instrumented; reported as "not measured".
+- API endpoint and page coverage are read from the spec text (what tests reference), not from executed traffic.
+
