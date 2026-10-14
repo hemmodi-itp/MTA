@@ -103,6 +103,44 @@ def flag_safety_drops(
     })
 
 
+def _conflict_key(c: Dict[str, Any]) -> tuple:
+    return (c.get("ac_id"), c.get("form_id"), c.get("field"), c.get("probe"), c.get("observed"))
+
+
+def flag_expected_value_conflicts(
+    project_name: str,
+    conflicts: List[Dict[str, Any]],
+    output_dir: str = ".",
+) -> int:
+    """Phase 5.2: one entry per BRD-vs-observed disagreement (test_cases.json `conflicts`) — a potential defect that
+    a human decides; MTA never picks a side silently. Conflicts already in the queue are not added again (test
+    design reruns). Returns the number of new entries."""
+    queue_path = os.path.join(output_dir, _QUEUE_FILE)
+    seen = set()
+    if os.path.exists(queue_path):
+        try:
+            with open(queue_path, encoding="utf-8") as f:
+                seen = {_conflict_key(e.get("conflict") or {}) for e in json.load(f)
+                        if isinstance(e, dict) and e.get("kind") == "expected_value_conflict"}
+        except (OSError, ValueError):
+            seen = set()
+    added = 0
+    for c in conflicts or []:
+        if _conflict_key(c) in seen:
+            continue
+        seen.add(_conflict_key(c))
+        _append_queue_entry(output_dir, {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "kind": "expected_value_conflict",
+            "project": project_name,
+            "conflict": c,
+            "action": "The BRD and the observed app behaviour disagree. Decide which is right: a product defect "
+                      "(the test keeps the BRD expectation and should fail) or a BRD that needs updating",
+        })
+        added += 1
+    return added
+
+
 def record_locator_drift(
     project_name: str,
     module_id: str,

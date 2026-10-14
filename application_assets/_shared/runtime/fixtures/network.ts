@@ -155,6 +155,17 @@ export interface ResLike {
   status(): number;
   statusText(): string;
   headers(): Record<string, string>;
+  /** Present on real responses; JSON bodies are read for verifyResponseSchema (kept in memory, never in the HAR). */
+  text?(): Promise<string>;
+}
+
+const MAX_BODY = 256 * 1024;
+
+export interface ResponseBody {
+  method: string;
+  url: string;
+  status: number | null;
+  body: string | null;
 }
 
 type Filter = { method?: string; url?: string | RegExp; resourceType?: string };
@@ -171,6 +182,7 @@ function matches(e: NetEntry, f: Filter = {}): boolean {
 export class NetworkLog {
   private readonly byReq = new Map<ReqLike, NetEntry & { t0: number }>();
   private readonly order: Array<NetEntry & { t0: number }> = [];
+  private readonly bodies = new Map<NetEntry, Promise<string | null>>();
 
   constructor(private readonly now: () => number = Date.now) {}
 
@@ -192,6 +204,18 @@ export class NetworkLog {
     e.status = res.status();
     e.status_text = res.statusText();
     e.response_headers = res.headers();
+    const ct = String(e.response_headers['content-type'] ?? '').toLowerCase();
+    if (ct.includes('json') && typeof res.text === 'function') {
+      this.bodies.set(e, res.text().then((t) => (t.length > MAX_BODY ? null : t), () => null));
+    }
+  }
+
+  /** JSON response bodies (in request order) matching the filter — Phase 5 verifyResponseSchema. */
+  async responseBodies(filter?: Filter): Promise<ResponseBody[]> {
+    const hits = this.order.filter((e) => matches(e, filter) && this.bodies.has(e));
+    return Promise.all(hits.map(async (e) => ({
+      method: e.method, url: e.url, status: e.status, body: await this.bodies.get(e)!,
+    })));
   }
 
   onFinished(req: ReqLike): void {

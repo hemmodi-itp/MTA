@@ -1,16 +1,9 @@
 
 ## Phase 5
-- verifyApiState (grey-box backend check via `api` fixture)
-- verifyAriaSnapshot (toMatchAriaSnapshot)
-- verifyCountChangedBy (CRUD / double-submit)
-- reloadAndVerify (persistence)
-- verifyDownload / verifyNewTab / verifyStorage
-- mockRoute / setOffline / setClock (fault injection, P7)
-- Expected-value conflict handling (BRD vs observed → potential defect, 5.2)
-- verifyResponseSchema, verifyValidationMessage, bodyContains on verifyRequest
-- Positive-submit linter rule (UI success signal AND verifyRequest 2xx / reloadAndVerify)
-- ActionEngine vitest tests for the new actions (vitest env lacks `yaml` pkg — pre-existing) + buggy_shop false-pass check
-- _drop_placeholder_negative_tests: derive from test_cases.json oracles (5.4 second half)
+All lean-pass items are done (docs/phases/phase-5-report.md). Still open:
+- Measure the acceptance numbers on a regenerated suite (median assertion score ≥ 80, zero title-only tests) —
+  needs an LLM generation run of buggy_shop with `oracles.enabled`.
+- `verifyResponseSchema` schemas from an OpenAPI spec (Phase 8); today only inline `schema` / `schemaRef` files.
 
 ## Phase 6
 - Locator identity fingerprint check for healed locators (6.3)

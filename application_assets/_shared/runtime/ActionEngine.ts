@@ -1,9 +1,11 @@
 import * as fs from 'fs';
-import { expect, Locator, Page, test } from '@playwright/test';
+import * as path from 'path';
+import { APIRequestContext, expect, Locator, Page, test } from '@playwright/test';
 import { Logger } from './Logger';
 import { allowedHostsFromEnv, assertUrlAllowed, SafetyError } from './safety';
 import type { ConsoleGuard } from './fixtures/consoleGuard';
 import type { NetworkLog } from './fixtures/network';
+import { Schema, validateSchema } from './fixtures/jsonSchema';
 import { classifyStep, DestructivePolicy, LocatorEntryLike, PlanStep, refusalMessage, Rules } from './destructive';
 
 export interface VerifyOptions {
@@ -47,13 +49,57 @@ export interface OracleSources {
     network?: NetworkLog;
     consoleGuard?: ConsoleGuard;
     dialogs?: string[];
+    /** The `api` fixture (the test's auth + baseURL) — verifyApiState. */
+    api?: APIRequestContext;
+    /** application_assets/projects/<project> — resolves verifyResponseSchema schemaRef paths. */
+    projectDir?: string | null;
+}
+
+/** verifyApiState expectations; every given field must hold. `path` is a dot path into the JSON body ("items.0.name"). */
+export interface ApiExpect {
+    status?: number | string;
+    bodyContains?: string;
+    bodyNotContains?: string;
+    path?: string;
+    equals?: unknown;
+    length?: number;
+}
+
+export type StorageKind = 'cookie' | 'localStorage' | 'sessionStorage';
+export type StorageRule = 'present' | 'absent' | 'equals' | 'contains' | 'httpOnly' | 'secure' | 'sameSite';
+
+export interface MockRouteOptions {
+    status?: number;
+    body?: unknown;
+    contentType?: string;
+    delayMs?: number;
 }
 
 function patternToRegExp(pattern: string): RegExp {
     return new RegExp(pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*'));
 }
 
+/** 200 matches 200; "2xx" matches 200-299. */
+export function statusMatches(actual: number | null, expected: number | string): boolean {
+    if (actual === null) return false;
+    if (typeof expected === 'number') return actual === expected;
+    const m = /^([1-5])xx$/i.exec(expected.trim());
+    return m ? Math.floor(actual / 100) === Number(m[1]) : actual === Number(expected);
+}
+
+export function jsonAtPath(value: unknown, dotPath: string): unknown {
+    let cur: any = value;
+    for (const part of dotPath.split('.').filter(Boolean)) {
+        if (cur === null || cur === undefined) return undefined;
+        cur = cur[/^\d+$/.test(part) && Array.isArray(cur) ? Number(part) : part];
+    }
+    return cur;
+}
+
 export class ActionEngine {
+
+    /** rememberCount baselines, per locator key (verifyCountChangedBy). */
+    private readonly counts = new Map<string, number>();
 
     constructor(
         private readonly page: Page,
@@ -425,16 +471,27 @@ export class ActionEngine {
         });
     }
 
-    /** Phase 5: a request matching method + urlPattern ('*' wildcard) was made (and, if given, got `status`). */
-    async verifyRequest(method: string, urlPattern: string, status?: number, message?: string): Promise<void> {
+    /**
+     * Phase 5: a request matching method + urlPattern ('*' wildcard) was made — and, if given, one such request got
+     * `status` (a number or "2xx") and had a request body containing `bodyContains`.
+     */
+    async verifyRequest(method: string, urlPattern: string, status?: number | string, message?: string,
+                        bodyContains?: string): Promise<void> {
         await this.run(null, 'Verify Request', `${method} ${urlPattern}`, async () => {
             const log = this.requireNetwork();
             const re = patternToRegExp(urlPattern);
-            const hits = log.entries({ method, url: re });
-            expect(hits.length, message ?? `Expected a ${method} request matching ${urlPattern}`).toBeGreaterThan(0);
-            if (status !== undefined) {
-                expect(hits.map((h) => h.status), message ?? `Expected status ${status} for ${method} ${urlPattern}`).toContain(status);
-            }
+            const what = `${method} ${urlPattern}`;
+            // the response may still be in flight right after the triggering click
+            await expect.poll(() => {
+                const hits = log.entries({ method, url: re })
+                    .filter((h) => status === undefined || statusMatches(h.status, status))
+                    .filter((h) => bodyContains === undefined || (h.post_data ?? '').includes(bodyContains));
+                return hits.length;
+            }, {
+                message: message ?? `Expected a ${what} request` + (status !== undefined ? ` with status ${status}` : '')
+                    + (bodyContains !== undefined ? ` whose body contains '${bodyContains}'` : ''),
+                timeout: 5_000,
+            }).toBeGreaterThan(0);
         });
     }
 
@@ -486,6 +543,220 @@ export class ActionEngine {
             const fresh = guard.newErrors().map((e) => `[${e.kind}] ${e.text.slice(0, 200)}`);
             expect(fresh, message).toEqual([]);
         });
+    }
+
+    /** Phase 5: the native validationMessage, or the text of aria-errormessage / aria-describedby, contains `contains`. */
+    async verifyValidationMessage(name: string, contains: string, message?: string): Promise<void> {
+        await this.run(name, 'Verify Validation Message', contains, async () => {
+            const loc = this.resolve(name);
+            await expect(async () => {
+                const texts = await loc.evaluate((el) => {
+                    const out: string[] = [];
+                    const native = (el as HTMLInputElement).validationMessage;
+                    if (native) out.push(native);
+                    for (const attr of ['aria-errormessage', 'aria-describedby']) {
+                        for (const id of (el.getAttribute(attr) ?? '').split(/\s+/).filter(Boolean)) {
+                            const ref = el.ownerDocument.getElementById(id);
+                            if (ref?.textContent) out.push(ref.textContent.trim());
+                        }
+                    }
+                    return out;
+                });
+                const hit = texts.some((t) => t.toLowerCase().includes(contains.toLowerCase()));
+                expect(hit, message ?? `Expected a validation message on '${name}' containing '${contains}'; ` +
+                    `found ${JSON.stringify(texts)}`).toBe(true);
+            }).toPass({ timeout: 5_000 });
+        });
+    }
+
+    /** Phase 5: structural assertion — the element's accessibility tree matches the YAML snapshot. */
+    async verifyAriaSnapshot(name: string, snapshot: string, message?: string): Promise<void> {
+        await this.run(name, 'Verify Aria Snapshot', undefined, async () => {
+            await expect(this.resolve(name), message).toMatchAriaSnapshot(snapshot);
+        });
+    }
+
+    /** Phase 5: remembers how many elements `name` matches now — the baseline for verifyCountChangedBy. */
+    async rememberCount(name: string): Promise<void> {
+        await this.run(name, 'Remember Count', undefined, async () => {
+            this.counts.set(name, await this.resolve(name).count());
+        });
+    }
+
+    /** Phase 5: the element count changed by exactly `delta` since rememberCount (CRUD, double-submit; 0 = nothing created). */
+    async verifyCountChangedBy(name: string, delta: number, message?: string): Promise<void> {
+        await this.run(name, 'Verify Count Changed By', String(delta), async () => {
+            const base = this.counts.get(name);
+            if (base === undefined) throw new Error(`verifyCountChangedBy('${name}') needs an earlier rememberCount('${name}')`);
+            await expect.poll(() => this.resolve(name).count(), {
+                message: message ?? `Expected the count of '${name}' to change by ${delta} (from ${base})`, timeout: 5_000,
+            }).toBe(base + delta);
+        });
+    }
+
+    /** Phase 5: clicking `name` starts a download whose file name matches `nameRegex` and is at least `minBytes`. */
+    async verifyDownload(name: string, nameRegex?: string, minBytes?: number, message?: string): Promise<void> {
+        await this.run(name, 'Verify Download', nameRegex, async () => {
+            const [download] = await Promise.all([
+                this.page.waitForEvent('download', { timeout: 15_000 }),
+                this.resolve(name).click(),
+            ]);
+            const fileName = download.suggestedFilename();
+            if (nameRegex) {
+                expect(fileName, message ?? `Download name '${fileName}' should match /${nameRegex}/`).toMatch(new RegExp(nameRegex));
+            }
+            const file = await download.path();
+            const size = file ? fs.statSync(file).size : 0;
+            expect(size, message ?? `Download '${fileName}' should be at least ${minBytes ?? 1} byte(s)`)
+                .toBeGreaterThanOrEqual(minBytes ?? 1);
+        }, { action: 'click', locator_key: name });
+    }
+
+    /** Phase 5: clicking `name` opens a new tab whose URL contains `urlContains`; the tab is closed afterwards. */
+    async verifyNewTab(name: string, urlContains: string, message?: string): Promise<void> {
+        await this.run(name, 'Verify New Tab', urlContains, async () => {
+            const [popup] = await Promise.all([
+                this.page.context().waitForEvent('page', { timeout: 10_000 }),
+                this.resolve(name).click(),
+            ]);
+            try {
+                await popup.waitForLoadState('domcontentloaded').catch(() => {});
+                await expect(popup, message ?? `New tab URL should contain '${urlContains}'`)
+                    .toHaveURL(new RegExp(urlContains.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+            } finally {
+                await popup.close().catch(() => {});
+            }
+        }, { action: 'click', locator_key: name });
+    }
+
+    /** Phase 5: a cookie / localStorage / sessionStorage entry meets `rule` (session and security checks). */
+    async verifyStorage(kind: StorageKind, key: string, rule: StorageRule, value?: string, message?: string): Promise<void> {
+        await this.run(null, 'Verify Storage', `${kind} ${key} ${rule}${value !== undefined ? ` ${value}` : ''}`, async () => {
+            const msg = message ?? `${kind} '${key}' should be ${rule}${value !== undefined ? ` '${value}'` : ''}`;
+            if (kind === 'cookie') {
+                const cookie = (await this.page.context().cookies()).find((c) => c.name === key);
+                if (rule === 'absent') { expect(cookie, msg).toBeUndefined(); return; }
+                expect(cookie, msg).toBeDefined();
+                if (rule === 'equals') expect(cookie!.value, msg).toBe(value);
+                if (rule === 'contains') expect(cookie!.value, msg).toContain(value ?? '');
+                if (rule === 'httpOnly') expect(cookie!.httpOnly, msg).toBe(true);
+                if (rule === 'secure') expect(cookie!.secure, msg).toBe(true);
+                if (rule === 'sameSite') expect(cookie!.sameSite, msg).not.toBe('None');
+                return;
+            }
+            if (['httpOnly', 'secure', 'sameSite'].includes(rule)) throw new Error(`verifyStorage: '${rule}' applies to cookies only`);
+            const stored = await this.page.evaluate(([k, store]) =>
+                (store === 'localStorage' ? window.localStorage : window.sessionStorage).getItem(k), [key, kind] as const);
+            if (rule === 'absent') { expect(stored, msg).toBeNull(); return; }
+            expect(stored, msg).not.toBeNull();
+            if (rule === 'equals') expect(stored, msg).toBe(value);
+            if (rule === 'contains') expect(stored, msg).toContain(value ?? '');
+        });
+    }
+
+    /** Phase 5: a response matching urlPattern exists and every matching JSON body satisfies the schema. */
+    async verifyResponseSchema(urlPattern: string, schema: Schema | string, message?: string): Promise<void> {
+        await this.run(null, 'Verify Response Schema', urlPattern, async () => {
+            const resolved = typeof schema === 'string' ? this.loadSchema(schema) : schema;
+            const log = this.requireNetwork();
+            const re = patternToRegExp(urlPattern);
+            await expect.poll(async () => (await log.responseBodies({ url: re })).length, {
+                message: message ?? `Expected a JSON response matching ${urlPattern}`, timeout: 5_000,
+            }).toBeGreaterThan(0);
+            const problems: string[] = [];
+            for (const r of await log.responseBodies({ url: re })) {
+                let body: unknown;
+                try {
+                    body = JSON.parse(r.body ?? '');
+                } catch {
+                    problems.push(`${r.method} ${r.url}: body is not JSON (or was not readable)`);
+                    continue;
+                }
+                problems.push(...validateSchema(body, resolved).map((p) => `${r.method} ${r.url}: ${p}`));
+            }
+            expect(problems, message ?? `Responses matching ${urlPattern} should match the schema`).toEqual([]);
+        });
+    }
+
+    /** Phase 5 grey-box: checks backend state through the `api` fixture (same user and base URL as the page). */
+    async verifyApiState(method: string, url: string, expected: ApiExpect, message?: string): Promise<void> {
+        await this.run(null, 'Verify Api State', `${method} ${url}`, async () => {
+            const api = this.oracles.api;
+            if (!api) throw new Error('ActionEngine: api oracle unavailable (no api fixture)');
+            const what = `${method} ${url}`;
+            const res = await api.fetch(url, { method, failOnStatusCode: false });
+            const text = await res.text();
+            if (expected.status !== undefined) {
+                expect(statusMatches(res.status(), expected.status),
+                    message ?? `${what} returned ${res.status()}, expected ${expected.status}`).toBe(true);
+            }
+            if (expected.bodyContains !== undefined) expect(text, message ?? `${what} body`).toContain(expected.bodyContains);
+            if (expected.bodyNotContains !== undefined) expect(text, message ?? `${what} body`).not.toContain(expected.bodyNotContains);
+            if (expected.path !== undefined) {
+                let json: unknown;
+                try {
+                    json = JSON.parse(text);
+                } catch {
+                    throw new Error(`${what}: body is not JSON, cannot read '${expected.path}'`);
+                }
+                const at = jsonAtPath(json, expected.path);
+                if (expected.equals !== undefined) expect(at, message ?? `${what} ${expected.path}`).toEqual(expected.equals);
+                if (expected.length !== undefined) {
+                    expect(Array.isArray(at) || typeof at === 'string' ? (at as any).length : undefined,
+                        message ?? `${what} ${expected.path} length`).toBe(expected.length);
+                }
+            }
+        });
+    }
+
+    // ── Phase 5 / 7.6: fault injection and time control ──
+
+    /** Answers requests matching urlPattern with `status`/`body` (after `delayMs`); only `delayMs` = slow it down. */
+    async mockRoute(urlPattern: string, opts: MockRouteOptions = {}): Promise<void> {
+        await this.run(null, 'Mock Route', urlPattern, async () => {
+            annotate('fault_injection', `mockRoute ${urlPattern} ${JSON.stringify(opts)}`);
+            if (opts.status !== undefined && opts.status >= 400) {
+                this.oracles.consoleGuard?.expectConsoleError(
+                    new RegExp(`Failed to load resource: the server responded with a status of ${opts.status}\\b`));
+            }
+            await this.page.route(patternToRegExp(urlPattern), async (route) => {
+                if (opts.delayMs) await new Promise((r) => setTimeout(r, opts.delayMs));
+                if (opts.status === undefined && opts.body === undefined) {
+                    await route.continue();
+                    return;
+                }
+                const body = opts.body === undefined ? '' : typeof opts.body === 'string' ? opts.body : JSON.stringify(opts.body);
+                await route.fulfill({
+                    status: opts.status ?? 200,
+                    body,
+                    contentType: opts.contentType ?? (typeof opts.body === 'object' ? 'application/json' : 'text/plain'),
+                });
+            });
+        });
+    }
+
+    async setOffline(offline: boolean): Promise<void> {
+        await this.run(null, 'Set Offline', String(offline), async () => {
+            annotate('fault_injection', `setOffline ${offline}`);
+            if (offline) this.oracles.consoleGuard?.expectConsoleError(/Failed to load resource: net::ERR_INTERNET_DISCONNECTED/);
+            await this.page.context().setOffline(offline);
+        });
+    }
+
+    /** Freezes Date.now() / new Date() at `isoTime` (timers keep running) — expiry, scheduling, "today" logic. */
+    async setClock(isoTime: string): Promise<void> {
+        await this.run(null, 'Set Clock', isoTime, async () => {
+            const at = new Date(isoTime);
+            if (Number.isNaN(at.getTime())) throw new Error(`setClock: '${isoTime}' is not a valid date/time`);
+            await this.page.clock.setFixedTime(at);
+        });
+    }
+
+    private loadSchema(ref: string): Schema {
+        const base = this.oracles.projectDir;
+        const file = path.isAbsolute(ref) ? ref : base ? path.join(base, ref) : ref;
+        if (!fs.existsSync(file)) throw new Error(`verifyResponseSchema: schema file '${file}' not found`);
+        return JSON.parse(fs.readFileSync(file, 'utf8'));
     }
 
     private requireNetwork(): NetworkLog {

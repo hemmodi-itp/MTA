@@ -394,18 +394,41 @@ Return ONLY the JSON object described above. No markdown fences, no explanation,
 ORACLE_PROMPT_BLOCK = """
 
 == Oracle actions (Phase 5) — a passing test must PROVE the behaviour ==
-- {"action": "verifyRequest", "method": "POST", "urlPattern": "/api/login", "status": 200}  ("*" wildcard; status optional)
+- {"action": "verifyRequest", "method": "POST", "urlPattern": "/api/login", "status": "2xx", "bodyContains": "alice"}
+  ("*" wildcard; status = a number or "2xx"; status and bodyContains optional)
 - {"action": "verifyNoRequest", "method": "POST", "urlPattern": "/api/login"}  — nothing was submitted
 - {"action": "verifyFieldInvalid", "locator_key": "<key>"}  — aria-invalid or native :invalid
+- {"action": "verifyValidationMessage", "locator_key": "<field key>", "value": "<part of the message>"}
+  — native validation message or the field's aria-errormessage / aria-describedby text
 - {"action": "verifyNoDialog"}  — no alert/confirm/prompt fired
 - {"action": "verifyNotInjected", "payloadMarker": "<a distinctive part of the payload>"}  — payload rendered as text
-Oracle mapping from a test case's "oracles": error_text -> verifyContainsText on the error key (or verifyFieldInvalid);
-url_unchanged -> verifyUrlContains with the starting path AND verifyNoRequest for the submit call when it is known;
-submission_accepted -> the UI success signal AND verifyRequest with a 2xx status when the submit call is known.
+- {"action": "rememberCount", "locator_key": "<list item key>"} then later
+  {"action": "verifyCountChangedBy", "locator_key": "<same key>", "delta": 1}  — CRUD / double submit (delta 0 = nothing created)
+- {"action": "reloadAndVerify", "steps": [<verify* steps>]}  — reloads the page, then asserts (persistence)
+- {"action": "verifyApiState", "method": "GET", "url": "/api/products/7", "expect": {"status": 404}}
+  — backend state via the API (expect keys: status, bodyContains, bodyNotContains, path + equals | length)
+- {"action": "verifyResponseSchema", "urlPattern": "/api/products*", "schema": {"type": "object", "required": ["items"]}}
+- {"action": "verifyStorage", "store": "cookie", "key": "sid", "rule": "httpOnly"}
+  (store: cookie | localStorage | sessionStorage; rule: present | absent | equals | contains | httpOnly | secure | sameSite)
+- {"action": "verifyDownload", "locator_key": "<button>", "nameRegex": "\\\\.csv$", "minBytes": 10}  — clicks it
+- {"action": "verifyNewTab", "locator_key": "<link>", "urlContains": "/help"}  — clicks it
+- {"action": "mockRoute", "urlPattern": "/api/x", "status": 500, "body": {"error": "boom"}, "delayMs": 0}
+  / {"action": "setOffline", "value": true} / {"action": "setClock", "value": "2030-01-01T09:00:00Z"}
+  — fault injection, only for a test case that is about failure handling or time
+Use an action above only with values you know (from the test case, test data or the listed elements); never guess
+an API path, schema or storage key.
+Oracle mapping from a test case's "oracles": error_text -> verifyContainsText on the error key (or
+verifyValidationMessage on the field); field_invalid -> verifyFieldInvalid; url_unchanged -> verifyUrlContains with
+the starting path; no_request -> verifyNoRequest; submission_accepted -> the UI success signal AND (verifyRequest with
+status "2xx" when the submit call is known, OR reloadAndVerify of the saved value); persisted -> reloadAndVerify.
 Rules the plan is linted against:
 - At least one assertion must be about the OUTCOME, not just the element you acted on (click X then verifyVisible X is weak).
 - A title-only assertion is rejected.
-- A negative test needs (error text OR verifyFieldInvalid) AND (verifyNoRequest OR a URL check).
+- A negative test needs (error text OR verifyFieldInvalid OR verifyValidationMessage) AND
+  (verifyNoRequest OR a URL check OR verifyCountChangedBy 0).
+- A positive test that fills a form and submits it needs a UI success signal AND backend evidence
+  (verifyRequest "2xx" — or "3xx" when the app redirects after a POST —, reloadAndVerify, verifyApiState or
+  verifyCountChangedBy).
 - An XSS / special-characters test needs verifyNoDialog AND verifyNotInjected.
 - Never use waitForTimeout. Do not add a console-error check; it is appended automatically.
 """

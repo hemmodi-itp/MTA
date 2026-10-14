@@ -20,6 +20,7 @@ from agents.base_agent import BaseAgent
 from tools.constants import PROJECTS_BASE as _ASSETS_BASE
 from tools.requirements.config import requirements_enabled
 from tools.shared import get_logger
+from tools.state.review_queue import flag_expected_value_conflicts
 from tools.test_design import design as design_mod
 from tools.test_design import hint_cache, linking
 from tools.test_design.config import load_design_config
@@ -94,7 +95,10 @@ class TestDesignAgent(BaseAgent):
                   f"est. {b['est_runtime_minutes']} min (budget {b['max_tests']} tests / {b['max_runtime_minutes']} min"
                   f"{'' if b['respected'] else ' — EXCEEDED by P0/floor cases'})")
         if doc["conflicts"]:
-            self._log(f"{len(doc['conflicts'])} BRD-vs-observed conflict(s) recorded for human review", level="warning")
+            # Phase 5.2: a potential defect for a human to decide — never resolved silently
+            queued = flag_expected_value_conflicts(safe, doc["conflicts"], output_dir=project_dir)
+            self._log(f"{len(doc['conflicts'])} BRD-vs-observed conflict(s) recorded for human review "
+                      f"({queued} new in human_review_queue.json)", level="warning")
         warnings = [f"budget exceeded by P0/floor cases ({b['selected']} selected)"] if not b["respected"] else []
         if doc["llm"]["status"] == "degraded":
             warnings.append("LLM interpretation degraded for some modules — deterministic cases only there")

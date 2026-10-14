@@ -68,8 +68,21 @@ def pass_rate_by_priority(results: List[dict], tc_priority: Dict[str, str]) -> D
             for p, (a, n) in acc.items()}
 
 
+def _plan_tests(plans: dict) -> List[dict]:
+    return [t for plan in ((plans or {}).get("plans") or {}).values() if isinstance(plan, dict)
+            for t in plan.get("tests") or [] if isinstance(t, dict)]
+
+
+def potential_defects(test_cases: Optional[dict]) -> List[dict]:
+    """Phase 5.2: BRD-vs-observed conflicts from test design — potential defects awaiting a human decision."""
+    return [{"ac_id": c.get("ac_id"), "where": c.get("form_id"), "field": c.get("field"), "probe": c.get("probe"),
+             "brd": c.get("brd"), "observed": c.get("observed")}
+            for c in (test_cases or {}).get("conflicts") or []]
+
+
 def compute_summary(results: List[dict], trace: Optional[dict], plans: dict, suite: dict,
-                    triage: Optional[dict], agent_quality: Optional[dict]) -> Dict[str, Any]:
+                    triage: Optional[dict], agent_quality: Optional[dict],
+                    test_cases: Optional[dict] = None) -> Dict[str, Any]:
     ts = (trace or {}).get("summary") or {}
     weak = sum(len(s.get("weak_oracle") or []) for s in (suite or {}).get("specs") or [])
     failed = [r for r in results if not _is_pass(r) and not _is_skipped(r)
@@ -83,6 +96,9 @@ def compute_summary(results: List[dict], trace: Optional[dict], plans: dict, sui
         "product_defects": (triage["counts"].get("product_defect", 0) if triage else None),
         "a11y_findings": tag_fail("@a11y"), "security_findings": tag_fail("@security"),
         "weak_oracle": weak,
+        # Phase 5.2: expected values only an LLM inferred (reported, not BRD-backed) and BRD-vs-observed conflicts
+        "low_confidence_oracles": sum(1 for t in _plan_tests(plans) if t.get("oracle_confidence") == "low"),
+        "potential_defects": len(potential_defects(test_cases)),
         "agent_dimensions": {d: v.get("outcome") for d, v in dims.items()} if dims else None,
     }
 

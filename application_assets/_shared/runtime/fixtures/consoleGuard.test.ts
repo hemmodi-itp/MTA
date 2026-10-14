@@ -58,6 +58,17 @@ describe('consoleGuard — baseline diff', () => {
     expect(loadBaseline('b.json', () => JSON.stringify(BASELINE)).available).toBe(true);
   });
 
+  it('console errors a fault-injection step provoked are expected, page errors never are (Phase 5)', () => {
+    const g = new ConsoleGuard(loadBaseline('b.json', () => JSON.stringify(BASELINE)), 'fail');
+    g.expectConsoleError(/status of 503\b/);
+    g.record({ kind: 'console', text: 'Failed to load resource: the server responded with a status of 503 ()', url: 'http://x/a' });
+    g.record({ kind: 'console', text: 'Failed to load resource: the server responded with a status of 500 ()', url: 'http://x/a' });
+    g.record({ kind: 'pageerror', text: 'status of 503 broke the app', url: 'http://x/a' });
+    expect(g.newErrors().map((e) => e.text)).toEqual([
+      'Failed to load resource: the server responded with a status of 500 ()', 'status of 503 broke the app']);
+    expect(g.knownErrors()).toHaveLength(1);
+  });
+
   it('helpers', () => {
     expect(normalizeText('  a \n\t b ')).toBe('a b');
     expect(urlPath('http://h/')).toBe('/');

@@ -32,7 +32,8 @@ scenario. Output: `test_creation/test_cases.json`. ScriptGeneration then impleme
    one exists) → descending risk within `max_tests` / `max_runtime_minutes`. Cut cases are listed with reason
    `budget` (or `no_scenario`).
 6. **BRD vs observed**: a probe that saw the app accept what an AC rejects is listed in `conflicts[]`; the case
-   keeps the BRD oracle.
+   keeps the BRD oracle. Each conflict is also queued once in `human_review_queue.json` (`expected_value_conflict`)
+   and shown as a potential defect in the report (Phase 5.2) — never resolved silently.
 7. **Locators**: fields and submit buttons of targeted forms are merged into `locator_map.json` with their
    `_page_url`; ScriptGeneration validates them live on that page.
 

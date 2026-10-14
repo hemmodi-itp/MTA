@@ -661,7 +661,7 @@ def _quality_sections(q: dict) -> str:
   <div style="padding:8px 24px;font-size:0.9rem;line-height:1.7">{gates}
     <div>Requirement (AC) coverage: <strong>{na(cov)}{"%" if cov is not None else ""}</strong> ({na(sm.get("acs_covered"))}/{na(sm.get("acs_automatable"))}){csv_link}</div>
     <div>Pass rate by priority: {prio}</div>
-    <div>Product defects (triage): <strong>{na(sm.get("product_defects"))}</strong> · Accessibility findings: <strong>{na(sm.get("a11y_findings"))}</strong> · Security findings: <strong>{na(sm.get("security_findings"))}</strong> · Weak oracles: <strong>{na(sm.get("weak_oracle"))}</strong></div>
+    <div>Product defects (triage): <strong>{na(sm.get("product_defects"))}</strong> · Accessibility findings: <strong>{na(sm.get("a11y_findings"))}</strong> · Security findings: <strong>{na(sm.get("security_findings"))}</strong> · Weak oracles: <strong>{na(sm.get("weak_oracle"))}</strong> · Low-confidence (LLM-inferred) oracles: <strong>{na(sm.get("low_confidence_oracles"))}</strong></div>
     <div>AI-agent dimensions: {dims_html}</div></div>
 </div>"""
     nt = q.get("not_tested") or []
@@ -679,7 +679,14 @@ def _quality_sections(q: dict) -> str:
                    f'<div><b>Actual:</b> {_esc(d.get("actual"))}</div><div>{ev}</div></div>')
     defect_html = (f'<div class="section"><div class="sec-title" style="color:#dc2626">Defects '
                    f'<span class="sec-cnt">{len(defects)}</span></div>{blocks}</div>') if defects else ""
-    return summary + not_tested + defect_html
+    pd = q.get("potential_defects") or []
+    pd_rows = "".join(f'<tr><td>{_esc(c.get("ac_id"))}</td><td>{_esc(c.get("where"))}</td><td>{_esc(c.get("field"))}</td>'
+                      f'<td>{_esc(c.get("brd"))}</td><td>{_esc(c.get("observed"))}</td></tr>' for c in pd)
+    potential = (f'<div class="section"><div class="sec-title" style="color:#d97706">Potential defects — BRD vs observed '
+                 f'<span class="sec-cnt">{len(pd)} for human review</span></div>'
+                 f'<table><thead><tr><th>AC</th><th>Where</th><th>Field / role</th><th>BRD says</th><th>App did</th></tr>'
+                 f'</thead><tbody>{pd_rows}</tbody></table></div>') if pd else ""
+    return summary + not_tested + defect_html + potential
 
 
 def build_html_report(report: dict) -> str:

@@ -174,13 +174,28 @@ def _msg_tail(step: dict, params: set) -> List[str]:
     return [_val(msg, params)] if msg else []
 
 
+def _trim_undefined(args: List[str]) -> List[str]:
+    """Drop trailing `undefined` placeholders, so optional positional arguments only appear when used."""
+    while args and args[-1] == "undefined":
+        args.pop()
+    return args
+
+
+def _status_expr(status) -> str:
+    """200 -> 200; "2xx" -> "2xx" (ActionEngine.statusMatches); None -> undefined."""
+    if status is None:
+        return "undefined"
+    if isinstance(status, int) or (isinstance(status, str) and status.isdigit()):
+        return str(int(status))
+    return _ts_str(str(status))
+
+
 def _verify_request_args(step: dict, params: set) -> List[str]:
-    status = step.get("status")
-    args = [_val(str(step["method"]).upper(), params), _val(step["urlPattern"], params)]
-    msg = _msg_tail(step, params)
-    if status is not None or msg:
-        args.append(str(int(status)) if status is not None else "undefined")
-    return args + msg
+    args = [_val(str(step["method"]).upper(), params), _val(step["urlPattern"], params),
+            _status_expr(step.get("status")),
+            _val(step["message"], params) if step.get("message") else "undefined",
+            _val(step["bodyContains"], params) if step.get("bodyContains") is not None else "undefined"]
+    return _trim_undefined(args)
 
 
 def _verify_no_request_args(step: dict, params: set) -> List[str]:
@@ -189,6 +204,61 @@ def _verify_no_request_args(step: dict, params: set) -> List[str]:
 
 def _verify_not_injected_args(step: dict, params: set) -> List[str]:
     return [_val(step["payloadMarker"], params)] + _msg_tail(step, params)
+
+
+def _ts_obj(value) -> str:
+    """A JSON object/array/scalar as a TS expression (JSON is valid TS)."""
+    return json.dumps(value, ensure_ascii=False)
+
+
+def _verify_count_changed_args(step: dict, params: set) -> List[str]:
+    return [str(int(step["delta"]))] + _msg_tail(step, params)
+
+
+def _verify_download_args(step: dict, params: set) -> List[str]:
+    args = [_val(step["nameRegex"], params) if step.get("nameRegex") else "undefined",
+            str(int(step["minBytes"])) if step.get("minBytes") is not None else "undefined",
+            _val(step["message"], params) if step.get("message") else "undefined"]
+    return _trim_undefined(args)
+
+
+def _verify_new_tab_args(step: dict, params: set) -> List[str]:
+    return [_val(step["urlContains"], params)] + _msg_tail(step, params)
+
+
+def _verify_storage_args(step: dict, params: set) -> List[str]:
+    args = [_ts_str(step["store"]), _val(step["key"], params), _ts_str(step["rule"]),
+            _val(step["value"], params) if step.get("value") is not None else "undefined",
+            _val(step["message"], params) if step.get("message") else "undefined"]
+    return _trim_undefined(args)
+
+
+def _verify_response_schema_args(step: dict, params: set) -> List[str]:
+    schema = step.get("schema")
+    ref = _ts_obj(schema) if isinstance(schema, dict) else _val(step["schemaRef"], params)
+    return [_val(step["urlPattern"], params), ref] + _msg_tail(step, params)
+
+
+_API_EXPECT_FIELDS = ("status", "bodyContains", "bodyNotContains", "path", "equals", "length")
+
+
+def _verify_api_state_args(step: dict, params: set) -> List[str]:
+    expect = {k: v for k, v in (step.get("expect") or {}).items() if k in _API_EXPECT_FIELDS}
+    return [_ts_str(str(step.get("method") or "GET").upper()), _val(step["url"], params), _ts_obj(expect)] \
+        + _msg_tail(step, params)
+
+
+_MOCK_FIELDS = ("status", "body", "contentType", "delayMs")
+
+
+def _mock_route_args(step: dict, params: set) -> List[str]:
+    opts = {k: step[k] for k in _MOCK_FIELDS if step.get(k) is not None}
+    return [_val(step["urlPattern"], params)] + ([_ts_obj(opts)] if opts else [])
+
+
+def _set_offline_args(step: dict, params: set) -> List[str]:
+    value = step.get("value")
+    return ["true" if value in (True, "true", "True", 1, "1") else "false"]
 
 
 # action -> function(step, params) -> list[str] of TS argument expressions,
@@ -233,6 +303,18 @@ ARG_BUILDERS = {
     "verifyNoDialog": _msg_tail,
     "verifyNotInjected": _verify_not_injected_args,
     "verifyNoNewConsoleErrors": _msg_tail,
+    "verifyValidationMessage": _value_and_message_args,
+    "verifyAriaSnapshot": _value_and_message_args,
+    "rememberCount": _no_extra_args,
+    "verifyCountChangedBy": _verify_count_changed_args,
+    "verifyDownload": _verify_download_args,
+    "verifyNewTab": _verify_new_tab_args,
+    "verifyStorage": _verify_storage_args,
+    "verifyResponseSchema": _verify_response_schema_args,
+    "verifyApiState": _verify_api_state_args,
+    "mockRoute": _mock_route_args,
+    "setOffline": _set_offline_args,
+    "setClock": _single_value_args,
 }
 
 # Actions whose first constructor argument is a locator_key.
@@ -243,6 +325,8 @@ LOCATOR_FIRST_ACTIONS = {
     "uploadFile", "verifyVisible", "verifyHidden", "verifyText",
     "verifyContainsText", "verifyValue", "verifyEnabled", "verifyDisabled",
     "verifyChecked", "verifyCount", "verifyFieldInvalid",
+    "verifyValidationMessage", "verifyAriaSnapshot", "rememberCount", "verifyCountChangedBy",
+    "verifyDownload", "verifyNewTab",
 }
 
 # pressKey takes a locator_key OR null (page-level key press) as first arg.
@@ -253,7 +337,12 @@ NO_LOCATOR_ACTIONS = {
     "navigate", "waitForTimeout", "verifyUrl", "verifyUrlContains", "verifyTitle",
     "verifyTitleContains", "takeScreenshot", "goBack", "reload", "verifyNoPageErrors",
     "verifyRequest", "verifyNoRequest", "verifyNoDialog", "verifyNotInjected", "verifyNoNewConsoleErrors",
+    "verifyStorage", "verifyResponseSchema", "verifyApiState", "mockRoute", "setOffline", "setClock",
 }
+
+# Renderer macro (Phase 5 persistence check): `{"action": "reloadAndVerify", "steps": [<verify* steps>]}` renders as
+# action.reload() followed by the nested verify steps.
+RELOAD_AND_VERIFY = "reloadAndVerify"
 
 # Actions whose ARG_BUILDERS entry does `step["value"]` (hard KeyError if
 # absent) rather than `step.get("value")` — mirrors _single_value_args /
@@ -268,14 +357,25 @@ VALUE_REQUIRED_ACTIONS = {
     "selectDropdownByValue", "uploadFile", "verifyText", "verifyContainsText",
     "verifyValue", "verifyUrl", "verifyUrlContains", "verifyTitle",
     "verifyTitleContains", "verifyCount", "waitForTimeout",
+    "verifyValidationMessage", "verifyAriaSnapshot", "setOffline", "setClock",
 }
 
-# Phase 5: required step fields (not "value") per oracle action — checked by _validate_plan.
+# Phase 5: required step fields (not "value") per oracle action — checked by _validate_plan (0 / false are values).
 ORACLE_REQUIRED_FIELDS = {
     "verifyRequest": ("method", "urlPattern"),
     "verifyNoRequest": ("method", "urlPattern"),
     "verifyNotInjected": ("payloadMarker",),
+    "verifyCountChangedBy": ("delta",),
+    "verifyNewTab": ("urlContains",),
+    "verifyStorage": ("store", "key", "rule"),
+    "verifyResponseSchema": ("urlPattern",),
+    "verifyApiState": ("url", "expect"),
+    "mockRoute": ("urlPattern",),
+    RELOAD_AND_VERIFY: ("steps",),
 }
+
+STORAGE_KINDS = ("cookie", "localStorage", "sessionStorage")
+STORAGE_RULES = ("present", "absent", "equals", "contains", "httpOnly", "secure", "sameSite")
 
 # Deterministic tag appended by the renderer (never LLM-authored, so tagging
 # can't be hallucinated) — @smoke for the one required positive/happy-path
@@ -305,6 +405,11 @@ def _render_step(
 
     if action == "useFlow":
         return _render_use_flow_step(step, flows_meta or {}, indent)
+
+    if action == RELOAD_AND_VERIFY:
+        lines = [f"{indent}await action.reload();"]
+        lines += [_render_step(s, flows_meta, params, indent) for s in step.get("steps") or []]
+        return "\n".join(lines)
 
     if action == "dragAndDrop":
         source = _ts_str(step["locator_key"])
@@ -403,6 +508,9 @@ _VERB = {
     "waitForTimeout": "Wait {n} ms (fixed sleep)",
     "verifyFieldInvalid": "Verify {k} is invalid", "verifyNoDialog": "Verify no JS dialog fired",
     "verifyNoNewConsoleErrors": "Verify no new console errors",
+    "verifyValidationMessage": "Verify {k} validation message contains {v}",
+    "verifyAriaSnapshot": "Verify {k} matches its aria snapshot", "rememberCount": "Remember the count of {k}",
+    "setClock": "Set the clock to {v}",
 }
 
 
@@ -461,6 +569,26 @@ def _step_phrase(step: dict, locator_map: Optional[dict], show_value: bool = Tru
         return f"Verify{neg} {step.get('method')} request {_ts_str(step.get('urlPattern'))}{status}"
     if action == "verifyNotInjected":
         return f"Verify payload {_ts_str(step.get('payloadMarker'))} is not injected"
+    if action == "verifyCountChangedBy":
+        return f"Verify the count of {k} changed by {step.get('delta')}"
+    if action == "verifyDownload":
+        return f"Click {k} and verify a download" + (f" matching {_ts_str(step['nameRegex'])}" if step.get("nameRegex") else "")
+    if action == "verifyNewTab":
+        return f"Click {k} and verify a new tab at {_ts_str(step.get('urlContains'))}"
+    if action == "verifyStorage":
+        tail = f" {_preview(value, _is_secret(step.get('key'), None))}" if value is not None else ""
+        return f"Verify {step.get('store')} {_ts_str(step.get('key'))} is {step.get('rule')}{tail}"
+    if action == "verifyResponseSchema":
+        return f"Verify responses {_ts_str(step.get('urlPattern'))} match the schema"
+    if action == "verifyApiState":
+        return f"Verify API {str(step.get('method') or 'GET').upper()} {_ts_str(step.get('url'))} state"
+    if action == "mockRoute":
+        return f"Mock route {_ts_str(step.get('urlPattern'))}"
+    if action == "setOffline":
+        return "Go offline" if step.get("value") in (True, "true", 1, "1") else "Go back online"
+    if action == RELOAD_AND_VERIFY:
+        inner = "; ".join(_step_phrase(s, locator_map, show_value) for s in step.get("steps") or [])
+        return f"Reload and verify: {inner}"
     if action == "dragAndDrop":
         return f"Drag {k} onto {_ts_str(step.get('target_locator_key'))}"
     template = _VERB.get(action)

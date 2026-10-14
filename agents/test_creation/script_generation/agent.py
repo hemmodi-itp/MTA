@@ -61,6 +61,9 @@ from agents.test_creation.script_generation.tools import (
     LOCATOR_FIRST_ACTIONS,
     LOCATOR_OR_NULL_ACTIONS,
     ORACLE_REQUIRED_FIELDS,
+    RELOAD_AND_VERIFY,
+    STORAGE_KINDS,
+    STORAGE_RULES,
     VALUE_REQUIRED_ACTIONS,
     render_flows_module,
     render_spec_from_plan,
@@ -100,6 +103,10 @@ ALLOWED_ACTIONS = frozenset({
     "verifyTitleContains", "takeScreenshot", "goBack", "reload", "verifyNoPageErrors", "useFlow",
     # Phase 5 oracles (verifyNoNewConsoleErrors is renderer-appended, never planned)
     "verifyRequest", "verifyNoRequest", "verifyFieldInvalid", "verifyNoDialog", "verifyNotInjected",
+    "verifyValidationMessage", "verifyAriaSnapshot", "rememberCount", "verifyCountChangedBy", "reloadAndVerify",
+    "verifyDownload", "verifyNewTab", "verifyStorage", "verifyResponseSchema", "verifyApiState",
+    # Phase 5 / 7.6 fault injection and time control
+    "mockRoute", "setOffline", "setClock",
 })
 
 FIXED_SLEEP_ACTIONS = frozenset({"waitForTimeout"})
@@ -526,7 +533,7 @@ class ScriptGenerationAgent(BaseAgent):
                                              "detail": "only the python stub fallback produced output"} for c in chunk]
                 continue
             tier_used = max(tier_used, tier)
-            plan = _reconcile_design_plan(payload, chunk)
+            plan = _reconcile_design_plan(payload, chunk, oracles=self._oracles_on)
             merged["tests"] += plan["tests"]
             for key in ("missing_actions", "missing_locators", "dropped_tests"):
                 merged[key] += [x for x in plan.get(key) or [] if x not in merged[key]]
@@ -686,7 +693,7 @@ class ScriptGenerationAgent(BaseAgent):
                     lint_feedback=assertion_linter.feedback(report["weak"]),
                 )
                 if design_cases:
-                    retry = _reconcile_design_plan(retry, weak_cases or design_cases)
+                    retry = _reconcile_design_plan(retry, weak_cases or design_cases, oracles=self._oracles_on)
                     weak_set = {w["name"] for w in report["weak"]}
                     merged = [t for t in plan["tests"] if t.get("name") not in weak_set] + retry["tests"]
                     candidate = {**plan, "tests": merged}
@@ -749,7 +756,7 @@ class ScriptGenerationAgent(BaseAgent):
         plan = _parse_plan_json(raw, sid)
         allowed_keys = {e["key"] for e in allowed_locators}
         _validate_plan(plan, sid, ALLOWED_ACTIONS, allowed_keys, flows_meta)
-        plan, dropped = _drop_placeholder_negative_tests(plan, test_data)
+        plan, dropped = _drop_placeholder_negative_tests(plan, test_data, design_cases)
         if dropped:
             self._log(
                 f"{sid}: dropped {len(dropped)} placeholder negative test(s) with no "
@@ -1169,9 +1176,10 @@ def _design_case_view(case: dict) -> Dict[str, Any]:
     return view
 
 
-def _reconcile_design_plan(plan: dict, chunk: List[dict]) -> dict:
+def _reconcile_design_plan(plan: dict, chunk: List[dict], oracles: bool = False) -> dict:
     """Keep exactly the tests that implement a case of this chunk (first one per case_id), force each test's
-    type to the case's test_type, and record every case left unimplemented — never silent."""
+    type to the case's test_type, and record every case left unimplemented — never silent.
+    oracles (project.yaml `oracles.enabled`): the case's oracles fill in what the plan left out (Phase 5.4)."""
     by_id = {c["id"]: c for c in chunk}
     tests, dropped, done = [], list(plan.get("dropped_tests") or []), set()
     for t in plan.get("tests") or []:
@@ -1184,12 +1192,16 @@ def _reconcile_design_plan(plan: dict, chunk: List[dict]) -> dict:
             dropped.append({"test": t.get("name", ""), "case_id": cid, "reason": "duplicate_case_test"})
             continue
         t = dict(t, type=by_id[cid]["test_type"])
+        if oracles:
+            t = _fill_placeholder_oracles(t, by_id[cid])
         problem = _design_test_problem(t, by_id[cid])
         if problem:
             # the guards inside _plan_via_llm saw the LLM's own "type"; the case's type is applied here, so the
             # same rules are re-applied now — a retyped test can never slip past them
             dropped.append({"test": t.get("name", ""), "case_id": cid, "reason": problem})
             continue
+        if oracles:
+            t = _append_case_oracles(t, by_id[cid])
         done.add(cid)
         tests.append(t)
     for cid, case in by_id.items():
@@ -1205,6 +1217,77 @@ def _reconcile_design_plan(plan: dict, chunk: List[dict]) -> dict:
     out["tests"] = tests
     out["dropped_tests"] = dropped
     return out
+
+
+# ── Phase 5.4: oracles come from test_cases.json, not from the LLM ──────────
+#
+# A design case carries the oracles Phase 3 derived from the BRD / observed probes. The LLM is asked to express
+# them, but whatever it leaves out (or writes as an empty placeholder) is filled in here, deterministically:
+#   error_text {contains}            -> an empty-string text assertion gets the case's message
+#   field_invalid {field}            -> verifyFieldInvalid(<locator of field>)
+#   no_request {method, url}         -> verifyNoRequest(method, <path of url>)
+#   url_unchanged                    -> verifyUrlContains(<path the case starts on>)
+# Expected-value precedence (plan 5.2): BRD > observed > code > LLM-inferred. A test whose case oracles are all
+# LLM-inferred is marked `oracle_confidence: "low"` and reported, never presented as BRD-backed.
+
+_REJECTION_ORACLES = frozenset({"error_text", "field_invalid", "no_request", "url_unchanged", "submission_rejected"})
+_TEXT_ASSERTS = frozenset({"verifyText", "verifyContainsText"})
+
+
+def _url_path(url: Any) -> Optional[str]:
+    """Path part of an absolute or relative URL; None when absent or still a template (/orders/{id})."""
+    if not url:
+        return None
+    from urllib.parse import urlparse
+    path = urlparse(str(url)).path
+    return path if path and "{" not in path else None
+
+
+def _fill_placeholder_oracles(test: dict, case: dict) -> dict:
+    """An empty-string text assertion is a placeholder: give it the case's expected message when there is one."""
+    message = next((o.get("contains") for o in case.get("oracles") or []
+                    if o.get("type") == "error_text" and o.get("contains")), None)
+    if not message:
+        return test
+    steps = [dict(s, action="verifyContainsText", value=message)
+             if isinstance(s, dict) and s.get("action") in _TEXT_ASSERTS and s.get("value") == "" else s
+             for s in test.get("steps") or []]
+    return dict(test, steps=steps)
+
+
+def _append_case_oracles(test: dict, case: dict) -> dict:
+    steps = list(test.get("steps") or [])
+    flat = [s for s in steps if isinstance(s, dict)]
+    flat += [x for s in flat if s.get("action") == "reloadAndVerify" for x in s.get("steps") or []]
+    have = {s.get("action") for s in flat}
+    keys = case.get("locator_keys") or {}
+    target = case.get("target") or {}
+    note = f"oracle from {case.get('id')}"
+    added: List[dict] = []
+    for o in case.get("oracles") or []:
+        kind = o.get("type")
+        if kind == "field_invalid":
+            key = keys.get(o.get("field") or "")
+            if key and not any(s.get("action") == "verifyFieldInvalid" and s.get("locator_key") == key for s in flat):
+                added.append({"action": "verifyFieldInvalid", "locator_key": key, "message": note})
+        elif kind == "no_request" and o.get("method") and "verifyNoRequest" not in have:
+            path = _url_path(o.get("url")) or _url_path(target.get("sample_url")) or _url_path(target.get("url_template"))
+            if path:
+                added.append({"action": "verifyNoRequest", "method": str(o["method"]).upper(), "urlPattern": path,
+                              "message": note})
+        elif kind == "url_unchanged" and not have & {"verifyUrl", "verifyUrlContains"}:
+            path = _url_path(target.get("sample_url")) or _url_path(target.get("url_template"))
+            if path:
+                added.append({"action": "verifyUrlContains", "value": path, "message": note})
+    out = dict(test, steps=steps + added) if added else dict(test)
+    sources = {str(o.get("source") or "") for o in case.get("oracles") or []}
+    if sources and all("llm_inferred" in src for src in sources):
+        out["oracle_confidence"] = "low"
+    return out
+
+
+def _case_has_rejection_basis(case: Optional[dict]) -> bool:
+    return bool(case) and any(o.get("type") in _REJECTION_ORACLES for o in case.get("oracles") or [])
 
 
 _FILL_ACTIONS = ("enterText", "clearAndEnterText", "selectDropdownByText", "selectDropdownByValue")
@@ -1327,62 +1410,103 @@ def _validate_plan(
         if not isinstance(test["steps"], list) or not test["steps"]:
             raise LLMResponseValidationError(f"{scenario_id}: test '{test.get('name')}' has no steps")
 
+        remembered: set = set()
         for step in test["steps"]:
-            action = step.get("action") if isinstance(step, dict) else None
-            if action in FIXED_SLEEP_ACTIONS:
+            _validate_step(step, scenario_id, allowed_actions, allowed_keys, allowed_flows, remembered)
+
+
+def _validate_step(step, scenario_id: str, allowed_actions: frozenset, allowed_keys: set,
+                   allowed_flows: Dict[str, List[str]], remembered: set, nested: bool = False) -> None:
+    """One plan step (see _validate_plan). `remembered` collects rememberCount keys seen so far in the test, so a
+    verifyCountChangedBy without an earlier baseline is rejected here instead of failing at run time."""
+    from agents.common.failure_classifier import LLMResponseValidationError
+
+    action = step.get("action") if isinstance(step, dict) else None
+    if action in FIXED_SLEEP_ACTIONS:
+        raise LLMResponseValidationError(
+            f"{scenario_id}: step uses '{action}' — fixed sleeps are not allowed in generated plans; "
+            "use waitForElement or a verify* step (they wait automatically)"
+        )
+    if action not in allowed_actions:
+        raise LLMResponseValidationError(
+            f"{scenario_id}: step uses disallowed action '{action}'"
+        )
+
+    if action == "useFlow":
+        flow = step.get("flow")
+        if flow not in allowed_flows:
+            raise LLMResponseValidationError(
+                f"{scenario_id}: step references unknown flow '{flow}'"
+            )
+        return
+
+    if action == "dragAndDrop":
+        for field in ("locator_key", "target_locator_key"):
+            key = step.get(field)
+            if key not in allowed_keys:
                 raise LLMResponseValidationError(
-                    f"{scenario_id}: step uses '{action}' — fixed sleeps are not allowed in generated plans; "
-                    "use waitForElement or a verify* step (they wait automatically)"
+                    f"{scenario_id}: dragAndDrop references disallowed locator_key '{key}'"
                 )
-            if action not in allowed_actions:
+        return
+
+    if action == RELOAD_AND_VERIFY:
+        inner = step.get("steps")
+        if nested or not isinstance(inner, list) or not inner:
+            raise LLMResponseValidationError(
+                f"{scenario_id}: '{action}' needs a non-empty 'steps' list (and cannot be nested)")
+        for sub in inner:
+            if not str((sub or {}).get("action", "")).startswith("verify"):
                 raise LLMResponseValidationError(
-                    f"{scenario_id}: step uses disallowed action '{action}'"
-                )
+                    f"{scenario_id}: '{action}' may only contain verify* steps, got '{(sub or {}).get('action')}'")
+            _validate_step(sub, scenario_id, allowed_actions, allowed_keys, allowed_flows, remembered, nested=True)
+        return
 
-            if action == "useFlow":
-                flow = step.get("flow")
-                if flow not in allowed_flows:
-                    raise LLMResponseValidationError(
-                        f"{scenario_id}: step references unknown flow '{flow}'"
-                    )
-                continue
+    if action in LOCATOR_FIRST_ACTIONS:
+        key = step.get("locator_key")
+        if key not in allowed_keys:
+            raise LLMResponseValidationError(
+                f"{scenario_id}: step '{action}' references disallowed locator_key '{key}'"
+            )
+    elif action in LOCATOR_OR_NULL_ACTIONS:
+        key = step.get("locator_key")
+        if key is not None and key not in allowed_keys:
+            raise LLMResponseValidationError(
+                f"{scenario_id}: step '{action}' references disallowed locator_key '{key}'"
+            )
+    # else: a NO_LOCATOR_ACTIONS entry — no locator_key to validate.
 
-            if action == "dragAndDrop":
-                for field in ("locator_key", "target_locator_key"):
-                    key = step.get(field)
-                    if key not in allowed_keys:
-                        raise LLMResponseValidationError(
-                            f"{scenario_id}: dragAndDrop references disallowed locator_key '{key}'"
-                        )
-                continue
-
-            if action in LOCATOR_FIRST_ACTIONS:
-                key = step.get("locator_key")
-                if key not in allowed_keys:
-                    raise LLMResponseValidationError(
-                        f"{scenario_id}: step '{action}' references disallowed locator_key '{key}'"
-                    )
-            elif action in LOCATOR_OR_NULL_ACTIONS:
-                key = step.get("locator_key")
-                if key is not None and key not in allowed_keys:
-                    raise LLMResponseValidationError(
-                        f"{scenario_id}: step '{action}' references disallowed locator_key '{key}'"
-                    )
-            # else: a NO_LOCATOR_ACTIONS entry — no locator_key to validate.
-
-            # spec_renderer's ARG_BUILDERS does a hard step["value"] for these
-            # actions (see VALUE_REQUIRED_ACTIONS) — catch a missing value here,
-            # while this can still route through retry/fallback, instead of
-            # crashing render_spec_from_plan after validation already passed.
-            for field in ORACLE_REQUIRED_FIELDS.get(action, ()):
-                if not step.get(field):
-                    raise LLMResponseValidationError(
-                        f"{scenario_id}: step '{action}' is missing required '{field}' field"
-                    )
-            if action in VALUE_REQUIRED_ACTIONS and step.get("value") is None:
-                raise LLMResponseValidationError(
-                    f"{scenario_id}: step '{action}' is missing required 'value' field"
-                )
+    # spec_renderer's ARG_BUILDERS does a hard step["value"] for these
+    # actions (see VALUE_REQUIRED_ACTIONS) — catch a missing value here,
+    # while this can still route through retry/fallback, instead of
+    # crashing render_spec_from_plan after validation already passed.
+    for field in ORACLE_REQUIRED_FIELDS.get(action, ()):
+        if step.get(field) is None or step.get(field) == "":
+            raise LLMResponseValidationError(
+                f"{scenario_id}: step '{action}' is missing required '{field}' field"
+            )
+    if action in VALUE_REQUIRED_ACTIONS and step.get("value") is None:
+        raise LLMResponseValidationError(
+            f"{scenario_id}: step '{action}' is missing required 'value' field"
+        )
+    if action == "rememberCount":
+        remembered.add(step.get("locator_key"))
+    elif action == "verifyCountChangedBy":
+        if step.get("locator_key") not in remembered:
+            raise LLMResponseValidationError(
+                f"{scenario_id}: verifyCountChangedBy on '{step.get('locator_key')}' needs an earlier rememberCount")
+        if not isinstance(step.get("delta"), int) or isinstance(step.get("delta"), bool):
+            raise LLMResponseValidationError(f"{scenario_id}: verifyCountChangedBy 'delta' must be an integer")
+    elif action == "verifyStorage":
+        if step.get("store") not in STORAGE_KINDS or step.get("rule") not in STORAGE_RULES:
+            raise LLMResponseValidationError(
+                f"{scenario_id}: verifyStorage needs store in {list(STORAGE_KINDS)} and rule in {list(STORAGE_RULES)}")
+        if step["rule"] in ("equals", "contains") and step.get("value") is None:
+            raise LLMResponseValidationError(f"{scenario_id}: verifyStorage rule '{step['rule']}' needs a 'value'")
+    elif action == "verifyResponseSchema":
+        if not isinstance(step.get("schema"), dict) and not step.get("schemaRef"):
+            raise LLMResponseValidationError(f"{scenario_id}: verifyResponseSchema needs 'schema' (object) or 'schemaRef'")
+    elif action == "verifyApiState" and not isinstance(step.get("expect"), dict):
+        raise LLMResponseValidationError(f"{scenario_id}: verifyApiState 'expect' must be an object")
 
 
 # ── Verification contract: no fabricated negative-test assertions ─────────────
@@ -1400,12 +1524,17 @@ def _validate_plan(
 # rest of the plan (positive/boundary tests) is still good.
 
 def _drop_placeholder_negative_tests(
-    plan: dict, test_data: dict,
+    plan: dict, test_data: dict, design_cases: Optional[List[dict]] = None,
 ) -> Tuple[dict, List[str]]:
     """Strip any "negative"-typed test whose only assertions are a hardcoded
     empty-string value, when this scenario's test_data has no real
     expected_error anywhere to justify one. Returns (possibly-updated plan,
-    names of dropped tests)."""
+    names of dropped tests).
+
+    Phase 5.4: a test implementing a design case whose oracles say how the app rejects the input (error_text,
+    field_invalid, no_request, ...) has a basis too — it is kept here, and _reconcile_design_plan replaces the
+    placeholder with those oracles (or drops it there when they cannot be expressed)."""
+    cases = {c.get("id"): c for c in design_cases or []}
     has_real_expected_error = any(
         bool(it.get("expected_error"))
         for variant in (test_data.get("negative_variants") or [])
@@ -1426,6 +1555,7 @@ def _drop_placeholder_negative_tests(
             test.get("type") == "negative"
             and bool(verify_steps)
             and all(s.get("value") == "" for s in verify_steps)
+            and not _case_has_rejection_basis(cases.get(test.get("case_id")))
         )
         if is_placeholder:
             dropped.append(test.get("name", "unnamed"))

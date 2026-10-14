@@ -95,8 +95,21 @@ export function isKnown(entry: ConsoleEntry, baseline: BaselineIndex): boolean {
 
 export class ConsoleGuard {
   private readonly entries: ConsoleEntry[] = [];
+  private readonly expected: RegExp[] = [];
 
   constructor(readonly baseline: BaselineIndex, readonly mode: ConsoleGuardMode) {}
+
+  /**
+   * Phase 5 fault injection: console errors the test itself provoked (a mocked 503, going offline) are expected,
+   * not new. Only `console` entries can match; page errors (uncaught exceptions) always count.
+   */
+  expectConsoleError(pattern: RegExp): void {
+    this.expected.push(pattern);
+  }
+
+  private isExpected(e: ConsoleEntry): boolean {
+    return e.kind === 'console' && this.expected.some((re) => re.test(e.text));
+  }
 
   /** The mode that applies: fail without a baseline is downgraded to warn. */
   get effectiveMode(): ConsoleGuardMode {
@@ -113,11 +126,11 @@ export class ConsoleGuard {
   }
 
   newErrors(): ConsoleEntry[] {
-    return this.entries.filter((e) => !isKnown(e, this.baseline));
+    return this.entries.filter((e) => !isKnown(e, this.baseline) && !this.isExpected(e));
   }
 
   knownErrors(): ConsoleEntry[] {
-    return this.entries.filter((e) => isKnown(e, this.baseline));
+    return this.entries.filter((e) => isKnown(e, this.baseline) || this.isExpected(e));
   }
 
   /** The failure message for mode fail, or null. */

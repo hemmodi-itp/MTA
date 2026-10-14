@@ -167,7 +167,7 @@ export const test = base.extend<Fixtures & Options>({
         }
     }, { auto: true }],
 
-    action: async ({ page, safety, network, consoleGuard }, use, testInfo) => {
+    action: async ({ page, safety, network, consoleGuard, api }, use, testInfo) => {
         const pageErrors: string[] = [];
         page.on('pageerror', (err) => pageErrors.push(err.message));
         const dialogs: string[] = [];
@@ -192,7 +192,8 @@ export const test = base.extend<Fixtures & Options>({
         }
         const pageObject = new PageClass(page) as Record<string, any>;
 
-        await use(new ActionEngine(page, pageObject, pageErrors, safety, { network, consoleGuard, dialogs }));
+        await use(new ActionEngine(page, pageObject, pageErrors, safety,
+            { network, consoleGuard, dialogs, api, projectDir: projectDir() }));
     },
 
     testData: async ({}, use, testInfo) => {

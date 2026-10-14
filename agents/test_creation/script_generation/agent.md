@@ -303,3 +303,29 @@ while the runtime used `data-test`. The `count() == 1` rule is unchanged.
 - **One composer**: rendering + login go through `tools/test_creation/script_generator/compose.py::compose_spec`, which
   `python -m tools.test_creation.script_generator.rerender --project X [--check]` also uses to rebuild specs from
   `test_plans.json` without an LLM.
+
+## Test oracles (Phase 5, `oracles.enabled`)
+
+- **Oracle actions** (in `ALLOWED_ACTIONS`, rendered by `spec_renderer.py`, implemented in `ActionEngine.ts`):
+  `verifyRequest` (status number or `"2xx"`, `bodyContains`), `verifyNoRequest`, `verifyFieldInvalid`,
+  `verifyValidationMessage`, `verifyNoDialog`, `verifyNotInjected`, `verifyAriaSnapshot`, `rememberCount` +
+  `verifyCountChangedBy`, `reloadAndVerify` (renderer macro: reload, then nested verify steps), `verifyApiState`
+  (grey-box, through the `api` fixture), `verifyResponseSchema` (inline `schema` or `schemaRef` relative to the project
+  folder; JSON response bodies are kept in memory only, never in the HAR), `verifyStorage`, `verifyDownload`,
+  `verifyNewTab`, and fault injection `mockRoute` / `setOffline` / `setClock`. A mocked ≥ 400 status or going offline
+  tells consoleGuard to expect the matching "Failed to load resource" console error; page errors still count.
+- **Validation**: required fields per action (`ORACLE_REQUIRED_FIELDS`; `0`/`false` are values), `verifyCountChangedBy`
+  needs an earlier `rememberCount` on the same key, `reloadAndVerify` holds only verify steps, `verifyStorage` store/rule
+  come from fixed lists.
+- **Assertion linter** (`tools/test_creation/assertion_linter.py`, threshold 70): outcome, title-only, negative
+  (error AND no-submit), positive submit (UI signal AND backend evidence: `verifyRequest` 2xx/3xx, `reloadAndVerify`,
+  `verifyApiState` or a non-zero `verifyCountChangedBy`; search/filter/sort forms exempt), XSS, no sleeps. Weak tests
+  are regenerated once with the linter feedback, then reported as `weak_oracle`. The renderer appends
+  `verifyNoNewConsoleErrors` to every test.
+- **Oracles from `test_cases.json` (5.4)**: in design mode, the case's oracles fill in what the plan left out —
+  an empty-string text assertion gets the case's `error_text`, and missing `verifyFieldInvalid` / `verifyNoRequest` /
+  `verifyUrlContains` checks are appended (message `oracle from <case id>`). `_drop_placeholder_negative_tests` treats a
+  case's rejection oracles as a basis, like a test_data `expected_error`.
+- **Expected-value precedence (5.2)**: BRD > observed > code > LLM-inferred. A test whose case oracles are all
+  LLM-inferred gets `oracle_confidence: "low"` (counted in the report). BRD-vs-observed conflicts from test design go
+  to `human_review_queue.json` (`expected_value_conflict`, deduplicated) and the report's "Potential defects" section.

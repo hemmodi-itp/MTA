@@ -180,7 +180,8 @@ class ReportingAgent(BaseAgent):
             suite = _load(os.path.join(pdir, "test_creation", "test_suite.json")) or {}
             triage = _load(os.path.join(reports_dir, "triage.json"))
             aq = ((outputs or {}).get("agent_quality_testing") or {}).get("agent_quality")
-            summary = qs.compute_summary(results, trace, plans, suite, triage, aq)
+            test_cases = _load(os.path.join(pdir, "test_creation", "test_cases.json"))
+            summary = qs.compute_summary(results, trace, plans, suite, triage, aq, test_cases)
             gate_result = qs.evaluate_gates(summary, gates)
             csv_dir = os.path.join(reports_dir, "csv")
             os.makedirs(csv_dir, exist_ok=True)
@@ -189,6 +190,7 @@ class ReportingAgent(BaseAgent):
                 fh.write(qs.traceability_csv(trace))
             report["quality"] = {"summary": summary, "gates": gate_result, "not_tested": qs.not_tested(trace),
                                  "defects": qs.build_defects(results, triage, plans),
+                                 "potential_defects": qs.potential_defects(test_cases),
                                  "csv_path": os.path.relpath(csv_path, os.path.join(reports_dir, "html"))}
             return gate_result
         except Exception as exc:
