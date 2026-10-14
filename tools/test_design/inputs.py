@@ -55,6 +55,7 @@ class Field:
     ac_ids: List[str] = field(default_factory=list)
     priority: str = "P3"
     kind_acs: Dict[str, List[str]] = field(default_factory=dict)   # constraint kind -> ACs that state it
+    citations: Dict[str, str] = field(default_factory=dict)        # Phase 8.2: constraint kind -> "file:line"
 
 
 @dataclass
@@ -146,13 +147,14 @@ class DesignInputs:
             permission_matrix=read("permission_matrix.json"),
             test_data=read_fixed("test_creation", "test_data", "test_data.json"),
             previous=read_fixed("test_creation", "test_cases.json"),
+            code_rules=read("code_rules.json"),
         )
 
     @classmethod
     def from_artifacts(cls, project: str, manifest: dict, requirements: Optional[dict], scenarios: Optional[dict],
                        form_model: Optional[dict] = None, app_map: Optional[dict] = None,
                        permission_matrix: Optional[dict] = None, test_data: Any = None,
-                       previous: Optional[dict] = None) -> "DesignInputs":
+                       previous: Optional[dict] = None, code_rules: Optional[dict] = None) -> "DesignInputs":
         present = {
             "requirements": "present" if requirements else "missing",
             "business_scenarios": "present" if scenarios else "missing",
@@ -179,8 +181,32 @@ class DesignInputs:
                   role_logins=role_logins, allow_security_probes=allow_sec, previous_hashes=prev_hashes,
                   present=present, limitations=limitations)
         inp._link_fields_to_acs()
+        inp._apply_code_rules(code_rules)
         inp._resolve_form_modules()
         return inp
+
+    def _apply_code_rules(self, code_rules: Optional[dict]) -> None:
+        """Phase 8.2: a white-box rule of the route a form posts to becomes a `code` constraint of the field (it never
+        overrides what the DOM, the BRD or an observed message says), with its file:line citation."""
+        if not code_rules:
+            return
+        import re as _re
+        from tools.whitebox.python_rules import template_path
+        for form in self.forms:
+            action = _re.sub(r"/\d+(?=/|$)", "/{id}", (form.action or "").split("?")[0]) or form.url_template
+            key = f"{(form.method or 'get').upper()} {template_path(action)}"
+            for rule in code_rules.get("rules") or []:
+                if key not in (rule.get("routes") or []):
+                    continue
+                for fld in form.fields:
+                    if fld.name != rule.get("field") or rule.get("kind") not in (
+                            "length", "range", "pattern", "options", "required"):
+                        continue
+                    value = {k: v for k, v in (rule.get("value") or {}).items() if k not in ("source", "sources")}
+                    _merge_constraint(fld, rule["kind"], value, "code")
+                    fld.citations.setdefault(rule["kind"], rule.get("citation") or "")
+                    if rule["kind"] == "required":
+                        fld.required = True
 
     # ── derived lookups ──────────────────────────────────────────────────────
 
@@ -364,7 +390,8 @@ def _fits_message(fld: Field, kind: str) -> bool:
     return _fits(fld, _MESSAGE_CONSTRAINT.get(kind, "required"))
 
 
-_PRECEDENCE = {"dom": 0, "brd": 1, "observed": 2, "default": 3}
+# Phase 8.2: `code` = a rule read from the app's source (white box) — below what the BRD and the running app say
+_PRECEDENCE = {"dom": 0, "brd": 1, "observed": 2, "code": 3, "default": 4}
 
 
 def _merge_constraint(fld: Field, kind: str, value: Dict[str, Any], source: str) -> None:

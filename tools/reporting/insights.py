@@ -152,7 +152,7 @@ def _pct(n: int, d: int) -> Optional[float]:
 
 def coverage_dashboard(results: List[dict], trace: Optional[dict], plans: dict, test_cases: Optional[dict],
                        locator_map: Optional[dict], app_map: Optional[dict], api_inventory: Optional[dict],
-                       spec_texts: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+                       spec_texts: Optional[Dict[str, str]] = None, code_coverage: Optional[dict] = None) -> Dict[str, Any]:
     ts = (trace or {}).get("summary") or {}
     cases = (test_cases or {}).get("test_cases") or []
     cut = (test_cases or {}).get("cut") or []
@@ -190,8 +190,19 @@ def coverage_dashboard(results: List[dict], trace: Optional[dict], plans: dict, 
         "role_matrix": {"roles": sorted(roles), "cases": sum(1 for c in cases if c.get("technique") == "role_matrix")},
         "browser": browsers,
         "test_type": types,
-        "code": "not measured — needs the application to be instrumented (e.g. Istanbul / coverage.py on the server)",
+        "code": _code_line(code_coverage),
     }
+
+
+def _code_line(cc: Optional[dict]) -> str:
+    """Phase 8 coverage.py numbers (test_execution/code_coverage.json) when a coverage run happened."""
+    if not cc or cc.get("statement_pct") is None:
+        return "not measured — needs the application to be instrumented (e.g. Istanbul / coverage.py on the server)"
+    when = str(cc.get("measured_at") or "")[:10]
+    crit = len(cc.get("uncovered_critical") or [])
+    return (f"statements {cc['statement_pct']}%, branches {cc.get('branch_pct')}% (coverage.py"
+            f"{', ' + cc['label'] if cc.get('label') else ''}{', ' + when if when else ''})"
+            + (f"; {crit} critical function(s) with uncovered lines" if crit else ""))
 
 
 def _template_in(template: str, text: str) -> bool:

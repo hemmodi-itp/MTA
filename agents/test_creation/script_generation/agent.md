@@ -340,3 +340,13 @@ per test, ACs from the title tags), so they run with the suite and show in trace
 spec and registrations removed. States that need a role use `test.use({ role })` when `execution.role_auth` is on.
 Visual baselines are approved with `python -m tools.nonfunctional.visual approve --project X`. A generation failure is
 logged and never fails the step. Active security probes are not generated (see docs/backlog.md → Phase 7).
+
+## API specs (Phase 8.1, `test_types.api`)
+
+After the NFR specs, `tools/whitebox/api_tests.py` writes `test_scripts/api/api_<group>.spec.ts` from code_rules.json
+∪ api_inventory.json: signed out → 401 / login, wrong role → 403, `api_tests.ownership` → denied, undefined method →
+405, valid request (+ JSON response keys), one case per code rule sent straight to the server (rejected outside the
+rule, accepted at its boundary), pagination edges, PUT/DELETE idempotency, and a warning when JSON error bodies differ.
+Data-changing cases run only when destructive actions are allowed (else `test.skip` with the reason); limits that
+depend on stored state, and routes with a stored-state precondition, are skipped with that reason. Registered in
+test_suite.json (`generation_mode: "api"`) and test_plans.json; the log reports endpoint coverage.

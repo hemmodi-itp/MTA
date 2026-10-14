@@ -43,3 +43,13 @@ scenario. Output: `test_creation/test_cases.json`. ScriptGeneration then impleme
 - Semantic dedup failure → LLM cases kept (fail-open; they are additive).
 - P0 + floor cases above the budget → kept, `budget.respected: false`, `status: partial` (never hidden).
 - Missing Phase 2 artifact → its generators produce nothing; listed in `limitations`.
+
+## White-box rules (Phase 8.2, `white_box.enabled`)
+
+Before loading its inputs the agent runs `tools/whitebox/extract.py` on `white_box.source_dir`: routes and input
+rules from the app's own source (Python `ast`: if guards, pydantic, marshmallow; JS/TS patterns: zod, yup, joi,
+class-validator), each with a `file:line` citation, written to `test_comprehension/code_rules.json` with a
+frontend-vs-backend contract check. A rule of the route a form posts to becomes a constraint with source `code`
+(precedence BRD > observed > code > default — it never overrides what the DOM, the BRD or an observed message says;
+it adds what only the code knows, e.g. a server-side format rule). Every case generated from a `code` bound carries
+`citations: ["file:line"]`. A missing or unreadable source only skips this step.

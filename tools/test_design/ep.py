@@ -60,7 +60,26 @@ def invalid_classes(fld: Field) -> List[InvalidClass]:
                     [], "size"))
     if fld.type == "email":
         out.append(("missing @", "qa.example.com", ["wrong_type"], ["wrong_type"], "pattern"))
+    else:
+        bad = _not_matching((c.get("pattern") or {}).get("value"))
+        if bad is not None:                 # a format rule (BRD, DOM pattern attribute, or the app's code — Phase 8)
+            out.append((f"wrong format ({bad})", bad, ["wrong_type"], ["wrong_type"], "pattern"))
     return out
+
+
+def _not_matching(pattern) -> Optional[str]:
+    """A short value the format rule rejects (None when the pattern is unusable or matches all candidates)."""
+    import re as _re
+    if not isinstance(pattern, str) or not pattern or pattern == "email":
+        return None
+    try:
+        rx = _re.compile(pattern)
+    except _re.error:
+        return None
+    for cand in ("abc", "12.345", "1,5", "!@#", "x1"):
+        if not rx.fullmatch(cand):
+            return cand
+    return None
 
 
 def valid_classes(fld: Field) -> List[Tuple[str, Any]]:

@@ -1,0 +1,457 @@
+{
+  "date": "2026-10-14",
+  "rules": 10,
+  "routes": 26,
+  "contract_findings": [
+    {
+      "type": "server_weaker",
+      "where": "POST /login (form login-form on /login)",
+      "field": "username",
+      "kind": "required",
+      "detail": "the browser enforces required on 'username' but the server does not \u2014 a request that skips the UI is accepted",
+      "citation": "benchmarks/apps/buggy_shop/app.py:281"
+    },
+    {
+      "type": "server_weaker",
+      "where": "POST /login (form login-form on /login)",
+      "field": "password",
+      "kind": "required",
+      "detail": "the browser enforces required on 'password' but the server does not \u2014 a request that skips the UI is accepted",
+      "citation": "benchmarks/apps/buggy_shop/app.py:281"
+    }
+  ],
+  "baseline_run": {
+    "passed": 5,
+    "failed": 0,
+    "tests": 5,
+    "failing": []
+  },
+  "baseline": {
+    "statement_pct": 61.8,
+    "branch_pct": 29.1,
+    "statements": 686,
+    "branches": 196,
+    "covered_branches": 57,
+    "js": {
+      "scripts": {},
+      "functions": 0,
+      "covered": 0,
+      "function_pct": null
+    }
+  },
+  "uncovered_critical": [
+    {
+      "function": "api_create_product",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        575,
+        576,
+        577,
+        578,
+        579,
+        580,
+        581,
+        582,
+        583,
+        584,
+        585,
+        586,
+        587,
+        588
+      ]
+    },
+    {
+      "function": "upload",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        528,
+        529,
+        530,
+        531,
+        532,
+        533,
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541
+      ]
+    },
+    {
+      "function": "edit_product",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        389,
+        390,
+        391,
+        393,
+        394
+      ]
+    },
+    {
+      "function": "place_order",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        496,
+        499,
+        500,
+        501
+      ]
+    },
+    {
+      "function": "cart_discount",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        462,
+        463,
+        464,
+        465,
+        466,
+        467,
+        468,
+        469,
+        470,
+        471,
+        472
+      ]
+    },
+    {
+      "function": "cart_update",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        440,
+        441,
+        442,
+        443,
+        444,
+        445,
+        446,
+        447,
+        448,
+        449,
+        450
+      ]
+    },
+    {
+      "function": "validate_product",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        83,
+        84,
+        86,
+        90,
+        92,
+        96,
+        97,
+        100,
+        103,
+        105
+      ]
+    },
+    {
+      "function": "api_order",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        592,
+        593,
+        594,
+        595,
+        596,
+        597,
+        598,
+        599,
+        600
+      ]
+    },
+    {
+      "function": "delete_product",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        398,
+        399,
+        400,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406
+      ]
+    },
+    {
+      "function": "order_page",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516
+      ]
+    },
+    {
+      "function": "api_products",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570
+      ]
+    },
+    {
+      "function": "edit_product_form",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        368,
+        369,
+        370,
+        371,
+        372,
+        373,
+        374,
+        376
+      ]
+    },
+    {
+      "function": "admin",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        545,
+        546,
+        547,
+        548,
+        549,
+        550
+      ]
+    },
+    {
+      "function": "checkout",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        479,
+        480,
+        481,
+        482,
+        483,
+        484
+      ]
+    },
+    {
+      "function": "cart_remove",
+      "file": "benchmarks/apps/buggy_shop/app.py",
+      "missing_lines": [
+        454,
+        455,
+        456,
+        457,
+        458
+      ]
+    }
+  ],
+  "gap_round": {
+    "routes": [
+      "POST /api/products",
+      "POST /upload",
+      "POST /products/{id}/edit",
+      "POST /checkout",
+      "POST /cart/discount",
+      "POST /cart/update",
+      "POST /products",
+      "GET /api/orders/{id}",
+      "POST /products/{id}/delete",
+      "GET /orders/{id}",
+      "GET /api/products",
+      "GET /products/{id}/edit",
+      "GET /admin",
+      "GET /checkout",
+      "GET /products",
+      "POST /cart/remove",
+      "POST /cart/add",
+      "GET /upload",
+      "POST /login",
+      "GET /products/{id}",
+      "GET /cart",
+      "GET /products/new",
+      "GET /help",
+      "GET /login",
+      "GET /"
+    ],
+    "gaps": 40,
+    "files": [
+      "gap_admin.spec.ts",
+      "gap_api_orders.spec.ts",
+      "gap_api_products.spec.ts",
+      "gap_cart.spec.ts",
+      "gap_checkout.spec.ts",
+      "gap_help.spec.ts",
+      "gap_login.spec.ts",
+      "gap_orders.spec.ts",
+      "gap_products.spec.ts",
+      "gap_root.spec.ts",
+      "gap_upload.spec.ts"
+    ]
+  },
+  "gap_run": {
+    "passed": 110,
+    "failed": 0,
+    "tests": 118,
+    "failing": []
+  },
+  "after_gap": {
+    "statement_pct": 82.9,
+    "branch_pct": 63.8,
+    "statements": 686,
+    "branches": 196,
+    "covered_branches": 125
+  },
+  "api": {
+    "endpoints": 26,
+    "covered": 25,
+    "endpoint_coverage_pct": 96.2,
+    "uncovered": [
+      "POST /login"
+    ]
+  },
+  "api_clean": {
+    "passed": 108,
+    "failed": 0,
+    "tests": 116,
+    "failing": []
+  },
+  "bugs": {
+    "BUG_02": {
+      "detected": true,
+      "failing": [
+        "POST /api/products \u2014 price below min (-0.01) -> rejected [benchmarks/apps/buggy_shop/app.py:99] @api @api-rule",
+        "POST /products \u2014 price below min (-0.01) -> rejected [benchmarks/apps/buggy_shop/app.py:99] @api @api-rule",
+        "POST /products/{id}/edit \u2014 price below min (-0.01) -> rejected [benchmarks/apps/buggy_shop/app.py:99] @api @api-rule"
+      ],
+      "mismatch": true
+    },
+    "BUG_01": {
+      "detected": true,
+      "failing": [
+        "POST /api/products \u2014 name at max length 50 -> accepted [benchmarks/apps/buggy_shop/app.py:85] @api @api-rule",
+        "POST /products \u2014 name at max length 50 -> accepted [benchmarks/apps/buggy_shop/app.py:85] @api @api-rule",
+        "POST /products/{id}/edit \u2014 name at max length 50 -> accepted [benchmarks/apps/buggy_shop/app.py:85] @api @api-rule"
+      ],
+      "mismatch": false
+    },
+    "BUG_18": {
+      "detected": true,
+      "failing": [
+        "POST /api/products \u2014 name empty -> rejected [benchmarks/apps/buggy_shop/app.py:82] @api @api-rule",
+        "POST /api/products \u2014 name missing -> rejected [benchmarks/apps/buggy_shop/app.py:82] @api @api-rule",
+        "POST /products \u2014 name empty -> rejected [benchmarks/apps/buggy_shop/app.py:82] @api @api-rule",
+        "POST /products \u2014 name missing -> rejected [benchmarks/apps/buggy_shop/app.py:82] @api @api-rule",
+        "POST /products/{id}/edit \u2014 name empty -> rejected [benchmarks/apps/buggy_shop/app.py:82] @api @api-rule",
+        "POST /products/{id}/edit \u2014 name missing -> rejected [benchmarks/apps/buggy_shop/app.py:82] @api @api-rule"
+      ],
+      "mismatch": false
+    },
+    "BUG_21": {
+      "detected": true,
+      "failing": [
+        "POST /cart/add \u2014 quantity below min (0) -> rejected [benchmarks/apps/buggy_shop/app.py:163] @api @api-rule"
+      ],
+      "mismatch": false
+    },
+    "BUG_17": {
+      "detected": false,
+      "failing": [],
+      "mismatch": false
+    },
+    "BUG_16": {
+      "detected": true,
+      "failing": [
+        "GET /admin \u2014 as user (needs admin) -> 403 @api @api-role"
+      ],
+      "mismatch": false
+    },
+    "BUG_04": {
+      "detected": true,
+      "failing": [
+        "GET /api/orders/{id} \u2014 /api/orders/1 as user (owned by admin) -> denied @api @api-ownership",
+        "GET /orders/{id} \u2014 /orders/1 as user (owned by admin) -> denied @api @api-ownership"
+      ],
+      "mismatch": false
+    },
+    "BUG_07": {
+      "detected": true,
+      "failing": [
+        "GET /api/products \u2014 unusual query values never 5xx @api @api-query",
+        "GET /products \u2014 unusual query values never 5xx @api @api-query"
+      ],
+      "mismatch": false
+    },
+    "BUG_13": {
+      "detected": false,
+      "failing": [],
+      "mismatch": false
+    }
+  },
+  "mutation": {
+    "mutants": 12,
+    "killed": 10,
+    "survived": 2,
+    "score_pct": 83.3,
+    "survivors": [
+      {
+        "index": 12,
+        "function": "validate_product",
+        "line": 85,
+        "description": "GtE -> Gt",
+        "status": "survived",
+        "seconds": 43.9
+      },
+      {
+        "index": 22,
+        "function": "parse_quantity",
+        "line": 161,
+        "description": "Gt -> GtE",
+        "status": "survived",
+        "seconds": 52.8
+      }
+    ]
+  },
+  "summary": {
+    "endpoint_coverage_pct": 96.2,
+    "branch_pct_baseline": 29.1,
+    "branch_pct_after_gap": 63.8,
+    "statement_pct_baseline": 61.8,
+    "statement_pct_after_gap": 82.9,
+    "mismatch_bugs_caught": 1,
+    "mismatch_bugs": 1,
+    "bugs_caught": 7,
+    "bugs": 9,
+    "pass": true
+  }
+}

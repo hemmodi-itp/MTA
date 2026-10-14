@@ -34,12 +34,17 @@ def child_env(bugs: Iterable[str], base: Optional[dict] = None) -> dict:
 
 class AppServer:
     def __init__(self, app: BenchmarkApp, port: int, bugs: Iterable[str] = (),
-                 startup_timeout_s: float = 30.0, log_path: Optional[str] = None):
+                 startup_timeout_s: float = 30.0, log_path: Optional[str] = None,
+                 coverage_data: Optional[str] = None, asgi: Optional[str] = None):
+        """coverage_data (Phase 8.3): run the app under coverage.py (tools/whitebox/coverage_server.py), branch
+        coverage written to this data file when the server stops; `asgi` = "module:factory" of the app."""
         self.app = app
         self.port = port
         self.bugs = list(bugs)
         self.startup_timeout_s = startup_timeout_s
         self.log_path = log_path
+        self.coverage_data = coverage_data
+        self.asgi = asgi or f"{app.module}.app:create_app"
         self.proc: Optional[subprocess.Popen] = None
         self._log = None
 
@@ -58,10 +63,14 @@ class AppServer:
         if self._healthy():
             raise AppServerError(f"port {self.port} is already serving something — stop it or pick --port")
         self._log = open(self.log_path, "a", encoding="utf-8") if self.log_path else subprocess.DEVNULL
-        self.proc = subprocess.Popen(
-            [sys.executable, "-m", self.app.module, "--port", str(self.port)],
-            cwd=REPO_ROOT, env=child_env(self.bugs), stdout=self._log, stderr=subprocess.STDOUT,
-        )
+        if self.coverage_data:
+            cmd = [sys.executable, "-m", "tools.whitebox.coverage_server", "--app", self.asgi, "--factory",
+                   "--port", str(self.port), "--data-file", self.coverage_data, "--source", self.app.app_dir]
+        else:
+            cmd = [sys.executable, "-m", self.app.module, "--port", str(self.port)]
+        flags = subprocess.CREATE_NEW_PROCESS_GROUP if (self.coverage_data and os.name == "nt") else 0
+        self.proc = subprocess.Popen(cmd, cwd=REPO_ROOT, env=child_env(self.bugs), stdout=self._log,
+                                     stderr=subprocess.STDOUT, creationflags=flags)
         deadline = time.monotonic() + self.startup_timeout_s
         while time.monotonic() < deadline:
             if self.proc.poll() is not None:
@@ -73,6 +82,14 @@ class AppServer:
         raise AppServerError(f"{self.app.name} not healthy on {self.base_url} after {self.startup_timeout_s}s")
 
     def stop(self) -> None:
+        if self.proc and self.proc.poll() is None and self.coverage_data:
+            # graceful: the coverage server saves its data on CTRL_BREAK (Windows) / SIGTERM — a kill loses it
+            import signal as _signal
+            self.proc.send_signal(_signal.CTRL_BREAK_EVENT if os.name == "nt" else _signal.SIGTERM)
+            try:
+                self.proc.wait(timeout=20)
+            except subprocess.TimeoutExpired:
+                pass
         if self.proc and self.proc.poll() is None:
             self.proc.terminate()
             try:

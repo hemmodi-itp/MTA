@@ -120,6 +120,19 @@ def extra_cases(extras: List[Dict[str, Any]], inp: DesignInputs, module_id: str)
     return out
 
 
+def cite_code(cases: List[Dict[str, Any]], inp: DesignInputs) -> None:
+    """Phase 8.2: every case whose value comes from a code rule cites that rule's file:line."""
+    fields = {(f.form_id, fld.name): fld for f in inp.forms for fld in f.fields}
+    for c in cases:
+        if "code" not in str(c.get("source") or ""):
+            continue
+        t = c.get("target") or {}
+        fld = fields.get((t.get("form_id"), t.get("field")))
+        if fld is not None:
+            kinds = [k for k in fld.citations if k in (c.get("tags") or [])]       # the rule this case exercises
+            c["citations"] = sorted({fld.citations[k] for k in kinds} or {v for v in fld.citations.values() if v})
+
+
 def design(inp: DesignInputs, profile: str, budget: Dict[str, Any], hints: Optional[Dict[str, Any]] = None,
            llm_status: Optional[Dict[str, Any]] = None, extras: Optional[List[Dict[str, Any]]] = None,
            rejected_extras: int = 0) -> Dict[str, Any]:
@@ -133,6 +146,7 @@ def design(inp: DesignInputs, profile: str, budget: Dict[str, Any], hints: Optio
         if e["id"] not in known:
             cases.append(e)
             known.add(e["id"])
+    cite_code(cases, inp)
     score_all(cases, inp)
     unassigned = assign_mod.assign(cases, inp)
     unassigned_ids = {c["id"] for c in unassigned}

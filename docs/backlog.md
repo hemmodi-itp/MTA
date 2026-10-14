@@ -28,9 +28,21 @@ unusual input), i18n matrix, pipeline wiring + traceability, per-role storage st
 - i18n: date/number/currency format checks and Unicode-normalization search equivalence (only layout checks today).
 - Optional Lighthouse CI / OWASP ZAP integrations.
 
+## Phase 8
+Done in Phase 8 (docs/phases/phase-8-report.md): white-box rule extraction (Python AST; zod / yup / joi /
+class-validator patterns), API test generation, frontend/backend contract checks, coverage.py branch coverage with a
+gap loop, V8 JS coverage capture, built-in mutation runner. Still open:
+- Rules held in local variables inside a handler (buggy_shop BUG_17: the upload allow-list) are not extracted —
+  needs intra-function data flow.
+- OpenAPI / JSON-schema import as a rule source (only code is read today).
+- V8 coverage of bundled frontends needs source maps (v8-to-istanbul); inline scripts are not attributed to files.
+- JS/TS backends: route + validator patterns only (no AST); nyc/c8 server coverage not wired into the gap loop.
+- Boundary-accepted cases on limits that depend on stored state (cart quantity) are skipped, so mutants there
+  survive — needs per-test data reset.
+
 ## Phase 11
 All lean-pass items are done (docs/phases/phase-11-report.md). Still open:
 - Posting defects to Jira / Azure DevOps through a connector (opt-in, needs credentials) — exports only today.
-- Code coverage needs the application under test to be instrumented; reported as "not measured".
+- Code coverage: shown when a Phase 8 coverage run saved `test_execution/code_coverage.json`; otherwise "not measured".
 - API endpoint and page coverage are read from the spec text (what tests reference), not from executed traffic.
 

@@ -73,6 +73,7 @@ class TestCase(Strict):
     est_seconds: int = 10
     tags: List[str] = Field(default_factory=list)
     locator_keys: Dict[str, str] = Field(default_factory=dict)   # field | "submit" -> locator_map.json key
+    citations: List[str] = Field(default_factory=list)          # Phase 8.2: file:line of the code rules it rests on
 
 
 class CutCase(Strict):

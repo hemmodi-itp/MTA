@@ -208,7 +208,8 @@ class ReportingAgent(BaseAgent):
             spec_texts = _spec_texts(os.path.join(pdir, "test_creation", "test_scripts"))
             coverage = insights.coverage_dashboard(
                 results, trace, plans, test_cases, _load(os.path.join(pdir, "test_creation", "locator_map.json")),
-                _load(os.path.join(comp, "app_map.json")), _load(os.path.join(comp, "api_inventory.json")), spec_texts)
+                _load(os.path.join(comp, "app_map.json")), _load(os.path.join(comp, "api_inventory.json")), spec_texts,
+                _load(os.path.join(pdir, "test_execution", "code_coverage.json")))
             exports = {}
             if defects:
                 ddir = os.path.join(reports_dir, "defects")

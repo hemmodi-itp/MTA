@@ -3,3 +3,4 @@
 pytest>=8.0
 httpx>=0.27          # fastapi.testclient (benchmark app tests)
 hypothesis>=6.0       # property tests (Phase 3 test design)
+coverage==7.10.7    # Phase 8.3: backend code coverage of the app under test (buggy_shop)

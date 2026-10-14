@@ -460,7 +460,7 @@ def generate(project_dir: Path, out_dir: Path | None = None) -> list[Path]:
     return written
 
 
-_TITLE_RE = re.compile(r'^\s*test\((".*?"), async', re.M)
+_TITLE_RE = re.compile(r'^\s*test(?:\.skip)?\(("(?:[^"\\\n]|\\.)*"), async', re.M)
 
 
 def spec_tests(text: str) -> list[dict]:

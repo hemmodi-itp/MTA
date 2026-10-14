@@ -44,6 +44,7 @@ type Fixtures = {
     network: NetworkLog;
     a11y: A11y;
     perf: Perf;
+    jsCoverage: void;
     safety: RuntimeSafety;
 };
 
@@ -279,6 +280,21 @@ export const test = base.extend<Fixtures & Options>({
             fs.writeFileSync(file, JSON.stringify(log.har(), null, 2), 'utf8');
             await testInfo.attach('network.har', { path: file, contentType: 'application/json' });
         }
+    }, { auto: true }],
+
+    // Phase 8.3 frontend coverage: MTA_JS_COVERAGE=<folder> records Chromium's V8 JS coverage per test
+    // (function / block counts; summarised by tools/whitebox/js_coverage.py). Other browsers have no coverage API.
+    jsCoverage: [async ({ page, browserName }, use, testInfo) => {
+        const dir = process.env.MTA_JS_COVERAGE;
+        const on = !!dir && browserName === 'chromium';
+        if (on) await page.coverage.startJSCoverage({ resetOnNavigation: false }).catch(() => {});
+        await use(undefined);
+        if (!on) return;
+        const entries = await page.coverage.stopJSCoverage().catch(() => []);
+        fs.mkdirSync(dir!, { recursive: true });
+        const name = `${testInfo.testId}-${testInfo.repeatEachIndex}-${testInfo.retry}.json`;
+        fs.writeFileSync(path.join(dir!, name), JSON.stringify(entries.map((e) => ({
+            url: e.url, source_length: (e.source ?? '').length, functions: e.functions }))), 'utf8');
     }, { auto: true }],
 
     a11y: async ({ page }, use, testInfo) => {

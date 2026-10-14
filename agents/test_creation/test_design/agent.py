@@ -72,6 +72,16 @@ class TestDesignAgent(BaseAgent):
             self._log(f"test_generation.{cap} is deprecated with a profile: design cases are not capped by it "
                       f"(the budget applies instead)", level="warning")
 
+        # Phase 8.2: white-box rules from the app's source (project.yaml white_box) become `code` constraints
+        try:
+            from pathlib import Path as _Path
+            from tools.whitebox import extract as _wb
+            _doc = _wb.run(_Path(project_dir))
+            if _doc is not None:
+                self._log(f"White-box rules: {len(_doc['rules'])} rule(s), {len(_doc['routes'])} route(s), "
+                          f"{len(_doc['contract'])} contract finding(s)")
+        except Exception as exc:          # source missing / unreadable: black-box design still runs
+            self._log(f"White-box extraction skipped: {exc}", level="warning")
         inp = DesignInputs.load(project_dir, safe)
         if not inp.acs:
             self._log("requirements.json has no acceptance criteria — run discovery first; skipped", level="warning")

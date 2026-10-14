@@ -844,6 +844,13 @@ class ScriptGenerationAgent(BaseAgent):
             counts = nfr_register(pdir, written)
             if written:
                 self._log(f"Non-functional specs: {', '.join(f'{k} ({v})' for k, v in counts.items())}")
+            # Phase 8.1: API specs (test_types.api) from code_rules.json + api_inventory.json
+            from tools.whitebox import api_tests
+            api_files, api_stats = api_tests.generate(pdir)
+            if api_files:
+                api_tests.register(pdir, api_files)
+                self._log(f"API specs: {len(api_files)} file(s), endpoint coverage {api_stats.get('endpoint_coverage_pct')}%"
+                          + (f" — uncovered: {', '.join(api_stats['uncovered'][:5])}" if api_stats.get("uncovered") else ""))
         except Exception as exc:
             self._log(f"Non-functional spec generation failed (non-fatal): {exc}", level="warning")
 
