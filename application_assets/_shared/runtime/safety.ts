@@ -13,7 +13,8 @@ export class SafetyError extends Error {
   }
 }
 
-const NEUTRAL_SCHEMES = new Set(['about:', 'data:', 'blob:']);
+// chrome-error: is the browser's own page for a load that failed (offline, refused) — not a foreign host
+const NEUTRAL_SCHEMES = new Set(['about:', 'data:', 'blob:', 'chrome-error:']);
 const WEB_SCHEMES = new Set(['http:', 'https:']);
 
 export function parseAllowedHosts(raw: string | undefined): string[] | null {

@@ -236,7 +236,7 @@ class ScriptGenerationAgent(BaseAgent):
         # locator map — replaces the old per-scenario live dry-run at a
         # fraction of the browser-launch cost, same protection.
         unresolvable_keys = self._validate_locator_map_live(
-            project_name, safe, locator_map, url, module_url_map, module_setup_map
+            project_name, safe, locator_map, url, module_url_map, module_setup_map, locator_map_path
         )
 
         # Load existing suite to know which specs are already generated.
@@ -278,6 +278,7 @@ class ScriptGenerationAgent(BaseAgent):
                               "delete those specs to regenerate them from test_cases.json", level="warning")
 
         if not uncovered:
+            self._generate_nfr(safe)
             self._refresh_traceability(safe, request)
             return {
                 "module": "script_generation",
@@ -481,6 +482,7 @@ class ScriptGenerationAgent(BaseAgent):
 
         if self._tracer is not None:
             self._tracer.save()
+        self._generate_nfr(safe)
         self._refresh_traceability(safe, request)
 
         # Refresh the human-readable catalog (test_catalog.csv/.md) from the
@@ -831,6 +833,20 @@ class ScriptGenerationAgent(BaseAgent):
 
     # ── Helpers ────────────────────────────────────────────────────────────────
 
+    def _generate_nfr(self, safe: str) -> None:
+        """Phase 7: the deterministic non-functional specs (project.yaml test_types), registered in test_suite.json and
+        test_plans.json so they run with the suite and appear in traceability. A failure is logged, never fatal."""
+        try:
+            from pathlib import Path
+            from tools.nonfunctional.generate import generate as nfr_generate, register as nfr_register
+            pdir = Path(_ASSETS_BASE) / safe
+            written = nfr_generate(pdir)
+            counts = nfr_register(pdir, written)
+            if written:
+                self._log(f"Non-functional specs: {', '.join(f'{k} ({v})' for k, v in counts.items())}")
+        except Exception as exc:
+            self._log(f"Non-functional spec generation failed (non-fatal): {exc}", level="warning")
+
     def _refresh_traceability(self, safe: str, request: dict) -> None:
         """Phase 1.2: rebuild traceability.json after generation. A failure is logged, never fatal."""
         try:
@@ -885,6 +901,7 @@ class ScriptGenerationAgent(BaseAgent):
         url: str,
         module_url_map: Dict[str, str],
         module_setup_map: Dict[str, list],
+        locator_map_path: str = "",
     ) -> set:
         """Once per project per run, grouped by module (one browser launch
         per module, not per scenario): verify every locator_map.json entry
@@ -892,7 +909,10 @@ class ScriptGenerationAgent(BaseAgent):
         failed — the caller excludes them from allowed_locators so the LLM
         is never offered a known-dead key — and reports them via
         record_locator_drift. A module whose page can't be reached at all
-        is skipped entirely (never treated as "every key is dead")."""
+        is skipped entirely (never treated as "every key is dead").
+
+        Phase 6.3: a key that resolves to exactly one element and has no `_fingerprint` yet gets one (role, name,
+        label, container, position of that element) — the identity HealingAgent checks a future repair against."""
         # Grouped by (module, page): entries merged from form_model.json (Phase 3) carry the `_page_url` of the
         # crawled page they live on and are checked there, after the module's setup, not on the module page.
         # `_dynamic` entries (Phase 3: a form's error area, seen in form_model probes after a submit) do not exist on
@@ -906,7 +926,9 @@ class ScriptGenerationAgent(BaseAgent):
         from tools.execution.config import load_execution_config
         test_id_attribute = load_execution_config(safe)["test_id_attribute"]
 
+        from tools.healing.identity import live_fingerprint
         unresolvable: set = set()
+        fingerprinted = 0
         for (module_id, page_url), keys in by_module.items():      # insertion order, as before Phase 3
             effective_url = page_url or module_url_map.get(module_id, url)
             scanner, page = self._get_validation_page(module_id, effective_url, module_setup_map)
@@ -918,6 +940,11 @@ class ScriptGenerationAgent(BaseAgent):
                     try:
                         if not self._locator_entry_resolves(page, locator_map[key], test_id_attribute):
                             dead_keys.append(key)
+                        elif locator_map_path and not locator_map[key].get("_fingerprint"):
+                            fp = live_fingerprint(page, locator_map[key], test_id_attribute)
+                            if fp:
+                                locator_map[key]["_fingerprint"] = fp
+                                fingerprinted += 1
                     except Exception as exc:
                         self.logger.warning(f"Locator dry-run check errored for '{key}': {exc}")
             finally:
@@ -933,6 +960,18 @@ class ScriptGenerationAgent(BaseAgent):
                     output_dir=os.path.join(_ASSETS_BASE, safe),
                     kind="locator_map_drift", source="live_validation",
                 )
+        if fingerprinted and locator_map_path:
+            try:
+                with open(locator_map_path, encoding="utf-8") as f:
+                    on_disk = json.load(f)
+                for key, entry in locator_map.items():
+                    if entry.get("_fingerprint") and key in on_disk and not on_disk[key].get("_fingerprint"):
+                        on_disk[key]["_fingerprint"] = entry["_fingerprint"]
+                with open(locator_map_path, "w", encoding="utf-8") as f:
+                    json.dump(on_disk, f, indent=2)
+                self._log(f"Recorded identity fingerprints for {fingerprinted} locator key(s) (Phase 6.3)")
+            except (OSError, ValueError) as exc:
+                self.logger.warning(f"Could not save locator fingerprints: {exc}")
         return unresolvable
 
     def _get_validation_page(

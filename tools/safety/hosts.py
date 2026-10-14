@@ -10,7 +10,7 @@ from typing import Iterable, List, Optional, Tuple
 from urllib.parse import urlsplit
 
 # Schemes a browser can be sent to without leaving the allow-list question open.
-_NEUTRAL_SCHEMES = {"about", "data", "blob"}
+_NEUTRAL_SCHEMES = {"about", "data", "blob", "chrome-error"}   # chrome-error: the browser's failed-load page
 _WEB_SCHEMES = {"http", "https"}
 
 

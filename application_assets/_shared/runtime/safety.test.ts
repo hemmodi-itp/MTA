@@ -24,6 +24,7 @@ describe('isUrlAllowed — mirrors tools/safety/hosts.py', () => {
     ['/relative', true],
     ['', true],
     ['about:blank', true],
+    ['chrome-error://chromewebdata/', true],   // the browser's own failed-load page (Phase 7 resilience)
     ['javascript:alert(1)', false],
     ['file:///etc/passwd', false],
   ])('%s -> %s', (url, expected) => {

@@ -171,3 +171,10 @@ def test_suite_orchestrator_sets_env_or_errors(tmp_path):
     _write_project(str(tmp_path), "nourl", {"project": {"name": "nourl"}})
     res = SuiteOrchestrator(str(tmp_path / "nourl"))._run("npx playwright test", 1, "test_file", "x")
     assert res["status"] == "error" and "unresolved" in res["error"]
+
+
+def test_nfr_specs_get_the_shared_origin_of_the_module_urls():
+    from tools.base_url import resolve_execution_base_url
+    cfg = {"modules": [{"id": "M01", "url": "http://127.0.0.1:8765/login"}, {"id": "M02", "url": "http://127.0.0.1:8765/cart"}]}
+    assert resolve_execution_base_url(None, cfg, ["nfr"]) == ("http://127.0.0.1:8765", "module.origin (nfr)")
+    assert resolve_execution_base_url(None, cfg, ["nfr", "M02"]) == ("http://127.0.0.1:8765/cart", "module.url")

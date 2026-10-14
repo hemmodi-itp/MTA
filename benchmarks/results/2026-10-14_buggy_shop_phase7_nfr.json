@@ -1,0 +1,237 @@
+{
+  "date": "2026-10-14",
+  "types": [
+    "accessibility",
+    "visual",
+    "performance",
+    "security_passive",
+    "compatibility",
+    "resilience",
+    "i18n"
+  ],
+  "specs": {
+    "accessibility": [
+      "nfr/nfr_a11y.spec.ts"
+    ],
+    "visual": [
+      "nfr/nfr_visual.spec.ts"
+    ],
+    "performance": [
+      "nfr/nfr_perf.spec.ts"
+    ],
+    "security_passive": [
+      "nfr/nfr_security_127_0_0_1_8765.spec.ts"
+    ],
+    "compatibility": [
+      "nfr/nfr_responsive.spec.ts"
+    ],
+    "resilience": [
+      "nfr/nfr_resilience.spec.ts"
+    ],
+    "i18n": [
+      "nfr/nfr_i18n.spec.ts"
+    ]
+  },
+  "clean": {
+    "passed": 93,
+    "failed": 11,
+    "tests": 104,
+    "findings": [
+      "csp \u2014 Content-Security-Policy header is missing @ security: /admin (admin) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /cart (user) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /checkout (user) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /help (guest) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /login (guest) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /products (user) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /products/new (user) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /products/{id} (user) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /products/{id}/edit (user) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /products?page (user) @security @AC-01.3",
+      "csp \u2014 Content-Security-Policy header is missing @ security: /upload (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /admin (admin) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /cart (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /checkout (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /help (guest) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /login (guest) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /products (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /products/new (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /products/{id} (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /products/{id}/edit (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /products?page (user) @security @AC-01.3",
+      "framing \u2014 Neither X-Frame-Options nor CSP frame-ancestors is set @ security: /upload (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /admin (admin) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /cart (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /checkout (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /help (guest) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /login (guest) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /products (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /products/new (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /products/{id} (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /products/{id}/edit (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /products?page (user) @security @AC-01.3",
+      "referrer-policy \u2014 Referrer-Policy header is missing @ security: /upload (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /admin (admin) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /cart (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /checkout (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /help (guest) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /login (guest) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /products (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /products/new (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /products/{id} (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /products/{id}/edit (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /products?page (user) @security @AC-01.3",
+      "x-content-type-options \u2014 X-Content-Type-Options must be \"nosniff\" @ security: /upload (user) @security @AC-01.3"
+    ],
+    "status_by_test": {
+      "a11y: /admin (admin) @a11y @AC-01.4": "success",
+      "a11y: /cart (user) @a11y @AC-01.4": "success",
+      "a11y: /products (user) @a11y @AC-01.4": "success",
+      "a11y: /products/new (user) @a11y @AC-01.4": "success",
+      "a11y: /products/new (user) form product-form announces errors @a11y @AC-01.4": "success",
+      "a11y: /upload (user) @a11y @AC-01.4": "success",
+      "a11y: /checkout (user) @a11y @AC-01.4": "success",
+      "a11y: /products/{id} (user) @a11y @AC-01.4": "success",
+      "a11y: /products?page (user) @a11y @AC-01.4": "success",
+      "a11y: /products/{id}/edit (user) @a11y @AC-01.4": "success",
+      "a11y: /products/{id}/edit (user) form product-form announces errors @a11y @AC-01.4": "success",
+      "a11y: /login (guest) @a11y @AC-01.4": "success",
+      "a11y: /login (guest) form login-form announces errors @a11y @AC-01.4": "success",
+      "a11y: /help (guest) @a11y @AC-01.4": "success",
+      "i18n: /admin en-US UTC (admin) @i18n @nfr": "success",
+      "i18n: /cart en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /products en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /products/new en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /upload en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /checkout en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /products/{id} en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /products?page en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /products/{id}/edit en-US UTC (user) @i18n @nfr": "success",
+      "i18n: /login en-US UTC (guest) @i18n @nfr": "success",
+      "i18n: /help en-US UTC (guest) @i18n @nfr": "success",
+      "i18n: /admin ar-EG UTC (admin) @i18n @nfr": "success",
+      "i18n: /cart ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /products ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /products/new ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /upload ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /checkout ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /products/{id} ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /products?page ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /products/{id}/edit ar-EG UTC (user) @i18n @nfr": "success",
+      "i18n: /login ar-EG UTC (guest) @i18n @nfr": "success",
+      "i18n: /help ar-EG UTC (guest) @i18n @nfr": "success",
+      "perf: /admin (admin) @perf @nfr": "success",
+      "perf: /cart (user) @perf @nfr": "success",
+      "perf: /products (user) @perf @nfr": "success",
+      "perf: /products/new (user) @perf @nfr": "success",
+      "perf: /upload (user) @perf @nfr": "success",
+      "perf: /checkout (user) @perf @nfr": "success",
+      "perf: /products/{id} (user) @perf @nfr": "success",
+      "perf: /products?page (user) @perf @nfr": "success",
+      "perf: /products/{id}/edit (user) @perf @nfr": "success",
+      "perf: /login (guest) @perf @nfr": "success",
+      "perf: /help (guest) @perf @nfr": "success",
+      "resilience: /admin (admin) offline and slow network @resilience @nfr": "success",
+      "resilience: /cart (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /products (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /products (user) #search-form handles unusual input @resilience @nfr": "success",
+      "resilience: /products/new (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /upload (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /checkout (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /products/{id} (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /products?page (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /products?page (user) #search-form handles unusual input @resilience @nfr": "success",
+      "resilience: /products/{id}/edit (user) offline and slow network @resilience @nfr": "success",
+      "resilience: /login (guest) offline and slow network @resilience @nfr": "success",
+      "resilience: /help (guest) offline and slow network @resilience @nfr": "success",
+      "responsive: /admin (admin) @375px @responsive @nfr": "success",
+      "responsive: /admin (admin) @1280px @responsive @nfr": "success",
+      "responsive: /cart (user) @375px @responsive @nfr": "success",
+      "responsive: /cart (user) @1280px @responsive @nfr": "success",
+      "responsive: /products (user) @375px @responsive @nfr": "success",
+      "responsive: /products (user) @1280px @responsive @nfr": "success",
+      "responsive: /products/new (user) @375px @responsive @nfr": "success",
+      "responsive: /products/new (user) @1280px @responsive @nfr": "success",
+      "responsive: /upload (user) @375px @responsive @nfr": "success",
+      "responsive: /upload (user) @1280px @responsive @nfr": "success",
+      "responsive: /checkout (user) @375px @responsive @nfr": "success",
+      "responsive: /checkout (user) @1280px @responsive @nfr": "success",
+      "responsive: /products/{id} (user) @375px @responsive @nfr": "success",
+      "responsive: /products/{id} (user) @1280px @responsive @nfr": "success",
+      "responsive: /products?page (user) @375px @responsive @nfr": "success",
+      "responsive: /products?page (user) @1280px @responsive @nfr": "success",
+      "responsive: /products/{id}/edit (user) @375px @responsive @nfr": "success",
+      "responsive: /products/{id}/edit (user) @1280px @responsive @nfr": "success",
+      "responsive: /login (guest) @375px @responsive @nfr": "success",
+      "responsive: /login (guest) @1280px @responsive @nfr": "success",
+      "responsive: /help (guest) @375px @responsive @nfr": "success",
+      "responsive: /help (guest) @1280px @responsive @nfr": "success",
+      "security: /admin (admin) @security @AC-01.3": "failed",
+      "security: /cart (user) @security @AC-01.3": "failed",
+      "security: /products (user) @security @AC-01.3": "failed",
+      "security: /products/new (user) @security @AC-01.3": "failed",
+      "security: /upload (user) @security @AC-01.3": "failed",
+      "security: /checkout (user) @security @AC-01.3": "failed",
+      "security: /products/{id} (user) @security @AC-01.3": "failed",
+      "security: /products?page (user) @security @AC-01.3": "failed",
+      "security: /products/{id}/edit (user) @security @AC-01.3": "failed",
+      "security: /login (guest) @security @AC-01.3": "failed",
+      "security: /help (guest) @security @AC-01.3": "failed",
+      "visual: /admin (admin) @1280px @visual @nfr": "success",
+      "visual: /cart (user) @1280px @visual @nfr": "success",
+      "visual: /products (user) @1280px @visual @nfr": "success",
+      "visual: /products/new (user) @1280px @visual @nfr": "success",
+      "visual: /upload (user) @1280px @visual @nfr": "success",
+      "visual: /checkout (user) @1280px @visual @nfr": "success",
+      "visual: /products/{id} (user) @1280px @visual @nfr": "success",
+      "visual: /products?page (user) @1280px @visual @nfr": "success",
+      "visual: /products/{id}/edit (user) @1280px @visual @nfr": "success",
+      "visual: /login (guest) @1280px @visual @nfr": "success",
+      "visual: /help (guest) @1280px @visual @nfr": "success"
+    }
+  },
+  "bugs": {
+    "BUG_08": {
+      "types": [
+        "accessibility"
+      ],
+      "detected": true,
+      "new_findings": [
+        "axe:label \u2014 Form elements must have labels (critical, 1 node(s)) @ a11y: /login (guest) @a11y @AC-01.4"
+      ],
+      "failed": 1,
+      "tests": 14
+    },
+    "BUG_09": {
+      "types": [
+        "performance"
+      ],
+      "detected": true,
+      "new_findings": [
+        "budget:load_ms @ perf: /products (user) @perf @nfr",
+        "budget:load_ms @ perf: /products?page (user) @perf @nfr",
+        "budget:ttfb_ms @ perf: /products (user) @perf @nfr",
+        "budget:ttfb_ms @ perf: /products?page (user) @perf @nfr"
+      ],
+      "failed": 2,
+      "tests": 11
+    },
+    "BUG_07": {
+      "types": [
+        "resilience"
+      ],
+      "detected": true,
+      "new_findings": [
+        "server-error @ resilience: /products (user) #search-form handles unusual input @resilience @nfr",
+        "server-error @ resilience: /products?page (user) #search-form handles unusual input @resilience @nfr"
+      ],
+      "failed": 2,
+      "tests": 13
+    }
+  },
+  "summary": {
+    "detected": 3,
+    "targets": 3,
+    "clean_failures": 11,
+    "clean_findings": 44
+  }
+}

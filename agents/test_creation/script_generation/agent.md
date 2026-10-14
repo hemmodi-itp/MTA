@@ -329,3 +329,14 @@ while the runtime used `data-test`. The `count() == 1` rule is unchanged.
 - **Expected-value precedence (5.2)**: BRD > observed > code > LLM-inferred. A test whose case oracles are all
   LLM-inferred gets `oracle_confidence: "low"` (counted in the report). BRD-vs-observed conflicts from test design go
   to `human_review_queue.json` (`expected_value_conflict`, deduplicated) and the report's "Potential defects" section.
+
+## Non-functional specs (Phase 7, `test_types`)
+
+At the end of every run, `tools/nonfunctional/generate.py` writes `test_scripts/nfr/nfr_<type>.spec.ts` for each
+enabled type (accessibility, visual, performance, security_passive, compatibility, resilience, i18n — each toggled on
+its own; tuning under `nfr:`), deterministically from app_map.json / form_model.json / baseline.json. They are
+registered in `test_suite.json` (`generation_mode: "nfr"` — rerender skips them) and in `test_plans.json` (one tc_id
+per test, ACs from the title tags), so they run with the suite and show in traceability. A type switched off has its
+spec and registrations removed. States that need a role use `test.use({ role })` when `execution.role_auth` is on.
+Visual baselines are approved with `python -m tools.nonfunctional.visual approve --project X`. A generation failure is
+logged and never fails the step. Active security probes are not generated (see docs/backlog.md → Phase 7).

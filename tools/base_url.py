@@ -39,6 +39,15 @@ def _project_url(cfg: Dict[str, Any]) -> str:
     return top.strip() if isinstance(top, str) and top.strip() else ""
 
 
+NFR_MODULE = "nfr"     # test_scripts/nfr/ — tools/nonfunctional/generate.py
+
+
+def _origin(url: str) -> str:
+    from urllib.parse import urlsplit
+    p = urlsplit(url or "")
+    return f"{p.scheme}://{p.netloc}" if p.scheme and p.netloc else ""
+
+
 def resolve_project_base_url(cfg: Dict[str, Any]) -> str:
     """project.url, else the single distinct module URL, else "" (ambiguous or none)."""
     url = _project_url(cfg)
@@ -66,6 +75,12 @@ def resolve_execution_base_url(
         return url, "project.url"
     by_module = module_urls(cfg)
     targets = [m for m in target_modules if m]
+    if targets and all(m == NFR_MODULE for m in targets):
+        # Phase 7: generated non-functional specs navigate with absolute URLs — they only need the app's origin
+        origins = sorted({_origin(u) for u in by_module.values() if _origin(u)})
+        if len(origins) == 1:
+            return origins[0], "module.origin (nfr)"
+    targets = [m for m in targets if m != NFR_MODULE]
     if targets:
         wanted = sorted({by_module[m] for m in targets if m in by_module})
         if len(wanted) == 1:
