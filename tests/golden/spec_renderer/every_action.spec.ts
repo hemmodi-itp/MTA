@@ -29,6 +29,7 @@ test.describe("Action catalogue (M09_BS_001)", () => {
     await action.verifyValue("k", "v", "m");
     await action.verifyEnabled("k");
     await action.verifyDisabled("k");
+    await action.verifyBusyWhileSubmitting("k", "disabled while saving");
     await action.verifyChecked("k", undefined, { soft: true });
     await action.verifyCount("k", 3);
     await action.verifyUrl("/x");

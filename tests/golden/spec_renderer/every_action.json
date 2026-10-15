@@ -111,6 +111,11 @@
             "locator_key": "k"
           },
           {
+            "action": "verifyBusyWhileSubmitting",
+            "locator_key": "k",
+            "message": "disabled while saving"
+          },
+          {
             "action": "verifyChecked",
             "locator_key": "k",
             "soft": true

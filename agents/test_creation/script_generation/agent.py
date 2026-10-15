@@ -52,6 +52,7 @@ from tools.test_creation.request_oracles import ground_plan, known_endpoints
 from tools.test_creation.select_options import ground_selects, select_options
 from tools.test_creation.message_oracles import error_keys, ground_messages, known_messages
 from tools.test_creation.required_fields import complete_required_fields
+from tools.test_creation.busy_states import ground_busy_states
 from tools.safety.policy import SafetyPolicy, load_safety_policy
 from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
 from agents.test_creation.script_generation.prompt import (
@@ -108,6 +109,7 @@ ALLOWED_ACTIONS = frozenset({
     # Phase 5 oracles (verifyNoNewConsoleErrors is renderer-appended, never planned)
     "verifyRequest", "verifyNoRequest", "verifyFieldInvalid", "verifyNoDialog", "verifyNotInjected",
     "verifyValidationMessage", "verifyAriaSnapshot", "rememberCount", "verifyCountChangedBy", "reloadAndVerify",
+    "verifyBusyWhileSubmitting",
     "verifyDownload", "verifyNewTab", "verifyStorage", "verifyResponseSchema", "verifyApiState",
     # Phase 5 / 7.6 fault injection and time control
     "mockRoute", "setOffline", "setClock",
@@ -303,18 +305,22 @@ class ScriptGenerationAgent(BaseAgent):
             SafetyPolicy.from_request(request["safety"]) if isinstance(request.get("safety"), dict)
             else load_safety_policy(safe)
         )
-        # the endpoints discovery observed — request oracles are grounded in them (tools/test_creation/request_oracles)
-        endpoints = known_endpoints(*(_load_json_or_empty(os.path.join(comprehension_dir, n)) or {}
-                                      for n in ("form_model.json", "api_inventory.json", "code_rules.json")))
-        # the options each <select> really has — generated data must choose one of them
-        select_opts = select_options(locator_map, _load_json_or_empty(os.path.join(comprehension_dir, "form_model.json")))
-        # the messages the BRD quotes and the app was seen to show — an expected error text must be one of them
-        messages = known_messages(_load_json_or_empty(os.path.join(comprehension_dir, "form_model.json")),
-                                  _load_json_or_empty(os.path.join(comprehension_dir, "requirements.json")))
-        error_areas = error_keys(locator_map)
-        # a positive submit fills every required field — with test design's valid value for it
+        # what discovery saw — every plan is grounded in it before rendering (see _ground_all)
         form_model = _load_json_or_empty(os.path.join(comprehension_dir, "form_model.json"))
-        valid_values = _design_valid_values(project_dir, safe) if (form_model or {}).get("forms") else {}
+        grounding = {
+            "locator_map": locator_map,
+            "form_model": form_model,
+            # request oracles name only endpoints discovery observed (tools/test_creation/request_oracles)
+            "endpoints": known_endpoints(form_model, *(_load_json_or_empty(os.path.join(comprehension_dir, n)) or {}
+                                                       for n in ("api_inventory.json", "code_rules.json"))),
+            # the options each <select> really has (tools/test_creation/select_options)
+            "select_options": select_options(locator_map, form_model),
+            # the messages the BRD quotes and the app showed (tools/test_creation/message_oracles)
+            "messages": known_messages(form_model, _load_json_or_empty(os.path.join(comprehension_dir, "requirements.json"))),
+            "error_areas": error_keys(locator_map),
+            # test design's valid value per form field, for required fields a test left empty
+            "valid_values": _design_valid_values(project_dir, safe) if (form_model or {}).get("forms") else {},
+        }
 
         for scenario in uncovered:
             sid = scenario.get("scenario_id", "")
@@ -410,11 +416,8 @@ class ScriptGenerationAgent(BaseAgent):
                             _write_test_plans(test_plans, test_plans_path)
                         continue
 
-                    # request oracles name only endpoints discovery saw (an invented "/api/login" is a false failure)
-                    plan = self._ground_requests(plan, sid, endpoints, effective_url)
-                    plan = self._ground_selects(plan, sid, select_opts, design_cases)
-                    plan = self._ground_messages(plan, sid, messages, error_areas)
-                    plan = self._complete_required(plan, sid, locator_map, form_model, effective_url, valid_values)
+                    # every expectation and input in the plan grounded in what discovery saw (false failures otherwise)
+                    plan = self._ground_all(plan, sid, grounding, effective_url, design_cases)
 
                     # Phase 0 safety rails — the one choke point every plan tier
                     # passes through. Drops whole tests (never a lone step) and
@@ -445,10 +448,7 @@ class ScriptGenerationAgent(BaseAgent):
                             plan, request, scenario, allowed_locators, test_data, effective_url, flows_meta,
                             gen_config, locator_map, design_cases, allowed_keys={e["key"] for e in allowed_locators},
                         )
-                        plan = self._ground_requests(plan, sid, endpoints, effective_url)   # the regenerated tests too
-                        plan = self._ground_selects(plan, sid, select_opts, design_cases)
-                        plan = self._ground_messages(plan, sid, messages, error_areas)
-                        plan = self._complete_required(plan, sid, locator_map, form_model, effective_url, valid_values)
+                        plan = self._ground_all(plan, sid, grounding, effective_url, design_cases)   # regenerated too
 
                     if self._tracer is not None:
                         plan = self._tracer.annotate(plan, scenario, module_id)
@@ -700,6 +700,23 @@ class ScriptGenerationAgent(BaseAgent):
                     return "raw", content, 2, route
 
                 raise RuntimeError(f"Unhandled route '{route}'") from exc
+
+    def _ground_all(self, plan: dict, sid: str, g: Dict[str, Any], base_url: str,
+                    design_cases: Optional[List[dict]]) -> dict:
+        """Ground every expectation and input of a plan in what discovery saw — each step guards against one kind
+        of false failure on a correct app and logs every change it makes."""
+        plan = self._ground_requests(plan, sid, g["endpoints"], base_url)
+        plan = self._ground_selects(plan, sid, g["select_options"], design_cases)
+        plan = self._ground_messages(plan, sid, g["messages"], g["error_areas"])
+        plan = self._complete_required(plan, sid, g["locator_map"], g["form_model"], base_url, g["valid_values"])
+        return self._ground_busy(plan, sid)
+
+    def _ground_busy(self, plan: dict, sid: str) -> dict:
+        """click(K) + verifyDisabled(K) -> verifyBusyWhileSubmitting(K) (tools/test_creation/busy_states)."""
+        plan, changes = ground_busy_states(plan)
+        for c in changes:
+            self._log(f"{sid}: {c['change']} in '{c['test']}' — {c['reason']}", level="warning")
+        return plan
 
     def _ground_requests(self, plan: dict, sid: str, endpoints: List[Dict[str, Any]], base_url: str) -> dict:
         """verifyRequest / verifyNoRequest name only endpoints discovery saw; every change is logged and kept on the

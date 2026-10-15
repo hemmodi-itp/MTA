@@ -400,6 +400,9 @@ ORACLE_PROMPT_BLOCK = """
   3xx: use it after a form submit, apps often redirect); status and bodyContains optional
 - {"action": "verifyNoRequest", "method": "<METHOD>", "urlPattern": "<PATH>"}  — nothing was submitted to that form
 - {"action": "verifyFieldInvalid", "locator_key": "<key>"}  — aria-invalid or native :invalid
+- {"action": "verifyBusyWhileSubmitting", "locator_key": "<submit button key>"}  — CLICKS the button and checks it is
+  disabled while the submit is in flight ("disabled while saving", double-submit protection); use it INSTEAD of a
+  click followed by verifyDisabled (that state is too short to observe)
 - {"action": "verifyValidationMessage", "locator_key": "<field key>", "value": "<part of the message>"}
   — native validation message or the field's aria-errormessage / aria-describedby text
 - {"action": "verifyNoDialog"}  — no alert/confirm/prompt fired

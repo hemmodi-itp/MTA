@@ -483,6 +483,36 @@ export class ActionEngine {
         });
     }
 
+    /** Clicks the control and checks it became disabled once its submit started ("the Save button is disabled while
+     * saving"). The state is too short to poll on a fast app, and inspecting a page whose navigation is held crashes
+     * Chromium — so a MutationObserver on the element records, in sessionStorage (it survives the same-origin
+     * navigation the submit starts), that a submit happened and whether the control turned disabled / aria-disabled;
+     * both are read after the click. */
+    async verifyBusyWhileSubmitting(name: string, message?: string): Promise<void> {
+        await this.run(name, 'Verify Busy While Submitting', message, async () => {
+            const handle = await this.resolve(name).elementHandle();
+            if (!handle) throw new Error(`${name}: no element to click`);
+            const key = `mta-busy-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+            await handle.evaluate((el, k) => {
+                const busy = () => (el as HTMLButtonElement).disabled || el.getAttribute('aria-disabled') === 'true';
+                const mark = () => { if (busy()) sessionStorage.setItem(k, 'disabled'); };
+                new MutationObserver(mark).observe(el, { attributes: true, attributeFilter: ['disabled', 'aria-disabled'] });
+                const form = (el as HTMLButtonElement).form ?? el.closest('form');
+                const submitted = () => { if (!sessionStorage.getItem(k)) sessionStorage.setItem(k, 'submitted'); };
+                // the app's own submit handler runs first (bubbling); ours notes that the submit went ahead
+                if (form) form.addEventListener('submit', (ev) => { if (!ev.defaultPrevented) { submitted(); queueMicrotask(mark); } });
+                else el.addEventListener('click', () => { submitted(); queueMicrotask(mark); });
+            }, key);
+            await handle.click();
+            await this.page.waitForLoadState('load').catch(() => {});
+            let seen: string | null = null;
+            const read = async () => (seen = await this.page.evaluate((k) => sessionStorage.getItem(k), key).catch(() => null));
+            await expect.poll(read, { timeout: 5_000 }).not.toBeNull().catch(() => {});   // judged below, with the reason
+            expect(seen, `${name}: clicking it submitted nothing (the form's own validation may have stopped it)`).not.toBeNull();
+            expect(seen, message ?? `${name} should be disabled while its submit is in flight`).toBe('disabled');
+        });
+    }
+
     async verifyChecked(name: string, message?: string, opts?: VerifyOptions): Promise<void> {
         await this.run(name, 'Verify Checked', message, async () => {
             const assertion = opts?.soft ? expect.soft(this.resolve(name), message) : expect(this.resolve(name), message);

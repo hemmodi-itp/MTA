@@ -27,7 +27,7 @@ from typing import Any, Dict, List
 THRESHOLD = 70
 
 _ACTING = {
-    "click", "doubleClick", "hover", "enterText", "clearAndEnterText", "pressKey", "checkCheckbox",
+    "click", "doubleClick", "verifyBusyWhileSubmitting", "hover", "enterText", "clearAndEnterText", "pressKey", "checkCheckbox",
     "uncheckCheckbox", "selectDropdownByText", "selectDropdownByValue", "scrollIntoView", "uploadFile",
     "dragAndDrop",
 }
@@ -39,6 +39,7 @@ _URL = {"verifyUrl", "verifyUrlContains"}
 _ALWAYS_OUTCOME = _URL | {"verifyRequest", "verifyNoRequest", "verifyNoDialog", "verifyNotInjected",
                           "verifyFieldInvalid", "verifyCount", "verifyValidationMessage", "verifyCountChangedBy",
                           "verifyApiState", "verifyResponseSchema", "verifyStorage", "verifyDownload",
+                          "verifyBusyWhileSubmitting",
                           "verifyNewTab"}
 _ELEMENT_VERIFY = {"verifyVisible", "verifyHidden", "verifyText", "verifyContainsText", "verifyValue",
                    "verifyEnabled", "verifyDisabled", "verifyChecked", "verifyAriaSnapshot"}
