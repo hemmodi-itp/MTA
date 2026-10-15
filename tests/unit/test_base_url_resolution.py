@@ -34,9 +34,15 @@ def test_targeted_module_resolves_ambiguity():
     assert resolve_execution_base_url(None, TWO_MODULES, ["M02"]) == ("https://a.test/shop", "module.url")
 
 
+def test_pages_of_one_app_resolve_to_its_origin():
+    # every generated spec pins its own module URL (test.use({ baseURL })): the run needs only the origin
+    assert resolve_execution_base_url(None, TWO_MODULES) == ("https://a.test", "module.origin")
+
+
 def test_ambiguous_and_missing_fail_fast():
+    two_apps = {"modules": [{"id": "M01", "url": "https://a.test/login"}, {"id": "M02", "url": "https://b.test/shop"}]}
     with pytest.raises(BaseUrlUnresolved, match="ambiguous"):
-        resolve_execution_base_url(None, TWO_MODULES)
+        resolve_execution_base_url(None, two_apps)
     with pytest.raises(BaseUrlUnresolved, match="unresolved"):
         resolve_execution_base_url(None, {})
     with pytest.raises(BaseUrlUnresolved):

@@ -88,6 +88,11 @@ def resolve_execution_base_url(
     distinct = sorted(set(by_module.values()))
     if len(distinct) == 1:
         return distinct[0], "module.url"
+    # modules on one app, different pages (/login, /cart, ...): every generated spec pins its own module URL
+    # (test.use({ baseURL })), so the run only needs the app's origin
+    origins = {_origin(u) for u in distinct}
+    if len(origins) == 1 and "" not in origins:
+        return origins.pop(), "module.origin"
     if not distinct:
         raise BaseUrlUnresolved(
             "base URL unresolved: project.yaml has no project.url and no modules[].url — "
