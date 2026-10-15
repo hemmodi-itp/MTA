@@ -1,0 +1,1782 @@
+{
+ "config": {
+  "argv": [
+   "C:\\Program Files\\nodejs\\node.exe",
+   "C:\\Users\\HemModi(DataAI)\\MTA\\node_modules\\@playwright\\test\\cli.js",
+   "test",
+   "application_assets/projects/bench_buggy_shop/test_creation/test_scripts/M04",
+   "--config",
+   "playwright.config.ts",
+   "--project=chromium",
+   "--workers=2",
+   "--output=application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z"
+  ],
+  "configFile": "C:\\Users\\HemModi(DataAI)\\MTA\\playwright.config.ts",
+  "rootDir": "C:/Users/HemModi(DataAI)/MTA/application_assets/projects",
+  "failOnFlakyTests": false,
+  "forbidOnly": false,
+  "fullyParallel": false,
+  "globalSetup": null,
+  "globalTeardown": null,
+  "globalTimeout": 0,
+  "grep": {},
+  "grepInvert": null,
+  "maxFailures": 0,
+  "metadata": {
+   "actualWorkers": 1
+  },
+  "preserveOutput": "always",
+  "projects": [
+   {
+    "outputDir": "C:/Users/HemModi(DataAI)/MTA/application_assets/projects/bench_buggy_shop/test_execution/reports/html/20261011T125243Z",
+    "repeatEach": 1,
+    "retries": 0,
+    "metadata": {
+     "actualWorkers": 1
+    },
+    "id": "chromium",
+    "name": "chromium",
+    "testDir": "C:/Users/HemModi(DataAI)/MTA/application_assets/projects",
+    "testIgnore": [],
+    "testMatch": [
+     "**/test_scripts/**/*.spec.ts"
+    ],
+    "timeout": 60000
+   }
+  ],
+  "quiet": false,
+  "reporter": [
+   [
+    "list",
+    null
+   ],
+   [
+    "json",
+    {
+     "outputFile": "application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\json\\20261011T125243Z_results.json"
+    }
+   ],
+   [
+    "html",
+    {
+     "outputFolder": "application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z",
+     "open": "never"
+    }
+   ]
+  ],
+  "reportSlowTests": {
+   "max": 5,
+   "threshold": 300000
+  },
+  "shard": null,
+  "tags": [],
+  "updateSnapshots": "missing",
+  "updateSourceMethod": "patch",
+  "version": "1.61.0",
+  "workers": 2,
+  "webServer": null
+ },
+ "suites": [
+  {
+   "title": "bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+   "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+   "column": 0,
+   "line": 0,
+   "specs": [],
+   "suites": [
+    {
+     "title": "Add product to cart or update cart quantity with valid integer quantity (M04_BS_001)",
+     "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+     "line": 6,
+     "column": 6,
+     "specs": [
+      {
+       "title": "AC-05.1.1 Quantity range min-1 (0) is rejected",
+       "ok": true,
+       "tags": [
+        "P0",
+        "negative",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "bva"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 16,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 16,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 16,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-22fa2254",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 16,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 16,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 0,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1760,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:46.805Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 16,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 16,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 16,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-22fa2254",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 16,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 16,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-b2b19a7d604b9cab35f6",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 16,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity range max+1 (100) is rejected",
+       "ok": true,
+       "tags": [
+        "P0",
+        "negative",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "bva"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 23,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 23,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_002",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 23,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-e64466e1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 23,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 23,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 0,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1414,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:48.741Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 23,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 23,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_002",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 23,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-e64466e1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 23,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 23,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-d142735326e286fd47c2",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 23,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity: negative number is rejected",
+       "ok": true,
+       "tags": [
+        "P1",
+        "negative",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "ep"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 30,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 30,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_003",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 30,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-438f31e4",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 30,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 30,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 0,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1383,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:50.172Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 30,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 30,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_003",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 30,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-438f31e4",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 30,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 30,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-28bdcc82e1df3aad12f2",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 30,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity: decimal in an integer field is rejected",
+       "ok": true,
+       "tags": [
+        "P1",
+        "negative",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "ep"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 37,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 37,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_004",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 37,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-aba5a8a6",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 37,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 37,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 0,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1495,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:51.571Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 37,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 37,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_004",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 37,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-aba5a8a6",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 37,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 37,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-8ebe3a3426e61592789b",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 37,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity: non-numeric text is rejected",
+       "ok": false,
+       "tags": [
+        "P1",
+        "negative",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "ep"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 44,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 44,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_005",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 44,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-dbd2a70f",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 44,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 44,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 0,
+           "parallelIndex": 0,
+           "status": "failed",
+           "duration": 1313,
+           "error": {
+            "message": "Error: [locator_key=quantity] locator.fill: Error: Cannot type text into input[type=number]\nCall log:\n\u001b[2m  - waiting for locator('#add-to-cart-form [name=\"quantity\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input min=\"1\" max=\"99\" value=\"1\" id=\"quantity\" type=\"number\" name=\"quantity\" data-testid=\"quantity\"/>\u001b[22m\n\u001b[2m    - fill(\"abc\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n",
+            "stack": "Error: [locator_key=quantity] locator.fill: Error: Cannot type text into input[type=number]\nCall log:\n\u001b[2m  - waiting for locator('#add-to-cart-form [name=\"quantity\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input min=\"1\" max=\"99\" value=\"1\" id=\"quantity\" type=\"number\" name=\"quantity\" data-testid=\"quantity\"/>\u001b[22m\n\u001b[2m    - fill(\"abc\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n\n    at ActionEngine.run (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:73:19)\n    at ActionEngine.enterText (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:143:9)\n    at C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts:46:5",
+            "location": {
+             "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+             "column": 19,
+             "line": 73
+            },
+            "snippet": "\u001b[90m   at \u001b[39m..\\_shared\\runtime\\ActionEngine.ts:73\n\n\u001b[0m \u001b[90m 71 |\u001b[39m         } \u001b[36mcatch\u001b[39m (err\u001b[33m:\u001b[39m unknown) {\n \u001b[90m 72 |\u001b[39m             \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m err \u001b[36minstanceof\u001b[39m \u001b[33mError\u001b[39m \u001b[33m?\u001b[39m err\u001b[33m.\u001b[39mmessage \u001b[33m:\u001b[39m \u001b[33mString\u001b[39m(err)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 73 |\u001b[39m             \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 74 |\u001b[39m                 locatorName \u001b[33m?\u001b[39m \u001b[32m`[locator_key=${locatorName}] ${message}`\u001b[39m \u001b[33m:\u001b[39m message\n \u001b[90m 75 |\u001b[39m             )\u001b[33m;\u001b[39m\n \u001b[90m 76 |\u001b[39m         }\u001b[0m"
+           },
+           "errors": [
+            {
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+              "column": 19,
+              "line": 73
+             },
+             "message": "Error: [locator_key=quantity] locator.fill: Error: Cannot type text into input[type=number]\nCall log:\n\u001b[2m  - waiting for locator('#add-to-cart-form [name=\"quantity\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input min=\"1\" max=\"99\" value=\"1\" id=\"quantity\" type=\"number\" name=\"quantity\" data-testid=\"quantity\"/>\u001b[22m\n\u001b[2m    - fill(\"abc\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n\n\n   at ..\\_shared\\runtime\\ActionEngine.ts:73\n\n  71 |         } catch (err: unknown) {\n  72 |             const message = err instanceof Error ? err.message : String(err);\n> 73 |             throw new Error(\n     |                   ^\n  74 |                 locatorName ? `[locator_key=${locatorName}] ${message}` : message\n  75 |             );\n  76 |         }\n    at ActionEngine.run (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:73:19)\n    at ActionEngine.enterText (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:143:9)\n    at C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts:46:5"
+            }
+           ],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:53.085Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 44,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 44,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_005",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 44,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-dbd2a70f",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 44,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 44,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": [
+            {
+             "name": "screenshot",
+             "contentType": "image/png",
+             "path": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z\\bench_buggy_shop-test_crea-15f3d-on-numeric-text-is-rejected-chromium\\test-failed-1.png"
+            },
+            {
+             "name": "error-context",
+             "contentType": "text/markdown",
+             "path": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z\\bench_buggy_shop-test_crea-15f3d-on-numeric-text-is-rejected-chromium\\error-context.md"
+            }
+           ],
+           "errorLocation": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+            "column": 19,
+            "line": 73
+           }
+          }
+         ],
+         "status": "unexpected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-feea06f57247f2bec86c",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 44,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity range min+1 (2) is accepted",
+       "ok": true,
+       "tags": [
+        "P1",
+        "boundary",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "bva"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 51,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 51,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_006",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 51,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-0bfe58e1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 51,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 51,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 1,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1894,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:55.088Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 51,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 51,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_006",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 51,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-0bfe58e1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 51,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 51,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-54c7e5119567d69b8e0f",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 51,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity range nominal (50) is accepted",
+       "ok": true,
+       "tags": [
+        "P1",
+        "positive",
+        "smoke",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "bva"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 58,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 58,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_007",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 58,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-200bf64c",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 58,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 58,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 1,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1514,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:57.165Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 58,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 58,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_007",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 58,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-200bf64c",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 58,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 58,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-28ab571b1693c7b108df",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 58,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity range min (1) is accepted",
+       "ok": true,
+       "tags": [
+        "P1",
+        "boundary",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "bva"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 65,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 65,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_008",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 65,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-4313fd0d",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 65,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 65,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 1,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1410,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:52:58.697Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 65,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 65,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_008",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 65,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-4313fd0d",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 65,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 65,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-d27208147bd42570cfda",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 65,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity range max-1 (98) is accepted",
+       "ok": false,
+       "tags": [
+        "P1",
+        "boundary",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "bva"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 72,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 72,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_009",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 72,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-96b105f9",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 72,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 72,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 1,
+           "parallelIndex": 0,
+           "status": "failed",
+           "duration": 11533,
+           "error": {
+            "message": "Error: [locator_key=add_to_cart_form_errors] Form validation error container should be hidden for max-1 boundary quantity\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('div#cart-error.alert')\nExpected: hidden\nReceived: visible\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Form validation error container should be hidden for max-1 boundary quantity with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div#cart-error.alert')\u001b[22m\n\u001b[2m    23 × locator resolved to <div role=\"alert\" class=\"alert\" id=\"cart-error\" data-testid=\"cart-error\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n",
+            "stack": "Error: [locator_key=add_to_cart_form_errors] Form validation error container should be hidden for max-1 boundary quantity\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('div#cart-error.alert')\nExpected: hidden\nReceived: visible\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Form validation error container should be hidden for max-1 boundary quantity with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div#cart-error.alert')\u001b[22m\n\u001b[2m    23 × locator resolved to <div role=\"alert\" class=\"alert\" id=\"cart-error\" data-testid=\"cart-error\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n\n    at ActionEngine.run (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:73:19)\n    at ActionEngine.verifyHidden (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:238:9)\n    at C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts:76:5",
+            "location": {
+             "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+             "column": 19,
+             "line": 73
+            },
+            "snippet": "\u001b[90m   at \u001b[39m..\\_shared\\runtime\\ActionEngine.ts:73\n\n\u001b[0m \u001b[90m 71 |\u001b[39m         } \u001b[36mcatch\u001b[39m (err\u001b[33m:\u001b[39m unknown) {\n \u001b[90m 72 |\u001b[39m             \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m err \u001b[36minstanceof\u001b[39m \u001b[33mError\u001b[39m \u001b[33m?\u001b[39m err\u001b[33m.\u001b[39mmessage \u001b[33m:\u001b[39m \u001b[33mString\u001b[39m(err)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 73 |\u001b[39m             \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 74 |\u001b[39m                 locatorName \u001b[33m?\u001b[39m \u001b[32m`[locator_key=${locatorName}] ${message}`\u001b[39m \u001b[33m:\u001b[39m message\n \u001b[90m 75 |\u001b[39m             )\u001b[33m;\u001b[39m\n \u001b[90m 76 |\u001b[39m         }\u001b[0m"
+           },
+           "errors": [
+            {
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+              "column": 19,
+              "line": 73
+             },
+             "message": "Error: [locator_key=add_to_cart_form_errors] Form validation error container should be hidden for max-1 boundary quantity\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('div#cart-error.alert')\nExpected: hidden\nReceived: visible\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Form validation error container should be hidden for max-1 boundary quantity with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div#cart-error.alert')\u001b[22m\n\u001b[2m    23 × locator resolved to <div role=\"alert\" class=\"alert\" id=\"cart-error\" data-testid=\"cart-error\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n\n\n   at ..\\_shared\\runtime\\ActionEngine.ts:73\n\n  71 |         } catch (err: unknown) {\n  72 |             const message = err instanceof Error ? err.message : String(err);\n> 73 |             throw new Error(\n     |                   ^\n  74 |                 locatorName ? `[locator_key=${locatorName}] ${message}` : message\n  75 |             );\n  76 |         }\n    at ActionEngine.run (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:73:19)\n    at ActionEngine.verifyHidden (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:238:9)\n    at C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts:76:5"
+            }
+           ],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:53:00.122Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 72,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 72,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_009",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 72,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-96b105f9",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 72,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 72,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": [
+            {
+             "name": "screenshot",
+             "contentType": "image/png",
+             "path": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z\\bench_buggy_shop-test_crea-4f6df--range-max-1-98-is-accepted-chromium\\test-failed-1.png"
+            },
+            {
+             "name": "error-context",
+             "contentType": "text/markdown",
+             "path": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z\\bench_buggy_shop-test_crea-4f6df--range-max-1-98-is-accepted-chromium\\error-context.md"
+            }
+           ],
+           "errorLocation": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+            "column": 19,
+            "line": 73
+           }
+          }
+         ],
+         "status": "unexpected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-f7232956142a93da9aec",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 72,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 Quantity range max (99) is accepted",
+       "ok": false,
+       "tags": [
+        "P1",
+        "boundary",
+        "regression",
+        "REQ-05",
+        "AC-05.1.1",
+        "AC-05.1.2",
+        "bva"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 79,
+            "column": 7
+           }
+          },
+          {
+           "type": "ac",
+           "description": "AC-05.1.2",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 79,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_010",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 79,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-d4bcbb85",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 79,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 79,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 2,
+           "parallelIndex": 0,
+           "status": "failed",
+           "duration": 11748,
+           "error": {
+            "message": "Error: [locator_key=add_to_cart_form_errors] Form validation error container should be hidden for maximum boundary quantity\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('div#cart-error.alert')\nExpected: hidden\nReceived: visible\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Form validation error container should be hidden for maximum boundary quantity with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div#cart-error.alert')\u001b[22m\n\u001b[2m    23 × locator resolved to <div role=\"alert\" class=\"alert\" id=\"cart-error\" data-testid=\"cart-error\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n",
+            "stack": "Error: [locator_key=add_to_cart_form_errors] Form validation error container should be hidden for maximum boundary quantity\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('div#cart-error.alert')\nExpected: hidden\nReceived: visible\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Form validation error container should be hidden for maximum boundary quantity with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div#cart-error.alert')\u001b[22m\n\u001b[2m    23 × locator resolved to <div role=\"alert\" class=\"alert\" id=\"cart-error\" data-testid=\"cart-error\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n\n    at ActionEngine.run (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:73:19)\n    at ActionEngine.verifyHidden (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:238:9)\n    at C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts:83:5",
+            "location": {
+             "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+             "column": 19,
+             "line": 73
+            },
+            "snippet": "\u001b[90m   at \u001b[39m..\\_shared\\runtime\\ActionEngine.ts:73\n\n\u001b[0m \u001b[90m 71 |\u001b[39m         } \u001b[36mcatch\u001b[39m (err\u001b[33m:\u001b[39m unknown) {\n \u001b[90m 72 |\u001b[39m             \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m err \u001b[36minstanceof\u001b[39m \u001b[33mError\u001b[39m \u001b[33m?\u001b[39m err\u001b[33m.\u001b[39mmessage \u001b[33m:\u001b[39m \u001b[33mString\u001b[39m(err)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 73 |\u001b[39m             \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 74 |\u001b[39m                 locatorName \u001b[33m?\u001b[39m \u001b[32m`[locator_key=${locatorName}] ${message}`\u001b[39m \u001b[33m:\u001b[39m message\n \u001b[90m 75 |\u001b[39m             )\u001b[33m;\u001b[39m\n \u001b[90m 76 |\u001b[39m         }\u001b[0m"
+           },
+           "errors": [
+            {
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+              "column": 19,
+              "line": 73
+             },
+             "message": "Error: [locator_key=add_to_cart_form_errors] Form validation error container should be hidden for maximum boundary quantity\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('div#cart-error.alert')\nExpected: hidden\nReceived: visible\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Form validation error container should be hidden for maximum boundary quantity with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div#cart-error.alert')\u001b[22m\n\u001b[2m    23 × locator resolved to <div role=\"alert\" class=\"alert\" id=\"cart-error\" data-testid=\"cart-error\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n\n\n   at ..\\_shared\\runtime\\ActionEngine.ts:73\n\n  71 |         } catch (err: unknown) {\n  72 |             const message = err instanceof Error ? err.message : String(err);\n> 73 |             throw new Error(\n     |                   ^\n  74 |                 locatorName ? `[locator_key=${locatorName}] ${message}` : message\n  75 |             );\n  76 |         }\n    at ActionEngine.run (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:73:19)\n    at ActionEngine.verifyHidden (C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts:238:9)\n    at C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts:83:5"
+            }
+           ],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:53:12.249Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 79,
+              "column": 7
+             }
+            },
+            {
+             "type": "ac",
+             "description": "AC-05.1.2",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 79,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_010",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 79,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-d4bcbb85",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 79,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 79,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": [
+            {
+             "name": "screenshot",
+             "contentType": "image/png",
+             "path": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z\\bench_buggy_shop-test_crea-1bcd7-ty-range-max-99-is-accepted-chromium\\test-failed-1.png"
+            },
+            {
+             "name": "error-context",
+             "contentType": "text/markdown",
+             "path": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_execution\\reports\\html\\20261011T125243Z\\bench_buggy_shop-test_crea-1bcd7-ty-range-max-99-is-accepted-chromium\\error-context.md"
+            }
+           ],
+           "errorLocation": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\_shared\\runtime\\ActionEngine.ts",
+            "column": 19,
+            "line": 73
+           }
+          }
+         ],
+         "status": "unexpected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-e8a5067e140a580ac1a8",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 79,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 add-to-cart-form on /products/{id}: all fields valid is accepted",
+       "ok": true,
+       "tags": [
+        "P2",
+        "positive",
+        "smoke",
+        "REQ-05",
+        "AC-05.1.1",
+        "ep"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 86,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_011",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 86,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-b50b50e9",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 86,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 86,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 3,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1809,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:53:24.742Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 86,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_011",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 86,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-b50b50e9",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 86,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 86,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-9f3440079ae490a5a2eb",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 86,
+       "column": 7
+      },
+      {
+       "title": "AC-05.1.1 user opening /cart by direct URL is allowed",
+       "ok": true,
+       "tags": [
+        "P3",
+        "positive",
+        "smoke",
+        "REQ-05",
+        "AC-05.1.1",
+        "role_matrix"
+       ],
+       "tests": [
+        {
+         "timeout": 60000,
+         "annotations": [
+          {
+           "type": "ac",
+           "description": "AC-05.1.1",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 93,
+            "column": 7
+           }
+          },
+          {
+           "type": "tc",
+           "description": "M04_TC_012",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 93,
+            "column": 7
+           }
+          },
+          {
+           "type": "case",
+           "description": "TC-13f2e011",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 93,
+            "column": 7
+           }
+          },
+          {
+           "type": "scenario",
+           "description": "M04_BS_001",
+           "location": {
+            "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+            "line": 93,
+            "column": 7
+           }
+          }
+         ],
+         "expectedStatus": "passed",
+         "projectId": "chromium",
+         "projectName": "chromium",
+         "results": [
+          {
+           "workerIndex": 3,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 1355,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-11T12:53:26.722Z",
+           "annotations": [
+            {
+             "type": "ac",
+             "description": "AC-05.1.1",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 93,
+              "column": 7
+             }
+            },
+            {
+             "type": "tc",
+             "description": "M04_TC_012",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 93,
+              "column": 7
+             }
+            },
+            {
+             "type": "case",
+             "description": "TC-13f2e011",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 93,
+              "column": 7
+             }
+            },
+            {
+             "type": "scenario",
+             "description": "M04_BS_001",
+             "location": {
+              "file": "C:\\Users\\HemModi(DataAI)\\MTA\\application_assets\\projects\\bench_buggy_shop\\test_creation\\test_scripts\\M04\\test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+              "line": 93,
+              "column": 7
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "21dff213975f11bf5912-8cbd0eb997bba761e334",
+       "file": "bench_buggy_shop/test_creation/test_scripts/M04/test_M04_BS_001_add_product_to_cart_or_update_cart_quantity_with_valid_integer_quantity.spec.ts",
+       "line": 93,
+       "column": 7
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "errors": [],
+ "stats": {
+  "startTime": "2026-10-11T12:52:45.772Z",
+  "duration": 42400.112,
+  "expected": 9,
+  "skipped": 0,
+  "unexpected": 3,
+  "flaky": 0
+ }
+}

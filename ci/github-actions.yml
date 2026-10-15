@@ -5,6 +5,9 @@
 #   nightly      -> burn-in admission, whole suite on the browser matrix, order-independence check
 #   release tag  -> whole suite + quality gates
 # The job fails when a quality gate fails (exit 1) or the environment is down (exit 3).
+# nightly-benchmark (Phase 12.5, MTA's own self-test; schedule or stage=benchmark): the benchmarks on buggy_shop,
+# then tools.benchmark.regression_gate — fails when a detection rate drops, a false-failure rate rises or heal
+# precision falls below 95% — plus the LLM eval replay, the prompt staleness check and deep property tests.
 name: mta
 
 on:
@@ -16,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "pr | nightly | release"
+        description: "pr | nightly | release | benchmark"
         default: "nightly"
 
 concurrency:
@@ -25,6 +28,7 @@ concurrency:
 
 jobs:
   test:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.stage != 'benchmark' }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
@@ -75,3 +79,50 @@ jobs:
         uses: mikepenz/action-junit-report@v4
         with:
           report_paths: application_assets/projects/${{ env.MTA_PROJECT }}/test_execution/reports/junit/*.xml
+
+  nightly-benchmark:
+    if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.stage == 'benchmark') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Benchmarks (buggy_shop, real Chromium, no LLM spend)
+        run: |
+          python -m tools.benchmark.healing_bench
+          python -m tools.benchmark.nfr_bench
+          python -m tools.benchmark.whitebox_bench --mutants 12
+          python -m tools.benchmark.ci_bench
+      - name: Metric regression gates
+        run: >-
+          python -m tools.benchmark.regression_gate
+          --require phase6_healing,phase7_nfr,phase8_whitebox,phase10_ci
+      - name: LLM-agent evals (recorded replies) and prompt staleness
+        if: always()
+        run: |
+          python -m tools.selftest.llm_evals --replay
+          python -m tools.selftest.llm_evals --check-stale
+      - name: Deep property tests
+        if: always()
+        env:
+          MTA_HYPOTHESIS_EXAMPLES: "2000"
+        run: python -m pytest tests/unit/test_phase12_properties.py -q
+      - name: Upload benchmark results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mta-nightly-benchmark
+          path: benchmarks/results/
+          retention-days: 30

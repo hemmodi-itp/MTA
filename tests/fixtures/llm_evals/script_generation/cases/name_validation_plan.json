@@ -1,0 +1,180 @@
+{
+  "task": "plan",
+  "scenario": {
+    "scenario_id": "M03_BS_002",
+    "title": "Validation Failure for Blank or Oversized Product Name",
+    "business_objective": "Only products with a valid name are stored",
+    "actor": "Customer",
+    "preconditions": [
+      "The customer is signed in"
+    ],
+    "steps": [
+      "Open Add product",
+      "Leave Name blank or enter 51 characters",
+      "Fill Price and Category",
+      "Press Save product"
+    ],
+    "expected_result": "The product is not saved and \"Name is required\" / \"Name must be at most 50 characters\" is shown",
+    "ac_ids": [
+      "AC-03.1.2",
+      "AC-03.2.3"
+    ]
+  },
+  "allowed_locators": [
+    {
+      "key": "name_input",
+      "description": "Name field"
+    },
+    {
+      "key": "price_input",
+      "description": "Price field"
+    },
+    {
+      "key": "category_select",
+      "description": "Category select"
+    },
+    {
+      "key": "save_button",
+      "description": "Save product button"
+    },
+    {
+      "key": "form_error",
+      "description": "validation error area"
+    }
+  ],
+  "locator_map": {
+    "name_input": {
+      "type": "role",
+      "locator": "textbox",
+      "name": "Name",
+      "description": "Name field"
+    },
+    "price_input": {
+      "type": "role",
+      "locator": "textbox",
+      "name": "Price",
+      "description": "Price field"
+    },
+    "category_select": {
+      "type": "role",
+      "locator": "combobox",
+      "name": "Category",
+      "description": "Category"
+    },
+    "save_button": {
+      "type": "role",
+      "locator": "button",
+      "name": "Save product",
+      "description": "Save"
+    },
+    "form_error": {
+      "type": "css",
+      "locator": "[role=alert]",
+      "description": "validation error area"
+    }
+  },
+  "test_data": {
+    "scenario_id": "M03_BS_002",
+    "positive_dataset": [
+      {
+        "field_name": "name",
+        "field_type": "text",
+        "value": "Pragmatic Testing Handbook"
+      },
+      {
+        "field_name": "price",
+        "field_type": "number",
+        "value": "24.99"
+      },
+      {
+        "field_name": "category",
+        "field_type": "select",
+        "value": "Books"
+      }
+    ],
+    "negative_variants": [
+      {
+        "variant_type": "negative",
+        "description": "Blank name",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "name",
+                "field_type": "text",
+                "value": ""
+              },
+              {
+                "field_name": "price",
+                "field_type": "number",
+                "value": "24.99"
+              },
+              {
+                "field_name": "category",
+                "field_type": "select",
+                "value": "Books"
+              }
+            ],
+            "expected_error": "Name is required"
+          },
+          {
+            "fields": [
+              {
+                "field_name": "name",
+                "field_type": "text",
+                "value": "   "
+              },
+              {
+                "field_name": "price",
+                "field_type": "number",
+                "value": "24.99"
+              },
+              {
+                "field_name": "category",
+                "field_type": "select",
+                "value": "Books"
+              }
+            ],
+            "expected_error": "Name is required"
+          }
+        ]
+      },
+      {
+        "variant_type": "boundary",
+        "description": "Name one character over the 50-character limit",
+        "iterations": [
+          {
+            "fields": [
+              {
+                "field_name": "name",
+                "field_type": "text",
+                "value": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
+              },
+              {
+                "field_name": "price",
+                "field_type": "number",
+                "value": "24.99"
+              },
+              {
+                "field_name": "category",
+                "field_type": "select",
+                "value": "Books"
+              }
+            ],
+            "expected_error": "Name must be at most 50 characters"
+          }
+        ]
+      }
+    ]
+  },
+  "base_url": "http://127.0.0.1:8765",
+  "flows": {},
+  "project": {
+    "environment": "local",
+    "safety": {
+      "allowed_hosts": [
+        "127.0.0.1"
+      ]
+    }
+  }
+}

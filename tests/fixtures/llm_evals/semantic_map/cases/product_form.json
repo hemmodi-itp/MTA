@@ -1,0 +1,124 @@
+{
+  "task": "semantic_map",
+  "dom_elements": "dom_elements_M03.json",
+  "scenarios": [
+    {
+      "scenario_id": "M03_BS_001",
+      "title": "Create a Product with Valid Information",
+      "business_objective": "Allow signed-in users to add new products with valid details including edge boundary cases.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is authenticated and signed in.",
+        "User is on the product management form page."
+      ],
+      "steps": [
+        "Enter a valid Product Name of exactly 50 characters.",
+        "Select a valid Category from the dropdown ('Books').",
+        "Enter a non-negative Price with 2 decimal places (e.g., '29.99').",
+        "Optionally enter a valid Description within 500 characters.",
+        "Click the Save button."
+      ],
+      "expected_result": "The Save button becomes disabled while saving, and the product is successfully created and added to the catalog.",
+      "business_rules": [
+        "BR-001",
+        "BR-002",
+        "BR-003",
+        "BR-004"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-001",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-003",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        },
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-004",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "db86f37f3cb3777b737d5b97184870462333ad80471c46844fd6492e8bb9c96a",
+      "ac_ids": [
+        "AC-03.1.1",
+        "AC-03.2.1",
+        "AC-03.2.2",
+        "AC-03.3.1",
+        "AC-03.4.1",
+        "AC-03.4.2"
+      ],
+      "ac_link_source": "llm"
+    },
+    {
+      "scenario_id": "M03_BS_002",
+      "title": "Validation Failure for Blank or Oversized Product Name",
+      "business_objective": "Ensure product names are required and strictly enforced to 1–50 characters.",
+      "actor": "Customer (`user`)",
+      "preconditions": [
+        "User is signed in.",
+        "User is attempting to save a product form."
+      ],
+      "steps": [
+        "Attempt to save a product with a blank or empty Product Name.",
+        "Observe the validation error message displayed.",
+        "Enter a Product Name containing 51 characters.",
+        "Attempt to save the product form again.",
+        "Observe the validation error message displayed."
+      ],
+      "expected_result": "An empty name triggers 'Name is required'. A 51-character name triggers 'Name must be at most 50 characters'. Form submission is halted.",
+      "business_rules": [
+        "BR-001"
+      ],
+      "traceability": [
+        {
+          "source_file": "brd_M03.md",
+          "page_number": null,
+          "section": "4. Requirements and acceptance criteria",
+          "requirement_id": "REQ-002",
+          "jira_story_id": null,
+          "confluence_page_id": null,
+          "method_name": null
+        }
+      ],
+      "confidence_score": 1.0,
+      "module_id": "M03",
+      "module_name": "Product Form",
+      "content_hash": "81f766ca5743180a826241a7913c29596d429d28a0302065ff8f827ec397ac0d",
+      "ac_ids": [
+        "AC-03.1.1",
+        "AC-03.1.2",
+        "AC-03.2.1",
+        "AC-03.2.3"
+      ],
+      "ac_link_source": "llm"
+    }
+  ]
+}

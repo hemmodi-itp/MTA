@@ -59,3 +59,14 @@ All lean-pass items are done (docs/phases/phase-11-report.md). Still open:
 - Code coverage: shown when a Phase 8 coverage run saved `test_execution/code_coverage.json`; otherwise "not measured".
 - API endpoint and page coverage are read from the spec text (what tests reference), not from executed traffic.
 
+## Phase 12
+Done in Phase 12 (docs/phases/phase-12-report.md): property tests (11, deep mode via MTA_HYPOTHESIS_EXAMPLES), renderer
+goldens, contract tests on recorded buggy_shop inputs (+ every agent.json against the CLAUDE.md schema), LLM eval
+sets for all six LLM agents (replay / live / staleness), benchmark metric regression gates with a nightly job, and
+mutation testing of MTA's own test-design, triage and linter modules. Still open:
+- Contract models for code_rules.json, triage.json, defects.json and the report JSON (structural checks only today).
+- A recorded healing_audit.jsonl from a real healing benchmark run for the Healing eval (hand-written today).
+- More live LLM recordings (one case per agent today); re-record whenever --check-stale fails.
+- Mutation: only a capped sample was run; turn the survivors in the Phase 12 report into unit tests; the score is not
+  gated (not comparable once the sources change).
+- The LLM-driven e2e benchmark (tools.benchmark.run) is not in the nightly job (LLM budget, needs a generated suite).

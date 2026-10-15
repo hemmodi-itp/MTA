@@ -1,0 +1,76 @@
+{
+  "plan": {
+    "tests": [
+      {
+        "name": "log in as alice",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/login"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "username",
+            "value": "alice"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "password",
+            "value": "alice-pass-1"
+          },
+          {
+            "action": "click",
+            "locator_key": "login_button"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "/products"
+          },
+          {
+            "action": "verifyText",
+            "locator_key": "current_user",
+            "value": "alice",
+            "message": "Signed-in user is shown"
+          }
+        ]
+      },
+      {
+        "name": "wrong password is rejected",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/login"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "username",
+            "value": "alice"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "password",
+            "value": "nope"
+          },
+          {
+            "action": "click",
+            "locator_key": "login_button"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "login_error",
+            "message": "An error is shown",
+            "soft": true
+          }
+        ]
+      }
+    ]
+  },
+  "scenario": {
+    "scenario_id": "M01_BS_001",
+    "title": "Login"
+  },
+  "base_url": "http://127.0.0.1:8765",
+  "spec_rel_path": "projects/golden/test_creation/test_scripts/M01/test_legacy_positive.spec.ts"
+}

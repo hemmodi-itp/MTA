@@ -24,8 +24,10 @@ project.yaml: test_types: {api: true}; api_tests: {ownership: [...], roles: {def
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
+from decimal import Decimal
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -117,6 +119,23 @@ def _valid_value(field: str, rules: List[dict]) -> Tuple[Optional[str], bool]:
     return None, False
 
 
+def _places(*bounds, minimum: int = 2, cap: int = 12) -> int:
+    """Decimal places a value needs to state every bound exactly (shortest float repr; at least `minimum`)."""
+    out = minimum
+    for b in bounds:
+        if isinstance(b, (int, float)) and not isinstance(b, bool) and math.isfinite(b):
+            exp = Decimal(repr(float(b))).normalize().as_tuple().exponent
+            out = max(out, min(cap, -exp if isinstance(exp, int) and exp < 0 else 0))
+    return out
+
+
+def _short(s: str) -> str:
+    """"10000.00" -> "10000", "1000.106" stays, "-0.00" -> "0"."""
+    if "." in s:
+        s = s.rstrip("0").rstrip(".")
+    return "0" if s in ("-0", "") else s
+
+
 def _bad_cases(rule: dict, error: str) -> List[Tuple[str, str, str]]:
     """[(label, TS value expression or None-for-missing, expected)] — rejected inputs, and accepted boundaries."""
     k, v, f = rule["kind"], rule["value"], rule["field"]
@@ -132,14 +151,18 @@ def _bad_cases(rule: dict, error: str) -> List[Tuple[str, str, str]]:
             out.append((f"{f} under min length {v['min'] - 1}", f"sized({int(v['min']) - 1})", error))
     elif k == "range":
         integer = v.get("integer")
-        step = 1 if integer else 0.01
-        fmt = (lambda x: json.dumps(str(int(x)))) if integer else (lambda x: json.dumps(f"{x:.2f}"))
+        # decimals from the bounds' own precision (at least 2): max 0.016 is sent as "0.016", never rounded to "0.02"
+        places = 0 if integer else _places(v.get("min"), v.get("max"))
+        step = 1 if integer else 10 ** -places
+        num = (lambda x: str(int(x))) if integer else (lambda x: f"{x:.{places}f}")
+        fmt = lambda x: json.dumps(num(x))                                       # noqa: E731
+        shown = lambda x: _short(num(x))                                         # noqa: E731 — the label states the value sent
         if "min" in v:
             out.append((f"{f} at min {v['min']}", fmt(v["min"]), "ACCEPT"))
-            out.append((f"{f} below min ({v['min'] - step:g})", fmt(v["min"] - step), error))
+            out.append((f"{f} below min ({shown(v['min'] - step)})", fmt(v["min"] - step), error))
         if "max" in v:
             out.append((f"{f} at max {v['max']}", fmt(v["max"]), "ACCEPT"))
-            out.append((f"{f} above max ({v['max'] + step:g})", fmt(v["max"] + step), error))
+            out.append((f"{f} above max ({shown(v['max'] + step)})", fmt(v["max"] + step), error))
     elif k == "options":
         out.append((f"{f} not one of the options", json.dumps("Zz-not-an-option"), error))
     elif k == "pattern":

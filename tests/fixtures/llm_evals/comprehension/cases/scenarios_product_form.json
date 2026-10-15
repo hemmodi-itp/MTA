@@ -1,0 +1,25 @@
+{
+  "task": "scenarios",
+  "module_id": "M03",
+  "module_name": "Product Form",
+  "requirements": [
+    {
+      "requirement_id": "REQ-03",
+      "description": "Signed-in users can add, edit and delete products; Name, Price and Category are validated in the browser and on the server."
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-03.1",
+      "statement": "Name is required; an empty or blank name is rejected with \"Name is required\"."
+    },
+    {
+      "id": "AC-03.2",
+      "statement": "Name must be 1–50 characters; 51 or more is rejected."
+    },
+    {
+      "id": "AC-03.3",
+      "statement": "Price must be zero or more; a negative price is rejected."
+    }
+  ]
+}

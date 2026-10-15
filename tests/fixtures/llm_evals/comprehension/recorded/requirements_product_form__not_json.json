@@ -1,0 +1,12 @@
+{
+  "case": "requirements_product_form",
+  "expect": [
+    "out.status_ok",
+    "raw.json"
+  ],
+  "source": "hand-written: prose instead of JSON twice: extraction degrades to the declared criteria",
+  "replies": [
+    "Sure! Here are the requirements: REQ-03 Product management ...",
+    "Here they are again, in prose."
+  ]
+}

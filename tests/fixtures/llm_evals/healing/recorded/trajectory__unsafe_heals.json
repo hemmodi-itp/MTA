@@ -1,0 +1,79 @@
+{
+  "case": "trajectory",
+  "expect": [
+    "traj.identity_applied",
+    "traj.no_fixed_sleep",
+    "traj.revert_follows_apply",
+    "traj.trace_header_kept"
+  ],
+  "source": "hand-written: a heal below the identity threshold, a patch adding a sleep, a patch that rewrites the AC tags, a revert of something never applied",
+  "audit": [
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "locator_map",
+      "target": "save_button",
+      "test": "M03/a.spec.ts :: t1",
+      "before": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save"
+      },
+      "after": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save product"
+      },
+      "evidence": "locator_key 'save_button' failed live resolution",
+      "confidence": 0.61,
+      "blast_radius": [
+        "M03/a.spec.ts"
+      ],
+      "outcome": "applied",
+      "approver": "auto"
+    },
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "spec_patch",
+      "target": "M03/a.spec.ts",
+      "test": "blank name is rejected",
+      "before": "test(\"blank name is rejected\", { tag: [\"@AC-03.1.2\"], annotation: [{ type: \"tc\", description: \"TC-1\" }] }, async ({ action }) => {\n  await action.click(\"save_button\");\n  await action.verifyText(\"form_error\", \"Name is required\");\n});",
+      "after": "test(\"blank name is rejected\", { tag: [\"@AC-03.1.2\"], annotation: [{ type: \"tc\", description: \"TC-1\" }] }, async ({ action }) => {\n  await action.click(\"save_product_button\");\n  await page.waitForTimeout(2000);\n  await action.verifyText(\"form_error\", \"Name is required\");\n});",
+      "evidence": "locator renamed",
+      "outcome": "applied",
+      "approver": "auto"
+    },
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "spec_patch",
+      "target": "M03/a.spec.ts",
+      "test": "header changed",
+      "before": "test(\"blank name is rejected\", { tag: [\"@AC-03.1.2\"], annotation: [{ type: \"tc\", description: \"TC-1\" }] }, async ({ action }) => {\n  await action.click(\"save_button\");\n  await action.verifyText(\"form_error\", \"Name is required\");\n});",
+      "after": "test(\"blank name is rejected\", { tag: [\"@smoke\"], annotation: [{ type: \"tc\", description: \"TC-1\" }] }, async ({ action }) => {\n  await action.click(\"save_product_button\");\n  await action.verifyText(\"form_error\", \"Name is required\");\n});",
+      "evidence": "locator renamed",
+      "outcome": "applied",
+      "approver": "auto"
+    },
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "locator_map",
+      "target": "name_input",
+      "before": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save product"
+      },
+      "after": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save"
+      },
+      "evidence": "the fix broke previously passing test(s): ['t7']",
+      "outcome": "reverted",
+      "approver": "auto"
+    }
+  ]
+}

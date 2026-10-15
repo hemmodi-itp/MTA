@@ -13,10 +13,11 @@
     { "name": "run_id", "type": "string", "required": true, "description": "Workflow run identifier" }
   ],
   "outputs": [
-    { "name": "traceability", "type": "object", "description": "report['traceability']: summary, acs[], uncovered[] (with reason), unlinked_tests[] (requirements.enabled only)" },
-    { "name": "report_path", "type": "string", "description": "test_execution/reports/json/{ts}_{project}.json" },
+    { "name": "report_path", "type": "string", "description": "test_execution/reports/json/{ts}_{project}.json — includes report['traceability'] (summary, acs[], uncovered[] with reason, unlinked_tests[]; requirements.enabled only), report['quarantine'] and report['quality']" },
     { "name": "html_report_path", "type": "string", "description": "test_execution/reports/html/{ts}_{project}.html" },
-    { "name": "index_path", "type": "string", "description": "test_execution/reports/index.json" }
+    { "name": "failures_log_path", "type": "string", "description": "test_execution/reports/failures/{ts}_{project}.log — failures grouped by root cause" },
+    { "name": "index_path", "type": "string", "description": "test_execution/reports/index.json" },
+    { "name": "quality_gates", "type": "object|null", "description": "Phase 11 gate result {verdict, gates[]} when quality_gates / reporting.enhanced is set, else null" }
   ],
   "dependencies": [],
   "skills": [],

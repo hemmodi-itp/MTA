@@ -1,0 +1,10 @@
+{
+  "task": "design_hints",
+  "module_id": "M03",
+  "unlinked": [
+    {
+      "id": "TC-77348f2a",
+      "title": "product-form on /products/new: all fields valid is accepted"
+    }
+  ]
+}

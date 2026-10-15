@@ -1,0 +1,1371 @@
+{
+  "schema_version": 2,
+  "artifact": "dom_elements",
+  "url": "http://127.0.0.1:8765/products/new",
+  "project": "bench_buggy_shop",
+  "elements": [
+    {
+      "locator_id": "LOC-0001",
+      "tag": "input",
+      "display_text": "Name",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Name",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "name",
+        "id": "name",
+        "name": "name",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "textbox",
+          "name": "Name"
+        },
+        "get_by_label": {
+          "label": "Name"
+        },
+        "get_by_testid": {
+          "testid": "name"
+        }
+      },
+      "technical_locators": {
+        "css": "#name",
+        "xpath": "//*[@id=\"name\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "name"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "name"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "name"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Name"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "textbox",
+            "name": "Name"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "name"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "input",
+      "aria_role": "textbox",
+      "constraints": {
+        "type": "text",
+        "source": "html",
+        "inputmode": null,
+        "autocomplete": null,
+        "required": true,
+        "aria_required": true,
+        "maxlength": null,
+        "minlength": null,
+        "pattern": null,
+        "min": null,
+        "max": null,
+        "step": null,
+        "accept": null,
+        "multiple": false,
+        "readonly": false,
+        "disabled": false,
+        "aria_invalid": null,
+        "default_value": null,
+        "default_checked": null,
+        "options": null,
+        "options_truncated": false,
+        "radio_group": null,
+        "error_container": null,
+        "form": {
+          "id": "product-form",
+          "name": null,
+          "novalidate": true,
+          "method": "post",
+          "action": "/products"
+        },
+        "effective_required": true
+      },
+      "containers": [
+        {
+          "role": "main",
+          "name": null,
+          "kind": "main"
+        }
+      ],
+      "state_hints": {
+        "type": "text"
+      }
+    },
+    {
+      "locator_id": "LOC-0002",
+      "tag": "input",
+      "display_text": "Price",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Price",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "price",
+        "id": "price",
+        "name": "price",
+        "type": "text"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "textbox",
+          "name": "Price"
+        },
+        "get_by_label": {
+          "label": "Price"
+        },
+        "get_by_testid": {
+          "testid": "price"
+        }
+      },
+      "technical_locators": {
+        "css": "#price",
+        "xpath": "//*[@id=\"price\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "price"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "price"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "price"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Price"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "textbox",
+            "name": "Price"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "price"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "input",
+      "aria_role": "textbox",
+      "constraints": {
+        "type": "text",
+        "source": "html",
+        "inputmode": "decimal",
+        "autocomplete": null,
+        "required": true,
+        "aria_required": true,
+        "maxlength": null,
+        "minlength": null,
+        "pattern": null,
+        "min": null,
+        "max": null,
+        "step": null,
+        "accept": null,
+        "multiple": false,
+        "readonly": false,
+        "disabled": false,
+        "aria_invalid": null,
+        "default_value": null,
+        "default_checked": null,
+        "options": null,
+        "options_truncated": false,
+        "radio_group": null,
+        "error_container": null,
+        "form": {
+          "id": "product-form",
+          "name": null,
+          "novalidate": true,
+          "method": "post",
+          "action": "/products"
+        },
+        "effective_required": true
+      },
+      "containers": [
+        {
+          "role": "main",
+          "name": null,
+          "kind": "main"
+        }
+      ],
+      "state_hints": {
+        "type": "text"
+      }
+    },
+    {
+      "locator_id": "LOC-0003",
+      "tag": "button",
+      "display_text": "Save product",
+      "semantic_locators": {
+        "role": "button",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "save-product",
+        "id": "save-product",
+        "name": null,
+        "type": "submit"
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "button",
+          "name": "Save product"
+        },
+        "get_by_text": {
+          "text": "Save product"
+        },
+        "get_by_testid": {
+          "testid": "save-product"
+        }
+      },
+      "technical_locators": {
+        "css": "#save-product",
+        "xpath": "//*[@id=\"save-product\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "save-product"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "save-product"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "save-product"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "button",
+            "name": "Save product"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "navigate_products"
+      ],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "button",
+      "aria_role": "button",
+      "containers": [
+        {
+          "role": "main",
+          "name": null,
+          "kind": "main"
+        }
+      ],
+      "state_hints": {
+        "type": "submit"
+      }
+    },
+    {
+      "locator_id": "LOC-0004",
+      "tag": "select",
+      "display_text": "Choose a category\nBooks\nElectronics\nHome",
+      "semantic_locators": {
+        "role": "combobox",
+        "label": "Category",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "category",
+        "id": "category",
+        "name": "category",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "combobox",
+          "name": "Choose a category\nBooks\nElectronics\nHome"
+        },
+        "get_by_label": {
+          "label": "Category"
+        },
+        "get_by_text": {
+          "text": "Choose a category\nBooks\nElectronics\nHome"
+        },
+        "get_by_testid": {
+          "testid": "category"
+        }
+      },
+      "technical_locators": {
+        "css": "#category",
+        "xpath": "//*[@id=\"category\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "category"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "category"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "category"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Category"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "combobox",
+            "name": "Choose a category\nBooks\nElectronics\nHome"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "category"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "select",
+      "aria_role": "combobox",
+      "constraints": {
+        "type": "select",
+        "source": "html",
+        "inputmode": null,
+        "autocomplete": null,
+        "required": true,
+        "aria_required": true,
+        "maxlength": null,
+        "minlength": null,
+        "pattern": null,
+        "min": null,
+        "max": null,
+        "step": null,
+        "accept": null,
+        "multiple": false,
+        "readonly": false,
+        "disabled": false,
+        "aria_invalid": null,
+        "default_value": "",
+        "default_checked": null,
+        "options": [
+          {
+            "value": "",
+            "text": "Choose a category",
+            "disabled": false,
+            "selected": false
+          },
+          {
+            "value": "Books",
+            "text": "Books",
+            "disabled": false,
+            "selected": false
+          },
+          {
+            "value": "Electronics",
+            "text": "Electronics",
+            "disabled": false,
+            "selected": false
+          },
+          {
+            "value": "Home",
+            "text": "Home",
+            "disabled": false,
+            "selected": false
+          }
+        ],
+        "options_truncated": false,
+        "radio_group": null,
+        "error_container": null,
+        "form": {
+          "id": "product-form",
+          "name": null,
+          "novalidate": true,
+          "method": "post",
+          "action": "/products"
+        },
+        "effective_required": true
+      },
+      "containers": [
+        {
+          "role": "main",
+          "name": null,
+          "kind": "main"
+        }
+      ]
+    },
+    {
+      "locator_id": "LOC-0005",
+      "tag": "textarea",
+      "display_text": "Description (optional)",
+      "semantic_locators": {
+        "role": "textbox",
+        "label": "Description (optional)",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "description",
+        "id": "description",
+        "name": "description",
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "textbox",
+          "name": "Description (optional)"
+        },
+        "get_by_label": {
+          "label": "Description (optional)"
+        },
+        "get_by_testid": {
+          "testid": "description"
+        }
+      },
+      "technical_locators": {
+        "css": "#description",
+        "xpath": "//*[@id=\"description\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "description"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "description"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "description"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "label",
+          "value": {
+            "label": "Description (optional)"
+          },
+          "score": 130,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "textbox",
+            "name": "Description (optional)"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "name",
+          "value": {
+            "name": "description"
+          },
+          "score": 100,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "textarea",
+      "aria_role": "textbox",
+      "constraints": {
+        "type": "textarea",
+        "source": "html",
+        "inputmode": null,
+        "autocomplete": null,
+        "required": false,
+        "aria_required": false,
+        "maxlength": null,
+        "minlength": null,
+        "pattern": null,
+        "min": null,
+        "max": null,
+        "step": null,
+        "accept": null,
+        "multiple": false,
+        "readonly": false,
+        "disabled": false,
+        "aria_invalid": null,
+        "default_value": null,
+        "default_checked": null,
+        "options": null,
+        "options_truncated": false,
+        "radio_group": null,
+        "error_container": null,
+        "form": {
+          "id": "product-form",
+          "name": null,
+          "novalidate": true,
+          "method": "post",
+          "action": "/products"
+        },
+        "effective_required": false
+      },
+      "containers": [
+        {
+          "role": "main",
+          "name": null,
+          "kind": "main"
+        }
+      ]
+    },
+    {
+      "locator_id": "LOC-0006",
+      "tag": "a",
+      "display_text": "Buggy Shop",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "brand-link",
+        "id": "brand-link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Buggy Shop"
+        },
+        "get_by_text": {
+          "text": "Buggy Shop"
+        },
+        "get_by_testid": {
+          "testid": "brand-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#brand-link",
+        "xpath": "//*[@id=\"brand-link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "brand-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "brand-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "brand-link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Buggy Shop"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "a",
+      "aria_role": "link",
+      "containers": [
+        {
+          "role": "banner",
+          "name": null,
+          "kind": "header"
+        }
+      ],
+      "href": "http://127.0.0.1:8765/products"
+    },
+    {
+      "locator_id": "LOC-0007",
+      "tag": "a",
+      "display_text": "Products",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "nav-products",
+        "id": "nav-products",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Products"
+        },
+        "get_by_text": {
+          "text": "Products"
+        },
+        "get_by_testid": {
+          "testid": "nav-products"
+        }
+      },
+      "technical_locators": {
+        "css": "#nav-products",
+        "xpath": "//*[@id=\"nav-products\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "nav-products"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "nav-products"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "nav-products"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Products"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "navigate_products"
+      ],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "a",
+      "aria_role": "link",
+      "containers": [
+        {
+          "role": "navigation",
+          "name": "Main",
+          "kind": "nav"
+        },
+        {
+          "role": "banner",
+          "name": null,
+          "kind": "header"
+        }
+      ],
+      "href": "http://127.0.0.1:8765/products"
+    },
+    {
+      "locator_id": "LOC-0008",
+      "tag": "a",
+      "display_text": "Add product",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "nav-new-product",
+        "id": "nav-new-product",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Add product"
+        },
+        "get_by_text": {
+          "text": "Add product"
+        },
+        "get_by_testid": {
+          "testid": "nav-new-product"
+        }
+      },
+      "technical_locators": {
+        "css": "#nav-new-product",
+        "xpath": "//*[@id=\"nav-new-product\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "nav-new-product"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "nav-new-product"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "nav-new-product"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Add product"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "navigate_products"
+      ],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "a",
+      "aria_role": "link",
+      "containers": [
+        {
+          "role": "navigation",
+          "name": "Main",
+          "kind": "nav"
+        },
+        {
+          "role": "banner",
+          "name": null,
+          "kind": "header"
+        }
+      ],
+      "href": "http://127.0.0.1:8765/products/new"
+    },
+    {
+      "locator_id": "LOC-0009",
+      "tag": "a",
+      "display_text": "Cart",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "nav-cart",
+        "id": "nav-cart",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Cart"
+        },
+        "get_by_text": {
+          "text": "Cart"
+        },
+        "get_by_testid": {
+          "testid": "nav-cart"
+        }
+      },
+      "technical_locators": {
+        "css": "#nav-cart",
+        "xpath": "//*[@id=\"nav-cart\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "nav-cart"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "nav-cart"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "nav-cart"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Cart"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [
+        "add_to_cart"
+      ],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "a",
+      "aria_role": "link",
+      "containers": [
+        {
+          "role": "navigation",
+          "name": "Main",
+          "kind": "nav"
+        },
+        {
+          "role": "banner",
+          "name": null,
+          "kind": "header"
+        }
+      ],
+      "href": "http://127.0.0.1:8765/cart"
+    },
+    {
+      "locator_id": "LOC-0010",
+      "tag": "a",
+      "display_text": "Upload",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "nav-upload",
+        "id": "nav-upload",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Upload"
+        },
+        "get_by_text": {
+          "text": "Upload"
+        },
+        "get_by_testid": {
+          "testid": "nav-upload"
+        }
+      },
+      "technical_locators": {
+        "css": "#nav-upload",
+        "xpath": "//*[@id=\"nav-upload\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "nav-upload"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "nav-upload"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "nav-upload"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Upload"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "a",
+      "aria_role": "link",
+      "containers": [
+        {
+          "role": "navigation",
+          "name": "Main",
+          "kind": "nav"
+        },
+        {
+          "role": "banner",
+          "name": null,
+          "kind": "header"
+        }
+      ],
+      "href": "http://127.0.0.1:8765/upload"
+    },
+    {
+      "locator_id": "LOC-0011",
+      "tag": "a",
+      "display_text": "Log out",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "logout-link",
+        "id": "logout-link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Log out"
+        },
+        "get_by_text": {
+          "text": "Log out"
+        },
+        "get_by_testid": {
+          "testid": "logout-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#logout-link",
+        "xpath": "//*[@id=\"logout-link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "logout-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "logout-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "logout-link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Log out"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "a",
+      "aria_role": "link",
+      "containers": [
+        {
+          "role": "navigation",
+          "name": "Main",
+          "kind": "nav"
+        },
+        {
+          "role": "banner",
+          "name": null,
+          "kind": "header"
+        }
+      ],
+      "href": "http://127.0.0.1:8765/logout"
+    },
+    {
+      "locator_id": "LOC-0012",
+      "tag": "a",
+      "display_text": "Help",
+      "semantic_locators": {
+        "role": "link",
+        "label": "",
+        "placeholder": null,
+        "aria_label": null,
+        "title": null
+      },
+      "attribute_locators": {
+        "testid": "footer-help-link",
+        "id": "footer-help-link",
+        "name": null,
+        "type": null
+      },
+      "playwright_locators": {
+        "get_by_role": {
+          "role": "link",
+          "name": "Help"
+        },
+        "get_by_text": {
+          "text": "Help"
+        },
+        "get_by_testid": {
+          "testid": "footer-help-link"
+        }
+      },
+      "technical_locators": {
+        "css": "#footer-help-link",
+        "xpath": "//*[@id=\"footer-help-link\"]"
+      },
+      "recommended_locator": {
+        "type": "testid",
+        "value": {
+          "testid": "footer-help-link"
+        },
+        "score": 150,
+        "unique": true,
+        "match_count": 1
+      },
+      "locator_candidates": [
+        {
+          "type": "testid",
+          "value": {
+            "testid": "footer-help-link"
+          },
+          "score": 150,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "id",
+          "value": {
+            "id": "footer-help-link"
+          },
+          "score": 140,
+          "unique": true,
+          "match_count": 1
+        },
+        {
+          "type": "role",
+          "value": {
+            "role": "link",
+            "name": "Help"
+          },
+          "score": 110,
+          "unique": true,
+          "match_count": 1
+        }
+      ],
+      "quality": {
+        "visible": true,
+        "enabled": true
+      },
+      "intent_hints": [],
+      "capture_mode": "deep",
+      "capture_reason": "classic",
+      "tag_name": "a",
+      "aria_role": "link",
+      "containers": [
+        {
+          "role": "contentinfo",
+          "name": null,
+          "kind": "footer"
+        }
+      ],
+      "href": "http://127.0.0.1:8765/help"
+    }
+  ],
+  "scan": {
+    "mode": "deep",
+    "duration_s": 0.03,
+    "frames_scanned": 1,
+    "frames_skipped": [],
+    "shadow_roots": 0,
+    "pointer_capped": false,
+    "duplicate_role_names": 0,
+    "scoped_verified": 0,
+    "element_count": 12,
+    "limitations": [
+      "closed shadow roots are not reachable from page scripts"
+    ]
+  }
+}

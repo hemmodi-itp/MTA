@@ -1,0 +1,89 @@
+{
+  "case": "trajectory",
+  "expect": [],
+  "source": "hand-written: a refusal, an identity-checked heal, a valid patch, a revert",
+  "audit": [
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "locator_map",
+      "target": "category_select",
+      "test": "M03/a.spec.ts :: t1",
+      "before": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save"
+      },
+      "after": null,
+      "evidence": "best candidate scores 0.58 < 0.75 — not the same element; human review",
+      "confidence": 0.58,
+      "outcome": "refused",
+      "approver": "pending"
+    },
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "locator_map",
+      "target": "save_button",
+      "test": "M03/a.spec.ts :: t1",
+      "before": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save"
+      },
+      "after": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save product"
+      },
+      "evidence": "locator_key 'save_button' failed live resolution",
+      "confidence": 0.91,
+      "blast_radius": [
+        "M03/a.spec.ts"
+      ],
+      "outcome": "applied",
+      "approver": "auto"
+    },
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "spec_patch",
+      "target": "M03/a.spec.ts",
+      "test": "blank name is rejected",
+      "before": "test(\"blank name is rejected\", { tag: [\"@AC-03.1.2\"], annotation: [{ type: \"tc\", description: \"TC-1\" }] }, async ({ action }) => {\n  await action.click(\"save_button\");\n  await action.verifyText(\"form_error\", \"Name is required\");\n});",
+      "after": "test(\"blank name is rejected\", { tag: [\"@AC-03.1.2\"], annotation: [{ type: \"tc\", description: \"TC-1\" }] }, async ({ action }) => {\n  await action.click(\"save_product_button\");\n  await action.verifyText(\"form_error\", \"Name is required\");\n});",
+      "evidence": "locator renamed",
+      "outcome": "applied",
+      "approver": "auto"
+    },
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "locator_map",
+      "target": "save_button",
+      "before": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save product"
+      },
+      "after": {
+        "type": "role",
+        "locator": "button",
+        "name": "Save"
+      },
+      "evidence": "the fix broke previously passing test(s): ['t7']",
+      "outcome": "reverted",
+      "approver": "auto"
+    },
+    {
+      "run_id": "r1",
+      "mode": "auto",
+      "kind": "locator_map",
+      "target": "price_input",
+      "evidence": "ambiguous: two candidates score 0.82 and 0.79 — human review",
+      "confidence": 0.82,
+      "outcome": "refused",
+      "approver": "pending"
+    }
+  ]
+}

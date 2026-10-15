@@ -1,0 +1,301 @@
+{
+  "date": "2026-10-15",
+  "max_mutants": 25,
+  "time_box_min": 30.0,
+  "seconds": 880,
+  "targets": {
+    "bva": {
+      "file": "tools/test_design/bva.py",
+      "functions": [],
+      "mutants": 25,
+      "killed": 19,
+      "survived": 6,
+      "score_pct": 76.0,
+      "not_run": 0,
+      "survivors": [
+        {
+          "index": 48,
+          "function": "numeric_points",
+          "line": 52,
+          "description": "0 -> 1",
+          "status": "survived",
+          "seconds": 11.6
+        },
+        {
+          "index": 78,
+          "function": "date_points",
+          "line": 81,
+          "description": "2 -> 3",
+          "status": "survived",
+          "seconds": 15.6
+        },
+        {
+          "index": 90,
+          "function": "_step_for",
+          "line": 95,
+          "description": "negate condition",
+          "status": "survived",
+          "seconds": 13.2
+        },
+        {
+          "index": 96,
+          "function": "fmt_number",
+          "line": 103,
+          "description": "Lt -> LtE",
+          "status": "survived",
+          "seconds": 12.3
+        },
+        {
+          "index": 126,
+          "function": "generate",
+          "line": 199,
+          "description": "Eq -> NotEq",
+          "status": "survived",
+          "seconds": 14.0
+        },
+        {
+          "index": 144,
+          "function": "generate",
+          "line": 200,
+          "description": "0 -> 1",
+          "status": "survived",
+          "seconds": 16.7
+        }
+      ],
+      "tests": [
+        "tests/unit/test_test_design_bva.py",
+        "tests/unit/test_test_design_generators.py",
+        "tests/unit/test_test_design_pipeline.py"
+      ]
+    },
+    "ep": {
+      "file": "tools/test_design/ep.py",
+      "functions": [],
+      "mutants": 25,
+      "killed": 13,
+      "survived": 12,
+      "score_pct": 52.0,
+      "not_run": 0,
+      "survivors": [
+        {
+          "index": 16,
+          "function": "invalid_classes",
+          "line": 61,
+          "description": "Eq -> NotEq",
+          "status": "survived",
+          "seconds": 14.8
+        },
+        {
+          "index": 20,
+          "function": "invalid_classes",
+          "line": 35,
+          "description": "Eq -> NotEq",
+          "status": "survived",
+          "seconds": 14.6
+        },
+        {
+          "index": 28,
+          "function": "invalid_classes",
+          "line": 65,
+          "description": "IsNot -> Is",
+          "status": "survived",
+          "seconds": 14.2
+        },
+        {
+          "index": 32,
+          "function": "invalid_classes",
+          "line": 40,
+          "description": "GtE -> Gt",
+          "status": "survived",
+          "seconds": 18.1
+        },
+        {
+          "index": 44,
+          "function": "invalid_classes",
+          "line": 44,
+          "description": "1 -> 2",
+          "status": "survived",
+          "seconds": 12.6
+        },
+        {
+          "index": 48,
+          "function": "_not_matching",
+          "line": 80,
+          "description": "drop `not`",
+          "status": "survived",
+          "seconds": 12.8
+        },
+        {
+          "index": 52,
+          "function": "valid_classes",
+          "line": 96,
+          "description": "negate condition",
+          "status": "survived",
+          "seconds": 12.7
+        },
+        {
+          "index": 56,
+          "function": "valid_classes",
+          "line": 96,
+          "description": "Eq -> NotEq",
+          "status": "survived",
+          "seconds": 15.0
+        },
+        {
+          "index": 64,
+          "function": "valid_classes",
+          "line": 95,
+          "description": "Or -> And",
+          "status": "survived",
+          "seconds": 16.2
+        },
+        {
+          "index": 68,
+          "function": "_level",
+          "line": 104,
+          "description": "negate condition",
+          "status": "survived",
+          "seconds": 16.0
+        },
+        {
+          "index": 88,
+          "function": "valid_known",
+          "line": 122,
+          "description": "Is -> IsNot",
+          "status": "survived",
+          "seconds": 20.3
+        },
+        {
+          "index": 92,
+          "function": "generate",
+          "line": 131,
+          "description": "And -> Or",
+          "status": "survived",
+          "seconds": 18.4
+        }
+      ],
+      "tests": [
+        "tests/unit/test_test_design_generators.py",
+        "tests/unit/test_test_design_pipeline.py"
+      ]
+    },
+    "triage": {
+      "file": "tools/triage/triage.py",
+      "functions": [],
+      "mutants": 25,
+      "killed": 21,
+      "survived": 4,
+      "score_pct": 84.0,
+      "not_run": 0,
+      "survivors": [
+        {
+          "index": 0,
+          "function": "_spec_key",
+          "line": 66,
+          "description": "GtE -> Gt",
+          "status": "survived",
+          "seconds": 9.0
+        },
+        {
+          "index": 52,
+          "function": "classify",
+          "line": 171,
+          "description": "Or -> And",
+          "status": "survived",
+          "seconds": 8.0
+        },
+        {
+          "index": 76,
+          "function": "classify",
+          "line": 184,
+          "description": "3 -> 4",
+          "status": "survived",
+          "seconds": 8.1
+        },
+        {
+          "index": 88,
+          "function": "_history_note",
+          "line": 261,
+          "description": "negate condition",
+          "status": "survived",
+          "seconds": 10.5
+        }
+      ],
+      "tests": [
+        "tests/unit/test_triage_and_safe_healing.py",
+        "tests/unit/test_phase6_safe_healing.py"
+      ]
+    },
+    "linter": {
+      "file": "tools/test_creation/assertion_linter.py",
+      "functions": [],
+      "mutants": 25,
+      "killed": 19,
+      "survived": 6,
+      "score_pct": 76.0,
+      "not_run": 0,
+      "survivors": [
+        {
+          "index": 36,
+          "function": "_is_submit",
+          "line": 92,
+          "description": "And -> Or",
+          "status": "survived",
+          "seconds": 6.4
+        },
+        {
+          "index": 60,
+          "function": "lint_test",
+          "line": 123,
+          "description": "40 -> 41",
+          "status": "survived",
+          "seconds": 4.2
+        },
+        {
+          "index": 64,
+          "function": "lint_test",
+          "line": 161,
+          "description": "0 -> 1",
+          "status": "survived",
+          "seconds": 4.4
+        },
+        {
+          "index": 76,
+          "function": "lint_test",
+          "line": 132,
+          "description": "35 -> 36",
+          "status": "survived",
+          "seconds": 4.3
+        },
+        {
+          "index": 80,
+          "function": "lint_test",
+          "line": 151,
+          "description": "35 -> 36",
+          "status": "survived",
+          "seconds": 4.3
+        },
+        {
+          "index": 84,
+          "function": "lint_test",
+          "line": 111,
+          "description": "Or -> And",
+          "status": "survived",
+          "seconds": 4.0
+        }
+      ],
+      "tests": [
+        "tests/unit/test_assertion_linter.py",
+        "tests/unit/test_phase5_oracles.py"
+      ]
+    }
+  },
+  "total": {
+    "mutants": 100,
+    "killed": 72,
+    "survived": 28,
+    "score_pct": 72.0,
+    "not_run": 0
+  },
+  "restored": true
+}

@@ -104,20 +104,24 @@ def restore_leftover(path: Path) -> bool:
 
 
 def run(file: str, functions: Sequence[str], test: Callable[[], bool], max_mutants: Optional[int] = None,
-        log: Callable[[str], None] = print) -> dict:
-    """test() -> True when the suite PASSES. Returns {score, killed, survived, mutants: [...]}."""
+        log: Callable[[str], None] = print, deadline: Optional[float] = None) -> dict:
+    """test() -> True when the suite PASSES. Returns {score, killed, survived, mutants: [...]}.
+    deadline (time.monotonic() value): no new mutant starts after it; the rest are counted as `not_run`."""
     path = Path(file)
     restore_leftover(path)
     original = path.read_text(encoding="utf-8")
     backup = path.with_name(path.name + BACKUP_SUFFIX)
     shutil.copyfile(path, backup)
     results: List[Mutant] = []
+    todo: List[tuple] = []
     try:
         todo = mutants(original, functions)
         if max_mutants:
             step = max(1, len(todo) // max_mutants)
             todo = todo[::step][:max_mutants]            # spread over the functions, not just the first lines
         for m, src in todo:
+            if deadline is not None and time.monotonic() > deadline:
+                break
             path.write_text(src, encoding="utf-8")
             t0 = time.monotonic()
             try:
@@ -140,6 +144,7 @@ def run(file: str, functions: Sequence[str], test: Callable[[], bool], max_mutan
     scored = killed + len(survived)
     return {"file": file, "functions": list(functions), "mutants": len(results), "killed": killed,
             "survived": len(survived), "score_pct": round(100.0 * killed / scored, 1) if scored else None,
+            "not_run": len(todo) - len(results),
             "survivors": [asdict(m) for m in survived], "results": [asdict(m) for m in results]}
 
 

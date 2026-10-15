@@ -1,0 +1,262 @@
+{
+  "plan": {
+    "tests": [
+      {
+        "name": "every action renders",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/x"
+          },
+          {
+            "action": "click",
+            "locator_key": "k"
+          },
+          {
+            "action": "doubleClick",
+            "locator_key": "k"
+          },
+          {
+            "action": "hover",
+            "locator_key": "k"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "k",
+            "value": "v"
+          },
+          {
+            "action": "clearAndEnterText",
+            "locator_key": "k",
+            "value": "v"
+          },
+          {
+            "action": "pressKey",
+            "value": "Enter"
+          },
+          {
+            "action": "pressKey",
+            "locator_key": "k",
+            "value": "Tab"
+          },
+          {
+            "action": "checkCheckbox",
+            "locator_key": "k"
+          },
+          {
+            "action": "uncheckCheckbox",
+            "locator_key": "k"
+          },
+          {
+            "action": "selectDropdownByText",
+            "locator_key": "k",
+            "value": "Books"
+          },
+          {
+            "action": "selectDropdownByValue",
+            "locator_key": "k",
+            "value": "books"
+          },
+          {
+            "action": "scrollIntoView",
+            "locator_key": "k"
+          },
+          {
+            "action": "waitForElement",
+            "locator_key": "k",
+            "value": "visible"
+          },
+          {
+            "action": "waitForTimeout",
+            "value": 250
+          },
+          {
+            "action": "uploadFile",
+            "locator_key": "k",
+            "value": "fixtures/a.png"
+          },
+          {
+            "action": "verifyVisible",
+            "locator_key": "k"
+          },
+          {
+            "action": "verifyHidden",
+            "locator_key": "k",
+            "message": "m"
+          },
+          {
+            "action": "verifyText",
+            "locator_key": "k",
+            "value": "t"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "k",
+            "value": "t",
+            "soft": true
+          },
+          {
+            "action": "verifyValue",
+            "locator_key": "k",
+            "value": "v",
+            "message": "m"
+          },
+          {
+            "action": "verifyEnabled",
+            "locator_key": "k"
+          },
+          {
+            "action": "verifyDisabled",
+            "locator_key": "k"
+          },
+          {
+            "action": "verifyChecked",
+            "locator_key": "k",
+            "soft": true
+          },
+          {
+            "action": "verifyCount",
+            "locator_key": "k",
+            "value": 3
+          },
+          {
+            "action": "verifyUrl",
+            "value": "/x"
+          },
+          {
+            "action": "verifyUrlContains",
+            "value": "x"
+          },
+          {
+            "action": "verifyTitle",
+            "value": "T"
+          },
+          {
+            "action": "verifyTitleContains",
+            "value": "T"
+          },
+          {
+            "action": "verifyNoPageErrors"
+          },
+          {
+            "action": "takeScreenshot",
+            "value": "shot"
+          },
+          {
+            "action": "goBack"
+          },
+          {
+            "action": "reload"
+          },
+          {
+            "action": "verifyRequest",
+            "method": "POST",
+            "urlPattern": "/api/x",
+            "status": 201,
+            "bodyContains": "ok"
+          },
+          {
+            "action": "verifyNoRequest",
+            "method": "delete",
+            "urlPattern": "/api/x",
+            "message": "m"
+          },
+          {
+            "action": "verifyFieldInvalid",
+            "locator_key": "k"
+          },
+          {
+            "action": "verifyNoDialog"
+          },
+          {
+            "action": "verifyNotInjected",
+            "payloadMarker": "mta-marker-1"
+          },
+          {
+            "action": "verifyNoNewConsoleErrors",
+            "message": "m"
+          },
+          {
+            "action": "verifyValidationMessage",
+            "locator_key": "k",
+            "value": "Please fill out this field."
+          },
+          {
+            "action": "verifyAriaSnapshot",
+            "locator_key": "k",
+            "value": "- heading \"Shop\""
+          },
+          {
+            "action": "rememberCount",
+            "locator_key": "k"
+          },
+          {
+            "action": "verifyCountChangedBy",
+            "locator_key": "k",
+            "delta": -1
+          },
+          {
+            "action": "verifyDownload",
+            "locator_key": "k",
+            "nameRegex": "\\.csv$",
+            "minBytes": 10
+          },
+          {
+            "action": "verifyNewTab",
+            "locator_key": "k",
+            "urlContains": "/help"
+          },
+          {
+            "action": "verifyStorage",
+            "store": "cookie",
+            "key": "session",
+            "rule": "httpOnly"
+          },
+          {
+            "action": "verifyResponseSchema",
+            "urlPattern": "/api/products",
+            "schema": {
+              "type": "array"
+            }
+          },
+          {
+            "action": "verifyApiState",
+            "url": "/api/products/1",
+            "expect": {
+              "status": 200,
+              "path": "name",
+              "equals": "X",
+              "junk": 1
+            }
+          },
+          {
+            "action": "mockRoute",
+            "urlPattern": "**/api/slow",
+            "status": 503,
+            "delayMs": 100
+          },
+          {
+            "action": "setOffline",
+            "value": true
+          },
+          {
+            "action": "setClock",
+            "value": "2026-01-01T00:00:00Z"
+          },
+          {
+            "action": "dragAndDrop",
+            "locator_key": "a",
+            "target_locator_key": "b"
+          }
+        ]
+      }
+    ]
+  },
+  "scenario": {
+    "scenario_id": "M09_BS_001",
+    "title": "Action catalogue"
+  },
+  "base_url": "http://127.0.0.1:8765",
+  "spec_rel_path": "projects/golden/test_creation/test_scripts/M01/test_every_action.spec.ts"
+}

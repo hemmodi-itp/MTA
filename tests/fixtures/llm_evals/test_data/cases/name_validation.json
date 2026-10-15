@@ -1,0 +1,26 @@
+{
+  "task": "test_data",
+  "scenario": {
+    "scenario_id": "M03_BS_002",
+    "title": "Validation Failure for Blank or Oversized Product Name",
+    "business_objective": "Only products with a valid name are stored",
+    "actor": "Customer",
+    "preconditions": [
+      "The customer is signed in"
+    ],
+    "steps": [
+      "Open Add product",
+      "Leave Name blank or enter 51 characters",
+      "Fill Price and Category",
+      "Press Save product"
+    ],
+    "expected_result": "The product is not saved and \"Name is required\" / \"Name must be at most 50 characters\" is shown",
+    "ac_ids": [
+      "AC-03.1.2",
+      "AC-03.2.3"
+    ]
+  },
+  "max_negative_cases": 1,
+  "max_boundary_cases": 1,
+  "max_data_iterations": 2
+}

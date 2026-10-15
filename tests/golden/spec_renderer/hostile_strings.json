@@ -1,0 +1,39 @@
+{
+  "plan": {
+    "tests": [
+      {
+        "name": "quotes \" ' ` ${x} */ </script> \\ and ünïcödé ✓\nnew line",
+        "type": "negative",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/search?q=\"a\"&b=`c`"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "q",
+            "value": "${process.exit(1)}"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "q",
+            "value": "'); DROP TABLE x; --"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "results",
+            "value": "*/ alert(1) /*",
+            "message": "line1\nline2\ttab \\u2028   sep"
+          }
+        ]
+      }
+    ]
+  },
+  "scenario": {
+    "scenario_id": "M07_BS_003",
+    "title": "Search \"weird\" `input`"
+  },
+  "base_url": "http://127.0.0.1:8765",
+  "spec_rel_path": "projects/golden/test_creation/test_scripts/M01/test_hostile_strings.spec.ts",
+  "test_steps": true
+}

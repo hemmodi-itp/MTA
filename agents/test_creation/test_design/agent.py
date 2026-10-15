@@ -113,7 +113,7 @@ class TestDesignAgent(BaseAgent):
         if doc["llm"]["status"] == "degraded":
             warnings.append("LLM interpretation degraded for some modules — deterministic cases only there")
         return dict(
-            base, status="partial" if warnings else "success", warnings=warnings,
+            base, status="partial" if warnings else "success", skipped=False, warnings=warnings,
             output={"test_cases": path, "locator_keys_added": added},
             profile=profile, summary=s, budget=b, conflicts=len(doc["conflicts"]), llm=doc["llm"]["status"],
         )

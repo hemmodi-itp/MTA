@@ -1,0 +1,6 @@
+{
+  "task": "requirements",
+  "module_id": "M03",
+  "module_label": "M03 — Product Form",
+  "brd": "# Buggy Shop — Product Form (excerpt)\n\n### REQ-03 Product management\n\nSigned-in users can add, edit and delete products. The form has Name, Price, Category and an\noptional Description. Validation runs in the browser and is always enforced again on the server\n(including for the JSON API).\n\n- AC-03.1: Name is required; an empty or blank name is rejected with \"Name is required\".\n- AC-03.2: Name must be 1–50 characters; a name of exactly 50 characters is accepted and 51 or more is rejected with \"Name must be at most 50 characters\".\n- AC-03.3: Price is required, numeric with at most 2 decimals, and must be zero or more; a negative price is rejected with \"Price must be zero or more\". The server enforces this too, including `POST /api/products`.\n- AC-03.4: Category must be one of Books, Electronics or Home (\"Please choose a category\"); Description is optional and at most 500 characters (\"Description must be at most 500 characters\").\n"
+}

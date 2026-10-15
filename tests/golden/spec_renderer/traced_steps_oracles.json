@@ -1,0 +1,115 @@
+{
+  "plan": {
+    "tests": [
+      {
+        "name": "price empty is rejected",
+        "type": "negative",
+        "priority": "P0",
+        "tc_id": "M03_TC_005",
+        "ac_ids": [
+          "AC-03.3.1"
+        ],
+        "req_ids": [
+          "REQ-03"
+        ],
+        "technique": "ep",
+        "case_id": "TC-a21f1f4b",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/products/new"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "password",
+            "value": "s3cret!"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "price",
+            "value": ""
+          },
+          {
+            "action": "click",
+            "locator_key": "save_product_button"
+          },
+          {
+            "action": "verifyRequest",
+            "method": "post",
+            "urlPattern": "/products",
+            "status": "4xx"
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "product_form_errors",
+            "value": "Price is required",
+            "message": "Error message should state that price is required"
+          }
+        ]
+      },
+      {
+        "name": "boundary price 0.01 is accepted",
+        "type": "boundary",
+        "priority": "P1",
+        "tc_id": "M03_TC_006",
+        "ac_ids": [
+          "AC-03.3.2",
+          "AC-03.1"
+        ],
+        "req_ids": [
+          "REQ-03"
+        ],
+        "technique": "bva",
+        "case_id": "TC-0bd2",
+        "steps": [
+          {
+            "action": "navigate",
+            "value": "/products/new"
+          },
+          {
+            "action": "rememberCount",
+            "locator_key": "product_rows"
+          },
+          {
+            "action": "enterText",
+            "locator_key": "price",
+            "value": "0.01"
+          },
+          {
+            "action": "click",
+            "locator_key": "save_product_button"
+          },
+          {
+            "action": "reloadAndVerify",
+            "steps": [
+              {
+                "action": "verifyCountChangedBy",
+                "locator_key": "product_rows",
+                "delta": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "scenario": {
+    "scenario_id": "M03_BS_001",
+    "title": "Create product"
+  },
+  "base_url": "http://127.0.0.1:8765",
+  "spec_rel_path": "projects/golden/test_creation/test_scripts/M01/test_traced_steps_oracles.spec.ts",
+  "test_steps": true,
+  "oracles": true,
+  "locator_map": {
+    "password": {
+      "type": "input",
+      "attributes": {
+        "type": "password"
+      }
+    },
+    "price": {
+      "type": "input"
+    }
+  }
+}

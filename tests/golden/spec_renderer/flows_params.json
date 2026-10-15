@@ -1,0 +1,96 @@
+{
+  "plan": {
+    "tests": [
+      {
+        "name": "checkout via flow",
+        "type": "positive",
+        "steps": [
+          {
+            "action": "useFlow",
+            "flow": "login",
+            "args": {
+              "username": "alice",
+              "password": "alice-pass-1"
+            }
+          },
+          {
+            "action": "useFlow",
+            "flow": "addToCart",
+            "args": {
+              "productId": "3"
+            }
+          },
+          {
+            "action": "verifyContainsText",
+            "locator_key": "cart_count",
+            "value": "1"
+          }
+        ]
+      }
+    ]
+  },
+  "scenario": {
+    "scenario_id": "M05_BS_002",
+    "title": "Checkout"
+  },
+  "base_url": "http://127.0.0.1:8765",
+  "spec_rel_path": "projects/golden/test_creation/test_scripts/M01/test_flows_params.spec.ts",
+  "project": "golden",
+  "flows_meta": {
+    "login": [
+      "username",
+      "password"
+    ],
+    "addToCart": [
+      "productId"
+    ]
+  },
+  "flows": {
+    "login": {
+      "params": [
+        "username",
+        "password"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "value": "/login"
+        },
+        {
+          "action": "enterText",
+          "locator_key": "username",
+          "value": "{{username}}"
+        },
+        {
+          "action": "enterText",
+          "locator_key": "password",
+          "value": "{{password}}"
+        },
+        {
+          "action": "click",
+          "locator_key": "login_button"
+        }
+      ]
+    },
+    "addToCart": {
+      "params": [
+        "productId"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "value": "/products"
+        },
+        {
+          "action": "click",
+          "locator_key": "add_to_cart"
+        },
+        {
+          "action": "verifyText",
+          "locator_key": "flash",
+          "value": "{{notAParam}}"
+        }
+      ]
+    }
+  }
+}

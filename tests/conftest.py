@@ -51,6 +51,10 @@ _ALIASED_CONSTANTS = [
     ("agents.test_creation.semantic_map.agent", "_ASSETS_BASE"),
     ("tools.state.project_state_manager", "_ASSETS_BASE"),
     ("tools.discovery.record_cli", "_ASSETS_BASE"),
+    ("agents.test_execution.triage.agent", "_ASSETS_BASE"),
+    ("tools.discovery.dom_intents", "_ASSETS_BASE"),
+    ("tools.discovery.dom_scan", "_ASSETS_BASE"),
+    ("tools.discovery.interactive_dom_scan", "_ASSETS_BASE"),
 ]
 
 # Test files that exercise only the MTA evaluation stack (api/pipeline.py →

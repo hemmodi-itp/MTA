@@ -1,0 +1,10 @@
+{
+  "case": "requirements_product_form",
+  "expect": [
+    "raw.declared_kept"
+  ],
+  "source": "hand-written: the reply silently drops AC-03.4 (the extractor keeps declared items, so only the raw check sees it)",
+  "replies": [
+    "{\n  \"requirements\": [\n    {\n      \"id\": \"REQ-03\",\n      \"title\": \"Product management\",\n      \"description\": \"Signed-in users add, edit and delete products; validation in the browser and on the server.\",\n      \"source_quote\": \"Signed-in users can add, edit and delete products.\",\n      \"priority\": \"P1\",\n      \"acceptance_criteria\": [\n        {\n          \"id\": \"AC-03.1\",\n          \"statement\": \"Name is required; an empty or blank name is rejected with \\\"Name is required\\\".\",\n          \"source_quote\": \"Name is required; an empty or blank name is rejected with \\\"Name is required\\\".\",\n          \"testability\": \"ui\",\n          \"testability_reason\": \"visible in the product form\",\n          \"priority\": \"P1\",\n          \"risk_tags\": [],\n          \"split\": [\n            \"Name is required.\",\n            \"An empty or blank name is rejected with \\\"Name is required\\\".\"\n          ]\n        },\n        {\n          \"id\": \"AC-03.2\",\n          \"statement\": \"Name must be 1–50 characters.\",\n          \"source_quote\": \"Name must be 1–50 characters; a name of exactly 50 characters is accepted\",\n          \"testability\": \"ui\",\n          \"testability_reason\": \"visible in the product form\",\n          \"priority\": \"P1\",\n          \"risk_tags\": [],\n          \"split\": []\n        },\n        {\n          \"id\": \"AC-03.3\",\n          \"statement\": \"Price is required, numeric with at most 2 decimals, and must be zero or more.\",\n          \"source_quote\": \"Price is required, numeric with at most 2 decimals, and must be zero or more\",\n          \"testability\": \"ui\",\n          \"testability_reason\": \"visible in the product form\",\n          \"priority\": \"P1\",\n          \"risk_tags\": [],\n          \"split\": []\n        }\n      ]\n    }\n  ]\n}"
+  ]
+}

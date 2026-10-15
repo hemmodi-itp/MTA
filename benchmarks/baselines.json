@@ -1,0 +1,41 @@
+{
+  "e2e": {
+    "from": "2026-10-13_buggy_shop_final.json",
+    "metrics": {
+      "detection_rate": 0.1364,
+      "false_failure_rate": 0.1803,
+      "flaky_rate": 0.0164,
+      "ac_extraction_recall": 0.6296
+    }
+  },
+  "phase7_nfr": {
+    "from": "2026-10-14_buggy_shop_phase7_nfr.json",
+    "metrics": {
+      "detection_rate": 1.0,
+      "false_failure_rate": 0.1058
+    }
+  },
+  "phase6_healing": {
+    "from": "2026-10-14_buggy_shop_phase6_healing.json",
+    "metrics": {
+      "detection_rate": 1.0,
+      "false_failure_rate": 0.0,
+      "heal_success_pct": 90.0
+    }
+  },
+  "phase8_whitebox": {
+    "from": "2026-10-14_buggy_shop_phase8_whitebox.json",
+    "metrics": {
+      "detection_rate": 0.7778,
+      "false_failure_rate": 0.0,
+      "endpoint_coverage_pct": 96.2,
+      "mutation_score_pct": 83.3
+    }
+  },
+  "phase10_ci": {
+    "from": "2026-10-15_buggy_shop_phase10_ci.json",
+    "metrics": {
+      "checks_pass_rate": 1.0
+    }
+  }
+}
