@@ -51,6 +51,7 @@ from tools.safety.plan_filter import filter_plan
 from tools.test_creation.request_oracles import ground_plan, known_endpoints
 from tools.test_creation.select_options import ground_selects, select_options
 from tools.test_creation.message_oracles import error_keys, ground_messages, known_messages
+from tools.test_creation.required_fields import complete_required_fields
 from tools.safety.policy import SafetyPolicy, load_safety_policy
 from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
 from agents.test_creation.script_generation.prompt import (
@@ -311,6 +312,9 @@ class ScriptGenerationAgent(BaseAgent):
         messages = known_messages(_load_json_or_empty(os.path.join(comprehension_dir, "form_model.json")),
                                   _load_json_or_empty(os.path.join(comprehension_dir, "requirements.json")))
         error_areas = error_keys(locator_map)
+        # a positive submit fills every required field — with test design's valid value for it
+        form_model = _load_json_or_empty(os.path.join(comprehension_dir, "form_model.json"))
+        valid_values = _design_valid_values(project_dir, safe) if (form_model or {}).get("forms") else {}
 
         for scenario in uncovered:
             sid = scenario.get("scenario_id", "")
@@ -410,6 +414,7 @@ class ScriptGenerationAgent(BaseAgent):
                     plan = self._ground_requests(plan, sid, endpoints, effective_url)
                     plan = self._ground_selects(plan, sid, select_opts, design_cases)
                     plan = self._ground_messages(plan, sid, messages, error_areas)
+                    plan = self._complete_required(plan, sid, locator_map, form_model, effective_url, valid_values)
 
                     # Phase 0 safety rails — the one choke point every plan tier
                     # passes through. Drops whole tests (never a lone step) and
@@ -443,6 +448,7 @@ class ScriptGenerationAgent(BaseAgent):
                         plan = self._ground_requests(plan, sid, endpoints, effective_url)   # the regenerated tests too
                         plan = self._ground_selects(plan, sid, select_opts, design_cases)
                         plan = self._ground_messages(plan, sid, messages, error_areas)
+                        plan = self._complete_required(plan, sid, locator_map, form_model, effective_url, valid_values)
 
                     if self._tracer is not None:
                         plan = self._tracer.annotate(plan, scenario, module_id)
@@ -718,6 +724,16 @@ class ScriptGenerationAgent(BaseAgent):
             if c["change"] == "dropped":
                 plan.setdefault("dropped_tests", []).append({"test": c["test"], "reason": "select_option_unavailable",
                                                              "detail": c["reason"]})
+        return plan
+
+    def _complete_required(self, plan: dict, sid: str, locator_map: dict, form_model: dict, base_url: str,
+                           valid_values: dict) -> dict:
+        """A positive submit fills every required field (tools/test_creation/required_fields)."""
+        from urllib.parse import urlsplit
+        plan, changes = complete_required_fields(plan, locator_map, form_model, urlsplit(base_url or "").path or None,
+                                                 valid_values)
+        for c in changes:
+            self._log(f"{sid}: {c['change']} '{c['field']}' in '{c['test']}' — {c['reason']}", level="warning")
         return plan
 
     def _ground_messages(self, plan: dict, sid: str, messages: List[str], error_areas: set) -> dict:
@@ -1097,6 +1113,16 @@ def _load_scenarios(path: str) -> List[Dict[str, Any]]:
     if isinstance(raw, dict):
         raw = raw.get("scenarios", raw.get("business_scenarios", []))
     return raw if isinstance(raw, list) else []
+
+
+def _design_valid_values(project_dir: str, safe: str) -> Dict[Tuple[str, str], Any]:
+    """(form_id, field) -> the valid value Phase 3 test design derives (DOM + BRD + observed + code constraints)."""
+    try:
+        from tools.test_design.inputs import DesignInputs, valid_value_for
+        inp = DesignInputs.load(project_dir, safe)
+        return {(f.form_id, fl.name): valid_value_for(fl) for f in inp.forms for fl in f.fields}
+    except Exception:            # no design inputs: required fields fall back to DOM-only values
+        return {}
 
 
 def _load_json_or_empty(path: str) -> dict:
