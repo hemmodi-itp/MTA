@@ -74,3 +74,16 @@ def test_an_api_route_known_only_from_code_is_not_what_the_ui_form_posts():
 def test_without_discovery_the_plan_is_untouched():
     plan = _test("t", [{"action": "verifyRequest", "method": "POST", "urlPattern": "/anything"}])
     assert ground_plan(plan, []) == (plan, [])
+
+
+def test_a_wildcard_means_the_form_the_test_submits():
+    plan = _test("save", [{"action": "navigate", "value": "/products/new"},
+                          {"action": "click", "locator_key": "save_product_button"},
+                          {"action": "verifyRequest", "method": "POST", "urlPattern": "*", "status": "2xx"}])
+    out, _ = ground_plan(plan, EPS)
+    assert out["tests"][0]["steps"][-1] == {"action": "verifyRequest", "method": "POST", "urlPattern": "/products",
+                                           "status": "success"}
+    loose = _test("x", [{"action": "verifyRequest", "method": "POST", "urlPattern": "*", "status": "2xx"}])
+    out, changes = ground_plan(loose, EPS)                   # no page, no form: kept, but any success will do
+    assert out["tests"][0]["steps"][-1]["urlPattern"] == "*" and out["tests"][0]["steps"][-1]["status"] == "success"
+

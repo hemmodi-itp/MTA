@@ -64,13 +64,18 @@ def _runtime_regex(pattern: str) -> re.Pattern:
     return re.compile("".join(".*" if ch == "*" else re.escape(ch) for ch in (pattern or "")))
 
 
-def match(method: str, pattern: str, endpoints: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
-    """The observed endpoint a request step refers to: same method, and the runtime pattern matches its path
+def matches(method: str, pattern: str, endpoints: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Every observed endpoint a request step can refer to: same method, the runtime pattern matches its path
     (an exact template match first)."""
     rx = _runtime_regex(pattern)
     cands = [e for e in endpoints if e["method"] == (method or "").upper()]
     cands.sort(key=lambda e: e["template"] != _template(pattern.replace("*", "1")))
-    return next((e for e in cands if rx.search(e["template"].replace("{id}", "1"))), None)
+    return [e for e in cands if rx.search(e["template"].replace("{id}", "1"))]
+
+
+def match(method: str, pattern: str, endpoints: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    found = matches(method, pattern, endpoints)
+    return found[0] if found else None
 
 
 def _pages(test: dict) -> List[str]:
@@ -106,10 +111,14 @@ def ground_plan(plan: dict, endpoints: List[Dict[str, Any]], default_page: Optio
                 kept.append(step)
                 continue
             before = {k: step.get(k) for k in ("method", "urlPattern", "status", "bodyContains") if step.get(k) is not None}
-            ep = match(step.get("method") or "GET", step.get("urlPattern") or "", endpoints)
+            found = matches(step.get("method") or "GET", step.get("urlPattern") or "", endpoints)
+            ep = found[0] if found else None
             form = _submitted_form(test, endpoints, default_page)
             if ep is not None and form is not None and ep is not form and ep["sources"] == ["code"]:
                 ep = None      # an API route from the source, never seen in the browser: the UI posts its form
+            if len(found) > 1 and form is not None and form not in found[:1]:
+                ep = None      # "*" / a broad pattern: any of several endpoints — the test means the form it submits
+            ambiguous = len(found) > 1 and ep is not None
             if ep is None:
                 if form is None:
                     changes.append({"test": test.get("name"), "change": "dropped", "before": before,
@@ -123,8 +132,8 @@ def ground_plan(plan: dict, endpoints: List[Dict[str, Any]], default_page: Optio
             status = step.get("status")
             if step["action"] == "verifyRequest" and isinstance(status, str) and _POSITIVE.match(status) \
                     and status.strip().lower() != "success":
-                seen = {c[0] for c in ep["statuses"]}
-                if (seen and status.strip()[0] not in seen) or (not seen and "form" in ep["sources"]):
+                seen = {c[0] for e in (found if ambiguous else [ep]) for c in e["statuses"]}
+                if (seen and status.strip()[0] not in seen) or (not seen and "form" in ep["sources"]) or ambiguous:
                     # never seen answering that class — or a form submit nobody observed (apps often redirect)
                     changes.append({"test": test.get("name"), "change": "status", "before": before,
                                     "after": {"status": "success"},
