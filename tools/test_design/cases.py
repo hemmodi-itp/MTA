@@ -82,8 +82,18 @@ def rejection_oracles(form: Form, fld: Field, message_kinds: Iterable[str], prob
     and — when a probe showed it — that native validation stops the request / the URL does not change.
 
     native_evidence=False for inputs the browser's own validation does not catch (e.g. whitespace only passes
-    `required`): no native message, no probe evidence, and "rejected" instead of "field invalid"."""
-    first = {"type": "field_invalid", "field": fld.name} if native_evidence else         {"type": "submission_rejected", "field": fld.name}
+    `required`): no native message, no probe evidence, and "rejected" instead of "field invalid".
+
+    "field invalid" also needs the probe of this kind to have SEEN it — the field marked aria-invalid, or a native
+    validation message for it. An app that validates in its own script (`novalidate`, errors in an alert) never
+    marks the field, and a rule the DOM does not state (a price below 0 in a text input, a length with no
+    maxlength) never makes it :invalid: asserting it there fails on a correct app."""
+    probe = probe_for(form, fld.name, probe_kinds) if native_evidence else None
+    seen_invalid = probe is not None and (
+        fld.name in (probe.get("aria_invalid") or [])
+        or bool(((probe.get("native") or {}).get("messages") or {}).get(fld.name)))
+    first = {"type": "field_invalid", "field": fld.name} if seen_invalid else \
+        {"type": "submission_rejected", "field": fld.name}
     oracles: List[Dict[str, Any]] = [first]
     for mk in message_kinds:
         msg = fld.messages.get(mk)
@@ -92,10 +102,10 @@ def rejection_oracles(form: Form, fld: Field, message_kinds: Iterable[str], prob
             break
     if not native_evidence:
         return oracles
-    probe = probe_for(form, fld.name, probe_kinds)
     if probe:
         native = probe.get("native") or {}
-        if native.get("blocked"):
+        # nothing was sent: the browser blocked it, or the page's own validation did (an empty network log)
+        if native.get("blocked") or probe.get("network") == []:
             oracles.append({"type": "no_request", "method": form.method.upper(), "url": form.action, "source": "observed"})
         if probe.get("navigated") is False:
             oracles.append({"type": "url_unchanged", "source": "observed"})

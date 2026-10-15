@@ -1261,6 +1261,7 @@ def _reconcile_design_plan(plan: dict, chunk: List[dict], oracles: bool = False)
         t = dict(t, type=by_id[cid]["test_type"])
         if oracles:
             t = _fill_placeholder_oracles(t, by_id[cid])
+        t = _strip_unbacked_field_invalid(t, by_id[cid])
         problem = _design_test_problem(t, by_id[cid])
         if problem:
             # the guards inside _plan_via_llm saw the LLM's own "type"; the case's type is applied here, so the
@@ -1308,6 +1309,21 @@ def _url_path(url: Any) -> Optional[str]:
     from urllib.parse import urlparse
     path = urlparse(str(url)).path
     return path if path and "{" not in path else None
+
+
+def _strip_unbacked_field_invalid(test: dict, case: dict) -> dict:
+    """A case that says the input is rejected but NOT that the field is marked invalid (no probe saw aria-invalid or
+    a native message — the app validates in its own script) gets no verifyFieldInvalid from the LLM either: it can
+    never pass on a correct app. Removed steps are noted on the test (`removed_oracles`)."""
+    kinds = {o.get("type") for o in case.get("oracles") or []}
+    if "submission_rejected" not in kinds or "field_invalid" in kinds:
+        return test
+    steps = test.get("steps") or []
+    kept = [s for s in steps if not (isinstance(s, dict) and s.get("action") == "verifyFieldInvalid")]
+    if len(kept) == len(steps):
+        return test
+    note = f"verifyFieldInvalid x{len(steps) - len(kept)}: no probe saw the field marked invalid"
+    return dict(test, steps=kept, removed_oracles=list(test.get("removed_oracles") or []) + [note])
 
 
 def _fill_placeholder_oracles(test: dict, case: dict) -> dict:

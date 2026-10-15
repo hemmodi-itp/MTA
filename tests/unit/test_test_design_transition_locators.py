@@ -52,3 +52,17 @@ def test_most_transitions_get_a_trigger_and_keys_are_stable(designed):
     assert sum(1 for c in trans if c.get("locator_keys", {}).get("trigger")) >= len(trans) - 1
     m2, added2 = merge_transition_locators(m1, inp, cases)
     assert m2 == m1 and added2 == []                                                     # re-runs add nothing
+
+
+def test_field_invalid_only_where_a_probe_saw_it(designed):
+    """buggy_shop's product form validates in its own script (novalidate, errors in an alert, no request): the
+    field is never marked invalid — only the login form's native `required` is."""
+    _inp, cases = designed
+
+    def oracles(fragment):
+        c = next(c for c in cases if fragment in c["title"])
+        return [o["type"] for o in c["oracles"]]
+    assert oracles("Name length max+1")[:1] == ["submission_rejected"]
+    assert {"no_request", "url_unchanged"} <= set(oracles("Name length max+1"))     # the probe sent nothing
+    assert oracles("Price range min-1")[0] == "submission_rejected"
+    assert oracles("Username: empty")[0] == "field_invalid"                          # native required, blocked

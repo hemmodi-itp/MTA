@@ -87,3 +87,16 @@ def test_a_wildcard_means_the_form_the_test_submits():
     out, changes = ground_plan(loose, EPS)                   # no page, no form: kept, but any success will do
     assert out["tests"][0]["steps"][-1]["urlPattern"] == "*" and out["tests"][0]["steps"][-1]["status"] == "success"
 
+
+
+def test_reconcile_strips_field_invalid_the_case_does_not_back():
+    from agents.test_creation.script_generation.agent import _strip_unbacked_field_invalid
+    steps = [{"action": "enterText", "locator_key": "price", "value": "-0.01"}, {"action": "click", "locator_key": "save"},
+             {"action": "verifyFieldInvalid", "locator_key": "price"},
+             {"action": "verifyContainsText", "locator_key": "errors", "value": "Price must be zero or more"}]
+    case = {"oracles": [{"type": "submission_rejected", "field": "price"}, {"type": "error_text", "contains": "x"}]}
+    out = _strip_unbacked_field_invalid({"name": "t", "steps": steps}, case)
+    assert [s["action"] for s in out["steps"]] == ["enterText", "click", "verifyContainsText"]
+    assert out["removed_oracles"] == ["verifyFieldInvalid x1: no probe saw the field marked invalid"]
+    backed = {"oracles": [{"type": "field_invalid", "field": "price"}]}
+    assert _strip_unbacked_field_invalid({"name": "t", "steps": steps}, backed)["steps"] == steps
