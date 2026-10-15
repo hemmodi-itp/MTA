@@ -50,6 +50,7 @@ from tools.base_url import resolve_project_base_url
 from tools.safety.plan_filter import filter_plan
 from tools.test_creation.request_oracles import ground_plan, known_endpoints
 from tools.test_creation.select_options import ground_selects, select_options
+from tools.test_creation.message_oracles import error_keys, ground_messages, known_messages
 from tools.safety.policy import SafetyPolicy, load_safety_policy
 from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
 from agents.test_creation.script_generation.prompt import (
@@ -306,6 +307,10 @@ class ScriptGenerationAgent(BaseAgent):
                                       for n in ("form_model.json", "api_inventory.json", "code_rules.json")))
         # the options each <select> really has — generated data must choose one of them
         select_opts = select_options(locator_map, _load_json_or_empty(os.path.join(comprehension_dir, "form_model.json")))
+        # the messages the BRD quotes and the app was seen to show — an expected error text must be one of them
+        messages = known_messages(_load_json_or_empty(os.path.join(comprehension_dir, "form_model.json")),
+                                  _load_json_or_empty(os.path.join(comprehension_dir, "requirements.json")))
+        error_areas = error_keys(locator_map)
 
         for scenario in uncovered:
             sid = scenario.get("scenario_id", "")
@@ -404,6 +409,7 @@ class ScriptGenerationAgent(BaseAgent):
                     # request oracles name only endpoints discovery saw (an invented "/api/login" is a false failure)
                     plan = self._ground_requests(plan, sid, endpoints, effective_url)
                     plan = self._ground_selects(plan, sid, select_opts, design_cases)
+                    plan = self._ground_messages(plan, sid, messages, error_areas)
 
                     # Phase 0 safety rails — the one choke point every plan tier
                     # passes through. Drops whole tests (never a lone step) and
@@ -436,6 +442,7 @@ class ScriptGenerationAgent(BaseAgent):
                         )
                         plan = self._ground_requests(plan, sid, endpoints, effective_url)   # the regenerated tests too
                         plan = self._ground_selects(plan, sid, select_opts, design_cases)
+                        plan = self._ground_messages(plan, sid, messages, error_areas)
 
                     if self._tracer is not None:
                         plan = self._tracer.annotate(plan, scenario, module_id)
@@ -711,6 +718,17 @@ class ScriptGenerationAgent(BaseAgent):
             if c["change"] == "dropped":
                 plan.setdefault("dropped_tests", []).append({"test": c["test"], "reason": "select_option_unavailable",
                                                              "detail": c["reason"]})
+        return plan
+
+    def _ground_messages(self, plan: dict, sid: str, messages: List[str], error_areas: set) -> dict:
+        """An expected error text in a negative test is one the BRD quotes or the app showed
+        (tools/test_creation/message_oracles)."""
+        plan, changes = ground_messages(plan, messages, error_areas)
+        for c in changes:
+            self._log(f"{sid}: {c['change']} in '{c['test']}' — {c['reason']} ({c['before']!r}"
+                      + (f" -> {c['after']!r})" if "after" in c else ")"), level="warning")
+        if changes:
+            plan["grounded_messages"] = (plan.get("grounded_messages") or []) + changes
         return plan
 
     def _lint_and_regenerate(self, plan, request, scenario, allowed_locators, test_data, base_url, flows_meta,
