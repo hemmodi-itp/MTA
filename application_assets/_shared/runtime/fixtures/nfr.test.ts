@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  a11yFindings, checkBlankTargets, checkErrorPage, checkMixedContent, checkStackTrace, formErrorFindings,
+  a11yFindings, acceptFindings, checkBlankTargets, checkErrorPage, checkMixedContent, checkStackTrace, formErrorFindings,
   keyboardFindings, layoutFindings, perfFindings, split,
 } from './nfr';
 
@@ -38,6 +38,16 @@ describe('performance budgets', () => {
 });
 
 describe('passive security additions', () => {
+  it('accepted findings (rule [+ page]) become warnings with their reason; nothing is accepted by default', () => {
+    const found = [{ rule: 'csp', message: 'CSP missing', level: 'fail' as const },
+      { rule: 'referrer-policy', message: 'Referrer-Policy missing', level: 'fail' as const }];
+    expect(acceptFindings(found, '/cart')).toEqual(found);
+    const out = acceptFindings(found, '/cart', [{ rule: 'csp', reason: 'not in the BRD' },
+      { rule: 'referrer-policy', url_template: '/admin' }]);
+    expect(out[0]).toEqual({ rule: 'csp', message: 'CSP missing (accepted: not in the BRD)', level: 'warn' });
+    expect(out[1].level).toBe('fail');                                     // accepted on /admin only
+    expect(split(out, [], 'security').map((x) => x.rule)).toEqual(['referrer-policy']);
+  });
   it('stack traces and framework errors', () => {
     expect(checkStackTrace('Traceback (most recent call last):\n  File "app.py"')[0].rule).toBe('stack-trace');
     expect(checkStackTrace('    at Object.handler (/srv/app/index.js:12:5)')).toHaveLength(1);

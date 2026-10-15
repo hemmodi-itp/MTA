@@ -16,6 +16,7 @@ Output: test_creation/test_scripts/nfr/nfr_<type>.spec.ts, one file per enabled 
 
     nfr:                   # optional tuning per type
       accessibility: {accepted: [{rule, url_template?, reason}], keyboard: true, form_errors: true}
+      security_passive: {accepted: [{rule, url_template?, reason}]}   # accepted findings warn instead of failing
       visual:        {viewports: [1280], mask: ["[data-dynamic]"], max_diff_pixel_ratio: 0.01}
       performance:   {budget: {ttfb_ms: 1500, lcp_ms: 2500, load_ms: 3000}, regression_pct: 50, regression: warn}
       compatibility: {viewports: [320, 375, 768, 1024, 1440]}
@@ -46,6 +47,7 @@ TAG = {"accessibility": "a11y", "visual": "visual", "performance": "perf", "secu
        "compatibility": "responsive", "resilience": "resilience", "i18n": "i18n"}
 DEFAULTS = {
     "accessibility": {"accepted": [], "keyboard": True, "form_errors": True},
+    "security_passive": {"accepted": []},
     "visual": {"viewports": [1280], "mask": ["[data-dynamic]", "time"], "max_diff_pixel_ratio": 0.01},
     "performance": {"budget": {"ttfb_ms": 1500, "lcp_ms": 2500, "load_ms": 3000}, "regression_pct": 50,
                     "regression": "warn"},
@@ -294,10 +296,13 @@ def gen_security_spec(origin: str, states: list[dict], project: dict, ac_ids: li
                 "    findings.push(...nfr.checkMixedContent(page.url(), network.entries().map((e) => e.url)));",
                 "    findings.push(...nfr.checkBlankTargets(await nfr.collectLinks(page)));",
                 "    await nfr.attachFindings(testInfo, 'security-findings.json', findings);",
-                "    expect(nfr.split(findings, testInfo.annotations, 'security'), 'passive security findings').toEqual([]);",
+                f"    const judged = nfr.acceptFindings(findings, {json.dumps(s['url_template'])}, ACCEPTED);",
+                "    expect(nfr.split(judged, testInfo.annotations, 'security'), 'passive security findings').toEqual([]);",
                 "  });"]
     return _file("security_passive", states, project, ac_ids, body,
-                 extra_imports=f"import {{ checkHeaders, checkCookies, checkUrl, checkStorage }} from '{RULES_IMPORT}';")
+                 extra_imports=f"import {{ checkHeaders, checkCookies, checkUrl, checkStorage }} from '{RULES_IMPORT}';",
+                 preamble=[f"const ACCEPTED: nfr.AcceptedIssue[] = "
+                           f"{json.dumps(options(project, 'security_passive').get('accepted') or [])};", ""])
 
 
 def gen_responsive_spec(states: list[dict], project: dict, ac_ids: list[str]) -> str:

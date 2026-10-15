@@ -28,8 +28,34 @@ contracts:
   enforce: block
 
 test_types:
-  accessibility: true      # Phase 7-mini: @a11y axe specs (tools/nonfunctional/generate.py)
-  security_passive: true   # Phase 7-mini: @security header/cookie/storage specs
+  accessibility: true      # Phase 7: @a11y axe specs (tools/nonfunctional/generate.py)
+  security_passive: true   # Phase 7: @security header/cookie/storage specs (reads responses; no attack payloads)
+  performance: true        # Phase 7: timing budgets (AC-02.6: the Products page within 2 s)
+  resilience: true         # Phase 7: offline / slow network / unusual search input
+  api: true                # Phase 8: API tests per endpoint from code_rules + api_inventory
+
+nfr:
+  performance:
+    budget: { load_ms: 2000 }   # AC-02.6
+  security_passive:
+    accepted:                   # real findings on buggy_shop, but no BRD requirement asks for these headers —
+      - { rule: csp, reason: "not required by the buggy_shop BRD" }         # still reported, as warnings
+      - { rule: framing, reason: "not required by the buggy_shop BRD" }
+      - { rule: referrer-policy, reason: "not required by the buggy_shop BRD" }
+      - { rule: x-content-type-options, reason: "not required by the buggy_shop BRD" }
+
+white_box:                 # Phase 8: validation rules, routes and contract checks read from the app's source
+  enabled: true
+  source_dir: benchmarks/apps/buggy_shop
+
+api_tests:                 # Phase 8: resources that belong to one role (another user must be denied)
+  ownership:
+    - { path: /api/orders/1, owner: admin, other: user }
+    - { path: /orders/1, owner: admin, other: user }
+
+health_check:              # Phase 10: an app that is down blocks the run (exit 3) instead of failing every test
+  enabled: true
+  timeout_s: 10
 
 requirements:
   enabled: true      # Phase 1: requirements.json, AC-linked + tagged tests, traceability.json

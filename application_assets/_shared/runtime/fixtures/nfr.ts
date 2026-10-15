@@ -25,6 +25,15 @@ export function a11yFindings(violations: AxeViolation[], urlTemplate: string, ac
     v.impact === 'critical' || v.impact === 'serious' ? 'fail' : 'warn'));
 }
 
+/** passive security: an accepted finding (rule [+ page], nfr.security_passive.accepted) is kept as a warning with its
+ * reason — still reported, no longer failing. Nothing is accepted unless the project says so. */
+export function acceptFindings(findings: Finding[], urlTemplate: string, accepted: AcceptedIssue[] = []): Finding[] {
+  return findings.map((x) => {
+    const a = accepted.find((y) => y.rule === x.rule && (!y.url_template || y.url_template === urlTemplate));
+    return a ? { ...x, level: 'warn' as const, message: `${x.message} (accepted: ${a.reason ?? 'no reason given'})` } : x;
+  });
+}
+
 export interface KeyboardResult {
   focusable: string[];
   reached: string[];
