@@ -49,7 +49,7 @@ from contracts.artifacts import load_payload, load_records, save_artifact
 from tools.base_url import resolve_project_base_url
 from tools.safety.plan_filter import filter_plan
 from tools.test_creation.request_oracles import ground_plan, known_endpoints
-from tools.test_creation.select_options import ground_selects, select_options
+from tools.test_creation.select_options import ground_number_inputs, ground_selects, number_inputs, select_options
 from tools.test_creation.message_oracles import error_keys, ground_messages, known_messages
 from tools.test_creation.required_fields import complete_required_fields
 from tools.test_creation.busy_states import ground_busy_states
@@ -315,6 +315,7 @@ class ScriptGenerationAgent(BaseAgent):
                                                        for n in ("api_inventory.json", "code_rules.json"))),
             # the options each <select> really has (tools/test_creation/select_options)
             "select_options": select_options(locator_map, form_model),
+            "number_inputs": number_inputs(locator_map),
             # the messages the BRD quotes and the app showed (tools/test_creation/message_oracles)
             "messages": known_messages(form_model, _load_json_or_empty(os.path.join(comprehension_dir, "requirements.json"))),
             "error_areas": error_keys(locator_map),
@@ -707,9 +708,18 @@ class ScriptGenerationAgent(BaseAgent):
         of false failure on a correct app and logs every change it makes."""
         plan = self._ground_requests(plan, sid, g["endpoints"], base_url)
         plan = self._ground_selects(plan, sid, g["select_options"], design_cases)
+        plan = self._log_changes(sid, *ground_number_inputs(plan, g["number_inputs"]))
         plan = self._ground_messages(plan, sid, g["messages"], g["error_areas"])
         plan = self._complete_required(plan, sid, g["locator_map"], g["form_model"], base_url, g["valid_values"])
         return self._ground_busy(plan, sid)
+
+    def _log_changes(self, sid: str, plan: dict, changes: List[Dict[str, Any]]) -> dict:
+        for c in changes:
+            self._log(f"{sid}: {c['change']} in '{c['test']}' — {c['reason']}", level="warning")
+            if c["change"] == "dropped":
+                plan.setdefault("dropped_tests", []).append({"test": c["test"], "reason": "not_expressible_in_ui",
+                                                             "detail": c["reason"]})
+        return plan
 
     def _ground_busy(self, plan: dict, sid: str) -> dict:
         """click(K) + verifyDisabled(K) -> verifyBusyWhileSubmitting(K) (tools/test_creation/busy_states)."""

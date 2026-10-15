@@ -36,3 +36,18 @@ def test_a_negative_case_on_the_select_itself_is_dropped():
     cases = {"TC-1": {"target": {"kind": "form", "field": "category"}}}
     out, changes = ground_selects(_plan("Furniture", case_id="TC-1"), OPTS, cases)
     assert out["tests"] == [] and changes[0]["change"] == "dropped" and "through the API" in changes[0]["reason"]
+
+
+def test_text_in_a_number_input_drops_a_negative_test_and_fixes_a_positive_one():
+    from tools.test_creation.select_options import ground_number_inputs, number_inputs
+    nums = number_inputs({"quantity": {"_fingerprint": {"attrs": {"type": "number"}}}, "name": {"_fingerprint": {"attrs": {"type": "text"}}}})
+    assert nums == {"quantity"}
+
+    def plan(type_, value):
+        return {"tests": [{"name": "t", "type": type_, "steps": [{"action": "enterText", "locator_key": "quantity", "value": value}]}]}
+    out, ch = ground_number_inputs(plan("negative", "abc"), nums)
+    assert out["tests"] == [] and ch[0]["change"] == "dropped"
+    out, ch = ground_number_inputs(plan("positive", "two"), nums)
+    assert out["tests"][0]["steps"][0]["value"] == "1"
+    for v in ("0", "-1", "2.5", "100"):
+        assert ground_number_inputs(plan("negative", v), nums)[1] == []      # numbers are typed fine

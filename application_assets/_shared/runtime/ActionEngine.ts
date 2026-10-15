@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import { APIRequestContext, expect, Locator, Page, test } from '@playwright/test';
 import { Logger } from './Logger';
@@ -123,6 +124,37 @@ export interface MockRouteOptions {
 
 function patternToRegExp(pattern: string): RegExp {
     return new RegExp(pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*'));
+}
+
+// a valid 1x1 PNG — a ".png" upload that an image check would accept
+const PNG_1X1 = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', 'base64');
+const MAX_SYNTH_BYTES = 20 * 1024 * 1024;
+
+/** The byte size a file name states ("large_dataset_5mb.csv" -> 5 MB, "img_200kb.png"); undefined when none. */
+export function sizeFromName(fileName: string): number | undefined {
+    const m = /(\d+(?:\.\d+)?)\s*(kb|mb|gb)/i.exec(fileName);
+    if (!m) return undefined;
+    const unit = { kb: 1024, mb: 1024 ** 2, gb: 1024 ** 3 }[m[2].toLowerCase() as 'kb' | 'mb' | 'gb'];
+    return Math.min(Math.round(parseFloat(m[1]) * unit), MAX_SYNTH_BYTES);
+}
+
+/** Writes an upload fixture named `fileName` (content by extension, size from the name, else 512 bytes) into the
+ * OS temp dir and returns its path — for generated test data that names files nobody created. */
+export function synthesizeUpload(fileName: string): string {
+    const dir = path.join(os.tmpdir(), 'mta-upload-fixtures');
+    fs.mkdirSync(dir, { recursive: true });
+    const ext = path.extname(fileName).toLowerCase();
+    const size = sizeFromName(fileName) ?? 512;
+    let body: Buffer = ext === '.png' ? PNG_1X1
+        : ['.csv', '.txt', '.tsv'].includes(ext) ? Buffer.from('name,value\nmta,1\n') : Buffer.from('MTA upload fixture\n');
+    if (body.length < size) {
+        const fill = ['.csv', '.txt', '.tsv'].includes(ext) ? 'mta,1\n' : '\0';
+        body = Buffer.concat([body, Buffer.alloc(size - body.length, fill)]);
+    }
+    const file = path.join(dir, fileName);
+    fs.writeFileSync(file, body);
+    return file;
 }
 
 /** 200 matches 200; "2xx" matches 200-299; "success" matches 200-399 (a POST answered with a redirect). */
@@ -423,14 +455,16 @@ export class ActionEngine {
 
     async uploadFile(name: string, filePath: string): Promise<void> {
         await this.run(name, 'Upload File', filePath, async () => {
-            if (!fs.existsSync(filePath)) {
-                throw new Error(
-                    `Upload fixture not found: '${filePath}'. TestDataAgent referenced this file `
-                    + `name but never generated it on disk — either add it under a real fixtures `
-                    + `directory or check test_data.json for this scenario.`
-                );
+            let file = filePath;
+            if (!fs.existsSync(file)) {
+                // generated test data names files it never creates ("sample_data.csv", "large_dataset_5mb.csv"):
+                // a bare / relative name is made on the fly; a missing absolute path is a real misconfiguration
+                if (path.isAbsolute(file)) {
+                    throw new Error(`Upload fixture not found: '${filePath}' (an absolute path is never synthesised).`);
+                }
+                file = synthesizeUpload(path.basename(file));
             }
-            await this.resolve(name).setInputFiles(filePath);
+            await this.resolve(name).setInputFiles(file);
         });
     }
 

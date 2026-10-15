@@ -88,3 +88,37 @@ def ground_selects(plan: dict, options: Dict[str, Dict[str, Any]],
         kept_tests.append(test)
     plan["tests"] = kept_tests
     return plan, changes
+
+
+_NUMERIC = re.compile(r"^\s*-?\d+(\.\d+)?([eE][-+]?\d+)?\s*$")
+
+
+def number_inputs(locator_map: Dict[str, Dict[str, Any]]) -> set:
+    """Locator keys of <input type="number"> elements (discovery fingerprint)."""
+    return {k for k, e in (locator_map or {}).items()
+            if str(((e.get("_fingerprint") or {}).get("attrs") or {}).get("type") or "").lower() == "number"}
+
+
+def ground_number_inputs(plan: dict, numbers: set) -> Tuple[dict, List[Dict[str, Any]]]:
+    """A browser cannot type text into <input type="number"> (Playwright refuses): a negative test that tries is
+    dropped — a non-numeric value is an API rule test — and a positive one gets "1"."""
+    if not numbers:
+        return plan, []
+    plan = copy.deepcopy(plan)
+    changes: List[Dict[str, Any]] = []
+    kept = []
+    for test in plan.get("tests") or []:
+        bad = [s for s in (test.get("steps") or []) if isinstance(s, dict) and s.get("action") in ("enterText", "clearAndEnterText")
+               and s.get("locator_key") in numbers and str(s.get("value") or "") and not _NUMERIC.match(str(s.get("value")))]
+        if bad and test.get("type") == "negative":
+            changes.append({"test": test.get("name"), "change": "dropped",
+                            "reason": f"{bad[0]['locator_key']} is a number input: the browser cannot hold "
+                                      f"{bad[0].get('value')!r} (tested through the API instead)"})
+            continue
+        for s in bad:
+            changes.append({"test": test.get("name"), "change": "number replaced", "before": s.get("value"), "after": "1",
+                            "reason": f"{s['locator_key']} is a number input"})
+            s["value"] = "1"
+        kept.append(test)
+    plan["tests"] = kept
+    return plan, changes
