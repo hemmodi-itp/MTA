@@ -49,6 +49,7 @@ from contracts.artifacts import load_payload, load_records, save_artifact
 from tools.base_url import resolve_project_base_url
 from tools.safety.plan_filter import filter_plan
 from tools.test_creation.request_oracles import ground_plan, known_endpoints
+from tools.test_creation.select_options import ground_selects, select_options
 from tools.safety.policy import SafetyPolicy, load_safety_policy
 from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
 from agents.test_creation.script_generation.prompt import (
@@ -303,6 +304,8 @@ class ScriptGenerationAgent(BaseAgent):
         # the endpoints discovery observed — request oracles are grounded in them (tools/test_creation/request_oracles)
         endpoints = known_endpoints(*(_load_json_or_empty(os.path.join(comprehension_dir, n)) or {}
                                       for n in ("form_model.json", "api_inventory.json", "code_rules.json")))
+        # the options each <select> really has — generated data must choose one of them
+        select_opts = select_options(locator_map, _load_json_or_empty(os.path.join(comprehension_dir, "form_model.json")))
 
         for scenario in uncovered:
             sid = scenario.get("scenario_id", "")
@@ -400,6 +403,7 @@ class ScriptGenerationAgent(BaseAgent):
 
                     # request oracles name only endpoints discovery saw (an invented "/api/login" is a false failure)
                     plan = self._ground_requests(plan, sid, endpoints, effective_url)
+                    plan = self._ground_selects(plan, sid, select_opts, design_cases)
 
                     # Phase 0 safety rails — the one choke point every plan tier
                     # passes through. Drops whole tests (never a lone step) and
@@ -431,6 +435,7 @@ class ScriptGenerationAgent(BaseAgent):
                             gen_config, locator_map, design_cases, allowed_keys={e["key"] for e in allowed_locators},
                         )
                         plan = self._ground_requests(plan, sid, endpoints, effective_url)   # the regenerated tests too
+                        plan = self._ground_selects(plan, sid, select_opts, design_cases)
 
                     if self._tracer is not None:
                         plan = self._tracer.annotate(plan, scenario, module_id)
@@ -694,6 +699,18 @@ class ScriptGenerationAgent(BaseAgent):
                       f"({c['before']} -> {c.get('after', '-')})", level="warning")
         if changes:
             plan["grounded_requests"] = (plan.get("grounded_requests") or []) + changes
+        return plan
+
+    def _ground_selects(self, plan: dict, sid: str, select_opts: Dict[str, Dict[str, Any]],
+                        design_cases: Optional[List[dict]]) -> dict:
+        """selectDropdownBy* steps choose only options the select has (tools/test_creation/select_options)."""
+        plan, changes = ground_selects(plan, select_opts, {c["id"]: c for c in design_cases or []})
+        for c in changes:
+            self._log(f"{sid}: {c['change']} in '{c['test']}' — {c['reason']}"
+                      + (f" ({c['before']!r} -> {c['after']!r})" if "after" in c else ""), level="warning")
+            if c["change"] == "dropped":
+                plan.setdefault("dropped_tests", []).append({"test": c["test"], "reason": "select_option_unavailable",
+                                                             "detail": c["reason"]})
         return plan
 
     def _lint_and_regenerate(self, plan, request, scenario, allowed_locators, test_data, base_url, flows_meta,
