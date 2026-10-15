@@ -86,5 +86,23 @@ class DemoteDuplicateRoleCandidatesTests(unittest.TestCase):
         self.assertEqual(el["locator_candidates"], [])
 
 
+    def test_a_test_id_shared_by_list_items_is_not_unique(self):
+        # buggy_shop: every product link carries data-testid="product-link" — discovery called it unique
+        def item(name):
+            return {"playwright_locators": {"get_by_role": {"role": "link", "name": name}},
+                    "locator_candidates": [
+                        {"type": "testid", "value": {"testid": "product-link"}, "score": 150, "unique": True, "match_count": 1},
+                        {"type": "role", "value": {"role": "link", "name": name}, "score": 110, "unique": True, "match_count": 1}],
+                    "recommended_locator": {"type": "testid"}}
+        elements = [item("Atlas of Maps"), item("Gel Pen"), item("Blue Notebook")]
+        _demote_duplicate_role_candidates(elements)
+        for el in elements:
+            tid = next(c for c in el["locator_candidates"] if c["type"] == "testid")
+            self.assertEqual((tid["unique"], tid["match_count"], tid["score"]), (False, 3, 100))
+            self.assertEqual(el["recommended_locator"]["type"], "role")   # each item's own name is unique
+        _demote_duplicate_role_candidates(elements)                      # idempotent: no second penalty
+        self.assertEqual(elements[0]["locator_candidates"][-1]["score"], 100)
+
+
 if __name__ == "__main__":
     unittest.main()

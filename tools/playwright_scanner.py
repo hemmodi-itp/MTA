@@ -47,43 +47,51 @@ def _resolve_display_name(text: str, aria_label: str, label: str, title: str) ->
     return text or aria_label or label or title or ""
 
 
-def _demote_duplicate_role_candidates(elements: List[Dict[str, Any]]) -> None:
-    """Mutates *elements* in place. Two elements can legitimately share the
-    same accessible (role, name) pair (e.g. a text "Sign in" button and an
-    icon "Sign in" button shown responsively) — a get_by_role locator built
-    from just that pair is then ambiguous and fails at runtime with a
-    Playwright strict-mode violation, even though each element looked fine
-    in isolation during per-element scoring. Re-ranks any such element's
-    candidates so a durable, unique alternative (testid/id) or the CSS
-    fallback is recommended instead of the ambiguous role locator."""
+def _candidate_key(candidate: Dict[str, Any]) -> tuple:
+    return candidate.get("type"), json.dumps(candidate.get("value"), sort_keys=True, default=str)
+
+
+def _demote_duplicate_candidates(elements: List[Dict[str, Any]]) -> None:
+    """Mutates *elements* (one page / frame) in place. rank_locator_candidates scores each element alone and calls
+    every candidate unique; a locator that more than one element on the page shares is not: a test id repeated per
+    list item (`product-link` on every product), a shared id or name, or two elements with the same accessible
+    (role, name) pair (a text "Sign in" button and an icon "Sign in" button) — Playwright then fails with a
+    strict-mode violation. Every such candidate is marked unique=False with its match_count, loses the uniqueness
+    bonus, and the element's candidates are re-ranked so a unique one is recommended when there is one."""
+    counts: Dict[tuple, int] = {}
     role_name_counts: Dict[tuple, int] = {}
     for el in elements:
+        for key in {_candidate_key(c) for c in el.get("locator_candidates") or []}:
+            counts[key] = counts.get(key, 0) + 1
         role_locator = (el.get("playwright_locators") or {}).get("get_by_role")
         if role_locator:
             pair = (role_locator.get("role"), role_locator.get("name"))
             role_name_counts[pair] = role_name_counts.get(pair, 0) + 1
 
     for el in elements:
-        role_locator = (el.get("playwright_locators") or {}).get("get_by_role")
-        if not role_locator:
-            continue
-        pair = (role_locator.get("role"), role_locator.get("name"))
-        match_count = role_name_counts.get(pair, 0)
-        if match_count <= 1:
-            continue
         candidates = el.get("locator_candidates") or []
         changed = False
         for candidate in candidates:
+            n = counts.get(_candidate_key(candidate), 0)
             if candidate.get("type") == "role":
-                candidate["unique"] = False
-                candidate["match_count"] = match_count
-                candidate["score"] -= 50  # undo the uniqueness bonus it was given
-                changed = True
+                v = candidate.get("value") or {}
+                n = max(n, role_name_counts.get((v.get("role"), v.get("name")), 0))
+            if n <= 1:
+                continue
+            if candidate.get("unique") is not False:
+                candidate["score"] -= 50      # undo the uniqueness bonus it was given
+            candidate["unique"] = False
+            candidate["match_count"] = n
+            changed = True
         if changed:
             candidates.sort(key=lambda c: c["score"], reverse=True)
             el["locator_candidates"] = candidates
             if candidates:
                 el["recommended_locator"] = candidates[0]
+
+
+# the original name: it handled duplicate (role, name) pairs only
+_demote_duplicate_role_candidates = _demote_duplicate_candidates
 
 
 def _same_page(current_url: str, target_url: str) -> bool:

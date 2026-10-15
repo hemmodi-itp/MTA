@@ -130,12 +130,86 @@ def merge_form_locators(locator_map: Dict[str, Dict[str, Any]], inp: DesignInput
     return result, added
 
 
+def _trigger_entry(elements: List[Dict[str, Any]], via: str) -> Optional[Dict[str, Any]]:
+    """The locator of the link / button named `via` on its source page: its id or test id when it has one (a name
+    alone collides — the "Log in" nav link and the "Log in" form button), else role + name."""
+    for el in elements or []:
+        role = (el.get("semantic_locators") or {}).get("role") or el.get("aria_role")
+        name = (el.get("display_text") or ((el.get("playwright_locators") or {}).get("get_by_role") or {}).get("name") or "")
+        if role not in ("link", "button") or name.strip() != via:
+            continue
+        # discovery's own candidates, in its order, that are UNIQUE on the page (a shared test id is not — counted
+        # here as well, for app maps recorded before discovery checked it)
+        def shared(kind: str, value: Any) -> bool:
+            return sum(1 for e in elements if (e.get("attribute_locators") or {}).get(kind) == value) > 1
+        for cand in el.get("locator_candidates") or []:
+            v = cand.get("value") or {}
+            if cand.get("unique") is not True or (cand.get("type") in ("id", "testid")
+                                                  and shared(cand["type"], v.get(cand["type"]))):
+                continue
+            if cand.get("type") == "id" and _CSS_SAFE.match(str(v.get("id") or "")):
+                return {"type": "css", "locator": f"#{v['id']}"}
+            if cand.get("type") == "testid" and v.get("testid"):
+                return {"type": "css", "locator": f'[data-testid="{_css_attr(str(v["testid"]))}"]'}
+            if cand.get("type") == "role" and v.get("role") and v.get("name"):
+                return {"type": "role", "locator": v["role"], "name": v["name"]}
+        return {"type": "role", "locator": role, "name": via}
+    return None
+
+
+def merge_transition_locators(locator_map: Dict[str, Dict[str, Any]], inp: DesignInputs,
+                              cases: List[Dict[str, Any]]) -> Tuple[Dict[str, Dict[str, Any]], List[str]]:
+    """State-transition cases name their trigger element by its accessible name only; give each one a locator key
+    (case["locator_keys"]["trigger"], and "trigger_2" for the second step of a 1-switch case) pointing at that
+    element ON ITS SOURCE PAGE, so the plan cannot pick a same-named element of another page."""
+    result = dict(locator_map)
+    by_value = {_value_key(e): k for k, e in result.items()}
+    added: List[str] = []
+    for case in sorted(cases, key=lambda c: c["id"]):
+        if case.get("technique") != "state_transition" or (case.get("target") or {}).get("kind") != "transition":
+            continue
+        parts = (case.get("key") or "").split("|")
+        if parts[:2] == ["st", "0"] and len(parts) >= 5:
+            hops = [(parts[2], "|".join(parts[4:]))]
+        elif parts[:2] == ["st", "1"] and len(parts) >= 7:
+            hops = [(parts[2], parts[5]), (parts[3], "|".join(parts[6:]))]
+        else:
+            continue
+        keys: Dict[str, str] = {}
+        for i, (page, via) in enumerate(hops):
+            st = inp.states.get(page)
+            entry = _trigger_entry(st.elements if st else [], via) if via else None
+            if entry is None:
+                continue
+            entry.update({"description": f"{via} ({entry.get('locator') if entry['type'] == 'role' else 'element'} on {page})",
+                          "_module_id": case.get("module_id"), "_source": "app_map",
+                          "_page_url": st.sample_url if st else None})
+            existing = by_value.get(_value_key(entry))
+            if existing:
+                key = existing
+            else:
+                base = _slug(f"{via} on {page.strip('/') or 'home'}")
+                key, n = base, 2
+                while key in result:
+                    key = f"{base}_{n}"
+                    n += 1
+                result[key] = entry
+                by_value[_value_key(entry)] = key
+                added.append(key)
+            keys["trigger" if i == 0 else f"trigger_{i + 1}"] = key
+        if keys:
+            case["locator_keys"] = {**(case.get("locator_keys") or {}), **keys}
+    return result, added
+
+
 def update_locator_map_file(path: str, inp: DesignInputs, cases: List[Dict[str, Any]]) -> List[str]:
     current: Dict[str, Dict[str, Any]] = {}
     if os.path.exists(path):
         with open(path, encoding="utf-8") as fh:
             current = json.load(fh) or {}
     merged, added = merge_form_locators(current, inp, cases)
+    merged, added_t = merge_transition_locators(merged, inp, cases)
+    added = added + added_t
     if added:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         tmp = path + ".tmp"
