@@ -53,9 +53,22 @@ def test_known_endpoint_kept_status_relaxed_only_when_never_seen_and_body_needs_
     out, changes = ground_plan(plan, EPS)
     steps = out["tests"][0]["steps"]
     assert steps[2]["status"] == "3xx"                       # /cart/add was seen answering 303: kept
-    assert steps[3] == {"action": "verifyRequest", "method": "POST", "urlPattern": "/products", "status": "2xx"}
+    assert steps[3] == {"action": "verifyRequest", "method": "POST", "urlPattern": "/products", "status": "success"}
     assert steps[4]["status"] == 200                         # an exact status is the author's call
-    assert [c["change"] for c in changes] == ["bodyContains dropped"]   # /products: no traffic seen, 2xx kept
+    assert [c["change"] for c in changes] == ["status", "bodyContains dropped"]   # a form submit nobody observed
+
+
+def test_an_api_route_known_only_from_code_is_not_what_the_ui_form_posts():
+    eps = known_endpoints(json.loads((REC / "form_model.json").read_text(encoding="utf-8")), {},
+                          {"routes": [{"method": "POST", "path_template": "/api/products"}]})
+    plan = _test("save", [{"action": "navigate", "value": "/products/new"},
+                          {"action": "click", "locator_key": "save_product_button"},
+                          {"action": "verifyRequest", "method": "POST", "urlPattern": "/api/products*", "status": "2xx"}])
+    out, changes = ground_plan(plan, eps)
+    assert out["tests"][0]["steps"][-1] == {"action": "verifyRequest", "method": "POST", "urlPattern": "/products",
+                                           "status": "success"}
+    alone = _test("api", [{"action": "verifyRequest", "method": "POST", "urlPattern": "/api/products"}])
+    assert ground_plan(alone, eps)[1] == []          # no form submitted: the code route is a legitimate target
 
 
 def test_without_discovery_the_plan_is_untouched():

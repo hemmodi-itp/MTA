@@ -35,12 +35,15 @@ def _template(path: str) -> str:
 
 def known_endpoints(form_model: Optional[dict], api_inventory: Optional[dict],
                     code_rules: Optional[dict] = None) -> List[Dict[str, Any]]:
-    """[{method, template, statuses: {code: n}, page}] — `page` is the url_template of the form's own page."""
+    """[{method, template, statuses: {code: n}, pages, sources}] — `pages`: the url_templates of the form's own page;
+    `sources`: form (a form action), traffic (seen in the browser), code (a white-box route)."""
     out: Dict[Tuple[str, str], Dict[str, Any]] = {}
 
-    def add(method: str, path: str, statuses: Optional[dict] = None, page: Optional[str] = None):
+    def add(method: str, path: str, source: str, statuses: Optional[dict] = None, page: Optional[str] = None):
         key = ((method or "GET").upper(), _template(path))
-        e = out.setdefault(key, {"method": key[0], "template": key[1], "statuses": {}, "pages": []})
+        e = out.setdefault(key, {"method": key[0], "template": key[1], "statuses": {}, "pages": [], "sources": []})
+        if source not in e["sources"]:
+            e["sources"].append(source)
         for code, n in (statuses or {}).items():
             e["statuses"][str(code)] = e["statuses"].get(str(code), 0) + int(n or 0)
         if page and page not in e["pages"]:
@@ -48,11 +51,11 @@ def known_endpoints(form_model: Optional[dict], api_inventory: Optional[dict],
 
     for f in (form_model or {}).get("forms") or []:
         if f.get("action") or f.get("url"):
-            add(f.get("method") or "get", f.get("action") or f.get("url"), None, f.get("url_template"))
+            add(f.get("method") or "get", f.get("action") or f.get("url"), "form", None, f.get("url_template"))
     for e in (api_inventory or {}).get("endpoints") or []:
-        add(e.get("method"), e.get("path_template") or e.get("path") or "", e.get("statuses"))
+        add(e.get("method"), e.get("path_template") or e.get("path") or "", "traffic", e.get("statuses"))
     for r in (code_rules or {}).get("routes") or []:
-        add(r.get("method"), r.get("path_template") or "")
+        add(r.get("method"), r.get("path_template") or "", "code")
     return list(out.values())
 
 
@@ -104,8 +107,10 @@ def ground_plan(plan: dict, endpoints: List[Dict[str, Any]], default_page: Optio
                 continue
             before = {k: step.get(k) for k in ("method", "urlPattern", "status", "bodyContains") if step.get(k) is not None}
             ep = match(step.get("method") or "GET", step.get("urlPattern") or "", endpoints)
+            form = _submitted_form(test, endpoints, default_page)
+            if ep is not None and form is not None and ep is not form and ep["sources"] == ["code"]:
+                ep = None      # an API route from the source, never seen in the browser: the UI posts its form
             if ep is None:
-                form = _submitted_form(test, endpoints, default_page)
                 if form is None:
                     changes.append({"test": test.get("name"), "change": "dropped", "before": before,
                                     "reason": "no observed endpoint matches, and the test submits no single known form"})
@@ -119,10 +124,12 @@ def ground_plan(plan: dict, endpoints: List[Dict[str, Any]], default_page: Optio
             if step["action"] == "verifyRequest" and isinstance(status, str) and _POSITIVE.match(status) \
                     and status.strip().lower() != "success":
                 seen = {c[0] for c in ep["statuses"]}
-                if seen and status.strip()[0] not in seen:
+                if (seen and status.strip()[0] not in seen) or (not seen and "form" in ep["sources"]):
+                    # never seen answering that class — or a form submit nobody observed (apps often redirect)
                     changes.append({"test": test.get("name"), "change": "status", "before": before,
                                     "after": {"status": "success"},
-                                    "reason": f"{ep['method']} {ep['template']} was seen answering {sorted(ep['statuses'])}"})
+                                    "reason": f"{ep['method']} {ep['template']} was seen answering {sorted(ep['statuses'])}"
+                                              if seen else f"{ep['method']} {ep['template']}: a form submit, no observed status"})
                     step = dict(step, status="success")
             body = step.get("bodyContains")
             if body is not None and str(body) not in " ".join(_typed(test)):
