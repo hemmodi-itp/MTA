@@ -394,9 +394,11 @@ Return ONLY the JSON object described above. No markdown fences, no explanation,
 ORACLE_PROMPT_BLOCK = """
 
 == Oracle actions (Phase 5) — a passing test must PROVE the behaviour ==
-- {"action": "verifyRequest", "method": "POST", "urlPattern": "/api/login", "status": "2xx", "bodyContains": "alice"}
-  ("*" wildcard; status = a number or "2xx"; status and bodyContains optional)
-- {"action": "verifyNoRequest", "method": "POST", "urlPattern": "/api/login"}  — nothing was submitted
+- {"action": "verifyRequest", "method": "<METHOD>", "urlPattern": "<PATH>", "status": "success", "bodyContains": "<a value this test typed>"}
+  METHOD and PATH must be the method and action of a form on the page, as the element list / test cases give them —
+  never an endpoint you assume ("/api/...") — "*" wildcard; status = a number, "2xx", "3xx", or "success" (2xx or
+  3xx: use it after a form submit, apps often redirect); status and bodyContains optional
+- {"action": "verifyNoRequest", "method": "<METHOD>", "urlPattern": "<PATH>"}  — nothing was submitted to that form
 - {"action": "verifyFieldInvalid", "locator_key": "<key>"}  — aria-invalid or native :invalid
 - {"action": "verifyValidationMessage", "locator_key": "<field key>", "value": "<part of the message>"}
   — native validation message or the field's aria-errormessage / aria-describedby text
@@ -427,7 +429,7 @@ Rules the plan is linted against:
 - A negative test needs (error text OR verifyFieldInvalid OR verifyValidationMessage) AND
   (verifyNoRequest OR a URL check OR verifyCountChangedBy 0).
 - A positive test that fills a form and submits it needs a UI success signal AND backend evidence
-  (verifyRequest "2xx" — or "3xx" when the app redirects after a POST —, reloadAndVerify, verifyApiState or
+  (verifyRequest "success" to the form's own action, reloadAndVerify, verifyApiState or
   verifyCountChangedBy).
 - An XSS / special-characters test needs verifyNoDialog AND verifyNotInjected.
 - Never use waitForTimeout. Do not add a console-error check; it is appended automatically.

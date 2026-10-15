@@ -57,6 +57,13 @@ describe('verifyRequest (Phase 5 complete: 2xx + bodyContains)', () => {
     await engine({}, {}, { network }).verifyRequest('POST', '/products', '3xx', undefined, 'name=Lamp');
   });
 
+  it('"success" accepts 2xx and 3xx, never 4xx', async () => {
+    await engine({}, {}, { network: logWith(['POST', 'http://a/login', 303, 'u=a']) }).verifyRequest('POST', '/login', 'success');
+    await engine({}, {}, { network: logWith(['POST', 'http://a/login', 200, 'u=a']) }).verifyRequest('POST', '/login', 'success');
+    await expect(engine({}, {}, { network: logWith(['POST', 'http://a/login', 401, 'u=a']) })
+      .verifyRequest('POST', '/login', 'success')).rejects.toThrow(/status success/);
+  }, 10_000);
+
   it('fails when the body does not contain the text', async () => {
     const network = logWith(['POST', 'http://a/products', 201, 'name=Desk']);
     await expect(engine({}, {}, { network }).verifyRequest('POST', '/products', '2xx', undefined, 'Lamp'))

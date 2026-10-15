@@ -48,6 +48,7 @@ from agents.base_agent import BaseAgent
 from contracts.artifacts import load_payload, load_records, save_artifact
 from tools.base_url import resolve_project_base_url
 from tools.safety.plan_filter import filter_plan
+from tools.test_creation.request_oracles import ground_plan, known_endpoints
 from tools.safety.policy import SafetyPolicy, load_safety_policy
 from tools.state.review_queue import flag_missing_capability, flag_safety_drops, record_locator_drift
 from agents.test_creation.script_generation.prompt import (
@@ -299,6 +300,9 @@ class ScriptGenerationAgent(BaseAgent):
             SafetyPolicy.from_request(request["safety"]) if isinstance(request.get("safety"), dict)
             else load_safety_policy(safe)
         )
+        # the endpoints discovery observed — request oracles are grounded in them (tools/test_creation/request_oracles)
+        endpoints = known_endpoints(*(_load_json_or_empty(os.path.join(comprehension_dir, n)) or {}
+                                      for n in ("form_model.json", "api_inventory.json", "code_rules.json")))
 
         for scenario in uncovered:
             sid = scenario.get("scenario_id", "")
@@ -394,6 +398,9 @@ class ScriptGenerationAgent(BaseAgent):
                             _write_test_plans(test_plans, test_plans_path)
                         continue
 
+                    # request oracles name only endpoints discovery saw (an invented "/api/login" is a false failure)
+                    plan = self._ground_requests(plan, sid, endpoints, effective_url)
+
                     # Phase 0 safety rails — the one choke point every plan tier
                     # passes through. Drops whole tests (never a lone step) and
                     # reports each drop; never silent.
@@ -423,6 +430,7 @@ class ScriptGenerationAgent(BaseAgent):
                             plan, request, scenario, allowed_locators, test_data, effective_url, flows_meta,
                             gen_config, locator_map, design_cases, allowed_keys={e["key"] for e in allowed_locators},
                         )
+                        plan = self._ground_requests(plan, sid, endpoints, effective_url)   # the regenerated tests too
 
                     if self._tracer is not None:
                         plan = self._tracer.annotate(plan, scenario, module_id)
@@ -674,6 +682,19 @@ class ScriptGenerationAgent(BaseAgent):
                     return "raw", content, 2, route
 
                 raise RuntimeError(f"Unhandled route '{route}'") from exc
+
+    def _ground_requests(self, plan: dict, sid: str, endpoints: List[Dict[str, Any]], base_url: str) -> dict:
+        """verifyRequest / verifyNoRequest name only endpoints discovery saw; every change is logged and kept on the
+        plan (`grounded_requests`)."""
+        from urllib.parse import urlsplit
+        page = urlsplit(base_url or "").path or None
+        plan, changes = ground_plan(plan, endpoints, default_page=page)
+        for c in changes:
+            self._log(f"{sid}: request oracle {c['change']} in '{c['test']}' — {c['reason']} "
+                      f"({c['before']} -> {c.get('after', '-')})", level="warning")
+        if changes:
+            plan["grounded_requests"] = (plan.get("grounded_requests") or []) + changes
+        return plan
 
     def _lint_and_regenerate(self, plan, request, scenario, allowed_locators, test_data, base_url, flows_meta,
                              gen_config, locator_map, design_cases, allowed_keys):

@@ -125,10 +125,11 @@ function patternToRegExp(pattern: string): RegExp {
     return new RegExp(pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*'));
 }
 
-/** 200 matches 200; "2xx" matches 200-299. */
+/** 200 matches 200; "2xx" matches 200-299; "success" matches 200-399 (a POST answered with a redirect). */
 export function statusMatches(actual: number | null, expected: number | string): boolean {
     if (actual === null) return false;
     if (typeof expected === 'number') return actual === expected;
+    if (/^success$/i.test(expected.trim())) return actual >= 200 && actual < 400;
     const m = /^([1-5])xx$/i.exec(expected.trim());
     return m ? Math.floor(actual / 100) === Number(m[1]) : actual === Number(expected);
 }

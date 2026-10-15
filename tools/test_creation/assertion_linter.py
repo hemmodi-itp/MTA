@@ -74,7 +74,7 @@ def _is_success(status: Any) -> bool:
     if status is None:
         return False
     text = str(status).strip().lower()
-    return text in ("2xx", "3xx") or (text.isdigit() and 200 <= int(text) < 400)
+    return text in ("2xx", "3xx", "success") or (text.isdigit() and 200 <= int(text) < 400)
 
 
 def _is_submit(test: dict, steps: List[dict]) -> bool:

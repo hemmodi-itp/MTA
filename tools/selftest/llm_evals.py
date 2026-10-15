@@ -490,7 +490,9 @@ def recordings(root: Path = EVALS, agent: Optional[str] = None) -> List[Recordin
 
 
 def prompt_hashes(root: Path = ROOT) -> Dict[str, Dict[str, str]]:
-    return {a: {f: hashlib.sha256((root / f).read_bytes()).hexdigest() for f in files}
+    """sha256 of each prompt file with line endings normalised — a Windows (CRLF) and a Linux (LF) checkout of the
+    same commit hash the same."""
+    return {a: {f: hashlib.sha256((root / f).read_bytes().replace(b"\r\n", b"\n")).hexdigest() for f in files}
             for a, files in PROMPT_FILES.items()}
 
 
