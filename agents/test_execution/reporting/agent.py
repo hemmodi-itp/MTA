@@ -96,7 +96,8 @@ class ReportingAgent(BaseAgent):
             self.logger.warning(f"[ReportingAgent] Catalog refresh failed (non-fatal): {exc}")
 
         reports_dir = os.path.join(_ASSETS_BASE, safe, "test_execution", "reports")
-        gate_result = self._quality_section(report, outputs, safe, reports_dir, now)
+        gating = self._quarantine_section(report, outputs, safe, reports_dir)
+        gate_result = self._quality_section(report, outputs, safe, reports_dir, now, gating)
         ts          = now.strftime("%Y%m%d_%H%M%S")
         base_name   = f"{ts}_{safe}"
 
@@ -157,10 +158,37 @@ class ReportingAgent(BaseAgent):
             },
         }
 
-    def _quality_section(self, report: dict, outputs: dict, safe: str, reports_dir: str, now: datetime) -> Optional[dict]:
+    @staticmethod
+    def _exec_results(report: dict, outputs: dict) -> list:
+        # the execution step's own rows (spec_file, test_title, tc_id, tags, pw_status, browser, attachments) —
+        # report["test_execution_report"]["results"] keeps only a display subset of them
+        exec_out = (outputs or {}).get("execution") or (outputs or {}).get("ui_execution") or {}
+        return exec_out.get("results") or report["test_execution_report"].get("results") or []
+
+    def _quarantine_section(self, report: dict, outputs: dict, safe: str, reports_dir: str) -> Optional[list]:
+        """Phase 10.2, every run (not only with enhanced reporting): split off the quarantined tests (they ran but
+        do not gate), update quarantine.yaml (stable runs, release, auto-add repeat flaky) and set
+        report["quarantine"]. Returns the gating results (None on error). Never raises."""
+        try:
+            from tools.execution import quarantine as qz
+            pdir = os.path.join(_ASSETS_BASE, safe)
+            results = self._exec_results(report, outputs)
+            gating, quarantined = qz.split_results(results, qz.load(pdir))
+            upd = qz.record_run(pdir, results, flaky_history=qz.flaky_counts(os.path.join(reports_dir, "json")))
+            report["quarantine"] = {"results": [{"test": qz.test_key(r.get("spec_file", ""), r.get("test_title", "")),
+                                                 "status": r.get("pw_status") or r.get("status")} for r in quarantined],
+                                    "released": upd["released"], "added": upd["added"], "reset": upd["reset"]}
+            return gating
+        except Exception as exc:
+            self.logger.warning(f"[ReportingAgent] Quarantine update failed (non-fatal): {exc}")
+            return None
+
+    def _quality_section(self, report: dict, outputs: dict, safe: str, reports_dir: str, now: datetime,
+                         gating: Optional[list] = None) -> Optional[dict]:
         """Phase 11: report["quality"] (summary, gates, not-tested, defects with severity + evidence, risk areas,
         trend, coverage dashboard, 29119-3 summary, CSV/XLSX matrix, Jira/ADO exports) when project.yaml
-        `reporting.enhanced` is on; gates evaluated when `quality_gates` is set. Never raises."""
+        `reporting.enhanced` is on; gates evaluated when `quality_gates` is set. `gating`: the results without the
+        quarantined tests (_quarantine_section). Never raises."""
         try:
             from tools.reporting import summary as qs
             pdir = os.path.join(_ASSETS_BASE, safe)
@@ -175,10 +203,7 @@ class ReportingAgent(BaseAgent):
                         return json.load(fh)
                 except (OSError, ValueError):
                     return None
-            # the execution step's own rows (spec_file, test_title, tc_id, tags, pw_status, browser, attachments) —
-            # report["test_execution_report"]["results"] keeps only a display subset of them
-            exec_out = (outputs or {}).get("execution") or (outputs or {}).get("ui_execution") or {}
-            results = exec_out.get("results") or report["test_execution_report"].get("results") or []
+            results = gating if gating is not None else self._exec_results(report, outputs)
             trace = report.get("traceability")
             plans = _load(os.path.join(pdir, "test_creation", "test_plans.json")) or {}
             suite = _load(os.path.join(pdir, "test_creation", "test_suite.json")) or {}
@@ -186,6 +211,7 @@ class ReportingAgent(BaseAgent):
             aq = ((outputs or {}).get("agent_quality_testing") or {}).get("agent_quality")
             test_cases = _load(os.path.join(pdir, "test_creation", "test_cases.json"))
             summary = qs.compute_summary(results, trace, plans, suite, triage, aq, test_cases)
+            summary["quarantined_tests"] = len((report.get("quarantine") or {}).get("results") or [])
             gate_result = qs.evaluate_gates(summary, gates)
             from tools.reporting import insights
             stamp = now.strftime('%Y%m%d_%H%M%S')

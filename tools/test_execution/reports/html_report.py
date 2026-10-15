@@ -723,7 +723,7 @@ def _quality_sections(q: dict) -> str:
     <div>Requirement (AC) coverage: <strong>{link('traceability', na(cov) + ('%' if cov is not None else ''))}</strong> ({na(sm.get("acs_covered"))}/{na(sm.get("acs_automatable"))}) · not tested: {link('not-tested', str(len(nt)))}</div>
     <div>Pass rate by priority: {prio}</div>
     <div>Product defects: <strong>{link('defects', na(sm.get("product_defects")))}</strong> — by severity: {sev_html} · potential (BRD vs observed): {link('potential-defects', na(sm.get("potential_defects")))}</div>
-    <div>Critical a11y: <strong>{na(sm.get("critical_a11y"))}</strong> · High security: <strong>{na(sm.get("high_security"))}</strong> · Worst perf regression: {na(sm.get("perf_regression_pct"))}% · Flaky rate: {na(sm.get("flaky_rate"))}% · Weak oracles: {na(sm.get("weak_oracle"))} · Low-confidence (LLM-inferred) oracles: {na(sm.get("low_confidence_oracles"))}</div>
+    <div>Critical a11y: <strong>{na(sm.get("critical_a11y"))}</strong> · High security: <strong>{na(sm.get("high_security"))}</strong> · Worst perf regression: {na(sm.get("perf_regression_pct"))}% · Flaky rate: {na(sm.get("flaky_rate"))}% · Quarantined (not gating): {link('quarantine', na(sm.get("quarantined_tests")))} · Weak oracles: {na(sm.get("weak_oracle"))} · Low-confidence (LLM-inferred) oracles: {na(sm.get("low_confidence_oracles"))}</div>
     <div>AI-agent dimensions: {dims_html}</div>
     <div style="color:#64748b">{files}{(' · ' + exports) if exports else ''}</div></div>
 </div>"""
@@ -753,6 +753,20 @@ def _risk_trend_html(q: dict) -> str:
                  f'<table><thead><tr><th>Run</th><th>Pass %</th><th>Coverage %</th><th>Defects</th><th>Flaky</th>'
                  f'<th>Verdict</th></tr></thead><tbody>{trows}</tbody></table></div>')
     return risk + trend
+
+
+def _quarantine_html(qz) -> str:
+    """Phase 10.2: quarantined tests ran but did not gate; released / newly added ones this run."""
+    if not qz or not (qz.get("results") or qz.get("released") or qz.get("added")):
+        return ""
+    rows = "".join(f'<tr><td>{_esc(r["test"])}</td><td>{_esc(r["status"])}</td></tr>' for r in qz.get("results") or [])
+    extra = "".join(f'<div>Released after stable runs: {_esc(t)}</div>' for t in qz.get("released") or [])
+    extra += "".join(f'<div style="color:#d97706">Quarantined this run (flaky again): {_esc(t)}</div>' for t in qz.get("added") or [])
+    table = (f'<table><thead><tr><th>Quarantined test (ran, not gating)</th><th>Result</th></tr></thead>'
+             f'<tbody>{rows}</tbody></table>') if rows else ""
+    return (f'<div class="section" id="quarantine"><div class="sec-title">Quarantine <span class="sec-cnt">'
+            f'{len(qz.get("results") or [])} not gating</span></div>{table}'
+            f'<div style="padding:8px 24px;font-size:0.88rem">{extra}</div></div>')
 
 
 def _defects_html(defects: list) -> str:
@@ -863,6 +877,7 @@ def build_html_report(report: dict) -> str:
 <body>
 {_header(report)}
 {_quality_sections(report.get("quality"))}
+{_quarantine_html(report.get("quarantine"))}
 {_pipeline_section(ws.get("steps", []))}
 {_artifacts_section(ag)}
 {_test_section(ter)}

@@ -1,0 +1,386 @@
+{
+  "date": "2026-10-15",
+  "scenarios": {
+    "A_app_down": {
+      "stage": "pr",
+      "exit_code": 3,
+      "status": "environment_blocked",
+      "passed": 0,
+      "failed": 0,
+      "seconds": 2.3,
+      "selection": {
+        "full": true,
+        "impacted": 5,
+        "changed": {
+          "pages": [],
+          "acs": [],
+          "endpoints": [],
+          "specs": [
+            "L/test_L_BS_001_login.spec.ts",
+            "P/test_P_BS_002_product_form.spec.ts",
+            "P/test_P_BS_003_search.spec.ts",
+            "P/test_P_BS_004_cart.spec.ts",
+            "P/test_P_BS_005_help.spec.ts"
+          ],
+          "sources": []
+        }
+      },
+      "health": {
+        "ok": false,
+        "checks": [
+          {
+            "name": "base_url",
+            "ok": false,
+            "detail": "http://127.0.0.1:8775 -> URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"
+          }
+        ]
+      },
+      "error": "environment blocked \u2014 base_url: http://127.0.0.1:8775 -> URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"
+    },
+    "B_nightly": {
+      "stage": "nightly",
+      "exit_code": 0,
+      "status": "success",
+      "passed": 5,
+      "failed": 0,
+      "seconds": 104.1,
+      "admission": {
+        "specs": 5,
+        "admitted": [
+          "L/test_L_BS_001_login.spec.ts :: log in as alice @smoke",
+          "P/test_P_BS_002_product_form.spec.ts :: create a product",
+          "P/test_P_BS_003_search.spec.ts :: search finds a product",
+          "P/test_P_BS_004_cart.spec.ts :: add a product to the cart",
+          "P/test_P_BS_005_help.spec.ts :: help link opens the help page"
+        ],
+        "quarantined": [],
+        "failing": [],
+        "deferred": 0
+      },
+      "order_check": {
+        "tests": 5,
+        "order_dependent": []
+      },
+      "fingerprint": "application_assets\\projects\\bench_p10_ci\\test_execution\\fingerprint.json"
+    },
+    "C_pr": {
+      "unchanged": {
+        "stage": "pr",
+        "exit_code": 0,
+        "status": "success",
+        "passed": 1,
+        "failed": 0,
+        "seconds": 8.2,
+        "selection": {
+          "full": false,
+          "impacted": 0,
+          "changed": {
+            "pages": [],
+            "acs": [],
+            "endpoints": [],
+            "specs": [],
+            "sources": []
+          }
+        }
+      },
+      "spec_edited": {
+        "stage": "pr",
+        "exit_code": 0,
+        "status": "success",
+        "passed": 2,
+        "failed": 0,
+        "seconds": 9.9,
+        "selection": {
+          "full": false,
+          "impacted": 1,
+          "changed": {
+            "pages": [],
+            "acs": [],
+            "endpoints": [],
+            "specs": [
+              "P/test_P_BS_002_product_form.spec.ts"
+            ],
+            "sources": []
+          }
+        }
+      }
+    },
+    "D_release": {
+      "failing": {
+        "stage": "release",
+        "exit_code": 1,
+        "status": "success",
+        "passed": 5,
+        "failed": 1,
+        "seconds": 18.4,
+        "fingerprint": "application_assets\\projects\\bench_p10_ci\\test_execution\\fingerprint.json"
+      },
+      "quarantined": {
+        "stage": "release",
+        "exit_code": 0,
+        "status": "success",
+        "passed": 5,
+        "failed": 1,
+        "seconds": 27.8,
+        "fingerprint": "application_assets\\projects\\bench_p10_ci\\test_execution\\fingerprint.json"
+      },
+      "report_quarantine": {
+        "results": [
+          {
+            "test": "C/test_ci_canary.spec.ts :: checkout total matches the cart",
+            "status": "failed"
+          }
+        ],
+        "released": [],
+        "added": [],
+        "reset": []
+      }
+    }
+  },
+  "checks": [
+    {
+      "check": "A: exit 3 when the app is down",
+      "ok": true,
+      "detail": {
+        "stage": "pr",
+        "exit_code": 3,
+        "status": "environment_blocked",
+        "passed": 0,
+        "failed": 0,
+        "seconds": 2.3,
+        "selection": {
+          "full": true,
+          "impacted": 5,
+          "changed": {
+            "pages": [],
+            "acs": [],
+            "endpoints": [],
+            "specs": [
+              "L/test_L_BS_001_login.spec.ts",
+              "P/test_P_BS_002_product_form.spec.ts",
+              "P/test_P_BS_003_search.spec.ts",
+              "P/test_P_BS_004_cart.spec.ts",
+              "P/test_P_BS_005_help.spec.ts"
+            ],
+            "sources": []
+          }
+        },
+        "health": {
+          "ok": false,
+          "checks": [
+            {
+              "name": "base_url",
+              "ok": false,
+              "detail": "http://127.0.0.1:8775 -> URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"
+            }
+          ]
+        },
+        "error": "environment blocked \u2014 base_url: http://127.0.0.1:8775 -> URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"
+      }
+    },
+    {
+      "check": "A: no test ran",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "B: exit 0",
+      "ok": true,
+      "detail": {
+        "stage": "nightly",
+        "exit_code": 0,
+        "status": "success",
+        "passed": 5,
+        "failed": 0,
+        "seconds": 104.1,
+        "admission": {
+          "specs": 5,
+          "admitted": [
+            "L/test_L_BS_001_login.spec.ts :: log in as alice @smoke",
+            "P/test_P_BS_002_product_form.spec.ts :: create a product",
+            "P/test_P_BS_003_search.spec.ts :: search finds a product",
+            "P/test_P_BS_004_cart.spec.ts :: add a product to the cart",
+            "P/test_P_BS_005_help.spec.ts :: help link opens the help page"
+          ],
+          "quarantined": [],
+          "failing": [],
+          "deferred": 0
+        },
+        "order_check": {
+          "tests": 5,
+          "order_dependent": []
+        },
+        "fingerprint": "application_assets\\projects\\bench_p10_ci\\test_execution\\fingerprint.json"
+      }
+    },
+    {
+      "check": "B: burn-in admitted every new test",
+      "ok": true,
+      "detail": {
+        "specs": 5,
+        "admitted": [
+          "L/test_L_BS_001_login.spec.ts :: log in as alice @smoke",
+          "P/test_P_BS_002_product_form.spec.ts :: create a product",
+          "P/test_P_BS_003_search.spec.ts :: search finds a product",
+          "P/test_P_BS_004_cart.spec.ts :: add a product to the cart",
+          "P/test_P_BS_005_help.spec.ts :: help link opens the help page"
+        ],
+        "quarantined": [],
+        "failing": [],
+        "deferred": 0
+      }
+    },
+    {
+      "check": "B: order check found no order-dependent test",
+      "ok": true,
+      "detail": {
+        "tests": 5,
+        "order_dependent": []
+      }
+    },
+    {
+      "check": "B: fingerprint saved",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "C1: nothing changed -> no impacted test",
+      "ok": true,
+      "detail": {
+        "full": false,
+        "impacted": 0,
+        "changed": {
+          "pages": [],
+          "acs": [],
+          "endpoints": [],
+          "specs": [],
+          "sources": []
+        }
+      }
+    },
+    {
+      "check": "C1: only the smoke test ran",
+      "ok": true,
+      "detail": {
+        "ran": 1
+      }
+    },
+    {
+      "check": "C1: exit 0",
+      "ok": true,
+      "detail": {
+        "stage": "pr",
+        "exit_code": 0,
+        "status": "success",
+        "passed": 1,
+        "failed": 0,
+        "seconds": 8.2,
+        "selection": {
+          "full": false,
+          "impacted": 0,
+          "changed": {
+            "pages": [],
+            "acs": [],
+            "endpoints": [],
+            "specs": [],
+            "sources": []
+          }
+        }
+      }
+    },
+    {
+      "check": "C2: the edited spec's tests are selected and run",
+      "ok": true,
+      "detail": {
+        "full": false,
+        "impacted": 1,
+        "changed": {
+          "pages": [],
+          "acs": [],
+          "endpoints": [],
+          "specs": [
+            "P/test_P_BS_002_product_form.spec.ts"
+          ],
+          "sources": []
+        }
+      }
+    },
+    {
+      "check": "C2: only smoke + impacted tests ran, fewer than nightly",
+      "ok": true,
+      "detail": {
+        "pr": 2,
+        "impacted": 1,
+        "nightly": 5
+      }
+    },
+    {
+      "check": "C2: exit 0",
+      "ok": true,
+      "detail": {
+        "stage": "pr",
+        "exit_code": 0,
+        "status": "success",
+        "passed": 2,
+        "failed": 0,
+        "seconds": 9.9,
+        "selection": {
+          "full": false,
+          "impacted": 1,
+          "changed": {
+            "pages": [],
+            "acs": [],
+            "endpoints": [],
+            "specs": [
+              "P/test_P_BS_002_product_form.spec.ts"
+            ],
+            "sources": []
+          }
+        }
+      }
+    },
+    {
+      "check": "D1: a failing gating test -> exit 1",
+      "ok": true,
+      "detail": {
+        "stage": "release",
+        "exit_code": 1,
+        "status": "success",
+        "passed": 5,
+        "failed": 1,
+        "seconds": 18.4,
+        "fingerprint": "application_assets\\projects\\bench_p10_ci\\test_execution\\fingerprint.json"
+      }
+    },
+    {
+      "check": "D2: the same test quarantined -> exit 0",
+      "ok": true,
+      "detail": {
+        "stage": "release",
+        "exit_code": 0,
+        "status": "success",
+        "passed": 5,
+        "failed": 1,
+        "seconds": 27.8,
+        "fingerprint": "application_assets\\projects\\bench_p10_ci\\test_execution\\fingerprint.json"
+      }
+    },
+    {
+      "check": "D2: the report lists it as quarantined",
+      "ok": true,
+      "detail": {
+        "results": [
+          {
+            "test": "C/test_ci_canary.spec.ts :: checkout total matches the cart",
+            "status": "failed"
+          }
+        ],
+        "released": [],
+        "added": [],
+        "reset": []
+      }
+    }
+  ],
+  "passed": 15,
+  "total": 15
+}

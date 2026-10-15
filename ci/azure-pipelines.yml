@@ -1,0 +1,58 @@
+# MTA quality pipeline for Azure DevOps — reference this file from a pipeline.
+# Variables: MTA_PROJECT (a folder under application_assets/projects/), optional APP_START_CMD.
+#   pull request -> smoke + impacted tests, chromium
+#   nightly      -> burn-in admission, whole suite on the browser matrix, order-independence check
+#   release tag  -> whole suite + quality gates
+# The job fails when a quality gate fails (exit 1) or the environment is down (exit 3).
+trigger:
+  tags:
+    include: ["v*"]
+pr:
+  branches:
+    include: ["*"]
+schedules:
+  - cron: "0 1 * * *"
+    displayName: nightly
+    branches:
+      include: [main]
+    always: true
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  CI: "true"
+
+steps:
+  - checkout: self
+    fetchDepth: 0
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: "3.12"
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "20.x"
+  - script: pip install -r requirements.txt && npm ci && npx playwright install --with-deps chromium firefox webkit
+    displayName: Install
+  - script: $(APP_START_CMD)
+    displayName: Start the app under test
+    condition: ne(variables['APP_START_CMD'], '')
+  - bash: |
+      if [ "$(Build.Reason)" = "PullRequest" ]; then
+        python -m tools.ci.run --project "$(MTA_PROJECT)" --stage pr --git-base "origin/$(System.PullRequest.TargetBranch)"
+      elif [ "$(Build.Reason)" = "Schedule" ]; then
+        python -m tools.ci.run --project "$(MTA_PROJECT)" --stage nightly --order-check
+      else
+        python -m tools.ci.run --project "$(MTA_PROJECT)" --stage release
+      fi
+    displayName: Run MTA
+  - task: PublishTestResults@2
+    condition: always()
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: application_assets/projects/$(MTA_PROJECT)/test_execution/reports/junit/*.xml
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    inputs:
+      targetPath: application_assets/projects/$(MTA_PROJECT)/test_execution/reports
+      artifact: mta-reports

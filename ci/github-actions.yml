@@ -1,0 +1,77 @@
+# MTA quality pipeline for GitHub Actions — copy to .github/workflows/mta.yml.
+# Set the repository variable MTA_PROJECT (a folder under application_assets/projects/) and, when the app under
+# test must be started inside the job, APP_START_CMD (e.g. "docker compose up -d app").
+#   pull request -> smoke + impacted tests, chromium
+#   nightly      -> burn-in admission, whole suite on the browser matrix, order-independence check
+#   release tag  -> whole suite + quality gates
+# The job fails when a quality gate fails (exit 1) or the environment is down (exit 3).
+name: mta
+
+on:
+  pull_request:
+  schedule:
+    - cron: "0 1 * * *"
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "pr | nightly | release"
+        default: "nightly"
+
+concurrency:
+  group: mta-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      MTA_PROJECT: ${{ vars.MTA_PROJECT }}
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # selective execution diffs against the base branch
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: pip install -r requirements.txt
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Start the app under test
+        if: ${{ vars.APP_START_CMD != '' }}
+        run: ${{ vars.APP_START_CMD }}
+      - name: Pick the stage
+        id: stage
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then echo "stage=pr" >> "$GITHUB_OUTPUT";
+          elif [ "${{ github.event_name }}" = "schedule" ]; then echo "stage=nightly" >> "$GITHUB_OUTPUT";
+          elif [ "${{ github.event_name }}" = "push" ]; then echo "stage=release" >> "$GITHUB_OUTPUT";
+          else echo "stage=${{ inputs.stage }}" >> "$GITHUB_OUTPUT"; fi
+      - name: Run MTA
+        run: |
+          EXTRA=""
+          if [ "${{ steps.stage.outputs.stage }}" = "pr" ]; then EXTRA="--git-base origin/${{ github.base_ref }}"; fi
+          if [ "${{ steps.stage.outputs.stage }}" = "nightly" ]; then EXTRA="--order-check"; fi
+          python -m tools.ci.run --project "$MTA_PROJECT" --stage "${{ steps.stage.outputs.stage }}" $EXTRA
+      - name: Upload reports (HTML, JSON, JUnit, traces)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mta-${{ steps.stage.outputs.stage }}-reports
+          path: |
+            application_assets/projects/${{ env.MTA_PROJECT }}/test_execution/reports/
+            application_assets/projects/${{ env.MTA_PROJECT }}/quarantine.yaml
+          retention-days: 14
+      - name: Publish JUnit
+        if: always()
+        uses: mikepenz/action-junit-report@v4
+        with:
+          report_paths: application_assets/projects/${{ env.MTA_PROJECT }}/test_execution/reports/junit/*.xml

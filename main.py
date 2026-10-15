@@ -229,6 +229,10 @@ def main() -> int:
 
 def gate_exit(outputs: dict, ignore: bool = False) -> int:
     """Phase 11.5: a failed project.yaml quality gate makes the run exit 1 (CI fails), naming the gate."""
+    for step, out in (outputs or {}).items():
+        if isinstance(out, dict) and out.get("status") == "environment_blocked":
+            print(f"Environment blocked ({step}): {out.get('error')}")
+            return 3                                   # Phase 10.4: not a test failure — the environment is down
     gates = ((outputs or {}).get("reporting") or {}).get("quality_gates") or {}
     if gates.get("verdict") != "FAIL":
         if gates.get("verdict") == "PASS":

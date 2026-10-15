@@ -70,3 +70,13 @@ logged; reporting continues.
   `max_security_high`, `max_flaky_rate`, `perf_budget_regression_pct` (maximums). `python main.py` exits 1 when a gate
   fails and prints the gate (`--ignore-gates` to exit 0); `python -m tools.reporting.summary <report.json>` does the
   same for a saved report.
+
+## Quarantine (Phase 10.2)
+
+`<project>/quarantine.yaml` (`tools/execution/quarantine.py`) lists tests that still run but do not gate. On every
+run (whether or not `reporting.enhanced` / `quality_gates` is set) the results are split first: gates, pass rates and
+the executive summary use the gating tests only; the quarantined ones are listed in `report["quarantine"]` (test and
+this run's status; released / added / reset this run) and in the HTML "Quarantine" section. After each run
+`record_run` updates the file: a quarantined test that passes `release_after` (default 5) runs in a row is released
+(kept in `released:` history), a failure resets its count, and a test flaky again after an earlier flaky run (last 10
+JSON reports) is quarantined automatically with reason `flaky`. `summary["quarantined_tests"]` counts them.

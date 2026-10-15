@@ -273,7 +273,7 @@ class OrchestratorAgent:
                         except Exception as exc:
                             self.logger.warning(f"Checkpoint save failed after '{step}': {exc}")
 
-                if step_status == "failed":
+                if step_status in ("failed", "environment_blocked"):     # Phase 10.4: nothing ran
                     upstream_failed = True
                     reason = result.get("error", "agent returned status=failed")
                     self.state.record_error(step, reason)

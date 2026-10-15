@@ -225,6 +225,9 @@ class UIExecutionAgent(BaseAgent):
         self._grep_invert = request.get("grep_invert") or None
         # Phase 6: healing burn-in / triage flaky re-run — every test N times, no retries (a retry would hide it)
         self._repeat_each = int(request.get("repeat_each") or 0) or None
+        # Phase 10: worker count override (order-independence runs use 1 and 4)
+        self._workers = int(request.get("workers") or 0) or None
+        self._health_done = False
         # Phase 7.2: approve visual baselines (python -m tools.nonfunctional.visual approve)
         self._update_snapshots = bool(request.get("update_snapshots"))
         self._shard = shard
@@ -257,6 +260,37 @@ class UIExecutionAgent(BaseAgent):
         except Exception as exc:
             self._log(f"role auth pre-step failed (non-fatal): {exc}", level="warning")
             self._role_auth = {"roles": [], "failed": [], "error": str(exc)[:300]}
+
+    def _health_check(self, safe: str, base_url: str, base_only: bool = False) -> Optional[Dict[str, Any]]:
+        """None = healthy (or no health_check block); else the `environment_blocked` result. Done once per execute().
+        `base_only` (before the role logins): only the base-URL check, and the full check still runs after."""
+        if getattr(self, "_health_done", False):
+            return None
+        from tools.execution import health
+        if base_only:
+            res = health.check(os.path.join(_ASSETS_BASE, safe), base_url, base_only=True)
+            return None if res.get("ok") else self._blocked(res)
+        self._health_done = True
+
+        def _refresh(role: str) -> None:
+            from tools.auth.role_states import ensure_role_states, project_roles
+            roles = project_roles(getattr(self, "_project_cfg", None) or load_project_yaml(_ASSETS_BASE, safe))
+            ensure_role_states(safe, roles, force=True, only=[role])
+        res = health.check(os.path.join(_ASSETS_BASE, safe), base_url, refresh=_refresh)
+        if res.get("ok"):
+            self._health = res
+            if res.get("checks"):
+                self._log(f"Health check passed ({len(res['checks'])} check(s))")
+            return None
+        return self._blocked(res)
+
+    def _blocked(self, res: Dict[str, Any]) -> Dict[str, Any]:
+        self._health = res
+        bad = [c for c in res["checks"] if not c["ok"]]
+        msg = "environment blocked — " + "; ".join(f"{c['name']}: {c['detail']}" for c in bad)
+        self._log(msg, level="error")
+        return {"module": "ui_execution", "status": "environment_blocked", "error": msg, "health": res,
+                "passed": 0, "failed": 0, "skipped": 0, "flaky": 0, "results": []}
 
     def _finalise(self, result: Dict[str, Any]) -> Dict[str, Any]:
         if not isinstance(result, dict):
@@ -560,8 +594,16 @@ class UIExecutionAgent(BaseAgent):
                 level="warning",
             )
 
+        # Phase 10.4 — a dead app is blocked before the role logins (each would wait for its own timeouts)
+        blocked = self._health_check(safe, base_url, base_only=True)
+        if blocked is not None:
+            return blocked
         # Phase 4.3 — per-role storage states, once per execute() (execution.role_auth)
         self._ensure_role_auth(safe)
+        # Phase 10.4 — pre-run health check (project.yaml health_check): a broken environment blocks the run
+        blocked = self._health_check(safe, base_url)
+        if blocked is not None:
+            return blocked
         cfg = self._cfg()
         projects = list(getattr(self, "_projects", None) or cfg.get("projects") or ["chromium"])
 
@@ -582,6 +624,8 @@ class UIExecutionAgent(BaseAgent):
 
         # Fix 5: one browser window at a time in headed mode
         workers = "1" if not headless else "2"
+        if getattr(self, "_workers", None) and headless:
+            workers = str(self._workers)
 
         # When spec_files is set (suite run), pass individual paths; otherwise pass the directory
         if spec_files:

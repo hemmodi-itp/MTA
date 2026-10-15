@@ -40,6 +40,19 @@ gap loop, V8 JS coverage capture, built-in mutation runner. Still open:
 - Boundary-accepted cases on limits that depend on stored state (cart quantity) are skipped, so mutants there
   survive — needs per-test data reset.
 
+## Phase 10
+Done in Phase 10 (docs/phases/phase-10-report.md): burn-in admission, flaky quarantine (`quarantine.yaml`, auto
+release / auto add), order-independence check, pre-run health check (`environment_blocked`, exit 3), selective PR
+runs from a change fingerprint, one CI entry point (`python -m tools.ci.run`) with GitHub Actions / Azure Pipelines
+templates. Still open:
+- Sharded CI jobs across machines: one CI job per shard, then merge the Playwright blob reports and MTA results before
+  triage and reporting run once (today `execution.shards` shards within one job).
+- A flaky-rate trend chart in the report (history keeps the flaky count per run; no chart yet).
+- Burn-in (50 specs per night) and the 3-mode order check are untimed on a large suite; the benchmark fixture has 5 UI
+  tests.
+- Selective execution without white-box `code_rules.json` maps source changes to tests only through spec text and
+  git paths.
+
 ## Phase 11
 All lean-pass items are done (docs/phases/phase-11-report.md). Still open:
 - Posting defects to Jira / Azure DevOps through a connector (opt-in, needs credentials) — exports only today.

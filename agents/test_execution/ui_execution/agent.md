@@ -14,6 +14,9 @@ files) and returns pass/fail results.
 - `playwright.config.ts`
 - `module_filter` (optional — scope to one module's specs)
 - `suite` (optional — named suite execution)
+- `spec_files`, `grep`, `repeat_each`, `update_snapshots`, `browsers` (optional — narrower runs: triage reruns,
+  burn-in, selective CI runs)
+- `workers` (optional, headless only — Phase 10.3 order-independence runs)
 
 ## Outputs
 
@@ -142,3 +145,13 @@ Behaviour:
   test stays `failed` with `error_kind: "browser_closed"`.
 - **Safety**: `MTA_DESTRUCTIVE_ALLOWED` / `MTA_SAFETY_ENVIRONMENT` carry the project's safety policy to the runtime's
   destructive-action guard (Phase 4.4 `safety` fixture).
+
+## Pre-run health check (Phase 10.4)
+
+When project.yaml has a `health_check:` block (`tools/execution/health.py`), the run first checks that the base URL
+answers (< 500) — before the role logins, so a dead app is blocked in seconds instead of after every login step times
+out — and then, after the role storage states are created, that each role's session still opens `auth_url`
+without a redirect to the login (an expired one is refreshed once), and that every `seed:` request returns its status
+and text. Any failure returns `status: "environment_blocked"` with `error` and `health` (the per-check results)
+instead of running the suite: a dead environment is not reported as hundreds of product failures. The orchestrator
+treats it like a failed step (`upstream_failed` downstream) and `python main.py` / `python -m tools.ci.run` exit 3.
