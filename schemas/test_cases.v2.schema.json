@@ -426,6 +426,13 @@
           "default": null,
           "title": "Ac Link"
         },
+        "citations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Citations",
+          "type": "array"
+        },
         "cleanup": {
           "items": {
             "type": "string"
