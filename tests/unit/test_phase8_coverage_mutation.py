@@ -137,13 +137,13 @@ def test_code_rules_reach_test_design_with_citations(tmp_path):
     from tools.test_design import design as D
     from tools.test_design.inputs import DesignInputs
     from tools.whitebox.extract import extract_source
-    src = Path("application_assets/projects/bench_buggy_shop")
+    tests_dir = Path(__file__).resolve().parents[1]
+    src = tests_dir / "fixtures" / "recorded" / "buggy_shop"            # committed inputs, not the gitignored bench
     d = tmp_path / "p"
     (d / "test_comprehension").mkdir(parents=True)
-    for n in ("requirements", "business_scenarios", "form_model", "app_map", "permission_matrix"):
-        if (src / "test_comprehension" / f"{n}.json").exists():
-            shutil.copy(src / "test_comprehension" / f"{n}.json", d / "test_comprehension")
-    shutil.copy(src / "project.yaml", d)
+    for n in ("requirements", "business_scenarios", "form_model", "app_map"):
+        shutil.copy(src / f"{n}.json", d / "test_comprehension")
+    shutil.copy(tests_dir / "fixtures" / "test_design" / "buggy_shop" / "project.yaml", d)
     (d / "test_comprehension" / "code_rules.json").write_text(
         json.dumps(extract_source("benchmarks/apps/buggy_shop", rel_to=".")), encoding="utf-8")
     inp = DesignInputs.load(str(d), "b")

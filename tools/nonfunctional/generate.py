@@ -13,6 +13,8 @@ Output: test_creation/test_scripts/nfr/nfr_<type>.spec.ts, one file per enabled 
       resilience           offline, slow network, unusual characters in GET (search) forms: no 5xx, no blank page,
                            no stack trace, no uncaught page error
       i18n                 locale x timezone matrix, RTL, +40% text expansion: no overflow; clipping warns
+      links                every same-origin link on every page answers (no 404 / 5xx); links that change state
+                           (log out, delete, ...) are never requested
 
     nfr:                   # optional tuning per type
       accessibility: {accepted: [{rule, url_template?, reason}], keyboard: true, form_errors: true}
@@ -42,9 +44,9 @@ FIXTURE_IMPORT = "../../../../../_shared/runtime/fixtures/testFixture"
 RULES_IMPORT = "../../../../../_shared/runtime/fixtures/securityRules"
 NFR_IMPORT = "../../../../../_shared/runtime/fixtures/nfr"
 ROLE_PREF = ("guest", "user")
-TYPES = ("accessibility", "visual", "performance", "security_passive", "compatibility", "resilience", "i18n")
+TYPES = ("accessibility", "visual", "performance", "security_passive", "compatibility", "resilience", "i18n", "links")
 TAG = {"accessibility": "a11y", "visual": "visual", "performance": "perf", "security_passive": "security",
-       "compatibility": "responsive", "resilience": "resilience", "i18n": "i18n"}
+       "compatibility": "responsive", "resilience": "resilience", "i18n": "i18n", "links": "links"}
 DEFAULTS = {
     "accessibility": {"accepted": [], "keyboard": True, "form_errors": True},
     "security_passive": {"accepted": []},
@@ -99,6 +101,7 @@ def nfr_ac_ids(requirements: dict | list, kind: str) -> list[str]:
         "visual": r"\blayout\b|visual|look and feel",
         "resilience": r"offline|network (error|failure)|unavailable|retry|error message",
         "i18n": r"locale|language|translat|currency|time ?zone|right-to-left|\bRTL\b",
+        "links": r"\blinks?\b.{0,80}\b(opens?|goes|leads|navigat|broken|404)|broken link",
     }
     pat = re.compile(pats.get(kind, r"$^"), re.I)
     reqs = requirements.get("requirements", []) if isinstance(requirements, dict) else requirements
@@ -106,7 +109,7 @@ def nfr_ac_ids(requirements: dict | list, kind: str) -> list[str]:
     for r in reqs:
         for ac in r.get("acceptance_criteria", []):
             text = ac.get("statement", "")
-            if pat.search(text) and (kind in ("security_passive",) or heuristic_testability(text)[0] == "non_functional"):
+            if pat.search(text) and (kind in ("security_passive", "links") or heuristic_testability(text)[0] == "non_functional"):
                 ids.append(ac["id"])
     return ids
 
@@ -417,6 +420,20 @@ def _load(path: Path, default):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else default
 
 
+def gen_links_spec(states: list[dict], project: dict, ac_ids: list[str]) -> str:
+    tags = _tags("links", ac_ids)
+
+    def body(s, title):
+        return [f"  test({json.dumps(f'{title} every link answers {tags}')}, async ({{ page }}, testInfo) => {{", "__LOGIN__",
+                f"    await page.goto({json.dumps(s['url'])});",
+                "    await page.waitForLoadState('load');",
+                "    const findings = await nfr.brokenLinks(page);",
+                "    await nfr.attachFindings(testInfo, 'link-findings.json', findings);",
+                "    expect(nfr.split(findings, testInfo.annotations, 'links'), 'broken links').toEqual([]);",
+                "  });"]
+    return _file("links", states, project, ac_ids, body)
+
+
 def generate(project_dir: Path, out_dir: Path | None = None) -> list[Path]:
     project_dir = Path(project_dir)
     project = yaml.safe_load((project_dir / "project.yaml").read_text(encoding="utf-8")) or {}
@@ -457,6 +474,8 @@ def generate(project_dir: Path, out_dir: Path | None = None) -> list[Path]:
         write("nfr_resilience.spec.ts", gen_resilience_spec(states, project, nfr_ac_ids(reqs, "resilience"), forms))
     if f["i18n"]:
         write("nfr_i18n.spec.ts", gen_i18n_spec(states, project, nfr_ac_ids(reqs, "i18n")))
+    if f["links"]:
+        write("nfr_links.spec.ts", gen_links_spec(states, project, nfr_ac_ids(reqs, "links")))
     # a type switched off since the last run: its old spec goes too, so it no longer runs
     keep = {p.name for p in written}
     for old in out_dir.glob("nfr_*.spec.ts"):

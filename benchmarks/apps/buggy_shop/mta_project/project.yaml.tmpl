@@ -32,6 +32,7 @@ test_types:
   security_passive: true   # Phase 7: @security header/cookie/storage specs (reads responses; no attack payloads)
   performance: true        # Phase 7: timing budgets (AC-02.6: the Products page within 2 s)
   resilience: true         # Phase 7: offline / slow network / unusual search input
+  links: true              # every same-origin link answers (AC-08.1)
   api: true                # Phase 8: API tests per endpoint from code_rules + api_inventory
 
 nfr:

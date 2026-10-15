@@ -81,6 +81,34 @@ def sample_path(template: str, app_map: Optional[dict]) -> str:
     return re.sub(r"\{[^}]+\}", "1", template)
 
 
+FILE_KINDS = ("file_extension", "file_size")      # upload rules: sent as multipart files, not as field values
+_BAD_EXTENSIONS = (".exe", ".bat", ".sh", ".bin", ".php")
+
+
+def _upload(path: str, method: str, field: str, ext: str, size: int, others_ts: str = "") -> str:
+    """A multipart request carrying one generated file (`size` bytes of "a") as `field`, plus other form values."""
+    name = "mta-upload" + ("." + ext.lstrip(".") if ext else "")
+    part = (f"{json.dumps(field)}: {{ name: {json.dumps(name)}, mimeType: 'application/octet-stream', "
+            f"buffer: Buffer.alloc({int(size)}, 97) }}")
+    return (f"await api.fetch({json.dumps(path)}, {{ method: {json.dumps(method)}, multipart: {{ {part}"
+            f"{', ' + others_ts if others_ts else ''} }}, maxRedirects: 0 }})")
+
+
+def _file_cases(rule: dict, rules: List[dict], error: str) -> List[Tuple[str, str, int, str]]:
+    """[(label, extension, size, expected)] for one upload rule: rejected outside it, accepted inside."""
+    f = rule["field"]
+    allowed = next((r["value"]["allowed"] for r in rules if r["field"] == f and r["kind"] == "file_extension"), [])
+    ok_ext = allowed[0] if allowed else ""
+    if rule["kind"] == "file_extension":
+        low = {a.lower().lstrip(".") for a in allowed}
+        bad = next(e for e in _BAD_EXTENSIONS if e.lstrip(".") not in low)
+        return [(f"{f} with a disallowed type {bad}", bad, 16, error),
+                (f"{f} with an allowed type {ok_ext}", ok_ext, 16, "ACCEPT")]
+    n = int(rule["value"]["max_bytes"])
+    return [(f"{f} over the size limit ({n + 1} bytes)", ok_ext, n + 1, error),
+            (f"{f} at the size limit ({n} bytes)", ok_ext, n, "ACCEPT")]
+
+
 def _rules_for(route: dict, rules: List[dict]) -> List[dict]:
     key = f"{route['method']} {route['path_template']}"
     return [r for r in rules if key in (r.get("routes") or [])]
@@ -309,9 +337,10 @@ def generate(project_dir: Path, out_dir: Optional[Path] = None, only_routes: Opt
             if ep.get("response_keys"):
                 body.append(f"await expectJsonKeys(res, {json.dumps(ep['response_keys'])}, {json.dumps(name)});")
             test("valid request", "valid", body, role)
-        if m in MUTATING and mine:
-            fields = _fields(ep, mine)
-            values = {f: _valid_value(f, mine) for f in fields}
+        form_rules = [r for r in mine if r["kind"] not in FILE_KINDS]
+        if m in MUTATING and form_rules:
+            fields = _fields(ep, form_rules)
+            values = {f: _valid_value(f, form_rules) for f in fields}
             if all(known for _, known in values.values()):
                 base = "{ " + ", ".join(f"{json.dumps(f)}: {v}" for f, (v, _) in values.items()) + " }"
                 skip = None if policy.destructive_allowed else "changes data — set safety.allow_destructive in a non-prod environment"
@@ -320,7 +349,7 @@ def generate(project_dir: Path, out_dir: Optional[Path] = None, only_routes: Opt
                 test("valid request is accepted", "valid",
                      [f"const res = {_req(m, path, ep, base)};", f"await expectStatus(res, 'success', {json.dumps(name)});"],
                      role, skip=skip)
-                for rule in mine:
+                for rule in form_rules:
                     for label, val, exp in _bad_cases(rule, error):
                         body_ts = ("(() => { const b: Record<string, string> = " + base + "; delete b["
                                    + json.dumps(rule["field"]) + "]; return b; })()") if val == "MISSING" else \
@@ -338,6 +367,25 @@ def generate(project_dir: Path, out_dir: Optional[Path] = None, only_routes: Opt
                                       f"const res = {_req(m, path, ep, body_ts)};",
                                       f"await expectStatus(res, {exp_ts}, {json.dumps(name + ': ' + label)});"],
                              role, skip=case_skip)
+        # uploads: a disallowed file type / an over-size file is rejected, an allowed one is accepted
+        file_rules = [r for r in mine if r["kind"] in FILE_KINDS] if m in MUTATING else []
+        if file_rules:
+            others = [f for f in (ep.get("params") or {}).get("form") or [] if f not in {r["field"] for r in file_rules}]
+            values = {f: _valid_value(f, form_rules) for f in others}
+            others_ts = ", ".join(f"{json.dumps(f)}: {v}" for f, (v, _) in values.items())
+            missing = [f for f, (_, known) in values.items() if not known]
+            for rule in file_rules:
+                for label, ext, size, exp in _file_cases(rule, mine, error):
+                    exp_ts = "'success'" if exp == "ACCEPT" else (exp if exp.isdigit() else "'4xx'")
+                    skip = (f"no known valid value for {', '.join(missing)}" if missing else
+                            "changes data — set safety.allow_destructive in a non-prod environment"
+                            if exp == "ACCEPT" and not policy.destructive_allowed else None)
+                    guard = f" — {'; '.join(rule['guards'])}" if rule.get("guards") else ""
+                    test(f"{label} -> {'accepted' if exp == 'ACCEPT' else 'rejected'} [{rule['citation']}]", "rule",
+                         [f"// rule {rule['kind']} {json.dumps(rule['value'])} at {rule['citation']}{guard}",
+                          f"const res = {_upload(path, m, rule['field'], ext, size, others_ts)};",
+                          f"await expectStatus(res, {exp_ts}, {json.dumps(name + ': ' + label)});"],
+                         role, skip=skip)
         # pagination
         if "page" in ((ep.get("params") or {}).get("query") or []) and m == "GET":
             body = ["for (const page of ['1', '999999', '0', '-1', 'abc']) {",

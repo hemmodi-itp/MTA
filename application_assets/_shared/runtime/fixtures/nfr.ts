@@ -179,6 +179,43 @@ export async function collectLinks(page: Page): Promise<LinkLike[]> {
     href: (a as HTMLAnchorElement).href, target: a.getAttribute('target'), rel: a.getAttribute('rel') })));
 }
 
+// ── links: every same-origin link on a page answers (no 404 / 5xx) ─────────────────────────────────────────────
+
+/** Links that change state when followed (log out, delete, ...) are never requested. */
+export const UNSAFE_LINK = /log-?out|sign-?out|logoff|delete|remove|destroy|unsubscribe|cancel-?order/i;
+
+/** The link targets to check: same origin, http(s), no fragment-only / mailto / javascript, no state-changing
+ * link, each URL once (fragment dropped), at most `max`. */
+export function linkTargets(links: LinkLike[], pageUrl: string, max = 60, unsafe: RegExp = UNSAFE_LINK): string[] {
+  let origin: string;
+  try { origin = new URL(pageUrl).origin; } catch { return []; }
+  const out: string[] = [];
+  for (const l of links) {
+    let u: URL;
+    try { u = new URL(l.href, pageUrl); } catch { continue; }
+    if (!/^https?:$/.test(u.protocol) || u.origin !== origin || unsafe.test(u.pathname + u.search)) continue;
+    u.hash = '';
+    if (!out.includes(u.href)) out.push(u.href);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+/** GET every link target (the page's own session); a status >= 400 or no answer is a broken link. */
+export async function brokenLinks(page: Page, max = 60): Promise<Finding[]> {
+  const targets = linkTargets(await collectLinks(page), page.url(), max);
+  const out: Finding[] = [];
+  for (const href of targets) {
+    try {
+      const r = await page.request.get(href, { maxRedirects: 5, failOnStatusCode: false, timeout: 15_000 });
+      if (r.status() >= 400) out.push(f('link-broken', `${href} answers ${r.status()}`));
+    } catch (e) {
+      out.push(f('link-broken', `${href} did not answer (${String(e).slice(0, 80)})`));
+    }
+  }
+  return out;
+}
+
 /** The text a user sees for an error page should not be empty or a raw framework dump. */
 export function checkErrorPage(status: number, text: string, where: string): Finding[] {
   const out: Finding[] = [];

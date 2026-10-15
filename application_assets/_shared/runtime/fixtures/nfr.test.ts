@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   a11yFindings, acceptFindings, checkBlankTargets, checkErrorPage, checkMixedContent, checkStackTrace, formErrorFindings,
-  keyboardFindings, layoutFindings, perfFindings, split,
+  keyboardFindings, layoutFindings, linkTargets, perfFindings, split,
 } from './nfr';
 
 describe('a11y findings', () => {
@@ -78,5 +78,20 @@ describe('layout findings and split', () => {
     const ann: Array<{ type: string; description: string }> = [];
     expect(split(out, ann, 'responsive').map((x) => x.rule)).toEqual(['horizontal-overflow']);
     expect(ann.map((a) => a.type)).toEqual(['responsive-warning', 'responsive-warning']);
+  });
+});
+
+describe('link targets', () => {
+  const L = (href: string) => ({ href, target: null, rel: null });
+  it('same-origin http(s) links once, no fragments / mailto / javascript / other sites / state-changing links', () => {
+    const page = 'http://app.test/products?page=2';
+    const out = linkTargets([L('/help'), L('/help#faq'), L('http://app.test/help'), L('#top'), L('mailto:a@b.c'),
+      L('javascript:void(0)'), L('https://other.test/x'), L('/logout'), L('/products/3/delete'), L('/sign-out'),
+      L('cart'), L('/products?page=3')], page);
+    expect(out).toEqual(['http://app.test/help', 'http://app.test/products?page=2', 'http://app.test/cart',
+      'http://app.test/products?page=3']);
+  });
+  it('caps the number of links', () => {
+    expect(linkTargets(Array.from({ length: 10 }, (_, i) => L(`/p/${i}`)), 'http://a.test/', 3)).toHaveLength(3);
   });
 });

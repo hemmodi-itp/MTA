@@ -181,18 +181,22 @@ class _FieldMap:
         self.vars: Dict[str, str] = dict(param_fields)
         self.lookups: set = set()        # vars holding a LOOKUP result (store.get(pid)) — not the raw input
         self.ints: set = set()           # vars converted with int(...) — their ranges step by 1
+        self.reads: set = set()          # vars holding the bytes of an uploaded file (f.read(), f.file.read())
         for n in ast.walk(func):
             if isinstance(n, ast.Assign) and len(n.targets) == 1:
                 tgt = n.targets[0]
                 field = _field_read(n.value)
                 if field is None:
-                    src = _first_name(n.value)
+                    src = _known_name(n.value, self.vars) or _first_name(n.value)
                     field = self.vars.get(src) if src else None
                     if field and _is_lookup(n.value):
                         if isinstance(tgt, ast.Name):
                             self.lookups.add(tgt.id)
                 if isinstance(tgt, ast.Name) and field:
                     self.vars.setdefault(tgt.id, field)
+                    if any(isinstance(c, ast.Call) and isinstance(c.func, ast.Attribute) and c.func.attr == "read"
+                           for c in ast.walk(n.value)):
+                        self.reads.add(tgt.id)
                     if isinstance(n.value, ast.Call) and _name(n.value.func) == "int":
                         self.ints.add(tgt.id)
 
@@ -227,6 +231,74 @@ def _field_read(node: ast.AST) -> Optional[str]:
     return None
 
 
+def _known_name(node: ast.AST, known: Dict[str, str]) -> Optional[str]:
+    """The first variable the expression reads that is already mapped to a request field (data flow through
+    helpers: `name = os.path.basename(file.filename)` follows `file`, not `os`)."""
+    callees = {id(c.func) for c in ast.walk(node) if isinstance(c, ast.Call)}
+    for n in ast.walk(node):
+        if isinstance(n, ast.Name) and id(n) not in callees and n.id in known:
+            return n.id
+    return None
+
+
+def _local_value(node: ast.AST, consts: Dict[str, Any], guards: List[str]) -> Any:
+    """A function-local constant: literals and module constants, set unions (a | b) and feature-flag
+    conditionals (`x if flag else y` keeps the flag-off side; the flag is recorded in `guards`)."""
+    if isinstance(node, ast.IfExp) and _is_flag(node.test):
+        guards.append(f"when not {_flag_text(node.test)}")
+        return _local_value(node.orelse, consts, guards)
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.BitOr):
+        a, b = _local_value(node.left, consts, guards), _local_value(node.right, consts, guards)
+        if isinstance(a, list) and isinstance(b, list):
+            return a + [x for x in b if x not in a]
+        return None
+    if isinstance(node, ast.Call) and _name(node.func) in ("set", "frozenset", "tuple", "list") and not node.args:
+        return []
+    return _const(node, consts)
+
+
+def _local_consts(func: ast.AST, consts: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, List[str]]]:
+    """Module constants plus the function's own constant assignments (`allowed = {".csv", ".png"}`), with the
+    feature-flag guards each one carries. A name assigned twice, or from anything non-constant, is not a constant."""
+    seen: Dict[str, int] = {}
+    for n in ast.walk(func):
+        if isinstance(n, ast.Assign):
+            for t in n.targets:
+                if isinstance(t, ast.Name):
+                    seen[t.id] = seen.get(t.id, 0) + 1
+    local, guards = dict(consts), {}
+    for n in ast.walk(func):
+        if isinstance(n, ast.Assign) and len(n.targets) == 1 and isinstance(n.targets[0], ast.Name) \
+                and seen.get(n.targets[0].id) == 1:
+            g: List[str] = []
+            v = _local_value(n.value, consts, g)
+            if v is not None:
+                local[n.targets[0].id] = v
+                if g:
+                    guards[n.targets[0].id] = g
+    return local, guards
+
+
+def _extension_of(node: ast.AST) -> Optional[ast.AST]:
+    """X when the node takes a file name's extension: os.path.splitext(X)[1], Path(X).suffix, X.rsplit(".", 1)[-1]."""
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "lower":
+        return _extension_of(node.func.value)
+    if isinstance(node, ast.Subscript) and isinstance(node.value, ast.Call):
+        sl = node.slice
+        idx = sl.value if isinstance(sl, ast.Constant) else (
+            -sl.operand.value if isinstance(sl, ast.UnaryOp) and isinstance(sl.op, ast.USub)
+            and isinstance(sl.operand, ast.Constant) else None)
+        call = node.value
+        if _name(call.func) == "splitext" and call.args and idx in (1, -1):
+            return call.args[0]
+        if isinstance(call.func, ast.Attribute) and call.func.attr == "rsplit" and idx == -1:
+            return call.func.value
+    if isinstance(node, ast.Attribute) and node.attr == "suffix" and isinstance(node.value, ast.Call) \
+            and _name(node.value.func) in ("Path", "PurePath") and node.value.args:
+        return node.value.args[0]
+    return None
+
+
 def _first_name(node: ast.AST) -> Optional[str]:
     """The first variable the expression reads — never the name of a function it calls."""
     callees = {id(c.func) for c in ast.walk(node) if isinstance(c, ast.Call)}
@@ -246,14 +318,24 @@ def _rule(field, kind, value, path, line, func, guards, message):
     return r
 
 
-def _rules_from_test(test: ast.AST, fmap: _FieldMap, consts, path, line, func, guards, message) -> List[dict]:
+def _rules_from_test(test: ast.AST, fmap: _FieldMap, consts, path, line, func, guards, message,
+                     local_guards: Optional[Dict[str, List[str]]] = None) -> List[dict]:
     out: List[dict] = []
     if isinstance(test, ast.BoolOp) and isinstance(test.op, ast.Or):
         for v in test.values:
-            out += _rules_from_test(v, fmap, consts, path, line, func, guards, message)
+            out += _rules_from_test(v, fmap, consts, path, line, func, guards, message, local_guards)
         return out
     if isinstance(test, ast.UnaryOp) and isinstance(test.op, ast.Not):
         inner = test.operand
+        if isinstance(inner, ast.Call) and isinstance(inner.func, ast.Attribute) and inner.func.attr == "endswith" \
+                and inner.args:
+            vals = _const(inner.args[0], consts)
+            vals = [vals] if isinstance(vals, str) else vals
+            g = guards + ((local_guards or {}).get(inner.args[0].id, []) if isinstance(inner.args[0], ast.Name) else [])
+            field = fmap.field_of(inner.func.value)
+            if field and isinstance(vals, list) and vals and all(isinstance(v, str) and v.startswith(".") for v in vals):
+                out.append(_rule(field, "file_extension", {"allowed": vals}, path, line, func, g, message))
+            return out
         if isinstance(inner, ast.Call) and isinstance(inner.func, ast.Attribute) and inner.func.attr in (
                 "match", "fullmatch", "search") and inner.args:
             rx = consts.get(_name(inner.func.value)) if isinstance(inner.func.value, ast.Name) else None
@@ -268,7 +350,16 @@ def _rules_from_test(test: ast.AST, fmap: _FieldMap, consts, path, line, func, g
     if isinstance(test, ast.Compare) and len(test.ops) == 1:
         left, op, right = test.left, test.ops[0], test.comparators[0]
         if isinstance(op, (ast.NotIn,)):
-            field, vals = fmap.field_of(left), _const(right, consts)
+            vals = _const(right, consts)
+            if isinstance(right, ast.Name):
+                guards = guards + (local_guards or {}).get(right.id, [])
+            target = _extension_of(left)
+            if target is not None:
+                field = fmap.field_of(target)
+                if field and isinstance(vals, list) and vals and all(isinstance(v, str) for v in vals):
+                    out.append(_rule(field, "file_extension", {"allowed": vals}, path, line, func, guards, message))
+                return out
+            field = fmap.field_of(left)
             if field and isinstance(vals, list):
                 out.append(_rule(field, "options", {"values": vals}, path, line, func, guards, message))
             return out
@@ -285,6 +376,12 @@ def _rules_from_test(test: ast.AST, fmap: _FieldMap, consts, path, line, func, g
         if not field:
             return out
         kind = "length" if is_len else "range"
+        if is_len and left.args and isinstance(left.args[0], ast.Name) and left.args[0].id in fmap.reads:
+            # len(<bytes of an upload>) is a file SIZE limit, not a text length (never typed into a field)
+            if isinstance(op, (ast.Gt, ast.GtE)):
+                out.append(_rule(field, "file_size", {"max_bytes": num if isinstance(op, ast.Gt) else num - 1},
+                                 path, line, func, guards, message))
+            return out
         integer = is_len or (isinstance(left, ast.Name) and left.id in fmap.ints)
         step = 1 if integer else 0.01
         # the guard is the REJECTED region: `x > N` rejects -> max N; `x >= N` rejects -> max N-1 ...
@@ -306,6 +403,7 @@ def _rules_from_test(test: ast.AST, fmap: _FieldMap, consts, path, line, func, g
 
 def _func_rules(func: ast.AST, fmap: _FieldMap, consts, path) -> List[dict]:
     out: List[dict] = []
+    consts, local_guards = _local_consts(func, consts)
 
     def visit(stmts: List[ast.stmt], outer_guards: List[str]):
         for st in stmts:
@@ -319,7 +417,7 @@ def _func_rules(func: ast.AST, fmap: _FieldMap, consts, path) -> List[dict]:
                         if isinstance(n, ast.If) and _is_flag(n.test):
                             inner_guards.append(_flag_text(n.test))
                     out.extend(_rules_from_test(test, fmap, consts, path, st.lineno, func.name, inner_guards,
-                                                _message(st.body, consts)))
+                                                _message(st.body, consts), local_guards))
                 visit(st.body, guards)
                 visit(st.orelse, guards)
             elif isinstance(st, (ast.For, ast.While, ast.With, ast.Try, ast.AsyncWith, ast.AsyncFor)):

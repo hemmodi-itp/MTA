@@ -74,7 +74,7 @@ def test_every_type_generates_and_registers(tmp_path):
     files = generate(d)
     names = [f.name for f in files]
     assert names == ["nfr_a11y.spec.ts", "nfr_visual.spec.ts", "nfr_perf.spec.ts", "nfr_security_127_0_0_1_8765.spec.ts",
-                     "nfr_responsive.spec.ts", "nfr_resilience.spec.ts", "nfr_i18n.spec.ts"]
+                     "nfr_responsive.spec.ts", "nfr_resilience.spec.ts", "nfr_i18n.spec.ts", "nfr_links.spec.ts"]
     text = {f.name: f.read_text(encoding="utf-8") for f in files}
     assert "toHaveScreenshot" in text["nfr_visual.spec.ts"] and "visual-baseline" in text["nfr_visual.spec.ts"]
     perf = text["nfr_perf.spec.ts"]
@@ -83,8 +83,11 @@ def test_every_type_generates_and_registers(tmp_path):
     res = text["nfr_resilience.spec.ts"]
     assert "setOffline(true)" in res and "emulateNetworkConditions" in res and "search-form handles unusual input" in res
     assert len(spec_tests(text["nfr_i18n.spec.ts"])) == 3 * 2 and '"locale": "ar-EG"' in text["nfr_i18n.spec.ts"]
+    links = text["nfr_links.spec.ts"]
+    assert "nfr.brokenLinks(page)" in links and "@links" in links
+    assert ".click(" not in links.replace("page.locator(\"#go\").click()", "")      # GETs only, besides the login
     counts = register(d, files)
-    assert counts["NFR_A11Y"] == 4 and counts["NFR_I18N"] == 6
+    assert counts["NFR_A11Y"] == 4 and counts["NFR_I18N"] == 6 and counts["NFR_LINKS"] == 3
     plans = json.loads((d / "test_creation" / "test_plans.json").read_text(encoding="utf-8"))
     plans = plans.get("plans", plans)
     t0 = plans["NFR_A11Y"]["tests"][0]

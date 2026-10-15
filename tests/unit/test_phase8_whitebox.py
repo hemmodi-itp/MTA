@@ -9,6 +9,9 @@ from tools.whitebox import js_rules, python_rules
 from tools.whitebox.extract import contract, extract_source
 
 
+RECORDED = Path(__file__).resolve().parents[1] / "fixtures" / "recorded" / "buggy_shop"   # committed inputs
+
+
 def rules_of(src, lang="py"):
     out = (python_rules.extract_file("x.py", src, "x.py") if lang == "py" else js_rules.extract_file("x.ts", src, "x.ts"))
     return {(r["field"], r["kind"]): r for r in out["rules"]}, out
@@ -25,6 +28,7 @@ def test_path_templating(path, tmpl):
 IF_GUARDS = '''
 import re
 from fastapi import FastAPI, Form, Request
+
 NAME_MAX = 50
 LO, HI = 1, 99
 CODE_RE = re.compile(r"^[A-Z]{3}$")
@@ -193,7 +197,7 @@ def test_api_generator_for_buggy_shop(tmp_path):
     d = tmp_path / "p"
     (d / "test_comprehension").mkdir(parents=True)
     for n in ("app_map", "api_inventory", "requirements", "form_model"):
-        shutil.copy(f"application_assets/projects/bench_buggy_shop/test_comprehension/{n}.json", d / "test_comprehension")
+        shutil.copy(RECORDED / f"{n}.json", d / "test_comprehension")
     cfg = {"environment": "local", "safety": {"allow_destructive": True}, "test_types": {"api": True},
            "white_box": {"enabled": True, "source_dir": str(Path("benchmarks/apps/buggy_shop").resolve())},
            "auth": {"roles": {"user": {"steps": []}, "admin": {"steps": []}, "guest": {"anonymous": True}}},
@@ -223,7 +227,7 @@ def test_api_generator_skips_data_changes_when_not_allowed(tmp_path):
     from tools.whitebox import api_tests, extract
     d = tmp_path / "p"
     (d / "test_comprehension").mkdir(parents=True)
-    shutil.copy("application_assets/projects/bench_buggy_shop/test_comprehension/app_map.json", d / "test_comprehension")
+    shutil.copy(RECORDED / "app_map.json", d / "test_comprehension")
     (d / "project.yaml").write_text(yaml.safe_dump({
         "environment": "prod", "test_types": {"api": True},
         "white_box": {"enabled": True, "source_dir": str(Path("benchmarks/apps/buggy_shop").resolve())}}), encoding="utf-8")
@@ -232,3 +236,67 @@ def test_api_generator_skips_data_changes_when_not_allowed(tmp_path):
     text = "\n".join(f.read_text(encoding="utf-8") for f in files)
     assert 'test.skip("POST /api/products — valid request is accepted' in text
     assert 'test("POST /api/products — price below min' in text           # rejection cases change nothing: they run
+
+
+UPLOAD = '''
+import os
+from fastapi import FastAPI, File, UploadFile
+from pathlib import Path
+MAX = 1024
+app = FastAPI()
+
+@app.post("/upload")
+def upload(file: UploadFile = File(None)):
+    filename = os.path.basename(file.filename or "").strip()
+    allowed = {".csv", ".png"} | ({".exe"} if is_on("BUG_17") else set())
+    if os.path.splitext(filename.lower())[1] not in allowed:
+        return {"error": "type"}, 400
+    data = file.file.read(MAX + 1)
+    if len(data) > MAX:
+        return {"error": "size"}, 400
+    return {"ok": True}
+
+@app.post("/avatar")
+def avatar(image: UploadFile = File(None)):
+    name = image.filename
+    if not name.endswith((".jpg", ".jpeg")):
+        raise HTTPException(status_code=422)
+    if Path(name).suffix not in OK:
+        raise HTTPException(status_code=422)
+    return {}
+'''
+
+
+def test_upload_rules_follow_local_constants_and_file_names():
+    raw = rules_of(UPLOAD)[1]["rules"]
+    rules = {(r["function"], r["kind"]): r for r in raw}
+    ext = rules[("upload", "file_extension")]
+    assert ext["field"] == "file" and ext["value"] == {"allowed": [".csv", ".png"]}
+    assert ext["guards"] == ["when not is_on('BUG_17')"]                    # the flag-off side, flag recorded
+    assert rules[("upload", "file_size")]["value"] == {"max_bytes": 1024}  # len(<file bytes>) is a size, not a length
+    assert ("upload", "length") not in rules
+    assert rules[("avatar", "file_extension")]["value"] == {"allowed": [".jpg", ".jpeg"]}
+    assert sum(1 for r in raw if r["function"] == "avatar") == 1             # OK is unknown: no rule invented
+
+
+def test_upload_cases_are_multipart_files(tmp_path):
+    import yaml
+    from tools.whitebox import api_tests
+    d = tmp_path / "p"
+    (d / "test_comprehension").mkdir(parents=True)
+    rules = [r for r in rules_of(UPLOAD)[1]["rules"] if r["function"] == "upload"]
+    for r in rules:
+        r["routes"] = ["POST /upload"]
+    (d / "test_comprehension" / "code_rules.json").write_text(json.dumps({"routes": [{
+        "method": "POST", "path_template": "/upload", "citation": "app.py:9", "error_status": 400,
+        "params": {"path": [], "query": [], "form": [], "file": ["file"], "json_body": False}}],
+        "rules": rules, "functions": {}}), encoding="utf-8")
+    (d / "project.yaml").write_text(yaml.safe_dump({"environment": "local", "test_types": {"api": True},
+                                                    "safety": {"allow_destructive": True}}), encoding="utf-8")
+    files, _ = api_tests.generate(d)
+    text = "\n".join(f.read_text(encoding="utf-8") for f in files)
+    assert "file with a disallowed type .exe -> rejected" in text and "file with an allowed type .csv -> accepted" in text
+    assert 'name: "mta-upload.exe"' in text and "Buffer.alloc(16, 97)" in text and "multipart:" in text
+    assert "file over the size limit (1025 bytes) -> rejected" in text and "Buffer.alloc(1025, 97)" in text
+    assert "await expectStatus(res, 400," in text
+
