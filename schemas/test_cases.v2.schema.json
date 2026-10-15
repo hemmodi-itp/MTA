@@ -95,7 +95,8 @@
             "budget",
             "no_scenario",
             "duplicate",
-            "profile"
+            "profile",
+            "stateful"
           ],
           "title": "Reason",
           "type": "string"
