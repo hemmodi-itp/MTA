@@ -112,6 +112,9 @@ class DesignInputs:
     previous_hashes: Dict[str, str]
     present: Dict[str, str]
     limitations: List[str]
+    # Phase 8 white-box: form_id -> fields the server combines with stored state before checking (a cart line's
+    # quantity is added to what the cart holds) — an "accepted at the limit" case then depends on earlier tests
+    stateful: Dict[str, List[str]] = field(default_factory=dict)
 
     # ── loading ──────────────────────────────────────────────────────────────
 
@@ -195,6 +198,10 @@ class DesignInputs:
         for form in self.forms:
             action = _re.sub(r"/\d+(?=/|$)", "/{id}", (form.action or "").split("?")[0]) or form.url_template
             key = f"{(form.method or 'get').upper()} {template_path(action)}"
+            for route in code_rules.get("routes") or []:
+                if f"{route.get('method')} {route.get('path_template')}" == key and route.get("stateful_fields"):
+                    self.stateful[form.form_id] = sorted(set(self.stateful.get(form.form_id, []))
+                                                         | set(route["stateful_fields"]))
             for rule in code_rules.get("rules") or []:
                 if key not in (rule.get("routes") or []):
                     continue

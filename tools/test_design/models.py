@@ -23,7 +23,7 @@ TestType = Literal["positive", "negative", "boundary"]
 Priority = Literal["P0", "P1", "P2", "P3"]
 Level = Literal["smoke", "standard", "thorough", "exhaustive"]
 LEVELS = ("smoke", "standard", "thorough", "exhaustive")
-CutReason = Literal["budget", "no_scenario", "duplicate", "profile"]
+CutReason = Literal["budget", "no_scenario", "duplicate", "profile", "stateful"]
 
 
 class Strict(BaseModel):

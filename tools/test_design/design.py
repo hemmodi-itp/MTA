@@ -133,6 +133,23 @@ def cite_code(cases: List[Dict[str, Any]], inp: DesignInputs) -> None:
             c["citations"] = sorted({fld.citations[k] for k in kinds} or {v for v in fld.citations.values() if v})
 
 
+def _cut_stateful_accepts(pool: List[Dict[str, Any]], inp: DesignInputs) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """A case that expects a value on a STATEFUL field to be accepted (white-box: the server adds it to what is
+    stored — a cart quantity) passes or fails depending on what earlier tests left behind; it is cut with that
+    reason, and the rejection side (which holds whatever is stored) is kept — as the Phase 8 API tests do."""
+    keep, cut = [], []
+    for c in pool:
+        t = c.get("target") or {}
+        accepting = any(o.get("type") == "submission_accepted" for o in c.get("oracles") or [])
+        if t.get("kind") == "form" and accepting and t.get("field") in inp.stateful.get(t.get("form_id") or "", []):
+            cut.append(dict(c, _cut_reason="stateful",
+                            _cut_detail=f"{t['field']} is added to stored state by the server: whether it is accepted "
+                                        "depends on earlier tests — the rejection side is tested"))
+        else:
+            keep.append(c)
+    return keep, cut
+
+
 def design(inp: DesignInputs, profile: str, budget: Dict[str, Any], hints: Optional[Dict[str, Any]] = None,
            llm_status: Optional[Dict[str, Any]] = None, extras: Optional[List[Dict[str, Any]]] = None,
            rejected_extras: int = 0) -> Dict[str, Any]:
@@ -151,11 +168,13 @@ def design(inp: DesignInputs, profile: str, budget: Dict[str, Any], hints: Optio
     unassigned = assign_mod.assign(cases, inp)
     unassigned_ids = {c["id"] for c in unassigned}
     pool = [c for c in cases if c["id"] not in unassigned_ids]
+    pool, stateful_cut = _cut_stateful_accepts(pool, inp)
     testable = [a["id"] for a in inp.testable_acs()]
     smoke_acs = [a["id"] for a in inp.testable_acs() if a["priority"] == "P0"]
     selected, cut, report = select(pool, profile, budget, testable, smoke_acs)
     cut += [dict(c, _cut_reason="no_scenario", _cut_detail="no module/scenario can host this case")
             for c in unassigned if level_rank(c["level"]) <= level_rank(profile)]
+    cut += [c for c in stateful_cut if level_rank(c["level"]) <= level_rank(profile)]
     excluded = sum(1 for c in cases if level_rank(c["level"]) > level_rank(profile))
 
     selected.sort(key=lambda c: (int(c["priority"][1]), -c["risk_score"], c["id"]))

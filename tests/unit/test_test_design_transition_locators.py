@@ -66,3 +66,16 @@ def test_field_invalid_only_where_a_probe_saw_it(designed):
     assert {"no_request", "url_unchanged"} <= set(oracles("Name length max+1"))     # the probe sent nothing
     assert oracles("Price range min-1")[0] == "submission_rejected"
     assert oracles("Username: empty")[0] == "field_invalid"                          # native required, blocked
+
+
+def test_accept_cases_on_a_stateful_field_are_cut_with_the_reason(designed):
+    """White-box: POST /cart/add adds the quantity to what the cart holds — 'max (99) accepted' then depends on
+    what earlier tests left in the cart. The accept side is cut with the reason; the reject side stays."""
+    from tools.test_design.design import _cut_stateful_accepts
+    inp, cases = designed
+    form = next(f for f in inp.forms if f.dom_id == "add-to-cart-form")
+    inp.stateful = {form.form_id: ["quantity"]}
+    keep, cut = _cut_stateful_accepts(cases, inp)
+    titles = {c["title"] for c in cut}
+    assert titles and all("accepted" in t for t in titles) and all(c["_cut_reason"] == "stateful" for c in cut)
+    assert any("max+1" in c["title"] for c in keep if (c.get("target") or {}).get("form_id") == form.form_id)
