@@ -100,10 +100,17 @@ def merge_form_locators(locator_map: Dict[str, Dict[str, Any]], inp: DesignInput
     forms = {f.form_id: f for f in inp.forms}
     added: List[str] = []
     keys_for: Dict[Tuple[str, str], Dict[str, str]] = {}
+    # a case about a requirement (use case, journey) on a page with exactly one form gets that form's keys too —
+    # without the error area's key the plan cannot express "the upload is rejected with ..." (M05, 2026-10-16)
+    module_form: Dict[str, Any] = {}
+    for m in inp.modules:
+        on_page = [f for f in inp.forms if f.url_template == m.get("path") and (f.method or "get").lower() != "get"]
+        if len(on_page) == 1:
+            module_form[m["id"]] = on_page[0]
     for case in sorted(cases, key=lambda c: c["id"]):
         t = case.get("target") or {}
-        form = forms.get(t.get("form_id") or "")
         module = case.get("module_id")
+        form = forms.get(t.get("form_id") or "") or (module_form.get(module) if t.get("kind") != "form" else None)
         if form is None:
             continue
         cache_key = (form.form_id, module or "")
