@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ActionEngine, jsonAtPath, OracleSources, statusMatches } from './ActionEngine';
+import { ActionEngine, bodyHas, jsonAtPath, OracleSources, statusMatches } from './ActionEngine';
 import { NetworkLog } from './fixtures/network';
 import { validateSchema } from './fixtures/jsonSchema';
 
@@ -62,6 +62,15 @@ describe('verifyRequest (Phase 5 complete: 2xx + bodyContains)', () => {
     await engine({}, {}, { network: logWith(['POST', 'http://a/login', 200, 'u=a']) }).verifyRequest('POST', '/login', 'success');
     await expect(engine({}, {}, { network: logWith(['POST', 'http://a/login', 401, 'u=a']) })
       .verifyRequest('POST', '/login', 'success')).rejects.toThrow(/status success/);
+  }, 10_000);
+
+  it('a form body is matched decoded: a typed value with spaces / punctuation is found', async () => {
+    expect(bodyHas('name=Ergonomic+Keyboard+Precise%21&price=29.99', 'Ergonomic Keyboard Precise!')).toBe(true);
+    expect(bodyHas('{"name":"Desk"}', 'Desk')).toBe(true);
+    expect(bodyHas('name=Desk', 'Lamp')).toBe(false);
+    expect(bodyHas('%E0%A4%A', 'x')).toBe(false);                            // malformed encoding: no throw
+    await engine({}, {}, { network: logWith(['POST', 'http://a/products', 303, 'name=Wireless+Mouse']) })
+      .verifyRequest('POST', '/products', 'success', undefined, 'Wireless Mouse');
   }, 10_000);
 
   it('fails when the body does not contain the text', async () => {

@@ -135,3 +135,13 @@ def test_record_ids_discovery_never_saw():
     assert ground_record_ids(only, seen)[0]["tests"] == []                       # nothing left to verify
     known = _test("k", [{"action": "navigate", "value": "/products/3"}, {"action": "verifyVisible", "locator_key": "x"}])
     assert ground_record_ids(known, seen)[1] == []
+
+
+def test_an_accepting_case_gets_no_llm_field_invalid_either():
+    """2026-10-16 final run: 'HTML in the description is shown escaped' (accepted) carried a verifyFieldInvalid."""
+    from agents.test_creation.script_generation.agent import _strip_unbacked_field_invalid
+    steps = [{"action": "verifyNoDialog"}, {"action": "verifyFieldInvalid", "locator_key": "description"}]
+    out = _strip_unbacked_field_invalid({"name": "t", "steps": steps},
+                                        {"oracles": [{"type": "criterion_violation_handled"}]})
+    assert [s["action"] for s in out["steps"]] == ["verifyNoDialog"]
+

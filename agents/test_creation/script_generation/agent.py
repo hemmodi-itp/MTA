@@ -1417,11 +1417,12 @@ def _url_path(url: Any) -> Optional[str]:
 
 
 def _strip_unbacked_field_invalid(test: dict, case: dict) -> dict:
-    """A case that says the input is rejected but NOT that the field is marked invalid (no probe saw aria-invalid or
-    a native message — the app validates in its own script) gets no verifyFieldInvalid from the LLM either: it can
-    never pass on a correct app. Removed steps are noted on the test (`removed_oracles`)."""
+    """A design case without field_invalid evidence (no probe saw the browser block with a message or the app set
+    aria-invalid) gets no verifyFieldInvalid from the LLM either — whether the case expects a rejection or, like
+    "HTML in a description is stored and shown escaped", an acceptance: it can never pass on a correct app.
+    Removed steps are noted on the test (`removed_oracles`)."""
     kinds = {o.get("type") for o in case.get("oracles") or []}
-    if "submission_rejected" not in kinds or "field_invalid" in kinds:
+    if "field_invalid" in kinds:
         return test
     steps = test.get("steps") or []
     kept = [s for s in steps if not (isinstance(s, dict) and s.get("action") == "verifyFieldInvalid")]
