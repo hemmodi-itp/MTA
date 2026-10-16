@@ -119,3 +119,37 @@ def ground_messages(plan: dict, messages: List[str], errors: set) -> Tuple[dict,
                 changes.append({"test": test.get("name"), "change": "message not asserted", "before": text,
                                 "reason": "no known message matches it clearly — only that the error is shown"})
     return plan, changes
+
+
+_SUBMITS = ("click", "doubleClick", "pressKey", "verifyBusyWhileSubmitting")
+_SHOWN = ("verifyVisible", "verifyText", "verifyContainsText")
+
+
+def dynamic_keys(locator_map: Dict[str, Dict[str, Any]]) -> set:
+    """Keys of elements that only exist after a submit (test design marks form error areas `_dynamic`)."""
+    return {k for k, e in (locator_map or {}).items() if e.get("_dynamic")}
+
+
+def ground_dynamic_areas(plan: dict, dynamic: set) -> Tuple[dict, List[Dict[str, Any]]]:
+    """An error area appears only after the form is submitted: asserting it is shown in a test that has not clicked
+    anything before ("the login error is shown after the redirect to /login") fails on a correct app — the step is
+    dropped (logged). verifyHidden on it stays (true until a submit)."""
+    if not dynamic:
+        return plan, []
+    plan = copy.deepcopy(plan)
+    changes: List[Dict[str, Any]] = []
+    for test in plan.get("tests") or []:
+        if not isinstance(test, dict):
+            continue
+        kept, submitted = [], False
+        for st in test.get("steps") or []:
+            if isinstance(st, dict) and st.get("action") in _SUBMITS:
+                submitted = True
+            if isinstance(st, dict) and st.get("action") in _SHOWN and st.get("locator_key") in dynamic and not submitted:
+                changes.append({"test": test.get("name"), "change": "step dropped", "before": st.get("locator_key"),
+                                "reason": f"{st['locator_key']} only appears after a submit, and the test submits "
+                                          "nothing before this check"})
+                continue
+            kept.append(st)
+        test["steps"] = kept
+    return plan, changes

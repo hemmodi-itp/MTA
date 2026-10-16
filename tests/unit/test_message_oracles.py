@@ -55,3 +55,21 @@ def test_an_assertion_wrapping_a_known_message_is_cut_down_to_it():
     out, ch = ground_messages(_neg("Product name is required"), msgs, ERR)
     assert out["tests"][0]["steps"][1]["value"] == "Name is required" and ch[0]["change"] == "message replaced"
 
+
+
+def test_an_error_area_is_not_asserted_before_anything_was_submitted():
+    """2026-10-16 final run: 'guest opening /products/new is blocked' asserted the login error area after the redirect."""
+    from tools.test_creation.message_oracles import dynamic_keys, ground_dynamic_areas
+    dyn = dynamic_keys({"login_form_errors": {"_dynamic": True}, "username": {}})
+    assert dyn == {"login_form_errors"}
+    plan = {"tests": [{"name": "redirect", "type": "negative", "steps": [
+        {"action": "navigate", "value": "/products/new"},
+        {"action": "verifyUrlContains", "value": "/login"},
+        {"action": "verifyVisible", "locator_key": "login_form_errors"},
+        {"action": "verifyHidden", "locator_key": "login_form_errors"}]},
+        {"name": "bad login", "type": "negative", "steps": [
+            {"action": "click", "locator_key": "log_in"},
+            {"action": "verifyContainsText", "locator_key": "login_form_errors", "value": "Invalid username or password"}]}]}
+    out, ch = ground_dynamic_areas(plan, dyn)
+    assert [s["action"] for s in out["tests"][0]["steps"]] == ["navigate", "verifyUrlContains", "verifyHidden"]
+    assert len(out["tests"][1]["steps"]) == 2 and len(ch) == 1                 # after a submit it is a valid check

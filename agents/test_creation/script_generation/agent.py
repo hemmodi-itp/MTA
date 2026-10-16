@@ -50,7 +50,7 @@ from tools.base_url import resolve_project_base_url
 from tools.safety.plan_filter import filter_plan
 from tools.test_creation.request_oracles import ground_plan, ground_record_ids, known_endpoints, observed_paths
 from tools.test_creation.select_options import ground_number_inputs, ground_selects, number_inputs, select_options
-from tools.test_creation.message_oracles import error_keys, ground_messages, known_messages
+from tools.test_creation.message_oracles import dynamic_keys, error_keys, ground_dynamic_areas, ground_messages, known_messages
 from tools.test_creation.required_fields import complete_required_fields
 from tools.test_creation.busy_states import ground_busy_states
 from tools.safety.policy import SafetyPolicy, load_safety_policy
@@ -322,6 +322,7 @@ class ScriptGenerationAgent(BaseAgent):
             # the messages the BRD quotes and the app showed (tools/test_creation/message_oracles)
             "messages": known_messages(form_model, _load_json_or_empty(os.path.join(comprehension_dir, "requirements.json"))),
             "error_areas": error_keys(locator_map),
+            "dynamic_areas": dynamic_keys(locator_map),
             # test design's valid value per form field, for required fields a test left empty
             "valid_values": _design_valid_values(project_dir, safe) if (form_model or {}).get("forms") else {},
         }
@@ -714,6 +715,7 @@ class ScriptGenerationAgent(BaseAgent):
         plan = self._ground_selects(plan, sid, g["select_options"], design_cases)
         plan = self._log_changes(sid, *ground_number_inputs(plan, g["number_inputs"]))
         plan = self._ground_messages(plan, sid, g["messages"], g["error_areas"])
+        plan = self._log_changes(sid, *ground_dynamic_areas(plan, g["dynamic_areas"]))
         plan = self._complete_required(plan, sid, g["locator_map"], g["form_model"], base_url, g["valid_values"])
         return self._ground_busy(plan, sid)
 
