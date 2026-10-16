@@ -47,6 +47,17 @@ def test_aqp_side_and_setup_problems_are_inconclusive_not_app_failures():
     assert other["verdict"] == "failed"
 
 
+def test_unreachable_app_is_inconclusive_but_a_server_error_is_a_failure():
+    v = _v(checks=[_check("executed", "fail", detail="stopped")])
+    for err in ("Error: Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://app.example/new",
+                "no download was produced: no download or export control appeared — the app showed: “Failed to fetch”",
+                "HTTP 503 opening /new"):
+        t = decide_test(v, {"error": err})
+        assert t["verdict"] == "inconclusive" and "could not be reached" in t["reasons"][0], err
+    t = decide_test(v, {"error": "no download was produced — the app showed: “Request failed (500)”"})
+    assert t["verdict"] == "failed"
+
+
 def test_deterministic_oracle_passes_without_judge_but_semantic_does_not():
     v = _v(checks=[_check("executed", "pass"), _check("time_limit", "pass")])
     assert decide_test(v, {}, oracle_hint="deterministic")["verdict"] == "passed"

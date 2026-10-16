@@ -54,7 +54,7 @@ def deterministic_checks(b: Dict[str, Any], artifact_dir: Path) -> List[Dict[str
     def add(cid, name, result, detail, weight="core"):
         checks.append({"id": cid, "name": name, "oracle": "deterministic", "result": result, "detail": detail, "weight": weight})
 
-    add("executed", "The test's actions ran to the end", "pass" if status == "completed" else "fail",
+    add("executed", "The test's actions completed", "pass" if status == "completed" else "fail",
         "all steps passed" if status == "completed" else f"stopped at step {b.get('failed_step')}: {b.get('error')}")
 
     docs = [d for d in obs.get("documents") or [] if d.get("readable")]

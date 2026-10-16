@@ -1,0 +1,69 @@
+"""Unit tests for engines/runtime/outage.py and the executor's outage handling (retry decision, shared app health)."""
+
+import http.server
+import socket
+import threading
+
+import engines.runtime.executor as executor
+from engines.runtime.executor import _AppHealth, _retry_reason
+from engines.runtime.outage import SERVER_ERROR, UNREACHABLE, wait_until_up
+
+
+def test_unreachable_and_server_error_patterns():
+    for err in ("Error: Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://x/new", "net::ERR_CONNECTION_REFUSED",
+                "connect ECONNREFUSED 127.0.0.1:3000", "… the app showed: “Failed to fetch”", "HTTP 502 opening /new"):
+        assert UNREACHABLE.search(err), err
+    for err in ("net::ERR_ABORTED; maybe frame was detached?", "element not found on /new: button “Go”",
+                "HTTP 404 opening /x", "Request failed (500)"):
+        assert not UNREACHABLE.search(err), err
+    for err in ("the app showed: “Request failed (500)”", "HTTP 500 from POST /api/generate", "Internal Server Error"):
+        assert SERVER_ERROR.search(err), err
+    for err in ("no download was produced: no download or export control appeared", "Generated 500 words"):
+        assert not SERVER_ERROR.search(err), err
+
+
+def test_retry_reason():
+    down = {"status": "failed", "error": "Error: Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://x/"}
+    s500 = {"status": "failed", "error": "no download was produced — the app showed: “Request failed (500)”"}
+    assert _retry_reason(down, 1) == "unreachable"
+    assert _retry_reason(s500, 2) == "server_error" and _retry_reason(s500, 1) is None  # alone, a 500 is the app's
+    assert _retry_reason({"status": "completed"}, 2) is None
+    assert _retry_reason({"status": "failed", "error": "element not found on /new"}, 2) is None
+
+
+def _closed_port_url():
+    s = socket.socket()
+    s.bind(("127.0.0.1", 0))
+    port = s.getsockname()[1]
+    s.close()
+    return f"http://127.0.0.1:{port}/"
+
+
+class _Quiet(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, *a):
+        pass
+
+
+def test_wait_until_up_and_app_health(monkeypatch):
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Quiet)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        up = f"http://127.0.0.1:{srv.server_address[1]}/"
+        assert wait_until_up(up, 5) is not None
+        assert wait_until_up(_closed_port_url(), 0) is None
+
+        said = []
+        h = _AppHealth(up, lambda m, *a: said.append(m))
+        assert h.wait_up() and not said                      # never marked down: no wait, no message
+        h.mark_down(plan_started=1e12)
+        assert h.wait_up() and h.outages == [{"recovered_after_s": 0}]
+        h.mark_down(plan_started=0.0)                        # failed during the outage already waited out
+        assert not h.down
+
+        monkeypatch.setattr(executor, "RECOVERY_WAIT_S", 0)
+        dead = _AppHealth(_closed_port_url(), lambda m, *a: said.append(m))
+        dead.mark_down(plan_started=1e12)
+        assert dead.wait_up() is False and dead.gave_up
+        assert dead.wait_up() is False                       # gave up: later plans run without waiting
+    finally:
+        srv.shutdown()

@@ -93,13 +93,53 @@ document.getElementById('go').onclick = () => {
 };
 </script>"""
 
-PAGES = {"/": LOGIN, "/login": LOGIN, "/new": NEW, "/shop": SHOP, "/landing": LANDING, "/late-login": LATE_LOGIN,
-         "/plan": REPEATER}
+# BRD_Agent-like backend failure: Generate shows the app's own error banner and no download ever appears
+BROKEN = """<!doctype html><title>New</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<h1>New request</h1><button id=gen>Generate Documents</button><div id=out></div>
+<script>document.getElementById('gen').onclick = () => {
+  document.getElementById('out').innerHTML = '<p class="text-red-600 error-banner">Request failed (500)</p>'; };</script>"""
+
+# BRD_Agent-like intake: every field carries its own "Not applicable" box (same label each time), and Generate demands
+# a point in every field not marked "Not applicable", naming the ones missing
+INTAKE = """<!doctype html><title>Intake</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<div class=form>
+  <div class=field data-name="Problem Statement"><div class=head><label for=p>Problem Statement (required)</label></div><textarea id=p></textarea></div>
+  <div class=field data-name="Constraints"><div class=head><span>Constraints</span>
+    <label><input type=checkbox class=na> Not applicable — omit this section</label></div>
+    <textarea placeholder="One item per line"></textarea></div>
+  <div class=field data-name="Dependencies"><div class=head><span>Dependencies</span>
+    <label><input type=checkbox class=na> Not applicable — omit this section</label></div>
+    <textarea placeholder="What this depends on"></textarea></div>
+  <button type=button id=go>Generate Documents</button><div id=out></div>
+</div>
+<script>
+document.getElementById('go').onclick = () => {
+  const blocks = [...document.querySelectorAll('.field')];
+  const name = b => b.dataset.name;
+  const na = b => b.querySelector('.na') && b.querySelector('.na').checked;
+  const missing = blocks.filter(b => !na(b) && !b.querySelector('textarea').value.trim()).map(name);
+  document.getElementById('out').innerHTML = missing.length
+    ? '<p class=error>Please add at least one point to every field before generating (or mark it "Not applicable" if it genuinely doesn&#39;t apply):' + missing.join(', ') + '.</p>'
+    : '<h2>Documents ready</h2><p>omitted: ' + (blocks.filter(na).map(name).join(', ') || 'none') + '</p>';
+};
+</script>"""
+
+PAGES = {"/": LOGIN, "/intake": INTAKE, "/login": LOGIN, "/new": NEW, "/shop": SHOP, "/landing": LANDING, "/late-login": LATE_LOGIN,
+         "/plan": REPEATER, "/broken": BROKEN, "/flaky": "<!doctype html><title>Flaky</title><h1>Back again</h1>"}
+_HITS: dict = {}
 
 
 class _Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):  # noqa: N802
-        body = PAGES.get(self.path.split("?")[0])
+        path = self.path.split("?")[0]
+        _HITS[path] = _HITS.get(path, 0) + 1
+        if path == "/flaky" and _HITS[path] == 1:  # the first visit drops the connection: a brief outage
+            self.close_connection = True
+            self.connection.close()
+            return
+        body = PAGES.get(path)
         self.send_response(200 if body else 404)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
@@ -266,3 +306,54 @@ def test_list_rows_behind_add_buttons_are_discovered_and_filled(app_url, tmp_pat
     r = run["results"][0]
     assert r["status"] == "completed", r["steps"]
     assert "Plan ready for Clinic booking: Online booking / risks: Low adoption" in r["captures"]["dom_excerpt"]
+
+
+def _one(plan_id, steps):
+    return {"plans": [{"plan_id": plan_id, "test_code": plan_id[3:], "status": "ready", "scored": True,
+                       "steps": [{"n": 1, "action": "login"}] + steps}]}
+
+
+def test_failure_names_the_error_the_app_showed(app_url, tmp_path):
+    plan = _one("AP-TC-030", [{"n": 2, "action": "goto", "url": "/broken"},
+                              {"n": 3, "action": "click", "target": {"kind": "button", "text": "Generate Documents"}},
+                              {"n": 4, "action": "expect_download", "target": {"kind": "auto"}}])
+    r = execute_plans(app_url, plan, tmp_path, credentials=CREDS)["results"][0]
+    assert r["status"] == "failed" and r["failed_step"] == 4
+    assert r["error"].startswith("no download was produced") and "the app showed: “Request failed (500)”" in r["error"]
+
+
+def test_unreachable_app_pauses_then_reruns_the_plan(app_url, tmp_path):
+    _HITS.pop("/flaky", None)
+    run = execute_plans(app_url, _one("AP-TC-031", [{"n": 2, "action": "goto", "url": "/flaky"},
+                                                    {"n": 3, "action": "capture", "what": ["dom_text"]}]),
+                        tmp_path, credentials=CREDS)
+    r = run["results"][0]
+    assert len(run["results"]) == 1 and r["status"] == "completed", r
+    assert "net::ERR_" in r["first_attempt_error"] and "Back again" in r["captures"]["dom_excerpt"]
+    assert run["retried"] == ["AP-TC-031"] and run["app_outages"] == [{"recovered_after_s": 0}]
+
+
+def test_same_labelled_boxes_resolve_by_field_and_rejected_input_is_completed(app_url, tmp_path):
+    from engines.runtime.actions import build_inventory
+
+    prof = discover(app_url, known_pages=["/intake"], credentials=CREDS, max_pages=3)
+    inv = build_inventory(prof)
+    boxes = [e for e in inv["elements"].values() if e["kind"] == "field" and e["type"] == "checkbox"]
+    assert sorted(e.get("group") for e in boxes) == ["Constraints", "Dependencies"]   # which field each box belongs to
+    problem = next(e for e in inv["elements"].values() if e.get("label", "").startswith("Problem Statement"))
+    na_deps = next(e for e in boxes if e["group"] == "Dependencies")
+    test = {"id": "t40", "code": "TC-040", "title": "Dependencies section omitted when marked not applicable",
+            "variant_type": "positive", "input": "Problem Statement: Clinic booking is manual",
+            "expected_behavior": "The Dependencies section is omitted"}
+    proposal = {"TC-040": {"applicable": True, "steps": [
+        {"action": "fill", "element_id": problem["id"], "value": "Clinic booking is manual"},
+        {"action": "check", "element_id": na_deps["id"]}]}}
+    plan = generate_action_plan({"app_type": "Document Generator", "components": []}, prof, [test], proposals=proposal,
+                                has_credentials=True)
+    steps = [s for s in plan["plans"][0]["steps"] if s["action"] != "expect_download"]  # the fixture offers no file
+    run = execute_plans(app_url, {"plans": [{**plan["plans"][0], "steps": steps}]}, tmp_path, credentials=CREDS)
+    r = run["results"][0]
+    assert r["status"] == "completed", r["steps"]
+    # the Dependencies box was ticked (not the first same-labelled one), and the field the app then asked for was filled
+    assert "omitted: Dependencies" in r["captures"]["dom_excerpt"] and "Documents ready" in r["captures"]["dom_excerpt"]
+    assert "the app asked for Constraints" in r["completed_input"] and "MTA filled Constraints" in r["completed_input"]

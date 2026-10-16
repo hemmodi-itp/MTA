@@ -45,6 +45,8 @@ run (unlike the workspace), and served to the run's viewers by `GET /api/runs/:r
    limit, and plans that never start inside the overall budget are reported as `not_run`.
 3. **Targets.** Fields and buttons are found in the page with the same label, name, card-context and position rules discovery used to
    describe them, so the executor clicks the element discovery saw. Playwright label, placeholder and role locators are the fallback.
+   Checkboxes that share one label across fields (a "Not applicable" or "Auto-generate" box per field) carry a `group`, the title
+   of the field they belong to. They are matched by that group only, never by label alone, so a test never ticks another field's box.
    Locating retries for 10 s, or 30 s for download buttons that appear after generation.
 4. **Actions.**
    - `goto`: re-logs in if the session expired. A 4xx that still renders the page (a single-page-app deep link) is not an error.
@@ -66,7 +68,17 @@ run (unlike the workspace), and served to the run's viewers by `GET /api/runs/:r
    - `http`, `capture`.
    - `assert`: `judge` assertions are deferred; `visible` (chart or table) is checked here.
 5. **Failure.** At the first failing step the remaining actions are skipped, but captures still run and a failure screenshot is taken,
-   so a broken flow still leaves evidence.
+   so a broken flow still leaves evidence. The step's error ends with the error the app displayed, if any (an alert, toast or
+   error banner, e.g. `— the app showed: "Request failed (500)"`), so the report names the cause, not only the symptom.
+6. **Incomplete input.** When a positive test's submit is rejected by the app's own validation and the message names the
+   fields it wants ("Please add at least one point to every field …: Constraints."), MTA fills those fields' empty boxes with
+   synthetic data (first adding a list row if the list has none) and submits once more. The `wait_for` step records what
+   was completed; the result carries it as `completed_input`.
+7. **Outages.** A plan that cannot reach the app (`net::ERR_…`, "Failed to fetch", gateway 502/503/504) pauses the run. One
+   worker polls the live URL for up to 5 minutes while the others wait. The plan then runs once more, alone. A plan that hit a
+   server error while other plans ran beside it also runs once more, alone. Either case drops the rest of the run to one plan
+   at a time. The first attempt's error is kept as `first_attempt_error`, and the run reports `app_outages` and `retried`. If the
+   app stays down, the run carries on without waiting, and those plans' verdicts are inconclusive.
 
 ## Failure modes
 A browser crash in a plan marks that plan `error`; the others still run. A launch failure returns `status: partial` with no

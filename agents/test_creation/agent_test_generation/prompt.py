@@ -76,6 +76,10 @@ $family_instructions
 - Only data the single test account can have: no admin-only, other-user or second-account steps, no
   roles, permissions, payment details or external systems you cannot see in the surface. No
   placeholders like <name> or [value]; write real values.
+- Never invent record identifiers (run ids, order numbers, user ids such as "run_9999" or "run_test_123"):
+  they do not exist in the live app. A test that needs an existing record (revise a run, export it, find it
+  in a history list) creates it first through the app — fill the form, generate — and then acts on THAT
+  result ("Scenario: generate, then request a change on the generated run").
 - If the app was not deployed / not inspected, write tests for the interface described above and keep
   "input" self-contained.
 

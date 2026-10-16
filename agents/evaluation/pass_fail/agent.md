@@ -28,6 +28,9 @@ It makes no LLM calls; the logic is in `engines/verdict/passfail.py`.
      ("Please add…", "X is required", "cannot be empty", "at least one … before"). MTA's test data was incomplete; this is not an
      app defect.
 2. **The flow stopped early.**
+   - The live app could not be reached (`net::ERR_…`, connection refused or reset, "Failed to fetch", a gateway 502/503/504
+     opening a page) → `inconclusive`. An outage says nothing about the requirement, so it never refutes a criterion. A server
+     error the app answered with ("Request failed (500)") is still `failed`.
    - Login or session problem → `inconclusive` ("test setup problem, not an app defect").
    - Element not found, plan time limit or browser closed → `inconclusive` ("MTA could not drive the UI").
    - The app still working when MTA's wait limit was reached → `inconclusive`, unless the expectation states a time limit (then

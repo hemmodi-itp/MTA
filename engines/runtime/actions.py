@@ -44,6 +44,11 @@ _DEMO = re.compile(r"\b(fill|load|use|insert|try)\b.*\b(demo|sample|example|test
 _ITEM_PAGE = re.compile(r"/[0-9a-f]{8,}(/|$)|/\d{3,}|/[A-Za-z0-9_-]{20,}|/\d{8}-\d{6}", re.I)
 _UNSAFE = re.compile(r"\b(log ?out|sign ?out|logoff|delete (my )?account|deactivate|unsubscribe)\b", re.I)
 _NEGATIVE = {"negative", "security", "robustness"}
+# a bare record identifier typed into a search / id field ("run_9999", "ORD-12345", "run_test_123"): test data invents
+# these, and a search for a record that does not exist proves nothing
+_BARE_ID = re.compile(r"^#?[A-Za-z]{0,12}[_-]?(?:[A-Za-z]+[_-])?\d{2,}[A-Za-z0-9_-]*$|^[0-9a-f]{8,}(-[0-9a-f]{4,}){0,4}$", re.I)
+_SEARCH_FIELD = re.compile(r"\b(search|filter|find|look ?up)\b", re.I)
+_ID_FIELD = re.compile(r"\b(id|run|record|order|ticket|reference|number)\b", re.I)  # only on a small lookup form
 
 
 # ── inventory: what the executor can act on ─────────────────────────────────
@@ -69,6 +74,8 @@ def build_inventory(profile: Optional[Dict[str, Any]]) -> Dict[str, Any]:
                 elements[eid] = {"id": eid, "kind": "field", "page": path, "form": fid, "label": x.get("label") or "",
                                  "name": x.get("name") or "", "type": x.get("type") or "text",
                                  "required": bool(x.get("required")), "options": x.get("options") or None}
+                if x.get("group"):  # which field's "Not applicable" / "Auto-generate" box this is
+                    elements[eid]["group"] = x["group"]
                 if x.get("revealed_by"):  # a list row: exists only after clicking its "+ Add" button
                     elements[eid]["revealed_by"] = {**x["revealed_by"], "kind": "button", "page": path}
                 field_ids.append(eid)
@@ -96,7 +103,11 @@ def build_inventory(profile: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     for fid, f in forms.items():  # the form's trigger: its submit button, as an inventory id
         f["submit"] = next((e["id"] for e in elements.values() if e["kind"] == "button" and e["page"] == f["page"]
                             and f["submit_text"] and e["text"] == f["submit_text"]), None)
-    return {"elements": elements, "forms": forms, "chat_boxes": chat_boxes,
+    # identifiers of records the app really has: the last segment of every item page discovery opened (/runs/<id>)
+    known_ids = list(dict.fromkeys(
+        (p.get("path") or "").rstrip("/").rsplit("/", 1)[-1] for p in (profile or {}).get("pages") or []
+        if _ITEM_PAGE.search(p.get("path") or "")))
+    return {"elements": elements, "forms": forms, "chat_boxes": chat_boxes, "known_ids": [i for i in known_ids if i],
             "pages": [{"path": p.get("path") or "/", "title": p.get("title"), "headings": (p.get("headings") or [])[:6],
                        "charts": p.get("charts", 0), "tables": p.get("tables", 0)} for p in pages]}
 
@@ -190,13 +201,32 @@ def validate_steps(raw_steps: Sequence[Dict[str, Any]], inv: Dict[str, Any]) -> 
         if not ok:
             dropped += 1
             continue
+        if action == "fill" and value is not None:
+            value = ground_record_id(value, el, inv)
+            if value is None:  # an invented id and no real one to use: searching for it proves nothing
+                dropped += 1
+                continue
         out.append({"action": action, "target": _target(el), **({"value": value} if value is not None else {})})
     return out, dropped
 
 
+def ground_record_id(value: str, el: Dict[str, Any], inv: Dict[str, Any]) -> Optional[str]:
+    """A bare record id typed into a search / id field must be one the live app has: an id discovery saw is kept, an
+    invented one ("run_9999") is replaced by a real one, or None (drop the step) when discovery saw none."""
+    v = value.strip()
+    words = f"{el.get('label', '')} {el.get('name', '')}"
+    lookup = len((inv["forms"].get(el.get("form") or "") or {}).get("fields") or []) <= 2
+    if not _BARE_ID.match(v) or not (_SEARCH_FIELD.search(words) or (lookup and _ID_FIELD.search(words))):
+        return value
+    known = inv.get("known_ids") or []
+    if v in known:
+        return value
+    return known[0] if known else None
+
+
 def _target(el: Dict[str, Any]) -> Dict[str, Any]:
     """Everything the executor needs to locate the element (label → name → placeholder/text fallbacks)."""
-    keep = ("id", "kind", "page", "label", "name", "type", "text", "href", "role", "nth", "context")
+    keep = ("id", "kind", "page", "label", "name", "type", "text", "href", "role", "nth", "context", "group")
     return {k: el[k] for k in keep if el.get(k) not in (None, "")}
 
 

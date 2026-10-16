@@ -48,6 +48,10 @@ For EACH test, one plan: {"test_code", "applicable", "reason", "steps": [{"actio
   unchecked unless the test is about them. The engine then clicks the form's submit button and waits for the result.
   Add expect_download when the test is about the generated file. Negative / security / robustness tests: set exactly the inputs that make the test negative
   (e.g. leave a required field empty by omitting it, or enter the malicious text); then click the submit button.
+- Fields listed with a "group" (e.g. many "Not applicable" or "Auto-generate" checkboxes with the same label) belong
+  to the field named by their group: check the one whose group is the field the test is about.
+- Never type a record id the test made up (e.g. "run_9999", "ORD-123") into a search or id field: search only for
+  values the app showed, or leave the search empty and let the page list what exists.
 - applicable=false (with a reason) only when nothing on the app can exercise the test, e.g. a pure latency or
   backend-only claim. Do not mark a test inapplicable just because it needs typing into a form.
 - Return the plans in the same order as the tests, one per test_code.

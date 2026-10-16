@@ -11,8 +11,9 @@ verdict per acceptance criterion. It separates what the APP did wrong from what 
                 or the grounded judge found the output does not meet the expectation.
   passed        no core check failed and the judge found the expectation met (or partially met with score ≥ 70);
                 for a criterion whose oracle is deterministic, passing core checks alone suffice.
-  inconclusive  MTA could not drive the UI (element not found, login/session problems, plan time limit),
-                or the output could not be judged. Never counted against the app.
+  inconclusive  MTA could not drive the UI (element not found, login/session problems, plan time limit), the live
+                app could not be reached (outage, connection timeout), or the output could not be judged.
+                Never counted against the app.
   not_executed  never started: blocked (login), not mappable to the UI, out of time or cancelled; the reason is kept.
                 A run that started but crashed on MTA's side (status `error`) is inconclusive, not "not executed".
 
@@ -27,15 +28,14 @@ so requirement traceability and compliance scoring consume runtime verdicts unch
 import re
 from typing import Any, Dict, List, Optional, Sequence
 
+from engines.runtime.outage import UNREACHABLE
+from engines.runtime.rejection import INPUT_REJECTED as _INPUT_REJECTED
+
 PASS_SCORE = 70
 _TOOL_SIDE = re.compile(r"element not found|unknown action|plan time limit|not resolve|strict mode violation|"
                         r"target (page|closed)|browser has been closed", re.I)
 _WAIT_LIMIT = re.compile(r"still busy after \d+s", re.I)
 _SETUP_SIDE = re.compile(r"login failed|redirected to the login|session expired|re-login failed", re.I)
-# the app's own validation rejecting MTA's input for a POSITIVE test: MTA's test data was incomplete, not an app defect
-_INPUT_REJECTED = re.compile(r"^\W{0,3}please (add|fill|enter|provide|complete|select)\b|\b(this field|field|value) is required\b|"
-                             r"\bare required\b|\brequired fields?\b|\bcannot be (empty|blank)\b|\bmust not be empty\b|"
-                             r"\bmissing (required )?fields?\b|\bat least one\b.{0,60}\bbefore\b|^\W{0,3}[\w '-]{1,40} (is|are) required\W*$", re.I)
 _RANK = {"E5": 2, "E4": 1}
 
 
@@ -69,6 +69,10 @@ def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint
     executed = checks.get("executed")
     if executed and executed["result"] == "fail":
         err = b.get("error") or executed["detail"]
+        if UNREACHABLE.search(err):
+            return _done(out, "inconclusive", None, None, None,
+                         [f"The live app could not be reached during this test ({err[:200]}); an outage says nothing "
+                          "about the requirement, so it is not counted against the app."])
         if _SETUP_SIDE.search(err):
             return _done(out, "inconclusive", None, None, None, [f"Test setup problem, not an app defect: {err}"])
         if _TOOL_SIDE.search(err):
