@@ -31,6 +31,14 @@ It makes no LLM calls; the logic is in `engines/verdict/passfail.py`.
    - The live app could not be reached (`net::ERR_…`, connection refused or reset, "Failed to fetch", a gateway 502/503/504
      opening a page) → `inconclusive`. An outage says nothing about the requirement, so it never refutes a criterion. A server
      error the app answered with ("Request failed (500)") is still `failed`.
+   - **Cut off by a server timeout → `inconclusive`.** The test produced nothing and one of the app's calls failed with a
+     5xx later than every 2xx of the same endpoint elsewhere in the run (e.g. `POST /api/generate` → 500 at 180 s while
+     successes took ≤ 166 s). A request timeout in the app's stack interrupted it, not the feature under test (a crash
+     answers fast, and stays `failed`). Not applied when the expectation states a time limit. The run reports each such
+     endpoint once in `reliability`, and Compliance Scoring turns it into a critical reliability recommendation.
+   - **Validation stopped a test about something else → `inconclusive`.** A negative / robustness test that produced
+     nothing because the app's form validation rejected its input, while its expectation is not about validation (e.g.
+     "an actionable error is shown when generation fails").
    - The app's AI provider refused for quota (`429`, `RESOURCE_EXHAUSTED`, "rate limit", "too many requests") →
      `inconclusive`: the deployment ran out of capacity, which says nothing about the requirement under test.
    - Login or session problem → `inconclusive` ("test setup problem, not an app defect").

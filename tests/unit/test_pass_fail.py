@@ -136,3 +136,39 @@ def test_positive_test_rejected_by_app_validation_is_inconclusive_not_failed():
     neg = decide_test({**v, "variant": "negative"}, b)
     assert neg["verdict"] == "failed"  # decided by its own checks, not excused as a setup problem
     assert "not an app defect" not in " ".join(neg["reasons"])      # for negative tests a rejection is the expected outcome
+
+
+def _gen_bundle(bid, status, ms, ok=()):
+    return {"bundle_id": bid, "observed": {"documents": [], "messages": []},
+            "observations": {"api_failures": [{"method": "POST", "path": "/api/generate", "status": status, "ms": ms}] if status else [],
+                             "api_ok": [{"method": "POST", "path": "/api/generate", "ms": m} for m in ok]}}
+
+
+def test_a_server_timeout_is_a_reliability_defect_not_a_feature_failure():
+    from engines.verdict.passfail import server_cutoffs
+    fail = [_check("executed", "fail"), _check("document_produced", "fail")]
+    ov = {"results": [_v("TC-001", "AC-01.1", checks=[_check("executed", "pass")], judge=_judge("meets", 95)),
+                      _v("TC-002", "AC-02.1", checks=fail), _v("TC-003", "AC-03.1", checks=fail)]}
+    ev = {"bundles": [_gen_bundle("EV-TC-001", None, 0, ok=[120_000, 166_000]),
+                      _gen_bundle("EV-TC-002", 500, 180_234),        # later than every success: cut off by a timeout
+                      _gen_bundle("EV-TC-003", 500, 4_000)]}         # fast: the feature may well have crashed it
+    assert set(server_cutoffs(ev["bundles"])) == {"EV-TC-002"}
+    r = decide_all(ov, ev)
+    by = {t["test_code"]: t for t in r["tests"]}
+    assert by["TC-002"]["verdict"] == "inconclusive" and "cut off by a timeout" in by["TC-002"]["reasons"][0]
+    assert by["TC-003"]["verdict"] == "failed"
+    assert r["reliability"] == [{"endpoint": "POST /api/generate", "status": 500, "cut_off": 1, "tests": ["TC-002"],
+                                 "after_s": 180, "succeeded": 2, "slowest_ok_s": 166}]
+    timed = _v("TC-004", "AC-09.1", checks=fail + [_check("time_limit", "fail")])  # a stated time limit: still a failure
+    assert decide_test(timed, _gen_bundle("EV-TC-004", 500, 180_234), cutoff=server_cutoffs(ev["bundles"])["EV-TC-002"])["verdict"] == "failed"
+
+
+def test_validation_stopping_a_negative_test_about_something_else_is_inconclusive():
+    msg = "Please add at least one point to every field before generating: Constraints."
+    b = {"observed": {"documents": [], "messages": [msg]}}
+    about_failure = _v(checks=[_check("executed", "pass")], judge=_judge("does_not_meet", 10), variant="negative",
+                       expected_behavior="An actionable error is shown when generation fails")
+    assert decide_test(about_failure, b)["verdict"] == "inconclusive"
+    about_validation = _v(checks=[_check("executed", "pass")], judge=_judge("meets", 90), variant="negative",
+                          expected_behavior="The app rejects the submission and names the missing required field")
+    assert decide_test(about_validation, b)["verdict"] == "passed"

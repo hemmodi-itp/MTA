@@ -11,7 +11,10 @@ verdict per acceptance criterion. It separates what the APP did wrong from what 
                 or the grounded judge found the output does not meet the expectation.
   passed        no core check failed and the judge found the expectation met (or partially met with score ≥ 70);
                 for a criterion whose oracle is deterministic, passing core checks alone suffice.
-  inconclusive  MTA could not drive the UI (element not found, login/session problems, plan time limit), the live
+  inconclusive  MTA could not drive the UI (element not found, login/session problems, plan time limit), the app's
+                request was cut off by a server timeout (a 5xx slower than every success of the same endpoint in the
+                run: reported once as a reliability defect, see `reliability`), the app's form validation stopped a
+                negative test that is not about validation, the live
                 app could not be reached (outage, connection timeout), the app's AI provider refused for quota
                 (429 / RESOURCE_EXHAUSTED), or the output could not be judged.
                 Never counted against the app.
@@ -40,7 +43,32 @@ _SETUP_SIDE = re.compile(r"login failed|redirected to the login|session expired|
 _RANK = {"E5": 2, "E4": 1}
 
 
-def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint: Optional[str] = None) -> Dict[str, Any]:
+# an expectation about the app's own input checking: a validation message is then the behaviour under test
+_ABOUT_VALIDATION = re.compile(r"\b(validat\w*|required|mandatory|missing|empty|blank|invalid|reject\w*|not allowed|"
+                               r"must (be|contain|have)|error message for (the )?(field|input))\b", re.I)
+
+
+def server_cutoffs(bundles: Sequence[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    """bundle_id -> the server error that cut this test's request off: a 5xx from an endpoint that answered 2xx in
+    other tests of the same run, arriving later than every one of those successes (a request timeout in the app's
+    stack, not the feature crashing — a crash answers fast). Says nothing about the feature the test targets."""
+    ok: Dict[str, List[int]] = {}
+    for b in bundles:
+        for n in (b.get("observations") or {}).get("api_ok") or []:
+            ok.setdefault(f"{n['method']} {n['path']}", []).append(n["ms"])
+    out = {}
+    for b in bundles:
+        for n in (b.get("observations") or {}).get("api_failures") or []:
+            key = f"{n.get('method')} {n.get('path')}"
+            if (n.get("status") or 0) >= 500 and ok.get(key) and n.get("ms", 0) >= max(ok[key]):
+                out[b["bundle_id"]] = {"endpoint": key, "status": n["status"], "ms": n["ms"], "ok_calls": len(ok[key]),
+                                       "max_ok_ms": max(ok[key])}
+                break
+    return out
+
+
+def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint: Optional[str] = None,
+                cutoff: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     base = {k: v.get(k) for k in ("bundle_id", "test_id", "test_code", "criterion_code", "requirement_ref", "title",
                                   "variant", "kind", "scored")}
     b = bundle or {}
@@ -66,6 +94,19 @@ def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint
         return _done(out, "inconclusive", None, None, None,
                      [f"The app's validation rejected MTA's test input as incomplete (“{rejected.strip()[:200]}”); "
                       "the test data needs fixing, this is not an app defect."])
+    expectation = " ".join(str(x.get(k) or "") for x in (v, b) for k in ("expected_behavior", "criterion_statement"))
+    if rejected and not produced and expectation.strip() and not _ABOUT_VALIDATION.search(expectation):
+        # a negative / robustness test about something else (e.g. how a generation failure is reported): the app's form
+        # validation stopped it before the behaviour under test was reached
+        return _done(out, "inconclusive", None, None, None,
+                     [f"The app's form validation stopped the test (“{rejected.strip()[:200]}”) before the behaviour "
+                      "under test was reached, so it shows nothing about this criterion."])
+    if cutoff and not produced and "time_limit" not in checks:
+        return _done(out, "inconclusive", None, None, None,
+                     [f"The app's {cutoff['endpoint']} failed with HTTP {cutoff['status']} after {cutoff['ms'] / 1000:.0f}s, "
+                      f"later than all {cutoff['ok_calls']} successful calls of it in this run (slowest "
+                      f"{cutoff['max_ok_ms'] / 1000:.0f}s): the request was cut off by a timeout in the app, not by the "
+                      "feature under test. Reported as a reliability defect; this criterion is unverified by this test."])
 
     executed = checks.get("executed")
     if executed and executed["result"] == "fail":
@@ -154,7 +195,8 @@ def decide_all(output_validation: Optional[Dict[str, Any]], evidence_collection:
     bundles = {b["bundle_id"]: b for b in (evidence_collection or {}).get("bundles") or []}
     hints = {c["code"]: c.get("oracle_hint") for r in requirements for c in (r.get("criteria") or []) if c.get("code")}
     statements = {c["code"]: c.get("statement") for r in requirements for c in (r.get("criteria") or []) if c.get("code")}
-    tests = [decide_test(v, bundles.get(v["bundle_id"]), hints.get(v.get("criterion_code")))
+    cutoffs = server_cutoffs(list(bundles.values()))
+    tests = [decide_test(v, bundles.get(v["bundle_id"]), hints.get(v.get("criterion_code")), cutoffs.get(v["bundle_id"]))
              for v in (output_validation or {}).get("results") or []]
     scored = [t for t in tests if t.get("scored")]
 
@@ -187,7 +229,23 @@ def decide_all(output_validation: Optional[Dict[str, Any]], evidence_collection:
     executed = counts["passed"] + counts["failed"]
     return {"counts": counts, "pass_rate": round(100 * counts["passed"] / executed, 1) if executed else None,
             "tests": tests, "criteria": sorted(criteria.values(), key=lambda c: c["criterion_code"]),
+            "reliability": _reliability(cutoffs, list(bundles.values()), {t["bundle_id"]: t.get("test_code") for t in tests}),
             "execution_results": [legacy_result(t) for t in scored if t.get("test_id")]}
+
+
+def _reliability(cutoffs: Dict[str, Dict[str, Any]], bundles: List[Dict[str, Any]], codes: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Per endpoint: how often the app's request was cut off by a server timeout during the run (an app defect of its own,
+    reported once instead of being blamed on every feature whose test it interrupted)."""
+    out: Dict[str, Dict[str, Any]] = {}
+    for bid, c in cutoffs.items():
+        e = out.setdefault(c["endpoint"], {"endpoint": c["endpoint"], "status": c["status"], "cut_off": 0, "tests": [],
+                                           "after_s": [], "succeeded": c["ok_calls"], "slowest_ok_s": round(c["max_ok_ms"] / 1000)})
+        e["cut_off"] += 1
+        e["tests"].append(codes.get(bid) or bid)
+        e["after_s"].append(round(c["ms"] / 1000))
+    for e in out.values():
+        e["after_s"] = sorted(e["after_s"])[len(e["after_s"]) // 2]  # median
+    return sorted(out.values(), key=lambda e: -e["cut_off"])
 
 
 def legacy_result(t: Dict[str, Any]) -> Dict[str, Any]:

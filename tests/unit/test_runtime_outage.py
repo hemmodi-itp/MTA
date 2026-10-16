@@ -50,7 +50,10 @@ def test_retry_reason():
     down = {"status": "failed", "error": "Error: Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://x/"}
     s500 = {"status": "failed", "error": "no download was produced — the app showed: “Request failed (500)”"}
     assert _retry_reason(down, 1) == "unreachable"
-    assert _retry_reason(s500, 2) == "server_error" and _retry_reason(s500, 1) is None  # alone, a 500 is the app's
+    assert _retry_reason(s500, 2) == "server_error" and _retry_reason(s500, 1) == "server_error"  # one more try, alone
+    cut = {"status": "failed", "error": "no download was produced", "observations": {"network": [
+        {"method": "POST", "path": "/api/generate", "status": 500, "ms": 180234}]}}
+    assert _retry_reason(cut, 1) == "server_error"                                  # a 5xx seen only on the wire
     assert _retry_reason({"status": "completed"}, 2) is None
     assert _retry_reason({"status": "failed", "error": "element not found on /new"}, 2) is None
 

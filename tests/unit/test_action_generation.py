@@ -209,3 +209,33 @@ def test_item_pages_never_supply_targets_and_full_form_plans_skip_demo():
     partial = generate_action_plan(cls, prof, [_test()])["plans"][0]
     demo = next(s for s in partial["steps"] if s.get("purpose") == "prefill demo data")
     assert demo["optional"] is True                                               # skipped, not failed, if absent
+
+
+def test_steps_on_another_page_run_after_the_result_and_flow_checks_fit_the_form():
+    prof = {"login": {"succeeded": True}, "pages": [
+        {"path": "/new", "forms": [{"fields": [{"label": "Project", "type": "text", "required": True},
+                                               {"label": "Problem", "type": "textarea"}],
+                                    "submit_button": "Generate Documents", "buttons": ["Generate Documents"]}],
+         "buttons": ["Generate Documents"]},
+        {"path": "/history", "forms": [{"fields": [{"label": "Search history...", "type": "text"}],
+                                        "submit_button": None, "buttons": []}], "buttons": []}]}
+    inv = build_inventory(prof)
+    ids = {e.get("label") or e.get("text"): e["id"] for e in inv["elements"].values()}
+    test = {"id": "t", "code": "TC-019", "title": "Revision keeps history", "variant_type": "positive", "input": "x",
+            "expected_behavior": "Both runs are listed"}
+    prop = {"TC-019": {"applicable": True, "steps": [
+        {"action": "fill", "element_id": ids["Project"], "value": "Order Tracker"},
+        {"action": "fill", "element_id": ids["Problem"], "value": "Slow tracking"},
+        {"action": "fill", "element_id": ids["Search history..."], "value": "Order Tracker"},
+        {"action": "click", "element_id": ids["Generate Documents"]},
+        {"action": "click", "element_id": ids["Generate Documents"]}]}}
+    plan = generate_action_plan({"app_type": "Document Generator", "components": []}, prof, [test], proposals=prop,
+                                has_credentials=True)
+    steps = [(s["action"], s.get("url") or (s.get("target") or {}).get("label") or (s.get("target") or {}).get("text"))
+             for s in plan["plans"][0]["steps"]]
+    gen = steps.index(("click", "Generate Documents"))
+    assert steps.count(("click", "Generate Documents")) == 1                       # the doubled submit is dropped
+    assert steps[1] == ("goto", "/new") and steps.index(("fill", "Project")) < gen
+    assert steps.index(("wait_for", None)) < steps.index(("goto", "/history")) < steps.index(("fill", "Search history..."))
+    flow = next(p for p in plan["plans"] if p["plan_id"].startswith("AP-FLOW") and p["steps"][1].get("url") == "/history")
+    assert not any(s["action"] == "expect_download" for s in flow["steps"])   # a search box generates no file

@@ -53,6 +53,7 @@ For EACH test, one plan: {"test_code", "applicable", "reason", "steps": [{"actio
 - Never type a record id the test made up (e.g. "run_9999", "ORD-123") into a search or id field: search only for
   values the app showed, or leave the search empty and let the page list what exists.
 - applicable=false (with a reason) only when nothing on the app can exercise the test, e.g. a pure latency or
-  backend-only claim. Do not mark a test inapplicable just because it needs typing into a form.
+  backend-only claim, or a test that needs a failure injected (the LLM provider failing, a missing API key, a
+  network fault): a normal submission cannot make that happen. Do not mark a test inapplicable just because it needs typing into a form.
 - Return the plans in the same order as the tests, one per test_code.
 """)

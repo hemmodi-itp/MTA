@@ -321,7 +321,22 @@ def complete(steps: List[Dict[str, Any]], test: Dict[str, Any], app_class: str, 
     http = any(s["action"] == "http" for s in steps)
     body = [s for s in steps if s["action"] not in ("login", "goto")] if not http else list(steps)
     pages = [s.get("target", {}).get("page") for s in body if s.get("target")]
-    page = next((p for p in pages if p), None) or next((s["url"] for s in steps if s["action"] == "goto"), None)
+    filled = [s["target"].get("page") for s in body if s["action"] in ("fill", "select", "check", "upload") and s.get("target")]
+    # the test's main page: where most of its input goes (a proposal may also act on another page, e.g. search History)
+    page = (max(dict.fromkeys(p for p in filled if p), key=filled.count) if any(filled) else None) \
+        or next((p for p in pages if p), None) or next((s["url"] for s in steps if s["action"] == "goto"), None)
+    if page and not http:  # steps on other pages run after the result, each page opened first
+        elsewhere = [s for s in steps if (s.get("target") or {}).get("page") not in (None, page)
+                     and s["action"] != "expect_download"]
+        last = None
+        for s in elsewhere:
+            if s["target"]["page"] != last:
+                last = s["target"]["page"]
+                after.append({"action": "goto", "url": last, "phase": "after"})
+            after.append({**s, "phase": "after"})
+        steps = [s for s in steps if s not in elsewhere]
+        body = [s for s in body if s not in elsewhere]
+        pages = [p for p in pages if p == page]
     out: List[Dict[str, Any]] = []
     if needs_login and not http:
         out.append({"action": "login"})
@@ -386,6 +401,9 @@ def complete(steps: List[Dict[str, Any]], test: Dict[str, Any], app_class: str, 
     out.append({"action": "assert", "kind": "judge", "expectation": test.get("expected_behavior") or "",
                 "pass_criteria": test.get("pass_criteria") or []})
     out = _insert_row_adds(out, els)
+    out = [s for i, s in enumerate(out) if not (i and s["action"] == "click" and out[i - 1]["action"] == "click"  # a doubled
+                                                and (s.get("target") or {}).get("role") == "submit"            # submit (a 2nd
+                                                and s.get("target") == out[i - 1].get("target"))]              # "+ Add" stays)
     for i, s in enumerate(out, 1):
         s["n"] = i
     return out
@@ -599,9 +617,11 @@ def flow_checks(inv: Dict[str, Any], primary: str, needs_login: bool, skip_forms
                     if o and not re.match(r"^(select|choose|--|pick)", o, re.I)]
             if s["action"] == "select" and len(opts) > 1:
                 s["value"] = opts[-1]
+        # only the form that generates expects a file: a search / filter form on another page just submits
+        cls = "Document Generator" if primary == "Document Generator" and _GENERATE.search(f.get("submit_text") or "") \
+            else "Form Application"
         p = _plan(pseudo, primary if primary != "Hybrid Application" else "Form Application", "ready",
-                  complete(steps, pseudo, "Document Generator" if primary == "Document Generator" else "Form Application",
-                           inv, needs_login), "rules")
+                  complete(steps, pseudo, cls, inv, needs_login), "rules")
         p.update(kind="flow_check", scored=False, plan_id=f"AP-FLOW-{f['id']}", test_code=None)
         out.append(p)
     for box in inv["chat_boxes"][:1]:

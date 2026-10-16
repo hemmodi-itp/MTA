@@ -23,8 +23,8 @@ Execution model:
     that baseline (or the app stays busy past its wait limit), so parallelism never distorts results. Plans about
     timing / latency always run alone.
   * Outages (engines/runtime/outage.py): a plan that could not reach the app pauses the run until the app answers
-    again, then runs once more, alone; a plan that hit a server error while others ran beside it also runs once
-    more, alone. A plan the app's AI provider refused for quota (429 / RESOURCE_EXHAUSTED) pauses every worker for
+    again, then runs once more, alone; a plan that hit a server error (on the page or from one of the app's API
+    calls) also runs once more, alone. A plan the app's AI provider refused for quota (429 / RESOURCE_EXHAUSTED) pauses every worker for
     a cool-down, then runs once more, alone. Each drops the run to one plan at a time. The first attempt's error is kept.
   * A failing step's error carries the error the app itself displayed (“Request failed (500)”, a validation
     banner …), so the report names the real cause instead of only the symptom.
@@ -244,8 +244,10 @@ class _AppHealth:
 
 
 def _retry_reason(res: Dict[str, Any], ran_with: int) -> Optional[str]:
-    """Why a finished plan deserves one more run, alone: the app was unreachable, or it failed with a server error
-    while other plans ran beside it (parallel load may have caused it). None otherwise."""
+    """Why a finished plan deserves one more run, alone: the app was unreachable, its AI provider was out of quota, or
+    it failed with a server error (shown on the page or answered by one of its own API calls). Server errors are often
+    intermittent (a request timeout, parallel load); one more try gives the feature a fair chance, and a repeat makes
+    the failure firmer. None otherwise."""
     if res.get("status") not in ("failed", "error"):
         return None
     err = str(res.get("error") or "")
@@ -253,7 +255,7 @@ def _retry_reason(res: Dict[str, Any], ran_with: int) -> Optional[str]:
         return "rate_limited"
     if UNREACHABLE.search(err):
         return "unreachable"
-    if ran_with > 1 and SERVER_ERROR.search(err):
+    if SERVER_ERROR.search(err) or any(n.get("status", 0) >= 500 for n in (res.get("observations") or {}).get("network") or []):
         return "server_error"
     return None
 
@@ -344,6 +346,7 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
     slots = _Slots(n_threads, calibrate, say)
     health = _AppHealth(live_url, say, cancel_event)
     retried: Dict[str, str] = {}  # plan_id -> the first attempt's error
+    first_results: Dict[str, Dict[str, Any]] = {}  # plan_id -> the first attempt, kept if the re-run never starts
 
     def progress() -> None:
         if not on_progress:
@@ -377,11 +380,12 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
                     except queue.Empty:
                         return
                     if cancel_event is not None and cancel_event.is_set():
-                        finish(plan, _blocked(plan, "the run was cancelled before this test started", status="not_run"))
+                        finish(plan, first_results.get(plan["plan_id"])  # a pending re-run keeps its first attempt
+                               or _blocked(plan, "the run was cancelled before this test started", status="not_run"))
                         continue
                     if time.monotonic() > deadline:
-                        finish(plan, _blocked(plan, "the execution time budget ran out before this plan started",
-                                              status="not_run"))
+                        finish(plan, first_results.get(plan["plan_id"])
+                               or _blocked(plan, "the execution time budget ran out before this plan started", status="not_run"))
                         continue
                     code = plan.get("test_code") or plan["plan_id"]
                     is_retry = plan["plan_id"] in retried
@@ -415,9 +419,10 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
                         if why == "rate_limited":
                             health.cool_down(RATE_LIMIT_COOL_DOWN_S)
                         retried[plan["plan_id"]] = str(res.get("error") or why)
+                        first_results[plan["plan_id"]] = res
                         say(f"{code}: " + {"unreachable": "could not reach the app",
                                             "rate_limited": "the app's AI provider is out of quota (429)",
-                                            "server_error": "server error while tests ran in parallel"}[why]
+                                            "server_error": "the app answered with a server error"}[why]
                             + f" ({str(res.get('error') or '')[:160]}); it will run again, alone.", "warning")
                         todo.put(plan)
                         continue

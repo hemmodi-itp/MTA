@@ -218,6 +218,9 @@ def _observations(obs: Dict) -> Dict[str, Any]:
     net = obs.get("network") or []
     slow = max(net, key=lambda n: n["ms"], default=None)
     return {"api_calls": len(net), "api_failures": [n for n in net if n["status"] >= 400 or n["status"] == 0][:10],
+            # successful calls with their duration: lets Pass/Fail tell a server timeout (a 5xx slower than every
+            # success of the same endpoint in the run) from a fast crash
+            "api_ok": [{k: n[k] for k in ("method", "path", "ms")} for n in net if 200 <= n["status"] < 300][:30],
             "slowest_call": slow, "console_errors": (obs.get("console_errors") or [])[:10],
             "page_errors": (obs.get("page_errors") or [])[:10]}
 
