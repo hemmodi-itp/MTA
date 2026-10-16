@@ -46,3 +46,12 @@ def test_an_invented_message_is_not_asserted_but_the_error_still_is():
 
 def test_positive_tests_and_other_locators_are_untouched():
     assert ground_messages(_neg("anything", type_="positive"), MSGS, ERR)[1] == []
+
+
+def test_an_assertion_wrapping_a_known_message_is_cut_down_to_it():
+    """2026-10-16 run: 'Product name is required' was kept because 'Name is required' is inside it — but the page
+    shows only 'Name is required', so toContainText failed."""
+    msgs = MSGS + ["Name is required"]
+    out, ch = ground_messages(_neg("Product name is required"), msgs, ERR)
+    assert out["tests"][0]["steps"][1]["value"] == "Name is required" and ch[0]["change"] == "message replaced"
+

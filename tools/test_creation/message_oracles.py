@@ -63,9 +63,17 @@ def _norm(s: str) -> str:
 
 
 def _known(text: str, messages: Iterable[str]) -> bool:
+    """The asserted text is (part of) a message the app shows — toContainText needs exactly that direction."""
     t = _norm(text)
-    # a short quoted word ("Help") does not vouch for a longer sentence that happens to contain it
-    return bool(t) and any(t in _norm(m) or (len(m) >= 8 and _norm(m) in t) for m in messages)
+    return bool(t) and any(t in _norm(m) for m in messages)
+
+
+def _inside(text: str, messages: Iterable[str]) -> Optional[str]:
+    """The known message the asserted text wraps ("Product name is required" wraps "Name is required"); a short
+    quoted word ("Help") does not count."""
+    t = _norm(text)
+    found = [m for m in messages if len(m) >= 8 and _norm(m) in t]
+    return max(found, key=len) if found else None
 
 
 def _changed_fields(test: dict) -> List[str]:
@@ -101,7 +109,7 @@ def ground_messages(plan: dict, messages: List[str], errors: set) -> Tuple[dict,
             text = str(step.get("value") or "")
             if not text or _known(text, messages):
                 continue
-            best = _closest(text, messages, fields)
+            best = _inside(text, messages) or _closest(text, messages, fields)
             if best:
                 test["steps"][i] = dict(step, action="verifyContainsText", value=best)
                 changes.append({"test": test.get("name"), "change": "message replaced", "before": text, "after": best,

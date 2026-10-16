@@ -16,8 +16,16 @@ def _plan(value, action="selectDropdownByText", type_="negative", case_id=None):
         {"action": action, "locator_key": "category_2", "value": value}]}]}
 
 
-def test_options_come_from_the_form_model_without_placeholder_or_disabled():
-    assert list(OPTS) == ["category_2"] and [o["text"] for o in OPTS["category_2"]["options"]] == ["Books", "Home"]
+def test_options_come_from_the_form_model_without_disabled_ones():
+    assert list(OPTS) == ["category_2"] and [o["text"] for o in OPTS["category_2"]["options"]] == ["Choose a category", "Books", "Home"]
+
+
+def test_choosing_the_placeholder_is_kept_it_is_how_a_negative_test_leaves_the_select_empty():
+    """2026-10-16 run: the guard turned 'Choose a category' into 'Books' and the negative test saw no error."""
+    for v in ("Choose a category", ""):
+        assert ground_selects(_plan(v), OPTS)[1] == []
+    out, _ = ground_selects(_plan("Furniture"), OPTS)
+    assert out["tests"][0]["steps"][1]["value"] == "Books"                      # a replacement is never the placeholder
 
 
 def test_real_options_are_kept_by_text_or_value_case_insensitively():
