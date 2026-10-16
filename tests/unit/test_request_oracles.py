@@ -28,9 +28,10 @@ def test_an_invented_endpoint_is_rewritten_to_the_form_the_test_submits():
                                  {"action": "verifyRequest", "method": "POST", "urlPattern": "/api/login",
                                   "status": "2xx", "bodyContains": "alice"}])
     out, changes = ground_plan(plan, EPS)
+    # POST /login was only seen answering 401 (discovery's invalid-input probes): no status is asserted
     assert out["tests"][0]["steps"][-1] == {"action": "verifyRequest", "method": "POST", "urlPattern": "/login",
-                                           "status": "success", "bodyContains": "alice"}
-    assert [c["change"] for c in changes] == ["rewritten", "status"]
+                                           "bodyContains": "alice"}
+    assert [c["change"] for c in changes] == ["rewritten", "status dropped"]
     assert plan["tests"][0]["steps"][-1]["urlPattern"] == "/api/login"          # the input is not mutated
 
 
@@ -100,3 +101,17 @@ def test_reconcile_strips_field_invalid_the_case_does_not_back():
     assert out["removed_oracles"] == ["verifyFieldInvalid x1: no probe saw the field marked invalid"]
     backed = {"oracles": [{"type": "field_invalid", "field": "price"}]}
     assert _strip_unbacked_field_invalid({"name": "t", "steps": steps}, backed)["steps"] == steps
+
+
+def test_a_failed_login_journey_does_not_expect_success():
+    """2026-10-16 run: 'Journey: Failed Login' asked for POST /login 'success' — the grounding itself had added it."""
+    plan = _test("failed login", [{"action": "navigate", "value": "/login"},
+                                  {"action": "enterText", "locator_key": "password", "value": "WrongPassword999!"},
+                                  {"action": "click", "locator_key": "log_in_button"},
+                                  {"action": "verifyRequest", "method": "POST", "urlPattern": "/login", "status": "2xx"}])
+    out, ch = ground_plan(plan, EPS)
+    assert "status" not in out["tests"][0]["steps"][-1] and ch[0]["change"] == "status dropped"
+    neg = _test("neg", [{"action": "navigate", "value": "/cart"},
+                        {"action": "verifyRequest", "method": "POST", "urlPattern": "/cart/add", "status": "3xx"}])
+    neg["tests"][0]["type"] = "negative"
+    assert "status" not in ground_plan(neg, EPS)[0]["tests"][0]["steps"][-1]

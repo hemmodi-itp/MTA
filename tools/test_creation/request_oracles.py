@@ -133,8 +133,17 @@ def ground_plan(plan: dict, endpoints: List[Dict[str, Any]], default_page: Optio
             if step["action"] == "verifyRequest" and isinstance(status, str) and _POSITIVE.match(status) \
                     and status.strip().lower() != "success":
                 seen = {c[0] for e in (found if ambiguous else [ep]) for c in e["statuses"]}
-                if (seen and status.strip()[0] not in seen) or (not seen and "form" in ep["sources"]) or ambiguous:
-                    # never seen answering that class — or a form submit nobody observed (apps often redirect)
+                ok_seen = seen & {"2", "3"}
+                if test.get("type") == "negative" or (seen and not ok_seen):
+                    # only errors were ever seen (discovery's invalid-input probes), or the test expects a rejection:
+                    # the status says nothing about THIS input — assert only that the request was made
+                    changes.append({"test": test.get("name"), "change": "status dropped", "before": before,
+                                    "reason": f"{ep['method']} {ep['template']}: " + (
+                                        "a negative test" if test.get("type") == "negative"
+                                        else f"only {sorted(ep['statuses'])} seen")})
+                    step = {k: v for k, v in step.items() if k != "status"}
+                elif (ok_seen and status.strip()[0] not in ok_seen) or (not seen and "form" in ep["sources"]) or ambiguous:
+                    # it succeeds with another class — or a form submit nobody observed (apps often redirect)
                     changes.append({"test": test.get("name"), "change": "status", "before": before,
                                     "after": {"status": "success"},
                                     "reason": f"{ep['method']} {ep['template']} was seen answering {sorted(ep['statuses'])}"
