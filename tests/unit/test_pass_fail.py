@@ -56,6 +56,9 @@ def test_unreachable_app_is_inconclusive_but_a_server_error_is_a_failure():
         assert t["verdict"] == "inconclusive" and "could not be reached" in t["reasons"][0], err
     t = decide_test(v, {"error": "no download was produced — the app showed: “Request failed (500)”"})
     assert t["verdict"] == "failed"
+    q = decide_test(v, {"error": "no download was produced — the app showed: “429 RESOURCE_EXHAUSTED. "
+                                 "{'error': {'code': 429, 'message': 'Resource has been exhausted (e.g. check quota).'}}”"})
+    assert q["verdict"] == "inconclusive" and "quota" in q["reasons"][0]
 
 
 def test_deterministic_oracle_passes_without_judge_but_semantic_does_not():

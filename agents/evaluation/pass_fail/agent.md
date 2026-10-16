@@ -31,6 +31,8 @@ It makes no LLM calls; the logic is in `engines/verdict/passfail.py`.
    - The live app could not be reached (`net::ERR_…`, connection refused or reset, "Failed to fetch", a gateway 502/503/504
      opening a page) → `inconclusive`. An outage says nothing about the requirement, so it never refutes a criterion. A server
      error the app answered with ("Request failed (500)") is still `failed`.
+   - The app's AI provider refused for quota (`429`, `RESOURCE_EXHAUSTED`, "rate limit", "too many requests") →
+     `inconclusive`: the deployment ran out of capacity, which says nothing about the requirement under test.
    - Login or session problem → `inconclusive` ("test setup problem, not an app defect").
    - Element not found, plan time limit or browser closed → `inconclusive` ("MTA could not drive the UI").
    - The app still working when MTA's wait limit was reached → `inconclusive`, unless the expectation states a time limit (then

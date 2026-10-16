@@ -24,7 +24,8 @@ Execution model:
     timing / latency always run alone.
   * Outages (engines/runtime/outage.py): a plan that could not reach the app pauses the run until the app answers
     again, then runs once more, alone; a plan that hit a server error while others ran beside it also runs once
-    more, alone. Either drops the run to one plan at a time. The first attempt's error is kept.
+    more, alone. A plan the app's AI provider refused for quota (429 / RESOURCE_EXHAUSTED) pauses every worker for
+    a cool-down, then runs once more, alone. Each drops the run to one plan at a time. The first attempt's error is kept.
   * A failing step's error carries the error the app itself displayed (“Request failed (500)”, a validation
     banner …), so the report names the real cause instead of only the symptom.
   * A positive test the app rejects as incomplete, naming the fields it wants (“Please add at least one point to
@@ -51,7 +52,8 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
 from engines.runtime.discovery import NAV_TIMEOUT_MS, _log_in
-from engines.runtime.outage import RECOVERY_WAIT_S, SERVER_ERROR, UNREACHABLE, wait_until_up
+from engines.runtime.outage import (RATE_LIMIT_COOL_DOWN_S, RATE_LIMITED, RECOVERY_WAIT_S, SERVER_ERROR, UNREACHABLE,
+                                    wait_until_up)
 from engines.runtime.rejection import INPUT_REJECTED, named_fields
 from tools.agent_eval.net_guard import join_same_origin
 
@@ -186,7 +188,7 @@ class _Slots:
                     self.allowed = 1
                     self.say(f"The app slowed down under parallel tests ({gen or 0:.0f}s vs {self.baseline or 0:.0f}s alone); "
                              "running the remaining tests one at a time.", "warning")
-                elif UNREACHABLE.search(err) or SERVER_ERROR.search(err):
+                elif UNREACHABLE.search(err) or SERVER_ERROR.search(err) or RATE_LIMITED.search(err):
                     self.allowed = 1
                     self.say(f"The app failed while tests ran in parallel ({err[:160]}); running the remaining tests "
                              "one at a time.", "warning")
@@ -204,8 +206,13 @@ class _AppHealth:
         self.down = False
         self.gave_up = False
         self.recovered_at = 0.0
+        self.resume_at = 0.0  # a quota cool-down: no plan starts before this
         self.outages: List[Dict[str, Any]] = []
         self.lock = threading.Lock()
+
+    def cool_down(self, seconds: float) -> None:
+        with self.lock:
+            self.resume_at = max(self.resume_at, time.monotonic() + seconds)
 
     def mark_down(self, plan_started: float) -> None:
         with self.lock:  # a plan that started before the last recovery failed in an outage already waited out
@@ -214,6 +221,11 @@ class _AppHealth:
 
     def wait_up(self) -> bool:
         with self.lock:
+            pause = self.resume_at - time.monotonic()
+            if pause > 1:  # the first worker here waits it out holding the lock; the others then find it over
+                self.say(f"The app's AI provider is out of quota; pausing the tests for {pause:.0f}s before going on.", "warning")
+                while time.monotonic() < self.resume_at and not (self.cancel_event is not None and self.cancel_event.is_set()):
+                    time.sleep(1)
             if self.gave_up:
                 return False
             if not self.down:
@@ -237,6 +249,8 @@ def _retry_reason(res: Dict[str, Any], ran_with: int) -> Optional[str]:
     if res.get("status") not in ("failed", "error"):
         return None
     err = str(res.get("error") or "")
+    if RATE_LIMITED.search(err):
+        return "rate_limited"
     if UNREACHABLE.search(err):
         return "unreachable"
     if ran_with > 1 and SERVER_ERROR.search(err):
@@ -398,9 +412,13 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
                         health.mark_down(plan_started)
                     if (why and not is_retry and not health.gave_up and time.monotonic() < deadline
                             and not (cancel_event is not None and cancel_event.is_set())):
+                        if why == "rate_limited":
+                            health.cool_down(RATE_LIMIT_COOL_DOWN_S)
                         retried[plan["plan_id"]] = str(res.get("error") or why)
-                        say(f"{code}: {'could not reach the app' if why == 'unreachable' else 'server error while tests ran in parallel'}"
-                            f" ({str(res.get('error') or '')[:160]}); it will run again, alone.", "warning")
+                        say(f"{code}: " + {"unreachable": "could not reach the app",
+                                            "rate_limited": "the app's AI provider is out of quota (429)",
+                                            "server_error": "server error while tests ran in parallel"}[why]
+                            + f" ({str(res.get('error') or '')[:160]}); it will run again, alone.", "warning")
                         todo.put(plan)
                         continue
                     if is_retry:

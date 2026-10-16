@@ -12,7 +12,8 @@ verdict per acceptance criterion. It separates what the APP did wrong from what 
   passed        no core check failed and the judge found the expectation met (or partially met with score ≥ 70);
                 for a criterion whose oracle is deterministic, passing core checks alone suffice.
   inconclusive  MTA could not drive the UI (element not found, login/session problems, plan time limit), the live
-                app could not be reached (outage, connection timeout), or the output could not be judged.
+                app could not be reached (outage, connection timeout), the app's AI provider refused for quota
+                (429 / RESOURCE_EXHAUSTED), or the output could not be judged.
                 Never counted against the app.
   not_executed  never started: blocked (login), not mappable to the UI, out of time or cancelled; the reason is kept.
                 A run that started but crashed on MTA's side (status `error`) is inconclusive, not "not executed".
@@ -28,7 +29,7 @@ so requirement traceability and compliance scoring consume runtime verdicts unch
 import re
 from typing import Any, Dict, List, Optional, Sequence
 
-from engines.runtime.outage import UNREACHABLE
+from engines.runtime.outage import RATE_LIMITED, UNREACHABLE
 from engines.runtime.rejection import INPUT_REJECTED as _INPUT_REJECTED
 
 PASS_SCORE = 70
@@ -73,6 +74,10 @@ def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint
             return _done(out, "inconclusive", None, None, None,
                          [f"The live app could not be reached during this test ({err[:200]}); an outage says nothing "
                           "about the requirement, so it is not counted against the app."])
+        if RATE_LIMITED.search(err):
+            return _done(out, "inconclusive", None, None, None,
+                         [f"The app's AI provider refused the request for quota / rate limits ({err[:240]}); the "
+                          "deployment ran out of capacity, which says nothing about this requirement."])
         if _SETUP_SIDE.search(err):
             return _done(out, "inconclusive", None, None, None, [f"Test setup problem, not an app defect: {err}"])
         if _TOOL_SIDE.search(err):

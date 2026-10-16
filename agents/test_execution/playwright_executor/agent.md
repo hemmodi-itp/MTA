@@ -76,8 +76,9 @@ run (unlike the workspace), and served to the run's viewers by `GET /api/runs/:r
    was completed; the result carries it as `completed_input`.
 7. **Outages.** A plan that cannot reach the app (`net::ERR_…`, "Failed to fetch", gateway 502/503/504) pauses the run. One
    worker polls the live URL for up to 5 minutes while the others wait. The plan then runs once more, alone. A plan that hit a
-   server error while other plans ran beside it also runs once more, alone. Either case drops the rest of the run to one plan
-   at a time. The first attempt's error is kept as `first_attempt_error`, and the run reports `app_outages` and `retried`. If the
+   server error while other plans ran beside it also runs once more, alone. A plan the app's AI provider refused for quota
+   (`429` / `RESOURCE_EXHAUSTED`) pauses every worker for a 90 s cool-down, then runs once more, alone. Each case drops the
+   rest of the run to one plan at a time. The first attempt's error is kept as `first_attempt_error`, and the run reports `app_outages` and `retried`. If the
    app stays down, the run carries on without waiting, and those plans' verdicts are inconclusive.
 
 ## Failure modes
