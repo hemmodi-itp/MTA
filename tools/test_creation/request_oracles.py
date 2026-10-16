@@ -157,3 +157,73 @@ def ground_plan(plan: dict, endpoints: List[Dict[str, Any]], default_page: Optio
             kept.append(step)
         test["steps"] = kept
     return plan, changes
+
+
+# ── record ids: a test only names records discovery saw ─────────────────────────────────────────────────────────
+
+_ID_SEG = re.compile(r"/(\d+)(?=/|$|\?)")
+_ID_ACTIONS = ("navigate", "verifyApiState")
+
+
+def observed_paths(app_map: Optional[dict], extra: Optional[List[str]] = None) -> Dict[str, List[str]]:
+    """template -> concrete paths discovery visited (app_map state URLs) plus configured ones (api_tests.ownership)."""
+    out: Dict[str, List[str]] = {}
+    urls = [s.get("url") or "" for s in (app_map or {}).get("states") or []] + list(extra or [])
+    for u in urls:
+        path = re.sub(r"^[a-z]+://[^/]+", "", (u or "").split("?")[0], flags=re.I) or "/"
+        if _ID_SEG.search(path):
+            out.setdefault(_template(path), [])
+            if path not in out[_template(path)]:
+                out[_template(path)].append(path)
+    return out
+
+
+def _step_path(step: dict) -> Optional[str]:
+    v = step.get("value") if step.get("action") == "navigate" else step.get("path") or step.get("url") or step.get("value")
+    return v if isinstance(v, str) else None
+
+
+def ground_record_ids(plan: dict, seen: Dict[str, List[str]]) -> Tuple[dict, List[Dict[str, Any]]]:
+    """A navigate / verifyApiState on a record id discovery never saw ("/api/orders/10042") gets an id that was seen
+    for the same page or endpoint (also through its /api mirror); with none, the step is dropped — and the test, when
+    it has nothing left to verify."""
+    plan = copy.deepcopy(plan)
+    changes: List[Dict[str, Any]] = []
+    kept_tests = []
+    for test in plan.get("tests") or []:
+        if not isinstance(test, dict):
+            kept_tests.append(test)
+            continue
+        steps = []
+        for st in test.get("steps") or []:
+            path = _step_path(st) if isinstance(st, dict) and st.get("action") in _ID_ACTIONS else None
+            rel = re.sub(r"^[a-z]+://[^/]+", "", (path or "").split("?")[0], flags=re.I) if path else ""
+            if not path or not _ID_SEG.search(rel):
+                steps.append(st)
+                continue
+            tmpl = _template(rel)
+            known = seen.get(tmpl) or seen.get(tmpl.replace("/api/", "/", 1)) or []
+            if rel in known:
+                steps.append(st)
+                continue
+            if known:
+                sample_id = _ID_SEG.findall(known[0])
+                new_rel = rel
+                for old, new in zip(_ID_SEG.findall(rel), sample_id):
+                    new_rel = new_rel.replace(f"/{old}", f"/{new}", 1)
+                new_path = path.replace(rel, new_rel, 1)
+                key = "value" if st.get("action") == "navigate" or "value" in st else ("path" if "path" in st else "url")
+                steps.append(dict(st, **{key: new_path}))
+                changes.append({"test": test.get("name"), "change": "record id replaced", "before": rel, "after": new_rel,
+                                "reason": f"discovery never saw {rel}; {known[0]} exists"})
+            else:
+                changes.append({"test": test.get("name"), "change": "step dropped", "before": rel,
+                                "reason": f"no {tmpl} record was ever seen — {rel} is an invented record"})
+        if not any(isinstance(s, dict) and str(s.get("action", "")).startswith("verify") for s in steps):
+            changes.append({"test": test.get("name"), "change": "dropped",
+                            "reason": "nothing left to verify after dropping steps on invented records"})
+            continue
+        test["steps"] = steps
+        kept_tests.append(test)
+    plan["tests"] = kept_tests
+    return plan, changes

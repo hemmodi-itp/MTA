@@ -115,3 +115,23 @@ def test_a_failed_login_journey_does_not_expect_success():
                         {"action": "verifyRequest", "method": "POST", "urlPattern": "/cart/add", "status": "3xx"}])
     neg["tests"][0]["type"] = "negative"
     assert "status" not in ground_plan(neg, EPS)[0]["tests"][0]["steps"][-1]
+
+
+def test_record_ids_discovery_never_saw():
+    """2026-10-16 run: verifyApiState GET /api/orders/10042 — no such order; discovery saw none at all."""
+    from tools.test_creation.request_oracles import ground_record_ids, observed_paths
+    seen = observed_paths({"states": [{"url": "http://a.test/products/3"}, {"url": "http://a.test/products/3/edit"},
+                                      {"url": "http://a.test/cart"}]})
+    assert seen == {"/products/{id}": ["/products/3"], "/products/{id}/edit": ["/products/3/edit"]}
+    plan = _test("t", [{"action": "navigate", "value": "http://a.test/products/987"},
+                       {"action": "verifyApiState", "method": "GET", "url": "/api/products/55", "expect": {"status": 200}},
+                       {"action": "verifyApiState", "method": "GET", "url": "/api/orders/10042", "expect": {"status": 200}},
+                       {"action": "verifyUrlContains", "value": "/products/"}])
+    out, ch = ground_record_ids(plan, seen)
+    steps = out["tests"][0]["steps"]
+    assert steps[0]["value"] == "http://a.test/products/3" and steps[1]["url"] == "/api/products/3"   # /api mirror
+    assert len(steps) == 3 and [c["change"] for c in ch] == ["record id replaced", "record id replaced", "step dropped"]
+    only = _test("o", [{"action": "verifyApiState", "method": "GET", "url": "/api/orders/10042", "expect": {"status": 200}}])
+    assert ground_record_ids(only, seen)[0]["tests"] == []                       # nothing left to verify
+    known = _test("k", [{"action": "navigate", "value": "/products/3"}, {"action": "verifyVisible", "locator_key": "x"}])
+    assert ground_record_ids(known, seen)[1] == []
