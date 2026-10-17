@@ -47,6 +47,46 @@ _NEGATIVE = {"negative", "security", "robustness"}
 # a bare record identifier typed into a search / id field ("run_9999", "ORD-12345", "run_test_123"): test data invents
 # these, and a search for a record that does not exist proves nothing
 _BARE_ID = re.compile(r"^#?[A-Za-z]{0,12}[_-]?(?:[A-Za-z]+[_-])?\d{2,}[A-Za-z0-9_-]*$|^[0-9a-f]{8,}(-[0-9a-f]{4,}){0,4}$", re.I)
+_OMIT = re.compile(r"\b(not applicable|n/a|omit|exclude|skip)\b", re.I)
+_INPUT_LINE = re.compile(r"^\s*(?:[-*]\s*)?([A-Za-z][^:\n]{1,60}?)\s*:\s*(.+?)\s*$")
+
+
+def _field_name(label: Optional[str]) -> str:
+    """A field label without its required marker, for matching ("Constraints (required)" → "constraints")."""
+    return re.sub(r"\s+", " ", re.sub(r"\(required\)|\*", "", label or "", flags=re.I)).strip().lower()
+
+
+def input_fills(test: Dict[str, Any], form: Dict[str, Any], els: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """The test's "Label: value" input lines (test design writes form tests that way) as steps on the form's fields
+    with that label: fill, select (only a real option) or check ("[checked]" / "Not applicable" on a field whose
+    own omit box exists). Lines naming no field of this form are ignored."""
+    fields = [els[f] for f in form.get("fields") or []]
+    by_name = {}
+    for e in fields:
+        by_name.setdefault(_field_name(e.get("label")), e)
+    out = []
+    for line in str(test.get("input") or "").splitlines():
+        m = _INPUT_LINE.match(line)
+        if not m:
+            continue
+        name, value = _field_name(m.group(1)), m.group(2).strip().strip("\"'“”")
+        if _OMIT.search(value) and re.search(r"\b(check|tick|mark|select)", value, re.I) or value.lower().startswith("[checked"):
+            box = next((e for e in fields if e["type"] == "checkbox" and _field_name(e.get("group")) == name
+                        and _OMIT.search(e.get("label") or "")), None)
+            if box:
+                out.append({"action": "check", "target": _target(box)})
+            continue
+        el = by_name.get(name)
+        if not el or el["type"] in ("checkbox", "radio", "file"):
+            continue
+        if el["type"] == "select" or el.get("options"):
+            if value in (el.get("options") or []):
+                out.append({"action": "select", "target": _target(el), "value": value})
+        else:
+            out.append({"action": "fill", "target": _target(el), "value": value[:MAX_VALUE]})
+    return out
+
+
 _SEARCH_FIELD = re.compile(r"\b(search|filter|find|look ?up)\b", re.I)
 _ID_FIELD = re.compile(r"\b(id|run|record|order|ticket|reference|number)\b", re.I)  # only on a small lookup form
 
@@ -266,10 +306,12 @@ def rule_steps(test: Dict[str, Any], app_class: str, inv: Dict[str, Any]) -> Tup
         form = _main_form(inv, prefer_generate=app_class == "Document Generator")
         if not form:
             return [], "no input form was found on the live app"
-        steps = []
+        steps = input_fills(test, form, els)  # "Label: value" lines go to the fields they name
         main = _best_free_text(form, inv, text)
-        if main and text:
-            steps.append({"action": "fill", "target": _target(main), "value": text[:MAX_VALUE]})
+        if len(steps) < 2:
+            steps = []
+            if main and text:
+                steps.append({"action": "fill", "target": _target(main), "value": text[:MAX_VALUE]})
         if app_class == "Workflow System":
             steps += [{"action": "click", "target": _target(e)} for e in els.values()
                       if e["kind"] == "button" and e["role"] == "workflow" and e["page"] == form["page"]][:2]
@@ -349,24 +391,32 @@ def complete(steps: List[Dict[str, Any]], test: Dict[str, Any], app_class: str, 
         form = _main_form(inv, prefer_generate=app_class == "Document Generator")
         if form and not page:
             out.append({"action": "goto", "url": form["page"]})
+    # a field whose own "Not applicable / omit" box the test ticks is disabled by the app: typing into it would hang
+    omitted = {_field_name(s["target"].get("group")) for s in body
+               if s["action"] == "check" and s["target"].get("group") and _OMIT.search(s["target"].get("label") or "")}
+    body = [s for s in body if not (s["action"] in ("fill", "select") and _field_name((s.get("target") or {}).get("label")) in omitted)]
     fills = [s for s in body if s["action"] in ("fill", "select", "check", "upload")]
     rest = [s for s in body if s not in fills]
     demo = None
     text_fields = [f for f in (form or {}).get("fields", []) if els[f]["type"] not in ("checkbox", "radio", "file")]
     covered = len({s["target"]["id"] for s in fills if s.get("target", {}).get("id") in text_fields})
-    if form and not negative and text_fields and covered < 0.8 * len(text_fields):
-        # the plan does not describe the whole form: start from the app's own demo data (if it has a control for it)
-        # so the submission is complete; the test's own values then overwrite it. Optional: skipped if not there.
+    # the plan does not describe the whole form: MTA completes the REQUIRED fields with its own short values (optional
+    # ones stay as a user would leave them; an app that wants more names the fields, and the executor fills exactly those
+    # and submits again). The app's "Fill demo data" control is only the fallback when MTA can fill none of them: demo
+    # data can be large (BRD_Agent's demo project ran past the app's 180 s request timeout every time), which turns a
+    # feature test into a timeout.
+    partial = bool(form and not negative and text_fields and covered < 0.8 * len(text_fields))
+    required_left = [f for f in (form or {}).get("fields", []) if els[f]["required"] and f not in touched]
+    if partial and required_left and not any(_fill_step(els[f]) for f in required_left):
         demo = next((e for e in els.values() if e["kind"] == "button" and e["page"] == form["page"] and _DEMO.search(e["text"])), None)
         if demo:
             out.append({"action": "click", "target": _target(demo), "synthetic": True, "purpose": "prefill demo data",
                         "optional": True})
     out += fills
-    if form and not negative and not demo:  # complete required fields the test didn't set (not on top of demo data:
-        # mixing generic filler into the demo scenario would make the input incoherent)
+    if form and not negative and not demo:  # complete the required fields the test didn't set
         for fid in form["fields"]:
             el = els[fid]
-            if fid in touched or not el["required"]:
+            if fid in touched or not el["required"] or _field_name(el.get("label")) in omitted:
                 continue
             step = _fill_step(el)
             if step:
@@ -435,18 +485,25 @@ _AFTER_TIMING = re.compile(r"\b(latency|response time|execution time|performance
 
 def generate_then_act(test: Dict[str, Any], app_class: str, inv: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     """For a Document Generator, behaviour that only exists after generating (export, revise, preview, history)
-    becomes: fill the main form, generate, then act on the result. None when it does not apply."""
-    if app_class != "Document Generator" or test.get("variant_type") in _NEGATIVE:
+    becomes: fill the main form, generate, then act on the result. None when it does not apply.
+    A negative test applies only when its negative part is the follow-up (e.g. an empty change request): the
+    generation itself must succeed first, so the plan generates as a positive test would."""
+    if app_class != "Document Generator":
+        return None
+    text = " ".join(str(test.get(k) or "") for k in ("title", "input", "expected_behavior", "area"))
+    negative = test.get("variant_type") in _NEGATIVE
+    if negative and not _AFTER_REVISE.search(text):
         return None
     form = _main_form(inv, prefer_generate=True)
     if not form or not form.get("submit"):
         return None
-    text = " ".join(str(test.get(k) or "") for k in ("title", "input", "expected_behavior", "area"))
-    steps: List[Dict[str, Any]] = [{"action": "goto", "url": form["page"]}]
+    steps: List[Dict[str, Any]] = [{"action": "goto", "url": form["page"]}] + input_fills(test, form, inv["elements"])
     matched = False
     if _AFTER_REVISE.search(text):
         matched = True
         request = _change_request(str(test.get("input") or "")) or str(test.get("input") or "")[:500]
+        if negative and re.search(r"\b(blank|empty|nothing|no text)\b", text, re.I):
+            request = ""  # the negative case: submit the change request with nothing in it
         steps.append({"action": "follow_up", "kind": "text_input", "value": request, "phase": "after",
                       "known_labels": [inv["elements"][f]["label"] for f in form["fields"]]})
     if _AFTER_HISTORY.search(text):
@@ -516,6 +573,7 @@ def generate_action_plan(classification: Optional[Dict[str, Any]], profile: Opti
     for t in test_cases:
         cls = _class_for(t, classes, inv)
         steps, reason, source = [], None, "rules"
+        generate_first = False
         prop = proposals.get(t.get("code"))
         if prop is not None and not api_only:
             if prop.get("applicable") is False:
@@ -536,10 +594,13 @@ def generate_action_plan(classification: Optional[Dict[str, Any]], profile: Opti
             follow = generate_then_act(t, cls, inv)
             if follow is not None:
                 steps, reason, source = follow, None, "rules"
+                generate_first = True
         if reason and not steps:
             plans.append(_plan(t, cls, "unmappable", [], source, reason))
             continue
-        plans.append(_plan(t, cls, "ready", complete(steps, t, cls, inv, needs_login), source))
+        # a negative follow-up test (empty change request) still needs a complete, successful generation first
+        shape = {**t, "variant_type": "positive"} if generate_first else t
+        plans.append(_plan(t, cls, "ready", complete(steps, shape, cls, inv, needs_login), source))
 
     exercised = {_form_of(p, inv) for p in plans if p["status"] == "ready"}
     plans += flow_checks(inv, primary, needs_login, skip_forms=exercised) if not api_only else []

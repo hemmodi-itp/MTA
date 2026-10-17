@@ -115,6 +115,8 @@ INTAKE = """<!doctype html><title>Intake</title>
   <button type=button id=go>Generate Documents</button><div id=out></div>
 </div>
 <script>
+document.querySelectorAll('.na').forEach(b => b.onchange = () => {  // like BRD_Agent: an omitted field is disabled
+  b.closest('.field').querySelector('textarea').disabled = b.checked; });
 document.getElementById('go').onclick = () => {
   const blocks = [...document.querySelectorAll('.field')];
   const name = b => b.dataset.name;
@@ -357,3 +359,24 @@ def test_same_labelled_boxes_resolve_by_field_and_rejected_input_is_completed(ap
     # the Dependencies box was ticked (not the first same-labelled one), and the field the app then asked for was filled
     assert "omitted: Dependencies" in r["captures"]["dom_excerpt"] and "Documents ready" in r["captures"]["dom_excerpt"]
     assert "the app asked for Constraints" in r["completed_input"] and "MTA filled Constraints" in r["completed_input"]
+
+
+def test_a_field_mta_cannot_set_does_not_end_the_test(app_url, tmp_path):
+    na = {"kind": "field", "page": "/intake", "label": "Not applicable — omit this section", "type": "checkbox", "group": "Dependencies"}
+    plan = _one("AP-TC-041", [
+        {"n": 2, "action": "goto", "url": "/intake"},
+        {"n": 3, "action": "fill", "target": {"kind": "field", "label": "Problem Statement (required)"}, "value": "Manual booking"},
+        {"n": 4, "action": "check", "target": na},
+        {"n": 5, "action": "fill", "target": {"kind": "field", "label": "What this depends on"}, "value": "N/A"},  # now disabled
+        {"n": 6, "action": "fill", "target": {"kind": "field", "label": "No such field"}, "value": "x"},        # not on the page
+        {"n": 7, "action": "click", "target": {"kind": "button", "text": "Generate Documents"}},
+        {"n": 8, "action": "wait_for", "kind": "settled", "timeout_ms": 30_000},
+        {"n": 9, "action": "capture", "what": ["dom_text"]}])
+    plan["plans"][0]["variant"] = "positive"
+    r = execute_plans(app_url, plan, tmp_path, credentials=CREDS)["results"][0]
+    st = {s["n"]: s for s in r["steps"]}
+    assert r["status"] == "completed", r["steps"]                                    # nothing ended the test early
+    assert st[5]["status"] == "skipped" and "disabled" in st[5]["detail"]           # the app's own state is respected
+    assert st[6]["status"] == "skipped" and [u["field"] for u in r["unset_inputs"]] == ["No such field"]
+    assert "MTA filled Constraints" in r["completed_input"]                          # the field the app asked for
+    assert "omitted: Dependencies" in r["captures"]["dom_excerpt"]

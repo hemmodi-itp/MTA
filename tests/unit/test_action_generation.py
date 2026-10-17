@@ -182,16 +182,19 @@ def test_login_failure_is_reported_as_such_not_as_missing_account():
     assert plan["status"] == "blocked" and "Login with the test account failed (no login form found)" in plan["reason"]
 
 
-def test_demo_data_button_is_used_first_and_test_values_overwrite_it():
+def test_mta_fills_required_fields_itself_and_demo_data_is_only_a_fallback():
+    # BRD_Agent's "Fill Demo Data" project ran past the app's 180 s request timeout every time: MTA's own short values now
+    # complete the required fields (an app wanting more names them; the executor fills those), so a feature test is not
+    # turned into a timeout
     prof, cls = _brd_agent_like(demo=True)
     p = generate_action_plan(cls, prof, [_test(text="Clinics cannot book online")])["plans"][0]
     acts = [(s["action"], (s.get("target") or {}).get("text") or (s.get("target") or {}).get("label")) for s in p["steps"]]
-    assert acts[2] == ("click", "Fill Demo Data")
-    assert ("fill", "Problem Statement (required)") in acts                 # the test's own value overwrites demo data
-    assert not any(s.get("synthetic") and s["action"] == "fill" for s in p["steps"])   # no filler on top of demo data
+    assert not any(s.get("purpose") == "prefill demo data" for s in p["steps"])
+    filled = {label for act, label in acts if act == "fill"}
+    assert {"Problem Statement (required)", "Data Flow Steps (required)"} <= filled and "Constraints" not in filled
+    assert next(s for s in p["steps"] if (s.get("target") or {}).get("label") == "Problem Statement (required)")["value"] ==         "Clinics cannot book online"                                                     # the test's own value
     neg = generate_action_plan(cls, prof, [_test(variant="negative", text="")])["plans"][0]
-    assert not any(s.get("purpose") == "prefill demo data" for s in neg["steps"])   # negative tests stay incomplete
-
+    assert not any(s.get("purpose") == "prefill demo data" or s.get("synthetic") for s in neg["steps"])  # stays incomplete
 
 def test_item_pages_never_supply_targets_and_full_form_plans_skip_demo():
     prof, cls = _brd_agent_like(demo=True)
@@ -207,7 +210,12 @@ def test_item_pages_never_supply_targets_and_full_form_plans_skip_demo():
     p = generate_action_plan(cls, prof, [_test()], proposals=full)["plans"][0]
     assert not any(s.get("purpose") == "prefill demo data" for s in p["steps"])   # the whole form tells one story
     partial = generate_action_plan(cls, prof, [_test()])["plans"][0]
-    demo = next(s for s in partial["steps"] if s.get("purpose") == "prefill demo data")
+    assert not any(s.get("purpose") == "prefill demo data" for s in partial["steps"])  # MTA fills required fields itself
+    pw = {**prof, "pages": [dict(pg, forms=[dict(f, fields=[dict(x, type="password") if x.get("required") else x
+                                                            for x in f["fields"]]) for f in pg.get("forms") or []])
+                            for pg in prof["pages"]]}
+    fallback = generate_action_plan(cls, pw, [_test()])["plans"][0]   # no required field MTA can fill: the app's demo data
+    demo = next(s for s in fallback["steps"] if s.get("purpose") == "prefill demo data")
     assert demo["optional"] is True                                               # skipped, not failed, if absent
 
 
@@ -239,3 +247,50 @@ def test_steps_on_another_page_run_after_the_result_and_flow_checks_fit_the_form
     assert steps.index(("wait_for", None)) < steps.index(("goto", "/history")) < steps.index(("fill", "Search history..."))
     flow = next(p for p in plan["plans"] if p["plan_id"].startswith("AP-FLOW") and p["steps"][1].get("url") == "/history")
     assert not any(s["action"] == "expect_download" for s in flow["steps"])   # a search box generates no file
+
+
+def _with_na_box(prof):
+    """Give the BRD_Agent-like form a per-field "Not applicable" box on Constraints (as on the real app)."""
+    form = next(p for p in prof["pages"] if p["path"] == "/new")["forms"][0]
+    form["fields"].append({"label": "Not applicable — omit this section", "name": "", "tag": "input", "type": "checkbox",
+                           "required": False, "readonly": False, "options": None, "group": "Constraints"})
+    form["fields"].append({"label": "Not applicable — omit this section", "name": "", "tag": "input", "type": "checkbox",
+                           "required": False, "readonly": False, "options": None, "group": "Other"})
+    return prof
+
+
+def test_label_value_input_lines_fill_their_fields_and_an_omitted_field_is_left_alone():
+    prof, cls = _brd_agent_like()
+    prof = _with_na_box(prof)
+    text = ("Scenario: Mark Constraints section as Not Applicable.\nProject Name: BRD Agent Suite\n"
+            "Problem Statement: Manual authoring causes misalignment.\nConstraints: [Checked Not applicable — omit this section]\n"
+            "Tech Stack Preferences: Python FastAPI, Gemini API.")
+    p = generate_action_plan(cls, prof, [_test(text=text)])["plans"][0]
+    by = [(s["action"], (s.get("target") or {}).get("label"), (s.get("target") or {}).get("group"), s.get("value")) for s in p["steps"]]
+    assert ("fill", "Project Name (required)", None, "BRD Agent Suite") in by
+    assert ("fill", "Tech Stack Preferences (required)", None, "Python FastAPI, Gemini API.") in by
+    assert ("check", "Not applicable — omit this section", "Constraints", None) in by
+    assert not any(a == "fill" and label == "Constraints" for a, label, _, _ in by)      # disabled by its own box: not typed into
+    # an LLM proposal that ticks the box AND types into the field (TC-004 hung 15 s on it) loses the fill
+    els = build_inventory(prof)["elements"]
+    ids = {(e.get("label"), e.get("group")): e["id"] for e in els.values()}
+    prop = {"TC-001": {"applicable": True, "steps": [
+        {"action": "check", "element_id": ids[("Not applicable — omit this section", "Constraints")]},
+        {"action": "fill", "element_id": ids[("Constraints", None)], "value": "N/A"}]}}
+    p2 = generate_action_plan(cls, prof, [_test(text=text)], proposals=prop)["plans"][0]
+    assert not any(s["action"] == "fill" and (s.get("target") or {}).get("label") == "Constraints" for s in p2["steps"])
+
+
+def test_a_negative_change_request_test_generates_first_then_submits_it_empty():
+    prof, cls = _brd_agent_like()
+    t = {"id": "n", "code": "TC-008", "title": "Reject empty change request on run revision", "variant_type": "negative",
+         "input": "Scenario: Submit empty free-text change request.\n1. Generate the document suite.\n"
+                  "2. Leave change_request field blank and click submit revision.",
+         "expected_behavior": "The app refuses an empty change request"}
+    prop = {"TC-008": {"applicable": False, "reason": "The UI lacks the run revision view", "steps": []}}
+    p = generate_action_plan(cls, prof, [t], proposals=prop)["plans"][0]
+    assert p["status"] == "ready" and p["variant"] == "negative"
+    acts = [s["action"] for s in p["steps"]]
+    assert acts.index("click") < acts.index("wait_for") < acts.index("follow_up")       # generate, then the follow-up
+    assert next(s for s in p["steps"] if s["action"] == "follow_up")["value"] == ""
+    assert any(s.get("synthetic") for s in p["steps"])                                 # the form is completed to generate

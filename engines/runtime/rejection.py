@@ -17,7 +17,7 @@ INPUT_REJECTED = re.compile(r"^\W{0,3}please (add|fill|enter|provide|complete|se
                             r"\bare required\b|\brequired fields?\b|\bcannot be (empty|blank)\b|\bmust not be empty\b|"
                             r"\bmissing (required )?fields?\b|\bat least one\b.{0,60}\bbefore\b|^\W{0,3}[\w '-]{1,40} (is|are) required\W*$", re.I)
 _SINGLE = re.compile(r"^\W{0,3}([\w][\w &/'-]{0,60}?) (is|are) required\W*$", re.I)
-MAX_NAMED = 8
+MAX_NAMED = 30  # an app that wants every field may list a dozen or more at once
 
 
 def named_fields(message: str) -> List[str]:
@@ -31,4 +31,4 @@ def named_fields(message: str) -> List[str]:
     tail = m.rsplit(":", 1)[1].strip().rstrip(".!")
     names = [n.strip(" \"'“”") for n in re.split(r",|;|\band\b", tail)]
     names = [n for n in names if 0 < len(n) <= 60]
-    return names[:MAX_NAMED] if len(tail) <= 400 else []
+    return names[:MAX_NAMED] if len(tail) <= 1500 else []

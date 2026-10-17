@@ -107,3 +107,11 @@ def test_not_executed_bundle_is_not_validatable(tmp_path):
     assert r["status"] == "not_validatable" and "behind a login" in r["summary"]
     ok = assemble(_bundle(tmp_path), deterministic_checks(_bundle(tmp_path), tmp_path), None, "LLM down")
     assert ok["status"] == "validated" and ok["core_failures"] == [] and "judge unavailable" in ok["summary"]
+
+
+def test_a_format_is_required_only_when_the_expectation_asks_for_that_file():
+    from engines.validation.output import _FORMATS, _asks_for_format
+    ask = lambda f, t: _asks_for_format(_FORMATS[f], t)
+    assert ask("docx", "User exports the BRD, TSD, or one-pager as a DOCX file with diagrams embedded as images.")
+    assert ask("pdf", "The report downloads a PDF")
+    assert not ask("md", "User views side-by-side formatted previews of generated markdown documents and rendered Mermaid diagrams.")

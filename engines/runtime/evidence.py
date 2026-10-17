@@ -161,6 +161,7 @@ def _bundle(r: Dict[str, Any], plan: Dict[str, Any], test: Dict[str, Any], root:
         "execution_status": r["status"],
         "failed_step": r.get("failed_step"),
         "error": r.get("error"),
+        "unset_inputs": r.get("unset_inputs") or [],  # fields MTA could not set; the test went on without them
         "duration_ms": r.get("duration_ms"),
         "inputs": _inputs(plan),
         "observed": observed,

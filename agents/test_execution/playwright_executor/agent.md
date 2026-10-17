@@ -72,8 +72,10 @@ run (unlike the workspace), and served to the run's viewers by `GET /api/runs/:r
    error banner, e.g. `— the app showed: "Request failed (500)"`), so the report names the cause, not only the symptom.
 6. **Incomplete input.** When a positive test's submit is rejected by the app's own validation and the message names the
    fields it wants ("Please add at least one point to every field …: Constraints."), MTA fills those fields' empty boxes with
-   synthetic data (first adding a list row if the list has none) and submits once more. The `wait_for` step records what
-   was completed; the result carries it as `completed_input`.
+   synthetic data (first adding a list row if the list has none) and submits once more, up to 2 rounds when the app names
+   further fields. The `wait_for` step records what was completed; the result carries it as `completed_input`.
+   A field MTA cannot set (not found, not fillable) never ends the test: the step is skipped, listed in `unset_inputs`, and
+   the test goes on to submit. A field the app has disabled (e.g. after its "Not applicable" box was ticked) is left as is.
 7. **Outages.** A plan that cannot reach the app (`net::ERR_…`, "Failed to fetch", gateway 502/503/504) pauses the run. One
    worker polls the live URL for up to 5 minutes while the others wait. The plan then runs once more, alone. A plan that hit a
    server error (shown on the page, or a 5xx answered to one of the app's own API calls) also runs once more, alone. A re-run

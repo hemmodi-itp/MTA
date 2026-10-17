@@ -32,10 +32,12 @@ It makes no LLM calls; the logic is in `engines/verdict/passfail.py`.
      opening a page) → `inconclusive`. An outage says nothing about the requirement, so it never refutes a criterion. A server
      error the app answered with ("Request failed (500)") is still `failed`.
    - **Cut off by a server timeout → `inconclusive`.** The test produced nothing and one of the app's calls failed with a
-     5xx later than every 2xx of the same endpoint elsewhere in the run (e.g. `POST /api/generate` → 500 at 180 s while
-     successes took ≤ 166 s). A request timeout in the app's stack interrupted it, not the feature under test (a crash
+     5xx, or a dropped connection, no earlier than the endpoint's typical (median) 2xx elsewhere in the run and
+     after at least 5 s (e.g. `POST /api/generate` → 500 at 181 s while successes typically took 119 s). A request timeout in the app's stack interrupted it, not the feature under test (a crash
      answers fast, and stays `failed`). Not applied when the expectation states a time limit. The run reports each such
      endpoint once in `reliability`, and Compliance Scoring turns it into a critical reliability recommendation.
+   - **The test's own input could not all be set.** The judge found a shortfall, but a field the test itself specified
+     could not be set (`unset_inputs`, not MTA's filler) → `inconclusive`.
    - **Validation stopped a test about something else → `inconclusive`.** A negative / robustness test that produced
      nothing because the app's form validation rejected its input, while its expectation is not about validation (e.g.
      "an actionable error is shown when generation fails").

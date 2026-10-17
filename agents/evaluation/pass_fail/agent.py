@@ -41,7 +41,7 @@ class PassFailAgent(BaseAgent):
              f"supported, {c['criteria_refuted']} refuted, {c['criteria_unverified']} unverified.",
              "success" if c["failed"] == 0 and c["passed"] else "warning")
         for e in result.get("reliability") or []:
-            emit(f"Reliability: the app's {e['endpoint']} was cut off with HTTP {e['status']} after about {e['after_s']}s in "
+            emit(f"Reliability: the app's {e['endpoint']} was cut off ({e.get('status_text') or e['status']}) after about {e['after_s']}s in "
                  f"{e['cut_off']} test(s) ({', '.join(e['tests'][:8])}), while {e['succeeded']} call(s) succeeded (slowest "
                  f"{e['slowest_ok_s']}s) — a request timeout in the app. Those tests are inconclusive for their feature.",
                  "warning")

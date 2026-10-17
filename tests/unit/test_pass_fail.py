@@ -140,7 +140,7 @@ def test_positive_test_rejected_by_app_validation_is_inconclusive_not_failed():
 
 def _gen_bundle(bid, status, ms, ok=()):
     return {"bundle_id": bid, "observed": {"documents": [], "messages": []},
-            "observations": {"api_failures": [{"method": "POST", "path": "/api/generate", "status": status, "ms": ms}] if status else [],
+            "observations": {"api_failures": [{"method": "POST", "path": "/api/generate", "status": status, "ms": ms}] if status is not None else [],
                              "api_ok": [{"method": "POST", "path": "/api/generate", "ms": m} for m in ok]}}
 
 
@@ -157,7 +157,7 @@ def test_a_server_timeout_is_a_reliability_defect_not_a_feature_failure():
     by = {t["test_code"]: t for t in r["tests"]}
     assert by["TC-002"]["verdict"] == "inconclusive" and "cut off by a timeout" in by["TC-002"]["reasons"][0]
     assert by["TC-003"]["verdict"] == "failed"
-    assert r["reliability"] == [{"endpoint": "POST /api/generate", "status": 500, "cut_off": 1, "tests": ["TC-002"],
+    assert r["reliability"] == [{"endpoint": "POST /api/generate", "status": 500, "status_text": "HTTP 500", "cut_off": 1, "tests": ["TC-002"],
                                  "after_s": 180, "succeeded": 2, "slowest_ok_s": 166}]
     timed = _v("TC-004", "AC-09.1", checks=fail + [_check("time_limit", "fail")])  # a stated time limit: still a failure
     assert decide_test(timed, _gen_bundle("EV-TC-004", 500, 180_234), cutoff=server_cutoffs(ev["bundles"])["EV-TC-002"])["verdict"] == "failed"
@@ -172,3 +172,21 @@ def test_validation_stopping_a_negative_test_about_something_else_is_inconclusiv
     about_validation = _v(checks=[_check("executed", "pass")], judge=_judge("meets", 90), variant="negative",
                           expected_behavior="The app rejects the submission and names the missing required field")
     assert decide_test(about_validation, b)["verdict"] == "passed"
+
+
+def test_cutoffs_near_the_slowest_success_and_dropped_connections_are_caught():
+    from engines.verdict.passfail import server_cutoffs
+    ok = [105_000, 110_000, 113_000, 119_000, 158_000, 183_000]                       # BRD_Agent's run cmvbz7go
+    bundles = [_gen_bundle("EV-OK", None, 0, ok=ok), _gen_bundle("EV-500", 500, 181_000), _gen_bundle("EV-0", 0, 188_000),
+               _gen_bundle("EV-FAST", 500, 3_000)]
+    cut = server_cutoffs(bundles)
+    assert set(cut) == {"EV-500", "EV-0"} and cut["EV-0"]["status"] == "dropped connection"
+
+
+def test_a_shortfall_with_the_tests_own_input_unset_is_inconclusive():
+    v = _v(checks=[_check("executed", "pass")], judge=_judge("does_not_meet", 20, ["custom section present"]))
+    b = {"observed": {"documents": [{"name": "BRD.docx"}]}, "unset_inputs": [{"field": "Section Title", "synthetic": False}]}
+    t = decide_test(v, b)
+    assert t["verdict"] == "inconclusive" and "could not set Section Title" in t["reasons"][0]
+    filler = {**b, "unset_inputs": [{"field": "Constraints", "synthetic": True}]}       # MTA's own filler: still a failure
+    assert decide_test(v, filler)["verdict"] == "failed"

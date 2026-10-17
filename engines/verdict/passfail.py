@@ -36,6 +36,7 @@ from engines.runtime.outage import RATE_LIMITED, UNREACHABLE
 from engines.runtime.rejection import INPUT_REJECTED as _INPUT_REJECTED
 
 PASS_SCORE = 70
+MIN_CUTOFF_MS = 5_000
 _TOOL_SIDE = re.compile(r"element not found|unknown action|plan time limit|not resolve|strict mode violation|"
                         r"target (page|closed)|browser has been closed", re.I)
 _WAIT_LIMIT = re.compile(r"still busy after \d+s", re.I)
@@ -49,9 +50,11 @@ _ABOUT_VALIDATION = re.compile(r"\b(validat\w*|required|mandatory|missing|empty|
 
 
 def server_cutoffs(bundles: Sequence[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
-    """bundle_id -> the server error that cut this test's request off: a 5xx from an endpoint that answered 2xx in
-    other tests of the same run, arriving later than every one of those successes (a request timeout in the app's
-    stack, not the feature crashing — a crash answers fast). Says nothing about the feature the test targets."""
+    """bundle_id -> the server failure that cut this test's request off: a 5xx (or a connection the app dropped) from an
+    endpoint that answered 2xx in other tests of the same run, arriving no earlier than its typical (median) success.
+    The app had been working as long as a normal success takes, so a timeout in its stack ended it; the feature under
+    test was not reached. A crash answers fast and stays a failure. A fixed timeout sits near the slowest successes
+    (BRD_Agent: 500s at 181 s while one success took 183 s), so "slower than every success" would miss most of them."""
     ok: Dict[str, List[int]] = {}
     for b in bundles:
         for n in (b.get("observations") or {}).get("api_ok") or []:
@@ -59,12 +62,19 @@ def server_cutoffs(bundles: Sequence[Dict[str, Any]]) -> Dict[str, Dict[str, Any
     out = {}
     for b in bundles:
         for n in (b.get("observations") or {}).get("api_failures") or []:
-            key = f"{n.get('method')} {n.get('path')}"
-            if (n.get("status") or 0) >= 500 and ok.get(key) and n.get("ms", 0) >= max(ok[key]):
-                out[b["bundle_id"]] = {"endpoint": key, "status": n["status"], "ms": n["ms"], "ok_calls": len(ok[key]),
-                                       "max_ok_ms": max(ok[key])}
+            key, status = f"{n.get('method')} {n.get('path')}", n.get("status") or 0
+            if not ok.get(key) or not (status >= 500 or status == 0):
+                continue
+            typical = sorted(ok[key])[len(ok[key]) // 2]
+            if n.get("ms", 0) >= max(typical, MIN_CUTOFF_MS):  # a timeout is never instant (status 0 after 0 s = a cancelled load)
+                out[b["bundle_id"]] = {"endpoint": key, "status": status or "dropped connection", "ms": n["ms"],
+                                       "ok_calls": len(ok[key]), "max_ok_ms": max(ok[key]), "typical_ok_ms": typical}
                 break
     return out
+
+
+def _status_text(status: Any) -> str:
+    return f"HTTP {status}" if isinstance(status, int) else str(status)
 
 
 def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint: Optional[str] = None,
@@ -103,10 +113,13 @@ def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint
                       "under test was reached, so it shows nothing about this criterion."])
     if cutoff and not produced and "time_limit" not in checks:
         return _done(out, "inconclusive", None, None, None,
-                     [f"The app's {cutoff['endpoint']} failed with HTTP {cutoff['status']} after {cutoff['ms'] / 1000:.0f}s, "
-                      f"later than all {cutoff['ok_calls']} successful calls of it in this run (slowest "
-                      f"{cutoff['max_ok_ms'] / 1000:.0f}s): the request was cut off by a timeout in the app, not by the "
-                      "feature under test. Reported as a reliability defect; this criterion is unverified by this test."])
+                     [f"The app's {cutoff['endpoint']} failed ({_status_text(cutoff['status'])}) after "
+                      f"{cutoff['ms'] / 1000:.0f}s, as long as its {cutoff['ok_calls']} successful calls in this run "
+                      f"typically take ({cutoff.get('typical_ok_ms', cutoff['max_ok_ms']) / 1000:.0f}s; slowest "
+                      f"{cutoff['max_ok_ms'] / 1000:.0f}s): the request was cut off by a timeout in the app before the "
+                      "feature under test was reached. Reported as a reliability defect; this criterion is unverified by "
+                      "this test."])
+    unset_own = [u["field"] for u in b.get("unset_inputs") or [] if not u.get("synthetic")]
 
     executed = checks.get("executed")
     if executed and executed["result"] == "fail":
@@ -144,6 +157,11 @@ def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint
             # nothing contradicted the expectation; part of it just could not be seen in the captured output
             return _done(out, "inconclusive", s, None, "judge",
                          [f"Partly confirmed; could not be confirmed from the captured output: {'; '.join(unclear)[:400]}"] + why[:1])
+        if a in ("does_not_meet", "partially_meets") and unset_own:
+            # the test's own input did not all reach the app, so the output cannot be held against the expectation
+            return _done(out, "inconclusive", s, None, "judge",
+                         [f"MTA could not set {', '.join(unset_own[:4])}, which the test specified; the output was judged "
+                          "without it, so a shortfall says nothing certain about the app."] + why[:1])
         if a in ("does_not_meet", "partially_meets"):
             return _done(out, "failed", s, "E4", "judge", why)
         return _done(out, "inconclusive", s, None, "judge", ["The output could not be judged against the expectation: " + why[0]])
@@ -238,7 +256,8 @@ def _reliability(cutoffs: Dict[str, Dict[str, Any]], bundles: List[Dict[str, Any
     reported once instead of being blamed on every feature whose test it interrupted)."""
     out: Dict[str, Dict[str, Any]] = {}
     for bid, c in cutoffs.items():
-        e = out.setdefault(c["endpoint"], {"endpoint": c["endpoint"], "status": c["status"], "cut_off": 0, "tests": [],
+        e = out.setdefault(c["endpoint"], {"endpoint": c["endpoint"], "status": c["status"], "status_text": _status_text(c["status"]),
+                                           "cut_off": 0, "tests": [],
                                            "after_s": [], "succeeded": c["ok_calls"], "slowest_ok_s": round(c["max_ok_ms"] / 1000)})
         e["cut_off"] += 1
         e["tests"].append(codes.get(bid) or bid)

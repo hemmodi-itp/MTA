@@ -38,7 +38,8 @@ Execution model:
     them, so a plan's target resolves to the element discovery saw. Playwright's label/placeholder/role
     locators are the fallback.
   * After a failing step the remaining actions are skipped, but captures still run: a failed run still
-    leaves evidence.
+    leaves evidence. A field MTA cannot set (fill / select / check / upload) is not such a failure: the step is
+    skipped, recorded in `unset_inputs`, and the test goes on to submit. A disabled field is left as the app set it.
 Credentials are used only for the login and are never written to results, logs or artifacts.
 """
 
@@ -515,15 +516,31 @@ def _run_plan(browser, live_url: str, plan: Dict[str, Any], out: Path, fixtures:
                     rec.update(_do(page, ctx, live_url, step, out, fixtures, state, inflight, storage_state, credentials) or {})
                     if a in ("click", "send_message") and not step.get("synthetic") and not step.get("purpose"):
                         trigger = step
-                    if a == "wait_for" and positive and trigger and not res.get("completed_input"):
+                    rounds = 0  # an app may name more missing fields after the first re-submit: up to MAX_RESUBMITS rounds
+                    while a == "wait_for" and positive and trigger and rounds < MAX_RESUBMITS and not res.get("completed_input_done"):
                         fixed = _complete_rejected_input(page, ctx, live_url, step, trigger, out, fixtures, state, inflight,
                                                          storage_state, credentials)
-                        if fixed:
-                            res["completed_input"] = fixed
-                            rec["detail"] = f"{rec.get('detail') or ''}; {fixed}".lstrip("; ")
+                        if not fixed:
+                            break
+                        rounds += 1
+                        res["completed_input"] = "; ".join(filter(None, [res.get("completed_input"), fixed]))
+                        rec["detail"] = f"{rec.get('detail') or ''}; {fixed}".lstrip("; ")
+                    if rounds:
+                        res["completed_input_done"] = True
                 except Exception as exc:  # StepFailed or a Playwright error
                     if step.get("optional"):  # e.g. a demo-data prefill the page no longer offers
                         rec.update(status="skipped", detail=f"optional step skipped: {_short(exc)}")
+                        rec["duration_ms"] = int((time.monotonic() - s0) * 1000)
+                        steps_out.append(rec)
+                        continue
+                    if a in _FIELD_ACTIONS:
+                        # one field MTA could not set does not end the test: the submit still runs, the app's own
+                        # validation (and the re-submit for named fields) has its say, and the verdict knows what was unset
+                        t = step.get("target") or {}
+                        rec.update(status="skipped", detail=f"could not set this field, continuing: {_short(exc)}")
+                        res.setdefault("unset_inputs", []).append(
+                            {"n": step["n"], "field": t.get("label") or t.get("name") or t.get("text") or "?",
+                             "group": t.get("group"), "synthetic": bool(step.get("synthetic")), "error": _short(exc)})
                         rec["duration_ms"] = int((time.monotonic() - s0) * 1000)
                         steps_out.append(rec)
                         continue
@@ -613,6 +630,9 @@ def _do(page, ctx, live_url, step, out: Path, fixtures: Path, state, inflight, s
         return _auto_downloads(page, out, state)
     loc, how = _locate(page, step["target"], DOWNLOAD_LOCATE_TIMEOUT_MS if a == "expect_download" else LOCATE_TIMEOUT_MS)
     if a == "fill":
+        if not _editable(loc):  # e.g. the app disabled it when its "Not applicable" box was ticked
+            return {"locator": how, "status": "skipped",
+                    "detail": "the field is disabled or read-only (e.g. marked Not applicable); left as the app set it"}
         loc.fill(step.get("value") or "")
         return {"locator": how}
     if a == "select":
@@ -657,6 +677,16 @@ def _do(page, ctx, live_url, step, out: Path, fixtures: Path, state, inflight, s
         meta = _save_download(info.value, out, state)
         return {"locator": how, "detail": f"downloaded {meta['name']} ({meta['size']} bytes, {meta['kind']})"}
     raise StepFailed(f"unknown action {a}")
+
+
+_FIELD_ACTIONS = ("fill", "select", "check", "upload")
+
+
+def _editable(loc) -> bool:
+    try:
+        return loc.is_editable(timeout=2_000)
+    except Exception:  # not an input at all (a custom widget): let fill try
+        return True
 
 
 def _bounded(timeout_ms: int, state: Dict[str, Any]) -> int:
@@ -976,7 +1006,8 @@ _NEGATIVE_VARIANTS = {"negative", "security", "robustness", "out_of_scope"}
 _ADD_ROW = re.compile(r"^\s*\+?\s*add\b", re.I)
 _TEXT_BOX = ("textarea:visible, [contenteditable=true]:visible, input:visible:not([type=checkbox]):not([type=radio])"
              ":not([type=hidden]):not([type=file]):not([type=submit]):not([type=button])")
-MAX_COMPLETED_BOXES = 4
+MAX_COMPLETED_BOXES = 4   # per named field (a list row has 2-3 boxes)
+MAX_RESUBMITS = 2
 
 # Marks, for each field name the app's message listed, the smallest block under that name's label that holds a text box
 # or a "+ Add" button; returns [{i, name, boxes, add}] for the names found.

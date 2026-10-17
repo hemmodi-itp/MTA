@@ -65,7 +65,7 @@ class ComplianceScoringAgent(BaseAgent):
 def _reliability_recs(reliability) -> list:
     """One recommendation per endpoint the app cut off with a server timeout during the run (engines/verdict/passfail)."""
     return [{"category": "flaky_behavior", "severity": "critical", "evidence_type": "scenario", "evidence_ref": e["endpoint"],
-             "summary": f"Reliability: {e['endpoint']} failed with HTTP {e['status']} after about {e['after_s']}s in "
+             "summary": f"Reliability: {e['endpoint']} failed ({e.get('status_text') or e['status']}) after about {e['after_s']}s in "
                         f"{e['cut_off']} test(s) ({', '.join(e['tests'][:6])}) while {e['succeeded']} call(s) succeeded "
                         f"(slowest {e['slowest_ok_s']}s): requests that run longer are cut off by a timeout in the app's stack "
                         "(server, proxy or ingress). Raise that timeout or run the work as a background job the page polls, "

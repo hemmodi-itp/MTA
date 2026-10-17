@@ -74,10 +74,20 @@ A target carries `label`, `name`, `type`, `text`, plus `nth` and `context` for r
   the inventory. Behaviour on a fresh result is reached by "generate first, then act" instead.
 - **Label-only required fields.** A field is required when its HTML says so, or when its label does ("Name (required)", "Name *").
   Many apps only mark it in the label.
-- **Demo data, only as a fallback.** Used only when a positive plan covers less than 80% of the form's text fields, for example a
-  rules-only "generate then revise" plan. MTA clicks the app's own sample-data control ("Fill Demo Data", "Load sample data",
-  "Autofill"…), then the test's own values overwrite it, and no generic filler is added on top. The click is `optional`: if the
-  control is missing at run time, the step is skipped, not failed. Negative tests never use demo data.
+- **MTA's own data first; demo data only as a last resort.** A positive plan that does not describe the whole form gets MTA's
+  short filler values in its required fields. Optional fields stay as a user would leave them; an app that wants more names
+  the fields when it rejects the submit, and the executor fills exactly those. The app's own sample-data control ("Fill Demo
+  Data", "Load sample data", "Autofill"…) is clicked only when MTA can fill none of the required fields itself: demo data can
+  be large (BRD_Agent's demo project ran past the app's 180 s request timeout on every attempt), which turns a feature test
+  into a timeout. That click is `optional`: if the control is missing at run time, the step is skipped, not failed.
+  Negative tests never get filler or demo data.
+- **"Label: value" input lines.** Test design writes form input as one "Label: value" line per field. Lines that name a field
+  of the form fill it (a select only with a real option); "[checked] Not applicable" on a field ticks that field's own box.
+  Rule-based plans use these lines instead of pasting the whole input into one box.
+- **An omitted field is left alone.** When a plan ticks a field's "Not applicable / omit" box, any fill of that same field is
+  dropped: the app disables it, and typing into it would hang the test.
+- **Negative follow-up tests generate first.** A negative test whose negative part is the follow-up (an empty change request)
+  is planned as generate, then the follow-up; the generation is completed like a positive test's so it succeeds.
 - **Filler data by label:** acronyms and IDs get `MTA`, tech stack fields a stack, steps and flow fields numbered steps, scope
   fields a feature list, audience fields a role. "(required)" and "*" are stripped from generated text.
 - **Generate first, then act (Document Generator).** Some tests are about behaviour that only exists after generating: export or

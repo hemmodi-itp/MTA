@@ -72,7 +72,7 @@ def deterministic_checks(b: Dict[str, Any], artifact_dir: Path) -> List[Dict[str
             words = max(d.get("words") or 0 for d in docs)
             add("document_not_empty", f"The document has substantive content (≥{MIN_DOC_WORDS} words)",
                 "pass" if words >= MIN_DOC_WORDS else "fail", f"{words} words", "supporting")
-            wanted = [f for f, rx in _FORMATS.items() if re.search(rx, expect_text, re.I)]
+            wanted = [f for f, rx in _FORMATS.items() if _asks_for_format(rx, expect_text)]
             if wanted:
                 got = {(d.get("format") or "").lower() for d in docs}
                 add("document_format", f"The document is in the requested format ({', '.join(wanted)})",
@@ -123,6 +123,16 @@ def deterministic_checks(b: Dict[str, Any], artifact_dir: Path) -> List[Dict[str
             add("time_limit", f"Responds within the stated limit ({limit / 1000:g}s)", "pass" if measured <= limit else "fail",
                 f"{source}: {measured / 1000:.1f}s")
     return checks
+
+
+_FILE_CONTEXT = r"\b(export\w*|download\w*|sav(e|ed|es)|as an?|in|to|into|produces?|generates?)\b\W+(\w+\W+){0,3}"
+
+
+def _asks_for_format(rx: str, text: str) -> bool:
+    """The expectation asks for a FILE in this format ("exports … as a DOCX file", "downloads a PDF", "a DOCX file"),
+    not merely mentions the format ("previews of generated markdown documents" is about the on-screen preview)."""
+    fmt = rx.replace(r"\b(", "(").replace(r")\b", ")").replace(r"\b", "")
+    return bool(re.search(_FILE_CONTEXT + rf"\b{fmt}\b", text, re.I) or re.search(rf"\b{fmt}\W+(file|export|download)s?\b", text, re.I))
 
 
 def _input_reflected(b: Dict[str, Any], doc_text: str):
