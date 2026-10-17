@@ -23,14 +23,22 @@ Execution model:
     that baseline (or the app stays busy past its wait limit), so parallelism never distorts results. Plans about
     timing / latency always run alone.
   * Outages (engines/runtime/outage.py): a plan that could not reach the app pauses the run until the app answers
-    again, then runs once more, alone; a plan that hit a server error (on the page or from one of the app's API
-    calls) also runs once more, alone. A plan the app's AI provider refused for quota (429 / RESOURCE_EXHAUSTED) pauses every worker for
-    a cool-down, then runs once more, alone. Each drops the run to one plan at a time. The first attempt's error is kept.
+    again, then runs again, alone; a plan that hit a server error (on the page or from one of the app's API
+    calls) also runs again, alone (a second re-run waits SERVER_ERROR_COOL_DOWN_S first). A plan the app's AI provider
+    refused for quota (429 / RESOURCE_EXHAUSTED) pauses every worker for a cool-down, then runs again, alone. Up to
+    RERUNS per kind (2 each; 1 when MTA could not find an element). Each drops the run to one plan at a time. The
+    first attempt's error and the number of attempts are kept.
   * A failing step's error carries the error the app itself displayed (“Request failed (500)”, a validation
     banner …), so the report names the real cause instead of only the symptom.
   * A positive test the app rejects as incomplete, naming the fields it wants (“Please add at least one point to
-    every field …: Constraints.”), gets those fields filled and is submitted once more (engines/runtime/rejection.py);
-    the step records what was completed.
+    every field …: Constraints.”, however long the list), gets those fields filled and is submitted again, up to
+    MAX_RESUBMITS rounds (engines/runtime/rejection.py); the step records what was completed.
+  * After a positive test's submit settles, the result is checked: still on the submitting page with a new rejection
+    or a server / network / quota error shown, the plan ends there with the app's own words. Nothing is then done to a
+    result that does not exist (a follow-up typed into the input form, a download awaited on the form page).
+  * A follow-up (e.g. a change request on the generated run) goes into the box the result offers — the one discovery
+    saw on an earlier result, else one labelled like a change request, else (only once the app moved on from the
+    input form) a box that is not one of the form's own fields — and is submitted with the result's own button.
   * A per-plan time limit (enforced inside long waits too), an overall budget (plans not started in time are
     `not_run`, never silently dropped) and cancellation between steps.
   * Navigation and HTTP steps never leave the live app's origin; every browser context carries the SSRF guard.
@@ -207,13 +215,15 @@ class _AppHealth:
         self.down = False
         self.gave_up = False
         self.recovered_at = 0.0
-        self.resume_at = 0.0  # a quota cool-down: no plan starts before this
+        self.resume_at = 0.0  # a cool-down (quota, repeated server errors): no plan starts before this
+        self.resume_why = ""
         self.outages: List[Dict[str, Any]] = []
         self.lock = threading.Lock()
 
-    def cool_down(self, seconds: float) -> None:
+    def cool_down(self, seconds: float, why: str = "the app's AI provider is out of quota") -> None:
         with self.lock:
-            self.resume_at = max(self.resume_at, time.monotonic() + seconds)
+            if time.monotonic() + seconds > self.resume_at:
+                self.resume_at, self.resume_why = time.monotonic() + seconds, why
 
     def mark_down(self, plan_started: float) -> None:
         with self.lock:  # a plan that started before the last recovery failed in an outage already waited out
@@ -224,7 +234,8 @@ class _AppHealth:
         with self.lock:
             pause = self.resume_at - time.monotonic()
             if pause > 1:  # the first worker here waits it out holding the lock; the others then find it over
-                self.say(f"The app's AI provider is out of quota; pausing the tests for {pause:.0f}s before going on.", "warning")
+                self.say(f"{self.resume_why[:1].upper()}{self.resume_why[1:]}; pausing the tests for {pause:.0f}s before "
+                         "going on.", "warning")
                 while time.monotonic() < self.resume_at and not (self.cancel_event is not None and self.cancel_event.is_set()):
                     time.sleep(1)
             if self.gave_up:
@@ -244,11 +255,19 @@ class _AppHealth:
             return after is not None
 
 
-def _retry_reason(res: Dict[str, Any], ran_with: int) -> Optional[str]:
-    """Why a finished plan deserves one more run, alone: the app was unreachable, its AI provider was out of quota, or
-    it failed with a server error (shown on the page or answered by one of its own API calls). Server errors are often
-    intermittent (a request timeout, parallel load); one more try gives the feature a fair chance, and a repeat makes
-    the failure firmer. None otherwise."""
+_LOCATOR_MISS = re.compile(r"element not found|strict mode violation|target (page|closed)|browser has been closed", re.I)
+# how many more runs, alone, each kind of interruption earns: an outage, an exhausted quota or a server error says
+# nothing about the feature, and they are often intermittent; MTA failing to find an element (the UI was still
+# rendering) gets one more look
+RERUNS = {"unreachable": 2, "rate_limited": 2, "server_error": 2, "locator": 1}
+SERVER_ERROR_COOL_DOWN_S = 45  # before a server-error test's second re-run: let the app's backend recover
+
+
+def _retry_reason(res: Dict[str, Any], ran_with: int = 1) -> Optional[str]:
+    """Why a finished plan deserves another run, alone: the app was unreachable, its AI provider was out of quota, it
+    failed with a server error (shown on the page or answered by one of its own API calls), or MTA could not find an
+    element (an MTA-side miss, not an app failure). Server errors are often intermittent (a request timeout, parallel
+    load); more tries give the feature a fair chance, and a repeat makes the failure firmer. None otherwise."""
     if res.get("status") not in ("failed", "error"):
         return None
     err = str(res.get("error") or "")
@@ -258,6 +277,8 @@ def _retry_reason(res: Dict[str, Any], ran_with: int) -> Optional[str]:
         return "unreachable"
     if SERVER_ERROR.search(err) or any(n.get("status", 0) >= 500 for n in (res.get("observations") or {}).get("network") or []):
         return "server_error"
+    if _LOCATOR_MISS.search(err) or res.get("status") == "error":
+        return "locator"
     return None
 
 
@@ -346,8 +367,8 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
     n_threads = max(1, min(workers, total))
     slots = _Slots(n_threads, calibrate, say)
     health = _AppHealth(live_url, say, cancel_event)
-    retried: Dict[str, str] = {}  # plan_id -> the first attempt's error
-    first_results: Dict[str, Dict[str, Any]] = {}  # plan_id -> the first attempt, kept if the re-run never starts
+    retried: Dict[str, List[str]] = {}  # plan_id -> the errors of the attempts that were run again
+    first_results: Dict[str, Dict[str, Any]] = {}  # plan_id -> the latest attempt, kept if the re-run never starts
 
     def progress() -> None:
         if not on_progress:
@@ -397,7 +418,8 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
                     plan_started = time.monotonic()
                     try:
                         if is_retry:
-                            say(f"Re-running {code} alone (first attempt: {retried[plan['plan_id']][:160]})")
+                            say(f"Re-running {code} alone (attempt {len(retried[plan['plan_id']]) + 1}; last error: "
+                                f"{retried[plan['plan_id']][-1][:160]})")
                         else:
                             with lock:
                                 started_count[0] += 1
@@ -415,20 +437,25 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
                     why = _retry_reason(res, ran_with)
                     if why == "unreachable":
                         health.mark_down(plan_started)
-                    if (why and not is_retry and not health.gave_up and time.monotonic() < deadline
+                    tries = retried.get(plan["plan_id"]) or []
+                    if (why and len(tries) < RERUNS.get(why, 0) and not health.gave_up and time.monotonic() < deadline
                             and not (cancel_event is not None and cancel_event.is_set())):
                         if why == "rate_limited":
-                            health.cool_down(RATE_LIMIT_COOL_DOWN_S)
-                        retried[plan["plan_id"]] = str(res.get("error") or why)
+                            health.cool_down(RATE_LIMIT_COOL_DOWN_S, "the app's AI provider is out of quota")
+                        elif why == "server_error" and tries:
+                            health.cool_down(SERVER_ERROR_COOL_DOWN_S, "the app keeps answering with server errors")
+                        retried.setdefault(plan["plan_id"], []).append(str(res.get("error") or why))
                         first_results[plan["plan_id"]] = res
                         say(f"{code}: " + {"unreachable": "could not reach the app",
                                             "rate_limited": "the app's AI provider is out of quota (429)",
-                                            "server_error": "the app answered with a server error"}[why]
+                                            "server_error": "the app answered with a server error",
+                                            "locator": "MTA could not find an element it needed"}[why]
                             + f" ({str(res.get('error') or '')[:160]}); it will run again, alone.", "warning")
                         todo.put(plan)
                         continue
                     if is_retry:
-                        res["first_attempt_error"] = retried[plan["plan_id"]]
+                        res["first_attempt_error"] = retried[plan["plan_id"]][0]
+                        res["attempts"] = len(retried[plan["plan_id"]]) + 1
                     finish(plan, res)
             finally:
                 browser.close()
@@ -513,11 +540,19 @@ def _run_plan(browser, live_url: str, plan: Dict[str, Any], out: Path, fixtures:
                 failed = rec
             else:
                 try:
+                    before_path = urllib.parse.urlsplit(page.url).path
+                    if a == "click" and not step.get("synthetic") and not step.get("purpose"):
+                        state["pre_submit_text"] = _body_text(page)  # what the page said before this submit
                     rec.update(_do(page, ctx, live_url, step, out, fixtures, state, inflight, storage_state, credentials) or {})
                     if a in ("click", "send_message") and not step.get("synthetic") and not step.get("purpose"):
                         trigger = step
+                        if a == "click":
+                            state["trigger_path"] = before_path  # where the submit happened: still there = no result
+                    elif a == "follow_up":
+                        trigger = None  # the follow-up has its own submit; the form's fields are not refilled after it
                     rounds = 0  # an app may name more missing fields after the first re-submit: up to MAX_RESUBMITS rounds
-                    while a == "wait_for" and positive and trigger and rounds < MAX_RESUBMITS and not res.get("completed_input_done"):
+                    while (a == "wait_for" and positive and trigger and trigger["action"] == "click" and rounds < MAX_RESUBMITS
+                           and not res.get("completed_input_done")):
                         fixed = _complete_rejected_input(page, ctx, live_url, step, trigger, out, fixtures, state, inflight,
                                                          storage_state, credentials)
                         if not fixed:
@@ -527,6 +562,14 @@ def _run_plan(browser, live_url: str, plan: Dict[str, Any], out: Path, fixtures:
                         rec["detail"] = f"{rec.get('detail') or ''}; {fixed}".lstrip("; ")
                     if rounds:
                         res["completed_input_done"] = True
+                    if a == "wait_for" and positive and step.get("kind") == "settled":
+                        # the submit settled, but did it produce a result? An app that rejected the input or failed is
+                        # still on the submitting page saying so: the plan ends here with the app's own words, instead of
+                        # acting on a result that does not exist (a follow-up typed into the input form, a download
+                        # waited for on a page that never offers one)
+                        problem = _submit_problem(page, state)
+                        if problem:
+                            raise StepFailed(problem)
                 except Exception as exc:  # StepFailed or a Playwright error
                     if step.get("optional"):  # e.g. a demo-data prefill the page no longer offers
                         rec.update(status="skipped", detail=f"optional step skipped: {_short(exc)}")
@@ -546,8 +589,8 @@ def _run_plan(browser, live_url: str, plan: Dict[str, Any], out: Path, fixtures:
                         continue
                     err = _short(exc)
                     shown = None if UNREACHABLE.search(err) else _visible_error(page)
-                    if shown and shown.lower() not in err.lower():
-                        err += f" — the app showed: “{shown}”"
+                    if shown and shown[:200].lower() not in err.lower():
+                        err += f" — the app showed: “{shown[:600]}”"
                     rec.update(status="failed", error=err)
                     failed = rec
                     try:
@@ -622,7 +665,7 @@ def _do(page, ctx, live_url, step, out: Path, fixtures: Path, state, inflight, s
     if a == "http":
         return _http(ctx, live_url, step, out, state)
     if a == "follow_up":
-        return _follow_up(page, step)
+        return _follow_up(page, step, state)
     if a == "wait_for":
         return _settle(page, _bounded(step.get("timeout_ms") or 30_000, state), inflight, state)
 
@@ -823,44 +866,78 @@ def _download_here(page, out: Path, state, wait_for_control: bool, limit: int) -
 _FOLLOW_UP_LABEL = re.compile(r"change|revis|feedback|request|instruction|refine|edit|prompt|message|comment", re.I)
 _FOLLOW_UP_BUTTON = re.compile(r"\b(revise|regenerate|apply|update|submit|send|request|refine|save)\b", re.I)
 
+# Visible text boxes with the label discovery would give them (labelOf) and their placeholder; each is marked so the
+# chosen one can be located again.
+_BOXES_JS = r"""(token) => {
+  const vis = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el);
+    return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
+  const labelOf = el => {
+    if (el.labels && el.labels[0]) { const c = el.labels[0].cloneNode(true);
+      c.querySelectorAll('input,select,textarea,option,button').forEach(n => n.remove());
+      return (c.textContent || '').replace(/\s+/g, ' ').trim(); }
+    const id = el.getAttribute('aria-labelledby'); if (id && document.getElementById(id)) return document.getElementById(id).innerText.trim();
+    return el.getAttribute('aria-label') || el.getAttribute('placeholder') || el.getAttribute('name') || el.id || '';
+  };
+  return [...document.querySelectorAll('textarea, input[type=text], input:not([type]), [contenteditable=true]')]
+    .filter(el => vis(el) && !el.disabled && !el.readOnly).slice(0, 80).map((el, i) => {
+      el.setAttribute('data-aqp-box', token + '-' + i);
+      return { i, label: labelOf(el).slice(0, 160), placeholder: (el.getAttribute('placeholder') || '').slice(0, 160),
+               extra: [el.getAttribute('aria-label'), el.getAttribute('name'), el.id].filter(Boolean).join(' ').slice(0, 160) };
+    });
+}"""
 
-def _follow_up(page, step: Dict[str, Any]) -> Dict[str, Any]:
-    """Act on the generated result: type a follow-up (e.g. a change request) into the box that appeared after
-    generating, and press its submit-like button. Boxes of the original form (known_labels) are skipped."""
-    known = {(l or "").strip() for l in step.get("known_labels") or []}
+
+def _norm_label(s: Optional[str]) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"\(required\)|\*", "", s or "", flags=re.I)).strip().lower()
+
+
+def _follow_up(page, step: Dict[str, Any], state: Dict[str, Any]) -> Dict[str, Any]:
+    """Act on the generated result: type a follow-up (e.g. a change request) into the box the result offers, and press
+    its button. The box is, in order: the one discovery saw on an earlier result (box_label), one labelled like a
+    change request, or — only once the app has moved on from the input form — any box that is not one of the form's own
+    fields (known_labels). Without a result there is nothing to act on, and the step says so with the app's message."""
+    problem = _submit_problem(page, state)
+    if problem:
+        raise StepFailed(f"no generated result to act on — {problem}")
+    known = {_norm_label(l) for l in step.get("known_labels") or [] if l}
+    hint = _norm_label(step.get("box_label"))
+    moved_on = state.get("trigger_path") is not None and urllib.parse.urlsplit(page.url).path != state["trigger_path"]
     end = time.monotonic() + DOWNLOAD_LOCATE_TIMEOUT_MS / 1000
-    while True:
-        boxes = page.locator("textarea:visible, input[type=text]:visible, [contenteditable=true]:visible")
-        pick = None
-        for i in range(min(boxes.count(), 60)):
-            el = boxes.nth(i)
-            try:
-                label = " ".join(filter(None, [el.get_attribute("placeholder"), el.get_attribute("aria-label"),
-                                               el.get_attribute("name"), el.get_attribute("id")]))
-                if label.strip() in known or not el.is_enabled():
-                    continue
-                if _FOLLOW_UP_LABEL.search(label) or pick is None:
-                    pick = (el, label)
-                    if _FOLLOW_UP_LABEL.search(label):
-                        break
-            except Exception:
-                continue
-        if pick or time.monotonic() > end:
+    pick = None
+    while pick is None:
+        token = f"b{time.monotonic_ns()}"
+        try:
+            boxes = page.evaluate(_BOXES_JS, token) or []
+        except Exception:
+            boxes = []
+        fresh = [b for b in boxes if _norm_label(b["label"]) not in known and _norm_label(b["placeholder"]) not in known]
+        pick = (next((b for b in boxes if hint and hint in (_norm_label(b["label"]), _norm_label(b["placeholder"]))), None)
+                or next((b for b in fresh if _FOLLOW_UP_LABEL.search(f"{b['label']} {b['placeholder']} {b['extra']}")), None)
+                or (fresh[0] if fresh and moved_on else None))
+        if pick is not None or time.monotonic() > end:
             break
         page.wait_for_timeout(1_000)
-    if not pick:
+    if pick is None:
         raise StepFailed("no follow-up input (e.g. a change-request box) appeared after generating")
-    el, label = pick
+    el = page.locator(f'[data-aqp-box="{token}-{pick["i"]}"]').first
     el.fill(step.get("value") or "")
-    container = el.locator("xpath=ancestor::*[self::form or self::section or self::div][1]")
-    button = container.locator("button:visible").filter(has_text=_FOLLOW_UP_BUTTON)
-    if not button.count():
-        button = page.locator("button:visible").filter(has_text=_FOLLOW_UP_BUTTON)
+    state["trigger_path"] = urllib.parse.urlsplit(page.url).path  # a rejected / failed follow-up stays here too
+    state["pre_submit_text"] = _body_text(page)
+    button = None
+    if step.get("submit_text"):
+        exact = page.get_by_role("button", name=step["submit_text"], exact=True)
+        button = exact if exact.count() else None
+    if button is None:
+        container = el.locator("xpath=ancestor::*[self::form or self::section or self::div][1]")
+        button = container.locator("button:visible").filter(has_text=_FOLLOW_UP_BUTTON)
+        if not button.count():
+            button = page.locator("button:visible").filter(has_text=_FOLLOW_UP_BUTTON)
     if button.count():
         button.first.click(timeout=CLICK_TIMEOUT_MS)
     else:
         el.press("Enter")
-    return {"locator": "follow-up", "detail": f"sent the follow-up through “{label.strip()[:60] or 'text box'}”"}
+    label = pick["label"] or pick["placeholder"] or "text box"
+    return {"locator": "follow-up", "detail": f"sent the follow-up through “{label.strip()[:60]}”"}
 
 
 def _locate(page, target: Dict[str, Any], timeout_ms: int):
@@ -991,14 +1068,15 @@ _VISIBLE_ERROR_JS = r"""() => {
   const vis = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el);
     return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
   const one = el => (el.innerText || '').replace(/\s+/g, ' ').trim();
+  // apps that render the error as a plain line: only error-shaped lines count. A validation message that lists every
+  // field it wants can be long (BRD_Agent: 16 fields, ~600 characters), so an error-shaped line may be up to 2000.
+  const line = /^(\W{0,3})(error\b|request failed\b|failed to (fetch|load|generate|save|submit|create|export)\b|something went wrong|internal server error|network ?error|please (add|fill|enter|provide|complete|select)\b)/i;
   const sel = '[role=alert],[role=alertdialog],[aria-live=assertive],[class*=error i],[class*=alert i],[class*=toast i],[class*=danger i]';
   const boxes = [...document.querySelectorAll(sel)].filter(el => !el.matches('input,textarea,select') && vis(el))
-    .map(one).filter(t => t.length > 0 && t.length < 300);
-  // apps that render the error as a plain line: only short, error-shaped lines count
-  const line = /^(\W{0,3})(error\b|request failed\b|failed to (fetch|load|generate|save|submit|create|export)\b|something went wrong|internal server error|network ?error|please (add|fill|enter|provide|complete|select)\b)/i;
+    .map(one).filter(t => t.length > 0 && (t.length < 300 || (t.length < 2000 && line.test(t))));
   const lines = ((document.body && document.body.innerText) || '').split('\n').map(l => l.trim())
-    .filter(l => l.length > 0 && l.length < 250 && line.test(l));
-  return [...boxes, ...lines][0] || null;
+    .filter(l => l.length > 0 && l.length < 2000 && line.test(l));
+  return [...new Set([...boxes, ...lines])].slice(0, 12);
 }"""
 
 
@@ -1010,26 +1088,33 @@ MAX_COMPLETED_BOXES = 4   # per named field (a list row has 2-3 boxes)
 MAX_RESUBMITS = 2
 
 # Marks, for each field name the app's message listed, the smallest block under that name's label that holds a text box
-# or a "+ Add" button; returns [{i, name, boxes, add}] for the names found.
+# or a "+ Add" button; returns [{i, name, boxes, add}] for the names found. Every element carrying the name is tried and
+# the block with the fewest boxes wins, so a navigation link with the same words ("Objectives" in a section menu) can
+# never claim a block that spans the whole form.
 _FIELD_BLOCKS_JS = r"""([names, token]) => {
   const vis = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el);
     return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
   const norm = s => (s || '').replace(/\(required\)|\*/gi, '').replace(/\s+/g, ' ').trim().toLowerCase();
+  const same = (a, b) => a === b || a.replace(/s$/, '') === b.replace(/s$/, '');
   const BOX = 'input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=file]):not([type=submit]):not([type=button]),textarea,[contenteditable=true]';
   const out = [];
   names.forEach((name, i) => {
     const want = norm(name);
     const heads = [...document.querySelectorAll('label,legend,span,p,div,h2,h3,h4,h5,h6,dt,strong,b')]
-      .filter(el => vis(el) && !el.querySelector('input,textarea,select,button') && norm(el.textContent) === want);
+      .filter(el => vis(el) && !el.querySelector('input,textarea,select,button') && same(norm(el.textContent), want));
+    let best = null;
     for (const h of heads) {
       for (let a = h.parentElement, k = 0; a && a !== document.body && k < 6; a = a.parentElement, k++) {
         const boxes = [...a.querySelectorAll(BOX)].filter(vis).length;
-        const add = [...a.querySelectorAll('button')].filter(vis).some(b => /^\s*\+?\s*add\b/i.test(b.innerText || ''));
-        if (!boxes && !add) continue;
-        a.setAttribute('data-aqp-heal', token + '-' + i);
-        out.push({ i, name, boxes, add });
-        return;
+        const adds = [...a.querySelectorAll('button')].filter(vis).filter(b => /^\s*\+?\s*add\b/i.test(b.innerText || '')).length;
+        if (!boxes && !adds) continue;
+        if (adds <= 1 && (!best || boxes < best.boxes)) best = { el: a, boxes, add: adds > 0 };
+        break;
       }
+    }
+    if (best && best.boxes <= 8) {
+      best.el.setAttribute('data-aqp-heal', token + '-' + i);
+      out.push({ i, name, boxes: best.boxes, add: best.add });
     }
   });
   return out;
@@ -1043,8 +1128,10 @@ def _complete_rejected_input(page, ctx, live_url, wait_step, trigger, out: Path,
     done, or None when the app did not reject the input or named nothing MTA could find."""
     from engines.runtime.actions import synthetic_value
 
-    shown = _visible_error(page)
-    if not shown or not INPUT_REJECTED.search(shown):
+    if state.get("trigger_path") is not None and urllib.parse.urlsplit(page.url).path != state["trigger_path"]:
+        return None  # the app moved on to its result
+    shown = next((m for m in _new_errors(page, state) if INPUT_REJECTED.search(m[:300])), None)
+    if not shown:
         return None
     names = named_fields(shown)
     if not names:
@@ -1075,17 +1162,46 @@ def _complete_rejected_input(page, ctx, live_url, wait_step, trigger, out: Path,
             filled.append(f["name"])
     if not filled:
         return None
+    state["pre_submit_text"] = _body_text(page)
     _do(page, ctx, live_url, trigger, out, fixtures, state, inflight, storage_state, credentials)
     _settle(page, _bounded(wait_step.get("timeout_ms") or 30_000, state), inflight, state)
     return (f"the app asked for {', '.join(names)} (“{shown[:160]}”); MTA filled {', '.join(filled)} and submitted again")
 
 
+def _visible_errors(page) -> List[str]:
+    """The error messages the app is showing right now (alerts / toasts / error banners, then error-shaped lines)."""
+    try:
+        return [m for m in page.evaluate(_VISIBLE_ERROR_JS) or [] if m]
+    except Exception:
+        return []
+
+
 def _visible_error(page) -> Optional[str]:
     """The error message the app is showing right now (an alert / toast / error banner), if any."""
-    try:
-        return page.evaluate(_VISIBLE_ERROR_JS)
-    except Exception:
+    errors = _visible_errors(page)
+    return errors[0] if errors else None
+
+
+def _new_errors(page, state: Dict[str, Any]) -> List[str]:
+    """Error messages that appeared since the last submit: a hint or a generated document's text that was already on
+    the page ("Please fill in the details below", an "Error handling" section) is not the app answering the submit."""
+    before = " ".join((state.get("pre_submit_text") or "").split()).lower()
+    return [m for m in _visible_errors(page) if " ".join(m.split()).lower()[:300] not in before]
+
+
+def _submit_problem(page, state: Dict[str, Any]) -> Optional[str]:
+    """Why a positive test's submit produced no result, in the app's own words — or None. Only while the page is still
+    the one the submit happened on (an app that moved on to its result has answered): a new message rejecting the
+    input as incomplete, or a server / network / quota error shown instead of the result."""
+    path = state.get("trigger_path")
+    if path is None or urllib.parse.urlsplit(page.url).path != path:
         return None
+    for shown in _new_errors(page, state):
+        if INPUT_REJECTED.search(shown[:300]):
+            return f"the app rejected the submitted input: “{shown[:700]}”"
+        if RATE_LIMITED.search(shown) or SERVER_ERROR.search(shown) or UNREACHABLE.search(shown):
+            return f"the app reported an error instead of a result: “{shown[:300]}”"
+    return None
 
 
 def _new_text(before: str, after: str) -> Optional[str]:
@@ -1122,7 +1238,8 @@ def _describe(t: Dict[str, Any]) -> str:
 
 def _short(exc: Exception) -> str:
     msg = str(exc).split("\n")[0]
-    return f"{type(exc).__name__}: {msg}"[:300] if not isinstance(exc, StepFailed) else msg[:300]
+    # MTA's own step errors may quote the app's message in full (a validation message naming every field it wants)
+    return f"{type(exc).__name__}: {msg}"[:300] if not isinstance(exc, StepFailed) else msg[:1000]
 
 
 def _blocked(plan: Dict[str, Any], reason: str, status: str = "blocked") -> Dict[str, Any]:

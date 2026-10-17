@@ -72,6 +72,12 @@ $family_instructions
   benchmarks, fault or outage injection, backend-only or infrastructure behaviour, security headers,
   logging, data retention, compliance). Static criteria are NOT runtime tests: prefer to emit nothing
   for them (code review covers them); never let them count toward the budget.
+- Never write a test whose setup needs the app's own dependencies to fail or be overloaded: its LLM / AI
+  provider, API, network or server failing, a rate limit, a timeout, an outage, a missing or revoked API key,
+  N concurrent users. The runner is one ordinary user and cannot cause any of that; such behaviour is "static".
+- Never write two tests that check the same thing: one positive test per criterion; a second test of a criterion
+  must be a different variant with a genuinely different input.
+- In "input", separate the "Label: value" lines with real line breaks (not the two characters backslash-n).
 - Never emit more runtime tests (execution ui/api) than the execution budget allows.
 - Only data the single test account can have: no admin-only, other-user or second-account steps, no
   roles, permissions, payment details or external systems you cannot see in the surface. No
@@ -119,6 +125,8 @@ handling, error messages shown to the user, out-of-scope / off-topic handling in
 unsafe requests the BRD mentions.
 - NOT here: performance, latency, load, availability, infrastructure, security headers, logging,
   data retention or compliance claims — they cannot be checked through the app (code review covers them).
+- NOT here either: a positive test of a feature criterion (the agent-specific tests cover every one of those),
+  or anything that needs the app's LLM / API / network to fail (retry, fallback and error-capture behaviour).
 - Use variant_type "security", "robustness", "out_of_scope", "hallucination" or "ambiguity" as fits.
 - Every test must quote the BRD statement it checks in brd_reference.
 - If the BRD states no such observable qualities, return {"test_cases": []}. Do not fall back to

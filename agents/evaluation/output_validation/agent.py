@@ -6,9 +6,14 @@ readable / non-empty / right format / reflects the input, reply or 2xx or page c
 input visibly rejected, no server errors, stated time limits). Gemini judges each pass criterion
 against the actual output in batches (prompt.py); every "met" must quote that output verbatim and
 is downgraded when the quote cannot be found. Output: one validation per bundle, for Pass/Fail.
+
+Every test that needs a judgement gets one unless the LLM is down for good: a batch call that fails (timeout,
+dropped connection) or whose reply leaves a test out is followed by one call per missing test, each retried once
+after a pause. A test is "judge unavailable" only after all of that failed.
 """
 
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Dict, List, Optional
 
@@ -28,8 +33,10 @@ from connectors.connector_registry import ConnectorRegistry
 from tools.agent_eval.untrusted import neutralise
 from tools.shared import get_logger
 
-BATCH = 4          # documents can be long: few tests per call
+BATCH = 3          # documents can be long: few tests per call
 MAX_WORKERS = 3
+SOLO_ATTEMPTS = 2  # a test the batch lost is judged on its own, with one retry
+SOLO_PAUSE_S = 10
 
 
 class OutputValidationAgent(BaseAgent):
@@ -94,16 +101,48 @@ class OutputValidationAgent(BaseAgent):
             return generate_json(llm, prompt, required_keys=["judgements"], schema=OUTPUT_JUDGEMENTS,
                                  temperature=0.0).get("judgements") or []
 
+        def take(batch: List[dict], replies: List[dict]) -> None:
+            want = {b["bundle_id"] for b in batch}
+            for j in replies:
+                b = by_id.get(str(j.get("bundle_id") or "").strip())
+                if b and b["bundle_id"] in want:
+                    out[b["bundle_id"]] = ground_judgement(j, b, root)
+
         batches = [bundles[i:i + BATCH] for i in range(0, len(bundles), BATCH)]
-        out, errors = {}, []
+        out: Dict[str, Any] = {}
+        errors: Dict[str, str] = {}
         with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(batches))) as pool:
-            for fut in [pool.submit(ask, b) for b in batches]:
+            futures = [(b, pool.submit(ask, b)) for b in batches]
+            for batch, fut in futures:
                 try:
-                    for j in fut.result():
-                        b = by_id.get(str(j.get("bundle_id") or ""))
-                        if b:
-                            out[b["bundle_id"]] = ground_judgement(j, b, root)
+                    take(batch, fut.result())
                 except Exception as exc:
-                    errors.append(str(exc)[:200])
-                    emit(f"Judging one batch failed ({exc}); those tests keep deterministic checks only.", "warning")
-        return out, ("; ".join(errors) or None)
+                    for b in batch:
+                        errors[b["bundle_id"]] = str(exc)[:200]
+        # every test the batches lost — the call failed, or the reply skipped it — is judged on its own
+        missing = [b for b in bundles if b["bundle_id"] not in out]
+        if missing:
+            emit(f"Judging {len(missing)} test(s) one at a time ({'a batch call failed' if errors else 'the judge skipped them'}).",
+                 "warning" if errors else "info")
+
+            def solo(b: dict) -> None:
+                for attempt in range(SOLO_ATTEMPTS):
+                    try:
+                        take([b], ask([b]))
+                        if b["bundle_id"] in out:
+                            errors.pop(b["bundle_id"], None)
+                            return
+                        errors[b["bundle_id"]] = "the judge returned no judgement for this test"
+                    except Exception as exc:
+                        errors[b["bundle_id"]] = str(exc)[:200]
+                    if attempt + 1 < SOLO_ATTEMPTS:
+                        time.sleep(SOLO_PAUSE_S)
+
+            with ThreadPoolExecutor(max_workers=min(2, len(missing))) as pool:
+                list(pool.map(solo, missing))
+        lost = [b["test_code"] or b["bundle_id"] for b in bundles if b["bundle_id"] not in out]
+        if lost:
+            emit(f"The judge could not be reached for {len(lost)} test(s) ({', '.join(lost[:8])}); they keep "
+                 "deterministic checks only.", "warning")
+        reasons = sorted({errors[b["bundle_id"]] for b in bundles if b["bundle_id"] not in out and b["bundle_id"] in errors})
+        return out, ("; ".join(reasons) or ("the judge returned no judgement" if lost else None))

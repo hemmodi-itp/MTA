@@ -315,6 +315,16 @@ _ADD_ROW_JS = r"""([mode, i, token]) => {
     const ctxEl = b.closest('li,tr,article,[class*=card i],[class*=item i],[class*=row i]');
     const info = { text: txt(b), nth: all.indexOf(b),
       context: ctxEl && ctxEl !== document.body ? (ctxEl.innerText || '').replace(txt(b), '').replace(/\s+/g, ' ').trim().slice(0, 100) : '' };
+    // the list's own title, and whether it is required ("Objectives (required)", "Risks *"): the smallest block around
+    // this button that holds no other "+ Add" and has a title line
+    const REQ = /\(required\)|\*\s*$/i;
+    for (let a = b.parentElement, k = 0; a && a !== document.body && k < 6; a = a.parentElement, k++) {
+      if ([...a.querySelectorAll('button,[role=button]')].filter(x => x !== b && isAdd(txt(x))).length) break;
+      const lines = (a.innerText || '').split('\n').map(l => l.trim()).filter(l => /[A-Za-z]{3}/.test(l) && !isAdd(l));
+      const title = lines.find(l => REQ.test(l)) || '';
+      if (title) { info.section = title.replace(/\(required\)|\*/gi, '').replace(/\s+/g, ' ').trim().slice(0, 80); info.required = true; break; }
+      if (!info.section && lines.length) info.section = lines[0].slice(0, 80);
+    }
     b.setAttribute('data-aqp-click', token); return info; }
   // mode === 'new': inputs that appeared since the last mark
   const fresh = inputs().filter(el => !el.getAttribute('data-aqp-known'));
@@ -368,7 +378,8 @@ def _summarise_page(d: Dict[str, Any]) -> Dict[str, Any]:
         if not fields:
             continue
         for x in fields:  # many apps mark required fields only in the label: "Name (required)", "Name *"
-            if not x["required"] and _REQUIRED_LABEL.search(x.get("label") or ""):
+            if not x["required"] and (_REQUIRED_LABEL.search(x.get("label") or "")
+                                      or (x.get("revealed_by") or {}).get("required")):  # a row of a required list
                 x["required"] = True
         labels = [x.get("label") or "" for x in fields]
         for x in fields:  # the group only matters when the label alone is ambiguous ("Not applicable" × 9)

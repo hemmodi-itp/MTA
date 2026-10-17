@@ -190,3 +190,33 @@ def test_a_shortfall_with_the_tests_own_input_unset_is_inconclusive():
     assert t["verdict"] == "inconclusive" and "could not set Section Title" in t["reasons"][0]
     filler = {**b, "unset_inputs": [{"field": "Constraints", "synthetic": True}]}       # MTA's own filler: still a failure
     assert decide_test(v, filler)["verdict"] == "failed"
+
+
+def test_a_submit_the_app_rejected_is_inconclusive_and_never_reaches_later_steps():
+    # TC-007 of BRD_Agent run cmvc4qzw: the generation was rejected, a follow-up was typed into the form, the test went on
+    # to /dashboard and "failed" for want of a download. The executor now stops at the rejected submit and says so.
+    v = _v(checks=[_check("executed", "fail", detail="stopped at step 15")], judge=_judge("does_not_meet", 0))
+    err = ("the app rejected the submitted input: “Please add at least one point to every field before generating "
+           "(or mark it \"Not applicable\" if it genuinely doesn't apply): Decision Audience, Objectives, Risks”")
+    t = decide_test(v, {"error": err, "observed": {"documents": [], "messages": [], "final_url": "/new"}})
+    assert t["verdict"] == "inconclusive" and "Please add at least one point" in t["reasons"][0]
+
+
+def test_a_result_shown_on_screen_counts_as_produced():
+    v = _v(checks=[_check("executed", "pass")], judge=_judge("meets", 95))
+    b = {"observed": {"documents": [], "views": [{"name": "BRD"}],
+                      "messages": ["Please add at least one point to every field before generating: Risks."]}}
+    assert decide_test(v, b)["verdict"] == "passed"   # an earlier, fixed rejection does not undo the generated result
+
+
+def test_cutoffs_group_one_endpoint_across_generated_ids():
+    from engines.verdict.passfail import server_cutoffs
+
+    def b(bid, failures=(), ok=()):
+        return {"bundle_id": bid, "observed": {}, "observations": {
+            "api_failures": [{"method": "POST", "path": p, "status": 0, "ms": ms} for p, ms in failures],
+            "api_ok": [{"method": "POST", "path": p, "ms": ms} for p, ms in ok]}}
+    bundles = [b("EV-1", ok=[("/api/runs/20261017-082842-b05a14/diagrams", 10_000), ("/api/runs/20261017-083159-dfa3a1/diagrams", 12_000)]),
+               b("EV-2", failures=[("/api/runs/20261017-085202-9dff67/diagrams", 73_000)])]
+    cut = server_cutoffs(bundles)
+    assert cut["EV-2"]["endpoint"] == "POST /api/runs/{id}/diagrams" and cut["EV-2"]["ok_calls"] == 2

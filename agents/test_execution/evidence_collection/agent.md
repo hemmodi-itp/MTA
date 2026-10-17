@@ -46,7 +46,8 @@ The step is skipped for `brd_only`, or when nothing was planned or executed.
    which values the test chose and which were just there to complete the form.
 3. **Observed output.**
    - `ui_output`: lines on the final page that were not there when it opened. It separates the result from the form around it.
-   - `messages`: success, validation and error lines.
+   - `messages`: success, validation and error lines (up to 300 characters; a message rejecting the input is kept whole up
+     to 2000, since one that names every field it wants can be long).
    - `reply`: the chat reply.
    - `http_response`: the HTTP response.
    - `documents`: every download opened and read. DOCX (paragraphs, heading styles, tables), PDF (text, outline, pages), XLSX (sheets,
@@ -55,7 +56,9 @@ The step is skipped for `brd_only`, or when nothing was planned or executed.
 4. **Integrity.** Every artifact gets a size and sha256, and each bundle a digest. `evidence_manifest.json` in the run's artifact folder lists them.
 5. **Completeness.** The expected output kind comes from the plan: a document (a download step, or a positive Document Generator test), a
    chat reply, an HTTP response, or otherwise page output. Missing items are listed, for example "expected a downloaded document but none
-   was produced". This is a fact for Pass/Fail, not a verdict.
+   was produced". When every download step of the plan is optional (the files are collected as evidence of an on-screen
+   result, not what the test checks), `document_required: false` is set, a missing file is not listed as missing, and the
+   result's on-screen tabs count as captured output. This is a fact for Pass/Fail, not a verdict.
 6. **Not executed.** Unmappable, blocked and never-run tests get a bundle with `execution_status: not_executed` and the reason, so the
    compliance report can show what was not verified and why.
 

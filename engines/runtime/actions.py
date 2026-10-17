@@ -13,9 +13,15 @@ Two sources of steps, same output:
   * proposals — per-test steps proposed by Gemini from the inventory (agent prompt), validated here;
   * rules     — deterministic mapping per app class (used when there is no proposal, or it was unusable).
 Every plan then goes through the same completion pass: log in first when the app needs it, open the page,
-fill required fields the plan left empty (synthetic data; not for negative tests), click the form's trigger,
-wait for the result, expect the download (Document Generator), capture evidence, and end with the judged
-expectation copied from the test (scored later by Output Validation / Pass-Fail).
+complete the form (synthetic data; not for negative tests), click the form's trigger, wait for the result, collect
+the generated files (Document Generator), capture evidence, and end with the judged expectation copied from the
+test (scored later by Output Validation / Pass-Fail).
+
+A positive test submits a COMPLETE form: the required fields, and on a form that generates something every other
+text / select field too (list rows only when their list is required; never a code-like field such as a promo code),
+so a generator's own "fill every field" rule cannot turn a feature test into a rejected submission. Fields whose own "Not applicable" / "Auto-generate" box the
+test ticks stay as the app sets them. A Document Generator test that is not about the file still collects the
+generated files, but as an optional step right after the result (before any navigation away from it).
 
 Credentials never appear in a plan: `login` is a step the executor resolves with the decrypted test account.
 """
@@ -48,6 +54,8 @@ _NEGATIVE = {"negative", "security", "robustness"}
 # these, and a search for a record that does not exist proves nothing
 _BARE_ID = re.compile(r"^#?[A-Za-z]{0,12}[_-]?(?:[A-Za-z]+[_-])?\d{2,}[A-Za-z0-9_-]*$|^[0-9a-f]{8,}(-[0-9a-f]{4,}){0,4}$", re.I)
 _OMIT = re.compile(r"\b(not applicable|n/a|omit|exclude|skip)\b", re.I)
+_AUTO = re.compile(r"\bauto.?(generat\w*|fill\w*|complet\w*)|\benrich\w*", re.I)
+_TICKED = re.compile(r"\b(check\w*|tick\w*|mark\w*|select\w*|enabl\w*|on|yes|true)\b", re.I)
 _INPUT_LINE = re.compile(r"^\s*(?:[-*]\s*)?([A-Za-z][^:\n]{1,60}?)\s*:\s*(.+?)\s*$")
 
 
@@ -56,27 +64,43 @@ def _field_name(label: Optional[str]) -> str:
     return re.sub(r"\s+", " ", re.sub(r"\(required\)|\*", "", label or "", flags=re.I)).strip().lower()
 
 
+def _same_name(a: Optional[str], b: Optional[str]) -> bool:
+    """Field names equal up to case, required markers and a plural "s" ("Objective" ~ "Objectives (required)")."""
+    a, b = _field_name(a), _field_name(b)
+    return bool(a) and (a == b or a.rstrip("s") == b.rstrip("s"))
+
+
+def input_lines(text: Any) -> List[str]:
+    """The lines of a test input; an input the model wrote with literal "\\n" sequences is split on those too."""
+    s = str(text or "")
+    if "\n" not in s.strip() and "\\n" in s:
+        s = s.replace("\\r\\n", "\n").replace("\\n", "\n")
+    return s.splitlines()
+
+
 def input_fills(test: Dict[str, Any], form: Dict[str, Any], els: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
     """The test's "Label: value" input lines (test design writes form tests that way) as steps on the form's fields
-    with that label: fill, select (only a real option) or check ("[checked]" / "Not applicable" on a field whose
-    own omit box exists). Lines naming no field of this form are ignored."""
+    with that label: fill, select (only a real option) or check ("[checked]" / "Not applicable: checked" /
+    "Auto-generate: checked" on a field whose own box exists). Lines naming no field of this form are ignored."""
     fields = [els[f] for f in form.get("fields") or []]
     by_name = {}
     for e in fields:
         by_name.setdefault(_field_name(e.get("label")), e)
     out = []
-    for line in str(test.get("input") or "").splitlines():
+    for line in input_lines(test.get("input")):
         m = _INPUT_LINE.match(line)
         if not m:
             continue
         name, value = _field_name(m.group(1)), m.group(2).strip().strip("\"'“”")
-        if _OMIT.search(value) and re.search(r"\b(check|tick|mark|select)", value, re.I) or value.lower().startswith("[checked"):
-            box = next((e for e in fields if e["type"] == "checkbox" and _field_name(e.get("group")) == name
-                        and _OMIT.search(e.get("label") or "")), None)
+        kind = _AUTO if _AUTO.search(value) else _OMIT if _OMIT.search(value) else None
+        if kind is not None and (_TICKED.search(value) or value.lower().startswith("[checked")):
+            box = next((e for e in fields if e["type"] == "checkbox" and _same_name(e.get("group"), name)
+                        and kind.search(e.get("label") or "")), None)
             if box:
                 out.append({"action": "check", "target": _target(box)})
             continue
-        el = by_name.get(name)
+        el = by_name.get(name) or next((e for e in fields if e["type"] not in ("checkbox", "radio")
+                                        and _same_name(e.get("label"), name)), None)
         if not el or el["type"] in ("checkbox", "radio", "file"):
             continue
         if el["type"] == "select" or el.get("options"):
@@ -87,6 +111,26 @@ def input_fills(test: Dict[str, Any], form: Dict[str, Any], els: Dict[str, Dict[
     return out
 
 
+# a failure of the app's own dependencies (its LLM, API, network, server) or load: no ordinary user action makes either
+_FAULT = (r"(outages?|time-?outs?|timed out|rate.?limit\w*|\b429\b|\b5\d\d\b|server errors?|crash\w*|unavailab\w*|downtime|"
+          r"disconnect\w*|(llm|ai|api|model|provider|upstream|network|backend|server|database|gemini|openai|third.party)"
+          r"\W+(\w+\W+){0,2}(fail\w*|errors?|faults?|exceptions?))")
+NEEDS_FAULT = re.compile(
+    rf"\b(simulat\w*|inject\w*|forc\w*|induc\w*|mock\w*|trigger\w*|caus\w*|emulat\w*)\b[^.\n]{{0,60}}{_FAULT}|"
+    rf"\b(during|while|when|if|amid)\b[^.\n]{{0,30}}\b(transient|temporary|intermittent)\b[^.\n]{{0,40}}{_FAULT}|"
+    r"\b(\d+|many|multiple|hundreds of|thousands of)\s+(concurrent|simultaneous|parallel)\s+(users?|requests?|sessions?)\b|"
+    r"\b(load|stress|soak) test\w*\b|\b(revoke|remove|invalidate|expire|unset|delete)\w*\b[^.\n]{0,20}\bapi key\b", re.I)
+
+
+def needs_fault(test: Dict[str, Any]) -> bool:
+    """The test needs the app's own dependencies to fail (LLM / API / network / server, a rate limit, a timeout) or load
+    generated: no ordinary user action through the app's UI produces either, so no plan can run it."""
+    return bool(NEEDS_FAULT.search(" ".join(str(test.get(k) or "") for k in ("title", "input", "expected_behavior"))))
+
+
+# optional fields whose value the app checks against something MTA cannot know: never completed with filler
+_NEVER_GUESS = re.compile(r"promo|coupon|voucher|referral|discount|invit|\botp\b|captcha|verification|token|"
+                          r"card|cvv|cvc|iban|account (no|number)|password|pin\b|search|filter", re.I)
 _SEARCH_FIELD = re.compile(r"\b(search|filter|find|look ?up)\b", re.I)
 _ID_FIELD = re.compile(r"\b(id|run|record|order|ticket|reference|number)\b", re.I)  # only on a small lookup form
 
@@ -117,7 +161,12 @@ def build_inventory(profile: Optional[Dict[str, Any]]) -> Dict[str, Any]:
                 if x.get("group"):  # which field's "Not applicable" / "Auto-generate" box this is
                     elements[eid]["group"] = x["group"]
                 if x.get("revealed_by"):  # a list row: exists only after clicking its "+ Add" button
-                    elements[eid]["revealed_by"] = {**x["revealed_by"], "kind": "button", "page": path}
+                    rb = {k: x["revealed_by"][k] for k in ("text", "nth", "context") if k in x["revealed_by"]}
+                    elements[eid]["revealed_by"] = {**rb, "kind": "button", "page": path}
+                    if x["revealed_by"].get("required"):  # the list itself is required ("Objectives (required)")
+                        elements[eid]["required"] = True
+                    if x["revealed_by"].get("section"):  # the list's title: context for synthetic values
+                        elements[eid]["section"] = x["revealed_by"]["section"]
                 field_ids.append(eid)
             forms[fid] = {"id": fid, "page": path, "fields": field_ids, "submit_text": f.get("submit_button"),
                           "buttons": f.get("buttons") or []}
@@ -147,7 +196,18 @@ def build_inventory(profile: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     known_ids = list(dict.fromkeys(
         (p.get("path") or "").rstrip("/").rsplit("/", 1)[-1] for p in (profile or {}).get("pages") or []
         if _ITEM_PAGE.search(p.get("path") or "")))
+    # what a generated result offers to act on (an item page's own form, e.g. a run's "change request" box): never a
+    # target (it belongs to an earlier record), but it tells a follow-up step which box and button to use
+    result_forms = []
+    for p in (profile or {}).get("pages") or []:
+        if not _ITEM_PAGE.search(p.get("path") or ""):
+            continue
+        for f in p.get("forms") or []:
+            box = next((x for x in f.get("fields") or [] if x.get("type") in ("textarea", "text", "contenteditable")), None)
+            if box and not f.get("is_login"):
+                result_forms.append({"box_label": (box.get("label") or "")[:120], "submit_text": f.get("submit_button")})
     return {"elements": elements, "forms": forms, "chat_boxes": chat_boxes, "known_ids": [i for i in known_ids if i],
+            "result_forms": result_forms[:3],
             "pages": [{"path": p.get("path") or "/", "title": p.get("title"), "headings": (p.get("headings") or [])[:6],
                        "charts": p.get("charts", 0), "tables": p.get("tables", 0)} for p in pages]}
 
@@ -171,6 +231,37 @@ def inventory_for_prompt(inv: Dict[str, Any], limit: int = 320) -> List[Dict[str
 
 # ── synthetic test data for fields a test does not set ──────────────────────
 
+# Short values for the fields a test does not set, all about ONE small project (a web tool a team uses to submit,
+# approve and report on requests), so a completed form still tells one coherent story. First match wins.
+_SYNTHETIC = [
+    (r"\bname\b.*\b(project|product|app|company|org)|\b(project|product|app)\b.*\bname\b", "MTA Evaluation Project"),
+    (r"\b(component|service|module|system)s?\b", "Request API service"),
+    (r"first.?name|last.?name|full.?name|\bname\b", "Alex Tester"),
+    (r"company|organi[sz]ation|client", "Example Corp"),
+    (r"acronym|abbreviation|\bcode\b|doc(ument)? ?id|\bid\b|\bkey\b|prefix", "MTA"),
+    (r"tech(nology)?\s*stack|technolog|framework|platform", "Python, FastAPI, React, PostgreSQL"),
+    (r"exclu|out of scope|never", "Mobile apps and offline use."),
+    (r"defer|later|phase 2|why", "Lower priority than the core request flow."),
+    (r"\bsteps?\b|flow|process|workflow",
+     "1. The user submits a request. 2. The system validates and processes it. 3. The result is shown and stored."),
+    (r"metric|measure|kpi|success", "Median approval time under 2 days."),
+    (r"objective|goal|purpose", "Cut the time to get a request approved by half."),
+    (r"constraint|limitation", "Must run on the team's existing cloud account."),
+    (r"dependenc", "Single sign-on from the company identity provider."),
+    (r"integration", "Email notifications through the existing SMTP relay."),
+    (r"question", "Who approves changes to the scope?"),
+    (r"mitigat", "Review the request backlog every week."),
+    (r"\brisk", "Approvers may be unavailable during holidays."),
+    (r"interest|need|pain", "Fast, visible approvals."),
+    (r"audience|stakeholder|user|persona|role|approver|owner", "Operations managers and team leads"),
+    (r"exit|criteria|done", "All acceptance tests pass."),
+    (r"categor|type|kind", "Performance"),
+    (r"\bphase|milestone|timeline", "Phase 1: core request flow."),
+    (r"scope|feature|requirement|deliverable|description|item", "Request submission; approval workflow; a weekly report."),
+]
+_GENERIC_LABELS = {"name", "description", "item", "content", "value", "title", "details", "text", "entry"}
+
+
 def synthetic_value(el: Dict[str, Any], hint: str = "") -> Optional[str]:
     t = el.get("type") or "text"
     label = re.sub(r"\(required\)|\*", "", f"{el.get('label', '')} {el.get('name', '')}", flags=re.I).strip().lower()
@@ -193,22 +284,16 @@ def synthetic_value(el: Dict[str, Any], hint: str = "") -> Optional[str]:
         return "2026-10-15"
     if t == "password":
         return None
-    if re.search(r"\bname\b", label) and re.search(r"project|product|app|company|org", label):
-        return "MTA Evaluation Project"
-    if re.search(r"first.?name|last.?name|full.?name|\bname\b", label):
-        return "Alex Tester"
-    if re.search(r"company|organi[sz]ation|client", label):
-        return "Example Corp"
-    if re.search(r"acronym|abbreviation|\bcode\b|doc(ument)? ?id|\bid\b|\bkey\b|prefix", label):
-        return "MTA"
-    if re.search(r"tech(nology)?\s*stack|technolog|framework|platform", label):
-        return "Python, FastAPI, React, PostgreSQL"
-    if re.search(r"\bsteps?\b|flow|process|workflow", label):
-        return "1. The user submits a request. 2. The system validates and processes it. 3. The result is shown and stored."
-    if re.search(r"scope|feature|requirement|deliverable", label):
-        return "Online booking; automated reminders; an admin report of bookings per week."
-    if re.search(r"audience|stakeholder|user|persona", label):
-        return "Operations managers and front-desk staff"
+    # the field's own label first; a list row's section ("Name" under "System Components") only when the label says nothing
+    section = str(el.get("section") or "").lower()
+    order = (label, f"{label} {section}" if section else None)
+    if section and _field_name(el.get("label")) in _GENERIC_LABELS:
+        order = (section, label)
+    for text in order:
+        if text:
+            hit = next((v for rx, v in _SYNTHETIC if re.search(rx, text)), None)
+            if hit:
+                return hit
     if t in ("textarea", "contenteditable"):
         subject = re.sub(r"\(required\)|\*", "", el.get("label") or el.get("name") or "this field", flags=re.I).strip()
         return (hint or f"Sample {subject.lower()} for an automated acceptance test: a small team needs a "
@@ -394,17 +479,26 @@ def complete(steps: List[Dict[str, Any]], test: Dict[str, Any], app_class: str, 
     # a field whose own "Not applicable / omit" box the test ticks is disabled by the app: typing into it would hang
     omitted = {_field_name(s["target"].get("group")) for s in body
                if s["action"] == "check" and s["target"].get("group") and _OMIT.search(s["target"].get("label") or "")}
+    # ... and one whose "Auto-generate" box it ticks is left for the app to fill: MTA does not complete it either
+    ticked = omitted | {_field_name(s["target"].get("group")) for s in body
+                        if s["action"] == "check" and s["target"].get("group") and _AUTO.search(s["target"].get("label") or "")}
     body = [s for s in body if not (s["action"] in ("fill", "select") and _field_name((s.get("target") or {}).get("label")) in omitted)]
     fills = [s for s in body if s["action"] in ("fill", "select", "check", "upload")]
     rest = [s for s in body if s not in fills]
     demo = None
+    generating = app_class == "Document Generator" or bool(form and _GENERATE.search(form.get("submit_text") or ""))
     text_fields = [f for f in (form or {}).get("fields", []) if els[f]["type"] not in ("checkbox", "radio", "file")]
     covered = len({s["target"]["id"] for s in fills if s.get("target", {}).get("id") in text_fields})
-    # the plan does not describe the whole form: MTA completes the REQUIRED fields with its own short values (optional
-    # ones stay as a user would leave them; an app that wants more names the fields, and the executor fills exactly those
-    # and submits again). The app's "Fill demo data" control is only the fallback when MTA can fill none of them: demo
-    # data can be large (BRD_Agent's demo project ran past the app's 180 s request timeout every time), which turns a
-    # feature test into a timeout.
+    # the plan does not describe the whole form: MTA completes it with its own short values — the required fields always,
+    # and on a form that GENERATES something every other text / select field too (generators often validate that every
+    # section has content: BRD_Agent rejected 6 of 20 tests whose plans filled only the 7 marked fields), list rows only
+    # when the list is required. Optional fields of other forms stay as a user would leave them (a filler value in a
+    # search filter empties the result; in a promo or referral code it is rejected), and code-like fields are never
+    # guessed. An app that still wants more names the fields, and the executor fills exactly those and submits again.
+    # The app's "Fill demo data" control is only the fallback when MTA can fill nothing: demo data can be large
+    # (BRD_Agent's demo project ran past the app's 180 s request timeout every time), which turns a feature test into a
+    # timeout.
+    complete_all = bool(form and not negative and generating)
     partial = bool(form and not negative and text_fields and covered < 0.8 * len(text_fields))
     required_left = [f for f in (form or {}).get("fields", []) if els[f]["required"] and f not in touched]
     if partial and required_left and not any(_fill_step(els[f]) for f in required_left):
@@ -413,10 +507,14 @@ def complete(steps: List[Dict[str, Any]], test: Dict[str, Any], app_class: str, 
             out.append({"action": "click", "target": _target(demo), "synthetic": True, "purpose": "prefill demo data",
                         "optional": True})
     out += fills
-    if form and not negative and not demo:  # complete the required fields the test didn't set
+    if form and not negative and not demo:  # complete the fields the test didn't set
         for fid in form["fields"]:
             el = els[fid]
-            if fid in touched or not el["required"] or _field_name(el.get("label")) in omitted:
+            if fid in touched or _field_name(el.get("label")) in ticked:
+                continue
+            optional_ok = (complete_all and el["type"] not in ("checkbox", "radio") and not el.get("revealed_by")
+                           and not _NEVER_GUESS.search(f"{el.get('label') or ''} {el.get('name') or ''}"))
+            if not el["required"] and not optional_ok:
                 continue
             step = _fill_step(el)
             if step:
@@ -424,28 +522,32 @@ def complete(steps: List[Dict[str, Any]], test: Dict[str, Any], app_class: str, 
     trigger_clicked = any(s["action"] in ("click", "send_message") and s["target"].get("role") in ("submit", "send", None)
                           for s in rest if s.get("target")) or any(s["action"] == "send_message" for s in rest)
     out += [s for s in rest if s["action"] != "expect_download"]
-    generating = app_class == "Document Generator" or bool(form and _GENERATE.search(form.get("submit_text") or ""))
     if form and not trigger_clicked and form.get("submit"):
         out.append({"action": "click", "target": _target(els[form["submit"]])})
         trigger_clicked = True
     if trigger_clicked or http:
         out.append({"action": "wait_for", "kind": "response" if http else "settled",
                     "timeout_ms": GENERATION_TIMEOUT_MS if generating or http else DEFAULT_TIMEOUT_MS})
+    tail: List[Dict[str, Any]] = []
     for s in after:
-        out.append({k: v for k, v in s.items() if k != "phase"})
+        tail.append({k: v for k, v in s.items() if k != "phase"})
         if s["action"] == "follow_up":  # a revision / follow-up request regenerates too
-            out.append({"action": "wait_for", "kind": "settled", "timeout_ms": GENERATION_TIMEOUT_MS})
-    downloads = [s for s in rest if s["action"] == "expect_download"] + \
-        [s for s in out if s["action"] == "expect_download" and s not in rest]
+            tail.append({"action": "wait_for", "kind": "settled", "timeout_ms": GENERATION_TIMEOUT_MS})
+    downloads = [s for s in rest + tail + out if s["action"] == "expect_download"]
+    downloads = [s for i, s in enumerate(downloads) if s not in downloads[:i]]
     out = [s for s in out if s["action"] != "expect_download"]
+    tail = [s for s in tail if s["action"] != "expect_download"]
     if not downloads and app_class == "Document Generator" and not negative and not http:
         dl = next((e for e in els.values() if e.get("role") == "download" and (not page or e["page"] == page)), None) \
             or next((e for e in els.values() if e.get("role") == "download"), None)
-        if dl:
-            downloads = [{"action": "expect_download", "target": _target(dl)}]
-        else:  # export controls often appear only after generating: the executor finds them at run time
-            downloads = [{"action": "expect_download", "target": {"kind": "auto", "role": "download", "page": page}}]
-    out += downloads
+        target = _target(dl) if dl else {"kind": "auto", "role": "download", "page": page}  # export controls often appear
+        step = {"action": "expect_download", "target": target}                              # only after generating
+        if not about_file(test):  # the files are evidence, not the behaviour under test: their absence is not a failure
+            step.update(optional=True, purpose="collect the generated files")
+        downloads = [step]
+    # the result's files are collected on the result itself: before a step navigates away from it (e.g. to History)
+    leave = next((i for i, s in enumerate(tail) if s["action"] == "goto"), len(tail))
+    out += tail[:leave] + downloads + tail[leave:]
     out.append({"action": "capture", "what": ["screenshot", "dom_text"] + (["reply"] if any(
         s["action"] == "send_message" for s in out) else []) + (["download"] if downloads else []) + (["response"] if http else [])})
     out.append({"action": "assert", "kind": "judge", "expectation": test.get("expected_behavior") or "",
@@ -454,6 +556,8 @@ def complete(steps: List[Dict[str, Any]], test: Dict[str, Any], app_class: str, 
     out = [s for i, s in enumerate(out) if not (i and s["action"] == "click" and out[i - 1]["action"] == "click"  # a doubled
                                                 and (s.get("target") or {}).get("role") == "submit"            # submit (a 2nd
                                                 and s.get("target") == out[i - 1].get("target"))]              # "+ Add" stays)
+    out = [s for i, s in enumerate(out) if not (i and s["action"] == "goto" and out[i - 1]["action"] == "goto"
+                                                and s.get("url") == out[i - 1].get("url"))]                    # same page twice
     for i, s in enumerate(out, 1):
         s["n"] = i
     return out
@@ -475,12 +579,38 @@ def _insert_row_adds(steps: List[Dict[str, Any]], els: Dict[str, Dict[str, Any]]
     return out
 
 
-_AFTER_EXPORT = re.compile(r"\b(export|download|docx|pdf|word|one.?pager|file)\b", re.I)
+_AFTER_EXPORT = re.compile(r"\b(export\w*|download\w*|docx|pdf|word (file|document)|\.md|markdown file|file)\b", re.I)
 _AFTER_REVISE = re.compile(r"\b(revis\w*|change request|regenerat\w*|iterat\w*|refine|update the|modify|edit)\b", re.I)
 _AFTER_PREVIEW = re.compile(r"\b(preview|render\w*|side.by.side|display\w*|diagram)\b", re.I)
 _AFTER_HISTORY = re.compile(r"\b(history|historical|versions?|previous runs?|list (of )?runs|immutable)\b", re.I)
 _AFTER_TIMING = re.compile(r"\b(latency|response time|execution time|performance|completes? (with)?in|"
                            r"(under|within|less than) \d+\s*(s|sec|secs|seconds|minutes?))\b", re.I)
+_HISTORY_PAGES = (r"histor", r"/(runs?|versions|revisions|archive)\b", r"dashboard")
+_CHANGE_LINE = re.compile(r"^\s*(?:[-*]\s*)?(?:change[ _-]?request|revision(?: request)?|requested change|change|"
+                          r"feedback|instruction|refinement)s?\s*:\s*(.{3,})$", re.I)
+# used when a revise test names no change of its own: a small, harmless edit any generated document set can take
+DEFAULT_CHANGE_REQUEST = "Add a risk about vendor lock-in to the risks section."
+
+
+def intent_text(test: Dict[str, Any]) -> str:
+    """What a test is ABOUT (title, expectation, criterion, area) — not its input data, which may mention exports,
+    files or tech stacks without the test being about them."""
+    parts = [str(test.get(k) or "") for k in ("title", "expected_behavior", "acceptance_criterion", "area")]
+    return " ".join(parts + [str(c) for c in test.get("pass_criteria") or []])
+
+
+def about_file(test: Dict[str, Any]) -> bool:
+    """The test checks the generated FILE (an export, a download, its format), not only the on-screen result."""
+    return bool(_AFTER_EXPORT.search(intent_text(test)))
+
+
+def _history_page(inv: Dict[str, Any]) -> Optional[str]:
+    """The page listing earlier results: a History page before a runs list before a dashboard."""
+    for rx in _HISTORY_PAGES:
+        hit = next((p["path"] for p in inv["pages"] if re.search(rx, p["path"], re.I)), None)
+        if hit:
+            return hit
+    return None
 
 
 def generate_then_act(test: Dict[str, Any], app_class: str, inv: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
@@ -490,7 +620,7 @@ def generate_then_act(test: Dict[str, Any], app_class: str, inv: Dict[str, Any])
     generation itself must succeed first, so the plan generates as a positive test would."""
     if app_class != "Document Generator":
         return None
-    text = " ".join(str(test.get(k) or "") for k in ("title", "input", "expected_behavior", "area"))
+    text = intent_text(test)
     negative = test.get("variant_type") in _NEGATIVE
     if negative and not _AFTER_REVISE.search(text):
         return None
@@ -501,20 +631,23 @@ def generate_then_act(test: Dict[str, Any], app_class: str, inv: Dict[str, Any])
     matched = False
     if _AFTER_REVISE.search(text):
         matched = True
-        request = _change_request(str(test.get("input") or "")) or str(test.get("input") or "")[:500]
-        if negative and re.search(r"\b(blank|empty|nothing|no text)\b", text, re.I):
+        request = _change_request(str(test.get("input") or "")) or DEFAULT_CHANGE_REQUEST
+        if negative and re.search(r"\b(blank|empty|nothing|no text)\b", f"{text} {test.get('input') or ''}", re.I):
             request = ""  # the negative case: submit the change request with nothing in it
+        hint = (inv.get("result_forms") or [{}])[0]
         steps.append({"action": "follow_up", "kind": "text_input", "value": request, "phase": "after",
-                      "known_labels": [inv["elements"][f]["label"] for f in form["fields"]]})
-    if _AFTER_HISTORY.search(text):
-        hist = next((p["path"] for p in inv["pages"] if re.search(r"histor|runs|versions|dashboard", p["path"], re.I)), None)
-        if hist:
-            steps.append({"action": "goto", "url": hist, "phase": "after"})
-            matched = True
-    if _AFTER_EXPORT.search(text):
+                      "known_labels": [inv["elements"][f]["label"] for f in form["fields"]],
+                      **({"box_label": hint["box_label"]} if hint.get("box_label") else {}),
+                      **({"submit_text": hint["submit_text"]} if hint.get("submit_text") else {})})
+    if _AFTER_EXPORT.search(text):  # on the result, before any navigation away from it
         steps.append({"action": "expect_download", "target": {"kind": "auto", "role": "download", "page": form["page"]},
                       "phase": "after"})
         matched = True
+    if _AFTER_HISTORY.search(text):
+        hist = _history_page(inv)
+        if hist:
+            steps.append({"action": "goto", "url": hist, "phase": "after"})
+            matched = True
     # preview tests: the result page itself is captured and judged; timing tests: the generation is timed by the
     # executor and checked by Output Validation's time-limit check
     matched = matched or bool(_AFTER_PREVIEW.search(text)) or bool(_AFTER_TIMING.search(text))
@@ -522,7 +655,12 @@ def generate_then_act(test: Dict[str, Any], app_class: str, inv: Dict[str, Any])
 
 
 def _change_request(text: str) -> Optional[str]:
-    """The change request inside an API-style test input, e.g. POST …/revise {"change_request": "…"}."""
+    """The change request a test carries: a "Change Request: …" input line, or the request inside an API-style input
+    (POST …/revise {"change_request": "…"}). None when it names none."""
+    for line in input_lines(text):
+        m = _CHANGE_LINE.match(line)
+        if m:
+            return m.group(1).strip().strip("\"'“”")[:1000]
     m = re.search(r'"(change_request|request|instruction|feedback|prompt)"\s*:\s*"([^"]{5,})"', text)
     return m.group(2) if m else None
 
@@ -574,6 +712,11 @@ def generate_action_plan(classification: Optional[Dict[str, Any]], profile: Opti
         cls = _class_for(t, classes, inv)
         steps, reason, source = [], None, "rules"
         generate_first = False
+        if needs_fault(t):  # never mapped onto an ordinary submission that would only pretend to test it
+            plans.append(_plan(t, cls, "unmappable", [], "rules",
+                               "needs the app's LLM / API / network to fail, or load generated: no action through the UI "
+                               "produces that, so the criterion is judged from the code"))
+            continue
         prop = proposals.get(t.get("code"))
         if prop is not None and not api_only:
             if prop.get("applicable") is False:
@@ -590,10 +733,16 @@ def generate_action_plan(classification: Optional[Dict[str, Any]], profile: Opti
             if not steps and reason is None:
                 # nothing in the test names an element the rules can find: say so instead of a padded plan
                 reason = "no discovered element matches this test (needs AI mapping, or the feature is not on the app)"
-        if reason and not steps and not api_only:
-            follow = generate_then_act(t, cls, inv)
-            if follow is not None:
-                steps, reason, source = follow, None, "rules"
+        follow = generate_then_act(t, cls, inv) if not api_only else None
+        if follow is not None and reason and not steps:
+            steps, reason, source = follow, None, "rules"
+            generate_first = True
+        elif follow is not None and steps:
+            # the model maps the input form; what the test does with the RESULT (revise it, export it, find it in the
+            # history) is on a page it never saw, so those steps come from the rules
+            later = [s for s in follow if s.get("phase") == "after"]
+            if later and not any(s["action"] == "follow_up" for s in steps):
+                steps = steps + later
                 generate_first = True
         if reason and not steps:
             plans.append(_plan(t, cls, "unmappable", [], source, reason))

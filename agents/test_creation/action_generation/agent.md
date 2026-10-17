@@ -53,11 +53,15 @@ A target carries `label`, `name`, `type`, `text`, plus `nth` and `context` for r
 5. **Completion.** Every ready plan gets:
    - `login` first, when discovery logged in;
    - `goto`;
-   - synthetic data for the required fields the test left empty (skipped for negative, security and robustness tests);
+   - synthetic data for the fields the test left empty (see "Making submissions valid"; skipped for negative, security
+     and robustness tests);
    - a click on the form's submit button;
    - `wait_for` (180 s for generation);
    - `expect_download` (Document Generator, positive tests). If discovery saw no download control, which is common when
-     export buttons appear only after generating, the target is `{"kind": "auto"}` and the executor finds the controls at run time;
+     export buttons appear only after generating, the target is `{"kind": "auto"}` and the executor finds the controls at run time.
+     It is required only when the test is about the file (export, download, a format: `about_file`); otherwise it is
+     `optional` ("collect the generated files") and its absence is not a failure. It always runs on the result itself,
+     before any step that navigates away from it (e.g. to History);
    - `capture` and a final judged `assert` copied from the test's expected behaviour.
 6. **Flow checks.** One unscored end-to-end plan per discovered form (up to 5) plus one for the chat. They prove the flow works and
    give baseline evidence. They are never counted in compliance.
@@ -65,8 +69,9 @@ A target carries `label`, `name`, `type`, `text`, plus `nth` and `context` for r
    is `blocked` with the reason and no plans are produced.
 
 ## Making submissions valid
-- **One coherent scenario.** For positive form tests, Gemini fills every text and textarea field of the form, list rows included,
-  from one realistic scenario built from the test's input. Apps that validate "every field" then accept the submission, and a
+- **One coherent scenario.** For positive form tests, Gemini fills every text and textarea field of the form, and the rows
+  of every required list, from one realistic scenario built from the test's input, keeping each value short (< ~150
+  characters: long inputs push a generator past its own time limit). Apps that validate "every field" then accept the submission, and a
   generator's output can be judged against one consistent story. With 15 or more fields, tests go 3 per Gemini call.
 - **List rows.** A field discovered behind a "+ Add" button (`revealed_by`) is preceded by a click on that button, once per
   button.
@@ -75,32 +80,49 @@ A target carries `label`, `name`, `type`, `text`, plus `nth` and `context` for r
 - **Label-only required fields.** A field is required when its HTML says so, or when its label does ("Name (required)", "Name *").
   Many apps only mark it in the label.
 - **MTA's own data first; demo data only as a last resort.** A positive plan that does not describe the whole form gets MTA's
-  short filler values in its required fields. Optional fields stay as a user would leave them; an app that wants more names
-  the fields when it rejects the submit, and the executor fills exactly those. The app's own sample-data control ("Fill Demo
+  short filler values: in the required fields, and — on a form that generates something — in every other text / select
+  field too, plus the rows of required lists (discovery marks a list required from its title, "Objectives (required)").
+  Generators often validate that every section has content: BRD_Agent rejected 6 of 20 tests whose plans filled only its
+  7 marked fields. Optional lists ("Additional Sections") stay empty, and so do the optional fields of every other form
+  (a filler value in a search filter empties the result; in a promo or referral code it is rejected). Code-like fields
+  (promo, coupon, referral, OTP, card, password …) are never guessed. A field whose own "Not applicable" or "Auto-generate" box the test ticks is left to the
+  app. An app that still wants more names the fields when it rejects the submit, and the executor fills exactly those. The app's own sample-data control ("Fill Demo
   Data", "Load sample data", "Autofill"…) is clicked only when MTA can fill none of the required fields itself: demo data can
   be large (BRD_Agent's demo project ran past the app's 180 s request timeout on every attempt), which turns a feature test
   into a timeout. That click is `optional`: if the control is missing at run time, the step is skipped, not failed.
   Negative tests never get filler or demo data.
 - **"Label: value" input lines.** Test design writes form input as one "Label: value" line per field. Lines that name a field
-  of the form fill it (a select only with a real option); "[checked] Not applicable" on a field ticks that field's own box.
+  of the form fill it (a select only with a real option); "[checked] Not applicable" / "Auto-generate: checked" on a field
+  ticks that field's own box (names match up to a plural "s": "Objective" ↔ "Objectives"). Inputs written with literal
+  `\n` sequences are split on those too.
   Rule-based plans use these lines instead of pasting the whole input into one box.
 - **An omitted field is left alone.** When a plan ticks a field's "Not applicable / omit" box, any fill of that same field is
   dropped: the app disables it, and typing into it would hang the test.
 - **Negative follow-up tests generate first.** A negative test whose negative part is the follow-up (an empty change request)
   is planned as generate, then the follow-up; the generation is completed like a positive test's so it succeeds.
-- **Filler data by label:** acronyms and IDs get `MTA`, tech stack fields a stack, steps and flow fields numbered steps, scope
-  fields a feature list, audience fields a role. "(required)" and "*" are stripped from generated text.
+- **Filler data by label:** short values that all describe one small project (a web tool to submit, approve and report on
+  requests): acronyms and IDs get `MTA`, tech stack fields a stack, steps and flow fields numbered steps, objectives, metrics,
+  constraints, dependencies, integrations, risks, mitigations, questions, exclusions and phases a matching sentence. A list
+  row with a generic label ("Name", "Description") is filled from its list's title ("System Components"). "(required)" and "*" are stripped from generated text.
 - **Generate first, then act (Document Generator).** Some tests are about behaviour that only exists after generating: export or
   download, revise or change request, preview, history and versions, generation time. When such a test is not mappable as-is, the
-  plan fills the main form, generates, then acts on the result:
-  - export: `expect_download` (auto);
-  - revise: a `follow_up` step typed into the box that appeared after generating, then another wait;
-  - history: opens the history page;
+  plan fills the main form, generates, then acts on the result. What a test is about is read from its title, expectation,
+  criterion and pass criteria — not its input data, which may mention DOCX or a tech stack without the test being about them.
+  - export: `expect_download` (auto), on the result page;
+  - revise: a `follow_up` step with the test's own change request (its "Change Request: …" line; a small default edit when
+    it names none — never the whole multi-line input), typed into the box the result offers: discovery's box on an
+    earlier result page (`box_label`, e.g. "e.g. Add a risk about vendor lock-in") and its button (`submit_text`,
+    "Apply Change"); then another wait;
+  - history: opens the History page (preferred over a runs list, then a dashboard);
   - preview and timing: the result page is captured and timed.
-  These plans are marked `source: rules`.
+  When Gemini mapped the form, these after-result steps are still added from the rules (the model never sees the result
+  page). Plans built entirely by the rules are marked `source: rules`.
+- **Never run a test that needs a fault.** A test whose setup needs the app's LLM / API / network to fail, a rate limit or a
+  timeout, or load, is `unmappable` with that reason: an ordinary submission would only pretend to test it.
 - **Never pressed:** sign-out and destructive controls (log out, sign out, delete account, deactivate, unsubscribe) are left out
   of the inventory.
 
 ## Failure modes
-A Gemini failure for a batch is logged and that batch falls back to the rules. With no LLM connector, the rules handle everything.
+A Gemini failure for a batch (or a test its reply skipped) is retried test by test; a test still unmapped falls back to the
+rules. With no LLM connector, the rules handle everything.
 With no runtime profile or no tests, the step is skipped.

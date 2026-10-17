@@ -31,6 +31,8 @@ from pathlib import Path
 from difflib import SequenceMatcher
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from engines.runtime.rejection import INPUT_REJECTED
+
 TEXT_LIMIT = 200_000
 EXCERPT = 2_000
 _MESSAGE = re.compile(r"\b(required|invalid|must|error|failed|failure|please (enter|fill|provide|select)|not allowed|"
@@ -228,14 +230,18 @@ def _observations(obs: Dict) -> Dict[str, Any]:
 
 def _completeness(r: Dict, plan: Dict, cls: Optional[str], observed: Dict, artifacts: List[Dict]) -> Dict[str, Any]:
     steps = plan.get("steps") or []
-    wants_doc = any(s["action"] == "expect_download" for s in steps) or (cls in _DOC_CLASSES and r.get("variant") == "positive")
+    downloads = [s for s in steps if s["action"] == "expect_download"]
+    wants_doc = bool(downloads) or (cls in _DOC_CLASSES and r.get("variant") == "positive")
+    # the file is what the test checks (an export / download step it requires), or only collected as evidence of the
+    # result (an optional step: the test is about something the result shows on screen)
+    doc_required = any(not s.get("optional") for s in downloads) or (wants_doc and not downloads)
     wants_reply = any(s["action"] == "send_message" for s in steps)
     wants_http = any(s["action"] == "http" for s in steps)
     expected = "document" if wants_doc else "reply" if wants_reply else "http_response" if wants_http else "ui_output"
     missing = []
     if not any(a["type"] == "screenshot" for a in artifacts) and not wants_http:
         missing.append("no final screenshot")
-    if wants_doc and not observed["documents"]:
+    if wants_doc and doc_required and not observed["documents"]:
         missing.append("expected a downloaded document but none was produced")
     if wants_doc and observed["documents"] and not any(d.get("readable") for d in observed["documents"]):
         missing.append("the downloaded document could not be read")
@@ -245,10 +251,14 @@ def _completeness(r: Dict, plan: Dict, cls: Optional[str], observed: Dict, artif
         missing.append("no HTTP response")
     if expected == "ui_output" and not observed["ui_output"] and not observed["messages"]:
         missing.append("nothing new appeared on the page after the actions")
-    captured = {"document": bool(observed["documents"]) and any(d.get("readable") for d in observed["documents"]),
+    captured = {"document": (bool(observed["documents"]) and any(d.get("readable") for d in observed["documents"]))
+                or (not doc_required and bool(observed.get("views") or observed["ui_output"])),
                 "reply": bool(observed["reply"]), "http_response": bool(observed["http_response"]),
                 "ui_output": bool(observed["ui_output"] or observed["messages"])}[expected]
-    return {"output_captured": captured, "expected_output": expected, "missing": missing}
+    out = {"output_captured": captured, "expected_output": expected, "missing": missing}
+    if expected == "document" and not doc_required:
+        out["document_required"] = False
+    return out
 
 
 # ── text helpers ────────────────────────────────────────────────────────────
@@ -280,10 +290,13 @@ def _appeared(before: str, after: str) -> Tuple[str, str]:
 
 
 def _messages(text: str) -> List[str]:
+    """Status / validation / error lines. A validation message listing every field the app wants can be long (BRD_Agent:
+    16 fields, ~600 characters): one that rejects the input is kept whole."""
     out = []
     for line in text.splitlines():
         line = line.strip()
-        if 3 <= len(line) <= 300 and _MESSAGE.search(line) and line not in out:
+        long_rejection = 300 < len(line) <= 2000 and bool(INPUT_REJECTED.search(line[:300]))
+        if (3 <= len(line) <= 300 and _MESSAGE.search(line) or long_rejection) and line not in out:
             out.append(line)
     return out[:12]
 

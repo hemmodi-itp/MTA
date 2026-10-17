@@ -41,12 +41,22 @@ _TOOL_SIDE = re.compile(r"element not found|unknown action|plan time limit|not r
                         r"target (page|closed)|browser has been closed", re.I)
 _WAIT_LIMIT = re.compile(r"still busy after \d+s", re.I)
 _SETUP_SIDE = re.compile(r"login failed|redirected to the login|session expired|re-login failed", re.I)
+_REJECTED_STEP = re.compile(r"rejected the submitted input: “([^”]+)", re.I)
 _RANK = {"E5": 2, "E4": 1}
 
 
 # an expectation about the app's own input checking: a validation message is then the behaviour under test
 _ABOUT_VALIDATION = re.compile(r"\b(validat\w*|required|mandatory|missing|empty|blank|invalid|reject\w*|not allowed|"
                                r"must (be|contain|have)|error message for (the )?(field|input))\b", re.I)
+
+
+_ID_SEGMENT = re.compile(r"^(\d{3,}|[0-9a-f]{8,}|[0-9a-f]{8}(-[0-9a-f]{4,}){1,4}|\d{8}-\d{6}(-\w+)?|[A-Za-z0-9_-]{20,})$", re.I)
+
+
+def _route(method: Any, path: Any) -> str:
+    """'POST /api/runs/20261017-085202-9dff67/diagrams' → 'POST /api/runs/{id}/diagrams': one endpoint, whichever run."""
+    segs = [("{id}" if _ID_SEGMENT.match(s) else s) for s in str(path or "").split("/")]
+    return f"{method} {'/'.join(segs)}"
 
 
 def server_cutoffs(bundles: Sequence[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
@@ -58,11 +68,11 @@ def server_cutoffs(bundles: Sequence[Dict[str, Any]]) -> Dict[str, Dict[str, Any
     ok: Dict[str, List[int]] = {}
     for b in bundles:
         for n in (b.get("observations") or {}).get("api_ok") or []:
-            ok.setdefault(f"{n['method']} {n['path']}", []).append(n["ms"])
+            ok.setdefault(_route(n["method"], n["path"]), []).append(n["ms"])
     out = {}
     for b in bundles:
         for n in (b.get("observations") or {}).get("api_failures") or []:
-            key, status = f"{n.get('method')} {n.get('path')}", n.get("status") or 0
+            key, status = _route(n.get("method"), n.get("path")), n.get("status") or 0
             if not ok.get(key) or not (status >= 500 or status == 0):
                 continue
             typical = sorted(ok[key])[len(ok[key]) // 2]
@@ -97,9 +107,12 @@ def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint
     judge = v.get("judge")
 
     obs = b.get("observed") or {}
-    produced = bool(obs.get("documents") or obs.get("reply") or (obs.get("http_response") or {}).get("status") in range(200, 300))
-    rejected = next((m for m in (obs.get("messages") or []) + (obs.get("ui_output") or "").splitlines()
-                     if _INPUT_REJECTED.search(m.strip()[:200])), None)
+    produced = bool(obs.get("documents") or obs.get("views") or obs.get("reply")
+                    or (obs.get("http_response") or {}).get("status") in range(200, 300))
+    # the executor ends a positive test whose submit the app rejected with "the app rejected the submitted input: “…”"
+    said = _REJECTED_STEP.search(str(b.get("error") or ""))
+    rejected = next((m for m in ([said.group(1)] if said else []) + (obs.get("messages") or [])
+                     + (obs.get("ui_output") or "").splitlines() if _INPUT_REJECTED.search(m.strip()[:200])), None)
     if (v.get("variant") or "positive") == "positive" and rejected and not produced:
         return _done(out, "inconclusive", None, None, None,
                      [f"The app's validation rejected MTA's test input as incomplete (“{rejected.strip()[:200]}”); "

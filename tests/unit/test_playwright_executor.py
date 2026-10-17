@@ -128,8 +128,52 @@ document.getElementById('go').onclick = () => {
 };
 </script>"""
 
+# BRD_Agent-like full intake (run cmvc4qzw): a hint line that LOOKS like a validation message is on the page from the
+# start; the "Objectives (required)" / "Risks (required)" lists start empty, a "Objectives" section menu link sits
+# elsewhere on the page, and Generate names every empty field in one long message (> 250 characters), then — once
+# complete — moves on to a result page that offers a change-request box
+LISTS = """<!doctype html><title>New Request</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<nav><a href="#obj"><span>Objectives</span></a> <a href="#risk"><span>Risks</span></a></nav>
+<p>Please fill in the details below; leave anything blank or tick "Auto-generate" on a field the AI should infer.</p>
+<div class=form>
+  <div class=field><label for=p>Problem Statement (required)</label><textarea id=p></textarea></div>
+  <div class=field><label for=a>Decision Audience</label><input id=a></div>
+  <div class=field><label for=c>Constraints</label><textarea id=c></textarea></div>
+  <div class=field id=obj><label>Objectives (required)</label><div class=rows></div><button type=button class=add>+ Add</button></div>
+  <div class=field id=risk><label>Risks (required)</label><div class=rows></div><button type=button class=add>+ Add</button></div>
+  <button type=button id=go>Generate Documents</button><div id=out></div>
+</div>
+<script>
+document.querySelectorAll('.add').forEach(b => b.onclick = () => {
+  const i = document.createElement('input'); i.placeholder = b.parentElement.id === 'obj' ? 'Objective' : 'Risk';
+  b.parentElement.querySelector('.rows').appendChild(i); });
+document.getElementById('go').onclick = () => {
+  const empty = [];
+  if (!document.getElementById('a').value.trim()) empty.push('Decision Audience');
+  if (!document.getElementById('c').value.trim()) empty.push('Constraints');
+  if (![...document.querySelectorAll('#obj input')].some(i => i.value.trim())) empty.push('Objectives');
+  if (![...document.querySelectorAll('#risk input')].some(i => i.value.trim())) empty.push('Risks');
+  if (!document.getElementById('p').value.trim()) { document.getElementById('out').innerHTML = '<p class=error>Request failed (500)</p>'; return; }
+  if (empty.length) { document.getElementById('out').innerHTML = '<div class="alert">Please add at least one point to every field ' +
+    'before generating (or mark it "Not applicable" if it genuinely doesn&#39;t apply, which keeps the section out of every ' +
+    'generated document, including the BRD, the TSD, both diagrams and the one-pager): ' + empty.join(', ') + '.</div>'; return; }
+  sessionStorage.setItem('problem', document.getElementById('p').value);
+  location.href = '/result-run';
+};
+</script>"""
+
+RESULT = """<!doctype html><title>Run</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<h1>Documents ready</h1><p id=prob></p><div><h3>Request a change</h3>
+<textarea placeholder="e.g. Add a risk about vendor lock-in"></textarea><button id=apply>Apply Change</button></div><div id=rev></div>
+<script>document.getElementById('prob').textContent = 'Problem: ' + sessionStorage.getItem('problem');
+document.getElementById('apply').onclick = () => { document.getElementById('rev').textContent =
+  'Revision 2 applied: ' + document.querySelector('textarea').value; };</script>"""
+
 PAGES = {"/": LOGIN, "/intake": INTAKE, "/login": LOGIN, "/new": NEW, "/shop": SHOP, "/landing": LANDING, "/late-login": LATE_LOGIN,
-         "/plan": REPEATER, "/broken": BROKEN, "/flaky": "<!doctype html><title>Flaky</title><h1>Back again</h1>"}
+         "/plan": REPEATER, "/broken": BROKEN, "/flaky": "<!doctype html><title>Flaky</title><h1>Back again</h1>",
+         "/lists": LISTS, "/result-run": RESULT}
 _HITS: dict = {}
 
 
@@ -266,7 +310,8 @@ def test_generated_download_found_at_runtime_and_collected_as_evidence(app_url, 
     assert "Your BRD is ready" in b["observed"]["ui_output"] and "Create a BRD" not in b["observed"]["ui_output"]
     doc = b["observed"]["documents"][0]
     assert doc["readable"] and "Problem: Clinic patients cannot book appointments online" in doc["text_excerpt"]
-    assert b["completeness"] == {"output_captured": True, "expected_output": "document", "missing": []}
+    # the test is about the BRD's content: the file is collected as evidence, not required
+    assert b["completeness"] == {"output_captured": True, "expected_output": "document", "missing": [], "document_required": False}
 
 
 def test_login_follows_landing_link_and_waits_for_late_form(app_url):
@@ -352,7 +397,11 @@ def test_same_labelled_boxes_resolve_by_field_and_rejected_input_is_completed(ap
         {"action": "check", "element_id": na_deps["id"]}]}}
     plan = generate_action_plan({"app_type": "Document Generator", "components": []}, prof, [test], proposals=proposal,
                                 has_credentials=True)
-    steps = [s for s in plan["plans"][0]["steps"] if s["action"] != "expect_download"]  # the fixture offers no file
+    # the plan completes Constraints itself (a generating form is submitted complete); drop that to exercise the
+    # executor's own completion of the fields the app names
+    assert any(s.get("synthetic") and (s.get("target") or {}).get("label") == "One item per line" for s in plan["plans"][0]["steps"])
+    steps = [s for s in plan["plans"][0]["steps"] if s["action"] != "expect_download"  # the fixture offers no file
+             and not (s.get("synthetic") and s["action"] == "fill")]
     run = execute_plans(app_url, {"plans": [{**plan["plans"][0], "steps": steps}]}, tmp_path, credentials=CREDS)
     r = run["results"][0]
     assert r["status"] == "completed", r["steps"]
@@ -380,3 +429,46 @@ def test_a_field_mta_cannot_set_does_not_end_the_test(app_url, tmp_path):
     assert st[6]["status"] == "skipped" and [u["field"] for u in r["unset_inputs"]] == ["No such field"]
     assert "MTA filled Constraints" in r["completed_input"]                          # the field the app asked for
     assert "omitted: Dependencies" in r["captures"]["dom_excerpt"]
+
+
+def _lists_plan(problem="Clinic booking is manual", follow_up=None, variant="positive"):
+    steps = [{"action": "goto", "url": "/lists"},
+             {"action": "fill", "target": {"kind": "field", "label": "Problem Statement (required)"}, "value": problem},
+             {"action": "click", "target": {"kind": "button", "text": "Generate Documents"}},
+             {"action": "wait_for", "kind": "settled", "timeout_ms": 30_000}]
+    if follow_up is not None:
+        steps += [{"action": "follow_up", "value": follow_up, "known_labels": ["Problem Statement (required)", "Constraints"],
+                   "box_label": "e.g. Add a risk about vendor lock-in", "submit_text": "Apply Change"},
+                  {"action": "wait_for", "kind": "settled", "timeout_ms": 30_000}]
+    steps += [{"action": "capture", "what": ["dom_text"]}]
+    plan = _one("AP-TC-050", [{**s, "n": i} for i, s in enumerate(steps, 2)])
+    plan["plans"][0]["variant"] = variant
+    return plan
+
+
+def test_a_long_rejection_naming_lists_is_completed_and_the_follow_up_uses_the_results_box(app_url, tmp_path):
+    # BRD_Agent: the app's message listed 16 fields (~600 characters) and MTA ignored it as "too long"; 6 of 20 tests
+    # were rejected. Here: lists behind "+ Add", a same-named menu link, a hint that looks like a validation message.
+    r = execute_plans(app_url, _lists_plan(follow_up="Add a risk about data residency"), tmp_path, credentials=CREDS)["results"][0]
+    assert r["status"] == "completed", r["steps"]
+    assert "Decision Audience" in r["completed_input"] and "Objectives" in r["completed_input"] \
+        and "Risks" in r["completed_input"]
+    assert r["final_url"] == "/result-run" and "Problem: Clinic booking is manual" in r["captures"]["dom_excerpt"]
+    fu = next(s for s in r["steps"] if s["action"] == "follow_up")
+    assert "vendor lock-in" in fu["detail"]                                      # the result's own box, not the form's
+    assert "Revision 2 applied: Add a risk about data residency" in r["captures"]["dom_excerpt"]
+
+
+def test_a_submit_that_fails_ends_the_plan_with_the_apps_words(app_url, tmp_path, monkeypatch):
+    import engines.runtime.executor as executor
+    monkeypatch.setattr(executor, "SERVER_ERROR_COOL_DOWN_S", 0)
+    # no problem statement: the fixture answers "Request failed (500)" on the form page — the plan must not go on to a
+    # follow-up typed into the input form (TC-006/007 of run cmvc4qzw typed their change request into Problem Statement)
+    r = execute_plans(app_url, _lists_plan(problem="", follow_up="Add a risk"), tmp_path, credentials=CREDS)["results"][0]
+    assert r["status"] == "failed" and r["failed_step"] == 5, r["steps"]
+    assert r["error"].startswith("the app reported an error instead of a result: “Request failed (500)”")
+    assert [s["status"] for s in r["steps"] if s["action"] == "follow_up"] == ["skipped"]
+    assert r["attempts"] == 3 and "Request failed (500)" in r["first_attempt_error"]  # a server error earns 2 re-runs
+    # a negative test expects the app to refuse: its submit outcome is evidence, not a stop
+    neg = execute_plans(app_url, _lists_plan(problem="", variant="negative"), tmp_path / "neg", credentials=CREDS)["results"][0]
+    assert neg["status"] == "completed" and "Request failed (500)" in neg["captures"]["dom_excerpt"]

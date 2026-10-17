@@ -95,12 +95,29 @@ class ActionGenerationAgent(BaseAgent):
         size = BATCH_LARGE_FORM if max((len(f["fields"]) for f in inv["forms"].values()), default=0) >= 15 else BATCH
         batches = [tests[i:i + size] for i in range(0, len(tests), size)]
         out: Dict[str, Dict[str, Any]] = {}
+
+        def take(replies: List[dict]) -> None:
+            for p in replies:
+                if isinstance(p, dict) and p.get("test_code"):
+                    out[str(p["test_code"]).strip().upper()] = p
+
+        failed: List[str] = []
         with ThreadPoolExecutor(max_workers=min(4, len(batches))) as pool:
             for fut in [pool.submit(ask, b) for b in batches]:
                 try:
-                    for p in fut.result():
-                        if isinstance(p, dict) and p.get("test_code"):
-                            out[str(p["test_code"]).strip().upper()] = p
+                    take(fut.result())
                 except Exception as exc:
-                    emit(f"Gemini action mapping failed for one batch ({exc}); rules used for it.", "warning")
+                    failed.append(str(exc)[:160])
+        # a test the batches lost (the call failed, or the reply skipped it) is mapped on its own once: the rules can
+        # only fill the form, while the model also picks the right inputs and checkboxes for what the test is about
+        missing = [t for t in tests if str(t.get("code") or "").upper() not in out]
+        if missing:
+            emit(f"Mapping {len(missing)} test(s) one at a time" + (f" (a batch call failed: {failed[0]})" if failed else "") + ".",
+                 "warning" if failed else "info")
+            with ThreadPoolExecutor(max_workers=min(4, len(missing))) as pool:
+                for t, fut in [(t, pool.submit(ask, [t])) for t in missing]:
+                    try:
+                        take(fut.result())
+                    except Exception as exc:
+                        emit(f"Gemini could not map {t.get('code')} ({str(exc)[:160]}); the rules map it.", "warning")
         return out

@@ -24,9 +24,10 @@ It makes no LLM calls; the logic is in `engines/verdict/passfail.py`.
 
 ## Test verdict rules (in order)
 1. **Not validatable → `not_executed`.** Blocked, not mappable, or out of time. The reason is kept.
-   - **Input rejected → `inconclusive`.** A positive test that produced nothing, where the app's own validation rejected the input
-     ("Please add…", "X is required", "cannot be empty", "at least one … before"). MTA's test data was incomplete; this is not an
-     app defect.
+   - **Input rejected → `inconclusive`.** A positive test that produced nothing (no document, no on-screen result tab, no
+     reply, no 2xx), where the app's own validation rejected the input ("Please add…", "X is required", "cannot be empty",
+     "at least one … before") — on the page, or in the executor's `the app rejected the submitted input: “…”` step error.
+     MTA's test data was incomplete; this is not an app defect.
 2. **The flow stopped early.**
    - The live app could not be reached (`net::ERR_…`, connection refused or reset, "Failed to fetch", a gateway 502/503/504
      opening a page) → `inconclusive`. An outage says nothing about the requirement, so it never refutes a criterion. A server
@@ -34,7 +35,8 @@ It makes no LLM calls; the logic is in `engines/verdict/passfail.py`.
    - **Cut off by a server timeout → `inconclusive`.** The test produced nothing and one of the app's calls failed with a
      5xx, or a dropped connection, no earlier than the endpoint's typical (median) 2xx elsewhere in the run and
      after at least 5 s (e.g. `POST /api/generate` → 500 at 181 s while successes typically took 119 s). A request timeout in the app's stack interrupted it, not the feature under test (a crash
-     answers fast, and stays `failed`). Not applied when the expectation states a time limit. The run reports each such
+     answers fast, and stays `failed`). Not applied when the expectation states a time limit. Endpoints are grouped by
+     route: generated ids in the path count as one endpoint (`POST /api/runs/{id}/diagrams`). The run reports each such
      endpoint once in `reliability`, and Compliance Scoring turns it into a critical reliability recommendation.
    - **The test's own input could not all be set.** The judge found a shortfall, but a field the test itself specified
      could not be set (`unset_inputs`, not MTA's filler) → `inconclusive`.

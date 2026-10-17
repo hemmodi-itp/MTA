@@ -56,9 +56,12 @@ run (unlike the workspace), and served to the run's viewers by `GET /api/runs/:r
    - `wait_for`: no loading indicator, page text stable for 3 s, and requests finished. A short status line counts as busy
      too, for example "Generating your documents — this usually takes 30–90 seconds…", "Please wait", "Processing…". Longer
      generated content that merely mentions "processing" does not.
-   - `follow_up`: after generating, types the step's value into the input that appeared with the result (labels such as
-     change, revise, feedback or request are preferred; the original form's fields are skipped), presses the nearby
-     revise/apply/submit button, and waits again.
+   - `follow_up`: after generating, types the step's value into the box the result offers: the one discovery saw on an
+     earlier result (`box_label`), else one labelled like a change request (change, revise, feedback, request…), else —
+     only once the app has moved on from the input form — a box that is not one of the form's own fields (compared by
+     the label discovery would give it). It presses the result's own button (`submit_text`, e.g. "Apply Change"), else
+     the nearby revise/apply/submit button, and waits again. With no result to act on (the submit was rejected or failed)
+     it fails with the app's message instead of typing into the input form.
    - `expect_download`: saves the file, with size, sha256 and type; an empty file fails. With an `auto` target:
      - **Tabbed results** (`role=tab`, `data-tab`, or tab-style button classes; 2–12 tabs, such as BRD / TSD / Flowchart): MTA
        opens every tab, saves its text and a screenshot as a result view, and uses that tab's download/export control.
@@ -73,15 +76,25 @@ run (unlike the workspace), and served to the run's viewers by `GET /api/runs/:r
 6. **Incomplete input.** When a positive test's submit is rejected by the app's own validation and the message names the
    fields it wants ("Please add at least one point to every field …: Constraints."), MTA fills those fields' empty boxes with
    synthetic data (first adding a list row if the list has none) and submits once more, up to 2 rounds when the app names
-   further fields. The `wait_for` step records what was completed; the result carries it as `completed_input`.
+   further fields. Such a message may be long (BRD_Agent named 16 fields, ~600 characters): error-shaped messages up to
+   2000 characters count. Only messages that appeared since the submit count — a hint already on the page ("Please fill in
+   the details below") is not a rejection. A named field's block is the smallest one under that name holding a box or a
+   "+ Add" button, so a same-named menu link never claims the whole form. The `wait_for` step records what was completed; the result carries it as `completed_input`.
    A field MTA cannot set (not found, not fillable) never ends the test: the step is skipped, listed in `unset_inputs`, and
    the test goes on to submit. A field the app has disabled (e.g. after its "Not applicable" box was ticked) is left as is.
-7. **Outages.** A plan that cannot reach the app (`net::ERR_…`, "Failed to fetch", gateway 502/503/504) pauses the run. One
-   worker polls the live URL for up to 5 minutes while the others wait. The plan then runs once more, alone. A plan that hit a
-   server error (shown on the page, or a 5xx answered to one of the app's own API calls) also runs once more, alone. A re-run
-   that never starts (budget spent, run cancelled) keeps the first attempt's result. A plan the app's AI provider refused for quota
-   (`429` / `RESOURCE_EXHAUSTED`) pauses every worker for a 90 s cool-down, then runs once more, alone. Each case drops the
-   rest of the run to one plan at a time. The first attempt's error is kept as `first_attempt_error`, and the run reports `app_outages` and `retried`. If the
+   **Did the submit produce a result?** After a positive test's submit settles, if the page is still the one the submit
+   happened on and shows a new rejection, or a server / network / quota error ("Request failed (500)", "Failed to fetch"),
+   the `wait_for` step fails with `the app rejected the submitted input: “…”` / `the app reported an error instead of a
+   result: “…”`. The plan stops there rather than acting on a result that does not exist.
+7. **Outages and re-runs.** A plan that cannot reach the app (`net::ERR_…`, "Failed to fetch", gateway 502/503/504) pauses the
+   run. One worker polls the live URL for up to 5 minutes while the others wait. The plan then runs again, alone. A plan
+   that hit a server error (shown on the page, or a 5xx answered to one of the app's own API calls) also runs again, alone;
+   before its second re-run every worker pauses 45 s so the app's backend can recover. A plan the app's AI provider
+   refused for quota (`429` / `RESOURCE_EXHAUSTED`) pauses every worker for a 90 s cool-down, then runs again, alone. Each of
+   these earns up to 2 re-runs (`RERUNS`); a plan MTA could not drive (element not found, a crashed browser run) earns 1. A
+   re-run that never starts (budget spent, run cancelled) keeps the latest attempt's result. Each case drops the rest of
+   the run to one plan at a time. The result keeps `first_attempt_error` and `attempts`, and the run reports
+   `app_outages` and `retried`. If the
    app stays down, the run carries on without waiting, and those plans' verdicts are inconclusive.
 
 ## Failure modes

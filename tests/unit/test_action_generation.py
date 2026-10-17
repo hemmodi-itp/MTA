@@ -37,7 +37,9 @@ def test_document_generator_rules_plan_is_complete_and_grounded():
     fills = {s["target"]["label"]: s.get("value") for s in p["steps"] if s["action"] in ("fill", "select")}
     assert fills["Problem statement"] == "A clinic needs online appointment booking"  # test input in the matching field
     assert fills["Project name"] and fills["Audience"] == "Executives"                  # required fields completed
-    assert "Notes" not in fills                                                         # optional field left alone
+    assert fills["Notes"]                                                # a generating form is submitted complete
+    dl = next(s for s in p["steps"] if s["action"] == "expect_download")
+    assert dl["optional"] is True                    # the test is about the content, not the file: files are evidence
     acts = _actions(p)
     assert acts.index("click") < acts.index("wait_for") < acts.index("expect_download") < acts.index("capture")
     assert p["steps"][-1]["action"] == "assert" and p["steps"][-1]["kind"] == "judge"
@@ -143,7 +145,7 @@ def test_label_only_required_fields_are_completed_with_sensible_data():
     filled = {s["target"]["label"]: s.get("value") for s in p["steps"] if s["action"] == "fill"}
     assert set(filled) >= {"Project Name (required)", "Problem Statement (required)", "Doc ID Acronym (required)",
                            "Tech Stack Preferences (required)", "Data Flow Steps (required)"}
-    assert "Constraints" not in filled                                  # optional stays empty
+    assert filled["Constraints"] == "Must run on the team's existing cloud account."  # a generating form: complete
     assert filled["Doc ID Acronym (required)"] == "MTA" and "Python" in filled["Tech Stack Preferences (required)"]
     assert filled["Data Flow Steps (required)"].startswith("1.")
     assert not any("(required)" in (v or "").lower() for v in filled.values())
@@ -191,7 +193,7 @@ def test_mta_fills_required_fields_itself_and_demo_data_is_only_a_fallback():
     acts = [(s["action"], (s.get("target") or {}).get("text") or (s.get("target") or {}).get("label")) for s in p["steps"]]
     assert not any(s.get("purpose") == "prefill demo data" for s in p["steps"])
     filled = {label for act, label in acts if act == "fill"}
-    assert {"Problem Statement (required)", "Data Flow Steps (required)"} <= filled and "Constraints" not in filled
+    assert {"Problem Statement (required)", "Data Flow Steps (required)", "Constraints"} <= filled
     assert next(s for s in p["steps"] if (s.get("target") or {}).get("label") == "Problem Statement (required)")["value"] ==         "Clinics cannot book online"                                                     # the test's own value
     neg = generate_action_plan(cls, prof, [_test(variant="negative", text="")])["plans"][0]
     assert not any(s.get("purpose") == "prefill demo data" or s.get("synthetic") for s in neg["steps"])  # stays incomplete
@@ -294,3 +296,124 @@ def test_a_negative_change_request_test_generates_first_then_submits_it_empty():
     assert acts.index("click") < acts.index("wait_for") < acts.index("follow_up")       # generate, then the follow-up
     assert next(s for s in p["steps"] if s["action"] == "follow_up")["value"] == ""
     assert any(s.get("synthetic") for s in p["steps"])                                 # the form is completed to generate
+
+
+# ── complete submissions, result follow-ups, untestable tests ───────────────
+
+def _lists_profile():
+    """A BRD_Agent-like generating form: two list sections behind "+ Add" (one required), per-field "Auto-generate"
+    boxes, and a run page (an earlier result) offering a change-request box."""
+    prof, cls = _brd_agent_like(demo=False)
+    form = next(p for p in prof["pages"] if p["path"] == "/new")["forms"][0]
+    form["fields"] += [
+        {"label": "Auto-generate / enrich", "name": "", "tag": "input", "type": "checkbox", "required": False,
+         "readonly": False, "options": None, "group": "Objectives"},
+        {"label": "Auto-generate / enrich", "name": "", "tag": "input", "type": "checkbox", "required": False,
+         "readonly": False, "options": None, "group": "Constraints"},
+        {"label": "Objective", "name": "", "tag": "input", "type": "text", "required": False, "readonly": False, "options": None,
+         "revealed_by": {"text": "+ Add", "nth": 0, "context": "", "required": True, "section": "Objectives"}},
+        {"label": "Section Title", "name": "", "tag": "input", "type": "text", "required": False, "readonly": False,
+         "options": None, "revealed_by": {"text": "+ Add", "nth": 1, "context": "", "section": "Additional Sections"}},
+    ]
+    run = _summarise_page(_raw("/runs/20261017-082842-b05a14", buttons=["Download DOCX", "Apply Change"],
+                               inputs=[_field("e.g. Add a risk about vendor lock-in", "textarea")],
+                               forms=[{"kind": "virtual", "action": "", "method": "", "buttons": ["Apply Change"],
+                                       "fields": [_field("e.g. Add a risk about vendor lock-in", "textarea")]}]))
+    prof["pages"].append(run)
+    return prof, cls
+
+
+def _by_label(plan):
+    return {(s.get("target") or {}).get("label"): s for s in plan["steps"] if s["action"] in ("fill", "select", "check")}
+
+
+def test_a_positive_test_submits_the_whole_form_but_not_optional_lists():
+    prof, cls = _lists_profile()
+    p = generate_action_plan(cls, prof, [_test(text="Problem Statement: Clinics cannot book online")])["plans"][0]
+    by = _by_label(p)
+    assert by["Constraints"]["synthetic"] and by["Constraints"]["value"]          # optional text field: completed
+    assert by["Objective"]["value"] == "Cut the time to get a request approved by half."  # row of a REQUIRED list
+    assert "Section Title" not in by                                            # optional list stays empty
+    assert "Auto-generate / enrich" not in by                                   # never ticks a box on its own
+    acts = [(s["action"], (s.get("target") or {}).get("text") or (s.get("target") or {}).get("label")) for s in p["steps"]]
+    assert acts.index(("click", "+ Add")) < acts.index(("fill", "Objective"))   # the row is added first
+    # a plain search / filter form keeps its optional fields empty (an extra filter would empty the result)
+    search = {"login": {"succeeded": True}, "pages": [{"path": "/orders", "forms": [{"fields": [
+        {"label": "Customer", "type": "text"}, {"label": "Status", "type": "text"}], "submit_button": "Search",
+        "buttons": ["Search"]}], "buttons": ["Search"]}]}
+    sp = generate_action_plan({"app_type": "Form Application", "components": []}, search,
+                              [{**_test(text="Customer: Alex"), "title": "Orders are found by customer"}])["plans"][0]
+    assert "Status" not in _by_label(sp)
+    # a data-entry form: required fields completed, optional ones (a promo code!) left as a user would leave them
+    signup = {"login": {"succeeded": True}, "pages": [{"path": "/register", "forms": [{"fields": [
+        {"label": "Full name", "type": "text", "required": True}, {"label": "Promo code", "type": "text"},
+        {"label": "Company", "type": "text"}], "submit_button": "Register", "buttons": ["Register"]}], "buttons": ["Register"]}]}
+    rp = generate_action_plan({"app_type": "Form Application", "components": []}, signup,
+                              [{**_test(text="Email: a@b.c"), "title": "A user can register"}])["plans"][0]
+    assert set(_by_label(rp)) == {"Full name"}
+    # even on a generating form a code-like field is never guessed
+    prof["pages"][0]["forms"][0]["fields"].append({"label": "Referral code", "type": "text", "required": False})
+    gp = generate_action_plan(cls, prof, [_test(text="Problem Statement: Clinics cannot book online")])["plans"][0]
+    assert "Referral code" not in _by_label(gp)
+
+
+def test_a_field_whose_auto_generate_box_the_test_ticks_is_left_to_the_app():
+    prof, cls = _lists_profile()
+    text = "Project Name: Clinic\nConstraints: Auto-generate / enrich: checked\nObjective: Auto-generate / enrich: checked"
+    p = generate_action_plan(cls, prof, [_test(text=text)])["plans"][0]
+    checks = [(s["target"]["label"], s["target"].get("group")) for s in p["steps"] if s["action"] == "check"]
+    assert ("Auto-generate / enrich", "Constraints") in checks
+    assert ("Auto-generate / enrich", "Objectives") in checks                    # "Objective" names the "Objectives" box
+    assert not any(s["action"] == "fill" and s["target"].get("label") == "Constraints" for s in p["steps"])
+
+
+def test_literal_backslash_n_inputs_still_fill_their_fields():
+    prof, cls = _brd_agent_like()
+    text = "Scenario: generate.\\nProject Name: Clinic Booking\\nTech Stack Preferences: Django"
+    p = generate_action_plan(cls, prof, [_test(text=text)])["plans"][0]
+    by = _by_label(p)
+    assert by["Project Name (required)"]["value"] == "Clinic Booking" and not by["Project Name (required)"].get("synthetic")
+    assert by["Tech Stack Preferences (required)"]["value"] == "Django"
+
+
+def test_revise_test_sends_its_own_change_request_through_the_results_box():
+    prof, cls = _lists_profile()
+    t = {"id": "r", "code": "TC-006", "title": "Submit free-text change request for iterative document revision",
+         "variant_type": "positive", "expected_behavior": "The revision pipeline updates the deliverables",
+         "input": "Scenario: Generate, then revise.\nProject Name: Revision Test\nChange Request: Include OAuth2 authentication."}
+    # the model mapped the form; the follow-up (on a page it never saw) still comes from the rules
+    els = build_inventory(prof)["elements"]
+    pid = next(e["id"] for e in els.values() if e.get("label") == "Project Name (required)")
+    prop = {"TC-006": {"applicable": True, "steps": [{"action": "fill", "element_id": pid, "value": "Revision Test"}]}}
+    p = generate_action_plan(cls, prof, [t], proposals=prop)["plans"][0]
+    fu = next(s for s in p["steps"] if s["action"] == "follow_up")
+    assert fu["value"] == "Include OAuth2 authentication."                         # not the whole multi-line input
+    assert fu["box_label"] == "e.g. Add a risk about vendor lock-in" and fu["submit_text"] == "Apply Change"
+    acts = [s["action"] for s in p["steps"]]
+    assert acts.index("click") < acts.index("wait_for") < acts.index("follow_up")
+    no_request = {**t, "code": "TC-007", "input": "Scenario: Generate, then revise.\nProject Name: Revision Test"}
+    fu2 = next(s for s in generate_action_plan(cls, prof, [no_request])["plans"][0]["steps"] if s["action"] == "follow_up")
+    assert fu2["value"] == "Add a risk about vendor lock-in to the risks section."  # a small, harmless default
+
+
+def test_history_test_collects_files_on_the_result_before_leaving_it():
+    prof, cls = _lists_profile()
+    t = {"id": "h", "code": "TC-017", "title": "Produce new revision without losing original run output",
+         "variant_type": "positive", "input": "Project Name: Version Suite",
+         "expected_behavior": "A new revision run is created while the original run remains in run history."}
+    p = generate_action_plan(cls, prof, [t])["plans"][0]
+    acts = [(s["action"], s.get("url")) for s in p["steps"]]
+    dl = next(i for i, (a, _) in enumerate(acts) if a == "expect_download")
+    assert dl < acts.index(("goto", "/history"))                                  # TC-017 waited for a file on /dashboard
+    assert p["steps"][dl]["optional"] is True                                    # history is the point, not the file
+
+
+def test_a_test_that_needs_a_fault_injected_is_never_mapped():
+    prof, cls = _brd_agent_like()
+    t = {**_test(text="Scenario: Submit document generation request during transient LLM API rate-limit or timeout event."),
+         "title": "LLM generation failure capture and retry mechanisms"}
+    p = generate_action_plan(cls, prof, [t])["plans"][0]
+    assert p["status"] == "unmappable" and "judged from the code" in p["reason"]
+    ok = generate_action_plan(cls, prof, [_test(text="Problem Statement: The form shows an error message when a "
+                                                     "required field is empty")])["plans"][0]
+    assert ok["status"] == "ready"                                              # an ordinary validation test is not a fault

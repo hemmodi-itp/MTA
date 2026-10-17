@@ -55,7 +55,16 @@ def test_retry_reason():
         {"method": "POST", "path": "/api/generate", "status": 500, "ms": 180234}]}}
     assert _retry_reason(cut, 1) == "server_error"                                  # a 5xx seen only on the wire
     assert _retry_reason({"status": "completed"}, 2) is None
-    assert _retry_reason({"status": "failed", "error": "element not found on /new"}, 2) is None
+    assert _retry_reason({"status": "failed", "error": "element not found on /new"}, 2) == "locator"  # MTA's miss: one more look
+    assert _retry_reason({"status": "failed", "error": "the app rejected the submitted input: “Please add…”"}) is None
+    assert executor.RERUNS["server_error"] == 2 and executor.RERUNS["locator"] == 1
+
+
+def test_cool_down_says_why(monkeypatch):
+    said = []
+    h = _AppHealth("http://127.0.0.1:9/", lambda m, *a: said.append(m))
+    h.cool_down(1.1, "the app keeps answering with server errors")
+    assert h.wait_up() and said[0].startswith("The app keeps answering with server errors; pausing")
 
 
 def _closed_port_url():

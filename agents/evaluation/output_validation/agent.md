@@ -32,11 +32,11 @@ The step is skipped for `brd_only`, or with no bundles.
 | id | When | Weight |
 |---|---|---|
 | `executed` | always | core |
-| `document_produced` | a document is expected (positive tests) | core |
+| `document_produced` | a document is expected (positive tests). Core when the test is about the file (its download step is required); supporting when the files are only collected as evidence of an on-screen result, and left out when nothing downloaded but the result's tabs were captured | core / supporting |
 | `document_readable` | a document was downloaded | supporting |
-| `document_not_empty` | the document has at least 50 words | supporting |
+| `document_not_empty` | the output has at least 50 words: the downloaded text documents, else the result's on-screen tabs (diagram images never count as "0 words") | supporting |
 | `document_format` | the expectation names a format (Word/DOCX, PDF, Excel, PowerPoint, Markdown, CSV) | core |
-| `input_reflected` | at least half the distinctive words the test entered (filler test data excluded) appear in the document | supporting |
+| `input_reflected` | at least half the distinctive words the test entered (filler test data excluded) appear in the output (text documents and on-screen tabs) | supporting |
 | `reply_present`, `reply_not_error` | chat tests; `reply_not_error` looks for tracebacks, "something went wrong" and similar | core, supporting |
 | `http_2xx` | API tests | core |
 | `page_changed` | positive page-output tests (new or re-ordered content, or a message) | core |
@@ -46,9 +46,13 @@ The step is skipped for `brd_only`, or with no bundles.
 | `time_limit` | the expectation states a limit ("within 30 seconds", "under 500 ms"), measured on the slowest API call, else the whole test | core |
 
 ## Semantic judge
-- **Batching.** Tests go to Gemini 4 at a time, 3 batches in parallel, at temperature 0, with a structured-output schema.
+- **Batching.** Tests go to Gemini 3 at a time, 3 batches in parallel, at temperature 0, with a structured-output schema.
+- **No test left unjudged.** A test whose batch call failed (timeout, dropped connection) or whose judgement the reply left
+  out is judged on its own, with one retry after 10 s. Only a test that still has no judgement keeps `judge_error`.
 - **What the judge sees.** For each test: the criterion, expected behaviour, pass criteria and the inputs entered, plus the observed
-  output — the reply, page output, messages, HTTP response, or up to 12k characters of each downloaded document's full extracted text.
+  output — the reply, page output, messages, HTTP response, up to 12k characters of each downloaded document's full extracted
+  text, and the result's on-screen tabs without the navigation every tab repeats. A tab whose text a downloaded document
+  already carries (the BRD tab and BRD.docx) is sent once.
 - **Per-item results.** Each pass criterion (or 1–4 items split from the expected behaviour) is judged `met`, `not_met` or `cannot_tell`.
 - **Grounding.** Every `met` must quote the output verbatim, and `ground_judgement` checks the quote against the observed text.
   - A quote that can't be found makes the item `cannot_tell`, counted in `ungrounded_quotes`.
@@ -57,6 +61,7 @@ The step is skipped for `brd_only`, or with no bundles.
 - **Negative tests.** For negative, security and robustness tests, `met` means the app refused or safely handled the input.
 
 ## Failure modes
-- **A batch fails:** that batch's tests keep their deterministic checks, with `judge_error` set.
+- **A batch fails:** its tests are judged one by one; any test the judge still cannot answer keeps its deterministic checks,
+  with `judge_error` set.
 - **No LLM connector:** deterministic checks only, and the step reports `partial`.
 - **Not-executed bundles:** they become `not_validatable` with the reason.

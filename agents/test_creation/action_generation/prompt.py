@@ -40,12 +40,15 @@ For EACH test, one plan: {"test_code", "applicable", "reason", "steps": [{"actio
 - fill: text fields (value = the text). select: a field with options (value MUST be one of its options).
   check: checkbox/radio. upload: file field (value = short description of the file needed).
   click: a button or link. send_message: chat box (value = the message). expect_download: a download/export button or link.
-- Positive tests on a form: give a value for EVERY text / textarea field of that form (required or not, every
-  list or repeater input too), all describing ONE coherent, realistic scenario built from the test's input — the
-  same project, product, people and numbers throughout. Many apps validate that every field has content, and a
-  generator's output is only judgeable if the whole input tells one story. Put the test's own input in the fields it
-  is about; derive the rest consistently from it. Leave "not applicable", "omit" and "auto-generate" checkboxes
-  unchecked unless the test is about them. The engine then clicks the form's submit button and waits for the result.
+- Positive tests on a form: give a value for EVERY text / textarea field of that form (required or not), and for the
+  rows of every list marked required (list_row fields with required=true), all describing ONE coherent, realistic
+  scenario built from the test's input — the same project, product, people and numbers throughout. Many apps validate
+  that every field has content, and a generator's output is only judgeable if the whole input tells one story. Put the
+  test's own input in the fields it is about; derive the rest consistently from it. Leave optional lists (e.g.
+  "Additional Sections") empty unless the test is about them. Leave "not applicable", "omit" and "auto-generate"
+  checkboxes unchecked unless the test is about them. The engine then clicks the form's submit button and waits.
+- Keep every value SHORT: one phrase or sentence (under ~150 characters), one row per list. Long inputs make a
+  generator slow and can push it past its own time limit, which turns a feature test into a timeout.
   Add expect_download when the test is about the generated file. Negative / security / robustness tests: set exactly the inputs that make the test negative
   (e.g. leave a required field empty by omitting it, or enter the malicious text); then click the submit button.
 - Fields listed with a "group" (e.g. many "Not applicable" or "Auto-generate" checkboxes with the same label) belong
