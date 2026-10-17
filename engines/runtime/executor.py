@@ -72,6 +72,10 @@ SLOWDOWN_FACTOR = 1.8
 PLAN_TIMEOUT_S = 900   # a revise test generates twice; document generators take minutes
 BUDGET_S = 3600
 SERIAL_BUDGET_S = 5400  # one plan at a time (heavy server-side generation) needs a longer overall budget
+# Every plan's FIRST run always starts: the budget above only limits re-runs. This hard cap is the one exception, so the
+# executor always returns before the pipeline step's own deadline (workflows/agent_evaluation.yaml playwright_executor
+# timeout_s, which drops a late result whole): a plan that would start after it is reported, never silently dropped.
+HARD_BUDGET_S = 12_600
 LOCATE_TIMEOUT_MS = 20_000
 DOWNLOAD_LOCATE_TIMEOUT_MS = 30_000
 DOWNLOAD_TIMEOUT_MS = 90_000
@@ -360,7 +364,8 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
     for p in plans:
         todo.put(p)
     results: Dict[str, Dict[str, Any]] = {}
-    deadline = started + budget_s
+    deadline = started + budget_s                           # re-runs start only before this
+    hard_deadline = started + max(budget_s, HARD_BUDGET_S)  # first runs start before this (always, in practice)
     total = len(plans)
     started_count = [0]
     exec_started = time.monotonic()
@@ -405,9 +410,13 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
                         finish(plan, first_results.get(plan["plan_id"])  # a pending re-run keeps its first attempt
                                or _blocked(plan, "the run was cancelled before this test started", status="not_run"))
                         continue
-                    if time.monotonic() > deadline:
-                        finish(plan, first_results.get(plan["plan_id"])
-                               or _blocked(plan, "the execution time budget ran out before this plan started", status="not_run"))
+                    if plan["plan_id"] in retried and time.monotonic() > deadline:
+                        tries = retried[plan["plan_id"]]  # a re-run past the budget: the latest attempt stands
+                        finish(plan, {**first_results[plan["plan_id"]], "first_attempt_error": tries[0], "attempts": len(tries)})
+                        continue
+                    if time.monotonic() > hard_deadline:
+                        finish(plan, _blocked(plan, f"the run reached MTA's hard execution limit ({HARD_BUDGET_S // 60} "
+                                                    "min) before this plan started", status="not_run"))
                         continue
                     code = plan.get("test_code") or plan["plan_id"]
                     is_retry = plan["plan_id"] in retried
@@ -426,7 +435,8 @@ def execute_plans(live_url: str, action_plan: Optional[Dict[str, Any]], artifact
                                 k = started_count[0]
                             say(f"Test {k}/{total}: {code} — {(plan.get('title') or '')[:120]}"
                                 + (" (alone: timing-sensitive)" if exclusive and n_threads > 1 else ""))
-                        remaining = max(60, int(deadline - time.monotonic()))
+                        # a first run gets its full time limit (the budget only limits re-runs), within the hard cap
+                        remaining = max(60, int((deadline if is_retry else hard_deadline) - time.monotonic()))
                         res = _run_plan(browser, live_url, plan, artifact_dir / _safe(plan["plan_id"]), fixtures,
                                         storage_state, credentials, min(plan_timeout_s, remaining), cancel_event, say)
                         ran_with = max(ran_with, slots.active)

@@ -187,6 +187,8 @@ def _identity(r: Dict, plan: Dict, test: Dict, statements: Dict) -> Dict[str, An
         "class": r.get("class") or plan.get("class"),
         "kind": r.get("kind") or plan.get("kind") or "brd_test", "scored": bool(r.get("scored", plan.get("scored", True))),
         "test_input": test.get("input"), "expected_behavior": test.get("expected_behavior"),
+        # MTA could only run the closest equivalent of this test (its setup cannot be created through the UI)
+        "proxy": plan.get("proxy"),
     }
 
 

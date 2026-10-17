@@ -42,7 +42,10 @@ run (unlike the workspace), and served to the run's viewers by `GET /api/runs/:r
    time, with a 90-minute budget: parallel generations on one container slow each other down and would distort timing
    requirements. Steps marked `optional` are skipped, not failed, when their element is missing. Elements are located for up
    to 20 s. Generation waits are up to 300 s. BRD tests run first and unscored flow checks last. A plan has a time
-   limit, and plans that never start inside the overall budget are reported as `not_run`.
+   limit. **Every plan's first run always starts:** the overall budget (60 min, 90 min for a document generator) only
+   limits re-runs, which queue behind every first run. The only cap is `HARD_BUDGET_S` (210 min), kept below the pipeline
+   step's own deadline (230 min) so a long run is never cut off and lost; a plan that would start after it is
+   `not_run`, with that reason.
 3. **Targets.** Fields and buttons are found in the page with the same label, name, card-context and position rules discovery used to
    describe them, so the executor clicks the element discovery saw. Playwright label, placeholder and role locators are the fallback.
    Checkboxes that share one label across fields (a "Not applicable" or "Auto-generate" box per field) carry a `group`, the title

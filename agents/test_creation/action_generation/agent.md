@@ -49,7 +49,13 @@ A target carries `label`, `name`, `type`, `text`, plus `nth` and `context` for r
    - Dashboard: open the page and check that a chart or table is visible;
    - REST API: POST the input to the documented endpoint.
 
-   If nothing matches, the test is `unmappable` with a reason. It is never padded into an empty plan.
+   **Every generated test gets a ready plan.** When Gemini says a test is not applicable and no rule maps it, or a test
+   needs a failure injected (`needs_fault`), the plan is the closest action the live app offers — the class rules, else
+   the chat box, the main form (the test's "Label: value" lines, else its input in the best free-text field), else the
+   page whose title / headings best match the test — and carries `proxy` with the reason. A fault test runs as a
+   normal, complete use of the feature (`variant: positive`). The judge is told it ran an approximation, and Pass/Fail
+   never turns a proxy's shortfall into a failure. `unmappable` remains only when the app offers nothing at all
+   (no element, no page, no endpoint).
 5. **Completion.** Every ready plan gets:
    - `login` first, when discovery logged in;
    - `goto`;
@@ -117,8 +123,8 @@ A target carries `label`, `name`, `type`, `text`, plus `nth` and `context` for r
   - preview and timing: the result page is captured and timed.
   When Gemini mapped the form, these after-result steps are still added from the rules (the model never sees the result
   page). Plans built entirely by the rules are marked `source: rules`.
-- **Never run a test that needs a fault.** A test whose setup needs the app's LLM / API / network to fail, a rate limit or a
-  timeout, or load, is `unmappable` with that reason: an ordinary submission would only pretend to test it.
+- **A test that needs a fault still runs.** A test whose setup needs the app's LLM / API / network to fail, a rate limit
+  or a timeout, or load, runs as an ordinary use of the feature, marked `proxy` (see Rules fallback).
 - **Never pressed:** sign-out and destructive controls (log out, sign out, delete account, deactivate, unsubscribe) are left out
   of the inventory.
 

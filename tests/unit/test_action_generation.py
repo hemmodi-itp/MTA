@@ -73,11 +73,16 @@ def test_llm_proposal_validated_against_inventory():
     assert audience["value"] == "Executives" and audience["synthetic"]  # the bad select was replaced by valid data
 
 
-def test_llm_inapplicable_test_is_reported_not_faked():
+def test_a_test_the_model_declined_still_runs_marked_as_an_approximation():
+    # every generated test runs: the closest action the app offers, never "not testable"; the proxy note tells the judge
+    # and Pass/Fail (a shortfall is then not held against the app)
     prof = _docgen_profile()
     plan = generate_action_plan(classify(prof), prof, [_test()],
                                 proposals={"TC-001": {"applicable": False, "reason": "latency claim", "steps": []}})
-    assert plan["plans"][0]["status"] == "unmappable" and plan["plans"][0]["reason"] == "latency claim"
+    p = plan["plans"][0]
+    assert p["status"] == "ready" and p["proxy"].startswith("latency claim") and plan["counts"]["proxy"] == 1
+    acts = _actions(p)
+    assert "fill" in acts and acts.index("click") < acts.index("wait_for")     # the form is filled and submitted
 
 
 def test_chatbot_plan_sends_the_message_and_captures_reply():
@@ -174,7 +179,9 @@ def test_generate_then_act_for_export_revise_and_history():
     hist = [s for s in plans["TC-016"]["steps"] if s["action"] == "goto"]
     assert [s["url"] for s in hist] == ["/new", "/history"]
     neg = generate_action_plan(cls, prof, [{**tests[0], "variant_type": "negative"}], proposals={"TC-008": proposals["TC-008"]})
-    assert neg["plans"][0]["status"] == "unmappable"                    # negative tests are never re-mapped
+    np_ = neg["plans"][0]
+    assert np_["status"] == "ready" and np_["proxy"] and np_["variant"] == "negative"  # runs, as its closest equivalent
+    assert not any(s.get("synthetic") for s in np_["steps"])            # still a negative submission
 
 
 def test_login_failure_is_reported_as_such_not_as_missing_account():
@@ -408,12 +415,16 @@ def test_history_test_collects_files_on_the_result_before_leaving_it():
     assert p["steps"][dl]["optional"] is True                                    # history is the point, not the file
 
 
-def test_a_test_that_needs_a_fault_injected_is_never_mapped():
+def test_a_test_that_needs_a_fault_injected_runs_as_an_ordinary_use_of_the_feature():
     prof, cls = _brd_agent_like()
-    t = {**_test(text="Scenario: Submit document generation request during transient LLM API rate-limit or timeout event."),
+    t = {**_test(variant="robustness",
+                 text="Scenario: Submit document generation request during transient LLM API rate-limit or timeout event."),
          "title": "LLM generation failure capture and retry mechanisms"}
-    p = generate_action_plan(cls, prof, [t])["plans"][0]
-    assert p["status"] == "unmappable" and "judged from the code" in p["reason"]
+    p = generate_action_plan(cls, prof, [t], proposals={"TC-001": {"applicable": False, "reason": "needs injection",
+                                                                    "steps": []}})["plans"][0]
+    assert p["status"] == "ready" and "no action through the UI" in p["proxy"]
+    assert p["variant"] == "positive" and any(s.get("synthetic") for s in p["steps"])  # a complete, normal submission
+    assert "click" in _actions(p) and "wait_for" in _actions(p)
     ok = generate_action_plan(cls, prof, [_test(text="Problem Statement: The form shows an error message when a "
                                                      "required field is empty")])["plans"][0]
     assert ok["status"] == "ready"                                              # an ordinary validation test is not a fault

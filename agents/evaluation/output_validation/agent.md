@@ -59,6 +59,8 @@ The step is skipped for `brd_only`, or with no bundles.
   - A `meets` assessment with an ungrounded item drops to `partially_meets`.
   - The score is capped at what the grounded items support (met = 1, cannot_tell = 0.5, not_met = 0).
 - **Negative tests.** For negative, security and robustness tests, `met` means the app refused or safely handled the input.
+- **Approximated tests.** A test that ran as its closest equivalent carries a `run_note`; items the approximation could not
+  exercise are `cannot_tell`, not `not_met`.
 
 ## Failure modes
 - **A batch fails:** its tests are judged one by one; any test the judge still cannot answer keeps its deterministic checks,

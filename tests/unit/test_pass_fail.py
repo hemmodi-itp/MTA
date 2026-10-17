@@ -220,3 +220,13 @@ def test_cutoffs_group_one_endpoint_across_generated_ids():
                b("EV-2", failures=[("/api/runs/20261017-085202-9dff67/diagrams", 73_000)])]
     cut = server_cutoffs(bundles)
     assert cut["EV-2"]["endpoint"] == "POST /api/runs/{id}/diagrams" and cut["EV-2"]["ok_calls"] == 2
+
+
+def test_an_approximated_test_passes_on_evidence_but_its_shortfall_is_never_a_failure():
+    proxy = {"proxy": "latency claim — MTA ran the closest action the live app offers",
+             "observed": {"documents": [{"name": "a"}]}}
+    failed = decide_test(_v(judge=_judge("does_not_meet", 20, ["retries after an LLM failure"])), proxy)
+    assert failed["verdict"] == "inconclusive" and "approximation" in failed["reasons"][0]
+    core = decide_test(_v(checks=[_check("executed", "pass"), _check("document_produced", "fail")]), proxy)
+    assert core["verdict"] == "inconclusive"
+    assert decide_test(_v(judge=_judge("meets", 95)), proxy)["verdict"] == "passed"   # observed: a pass stands

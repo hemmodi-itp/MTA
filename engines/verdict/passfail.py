@@ -89,6 +89,19 @@ def _status_text(status: Any) -> str:
 
 def decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint: Optional[str] = None,
                 cutoff: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    t = _decide_test(v, bundle, oracle_hint, cutoff)
+    proxy = (bundle or {}).get("proxy")
+    if proxy and t["verdict"] == "failed":
+        # MTA ran the closest equivalent of this test, not the test itself: what the app did is reported, but a shortfall
+        # may be the approximation's, so it is never held against the app. A pass stands: the expectation was observed.
+        return {**t, "verdict": "inconclusive", "score": t.get("score"), "strength": None,
+                "reasons": [f"MTA could only run an approximation of this test ({proxy}); the app did not show the "
+                            "expected behaviour in that run, which says nothing certain about it."] + t["reasons"][:2]}
+    return t
+
+
+def _decide_test(v: Dict[str, Any], bundle: Optional[Dict[str, Any]], oracle_hint: Optional[str] = None,
+                 cutoff: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     base = {k: v.get(k) for k in ("bundle_id", "test_id", "test_code", "criterion_code", "requirement_ref", "title",
                                   "variant", "kind", "scored")}
     b = bundle or {}

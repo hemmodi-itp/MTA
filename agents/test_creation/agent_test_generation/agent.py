@@ -24,10 +24,10 @@ Grounding: every test must quote the BRD; normalize_tests() machine-checks that 
 against MTA's own paraphrases), discards tests that can't be traced or can't be pinned to a criterion of their
 requirement, and drops tests the model itself marked as static.
 
-Every test kept must be one the runner can actually execute and judge, and none may repeat another:
-  * a test that needs a failure injected (the app's LLM / API / network failing, a rate limit, a timeout) or load
-    (N concurrent users) cannot be produced through the app's UI: it is dropped and its criterion is judged from the
-    code, instead of becoming a test that ends "not executed";
+Every test kept is run at runtime, and none may repeat another:
+  * the prompt asks for tests the runner can set up; one that still needs a failure injected (the app's LLM / API /
+    network failing, a rate limit) or load is kept and run as an ordinary use of the feature (Action Generation marks
+    it `proxy`, and Pass/Fail never holds a proxy's shortfall against the app);
   * one positive test per criterion; further tests of a criterion must be a different variant, and near-identical
     negative / edge tests collapse to one (the general family used to re-generate every agent-specific positive test,
     doubling a 3-minute-per-test document generator run);
@@ -50,7 +50,7 @@ from agents.test_creation.agent_test_generation.prompt import (
 from agents.test_creation.agent_test_generation.skills import SKILLS
 from agents.test_creation.agent_test_generation.tools import TEST_CASES, BrdIndex, generate_json
 from connectors.connector_registry import ConnectorRegistry
-from engines.runtime.actions import build_inventory, needs_fault
+from engines.runtime.actions import build_inventory
 from tools.shared import get_logger
 
 MAX_BRD_CHARS_IN_PROMPT = 80_000
@@ -69,7 +69,6 @@ _RUNTIME = {"runtime", "both"}
 _FALLBACK_CLASSES = {"Chatbot", "REST API"}  # reachable through live_agent_execution without a browser profile
 MAX_SIMILAR = 0.75   # title + expectation similarity above which two tests of one criterion and variant are the same test
 MAX_PER_VARIANT = 2  # negative / edge tests per criterion and variant
-NOT_RUNNABLE = "needs a failure injected or load generated (not producible through the app's UI)"
 
 
 class AgentTestGenerationAgent(BaseAgent):
@@ -153,12 +152,10 @@ class AgentTestGenerationAgent(BaseAgent):
                     "static_only_criteria": static_only}
 
         caps = {"general": general_count}
-        rejected: List[Tuple[str, Optional[str]]] = []
         tests, dropped = normalize_tests(raw, requirements, brd_text, allowed_criteria=chosen_codes, budget=budget,
-                                         family_caps=caps, rejected=rejected)
-        not_runnable = {code for why, code in rejected if why == NOT_RUNNABLE and code}
+                                         family_caps=caps)
         covered = {t["criterion_code"] for t in tests}
-        missed = [c for c in chosen if c["code"] not in covered and c["code"] not in not_runnable]
+        missed = [c for c in chosen if c["code"] not in covered]
         if missed and len(tests) < budget:
             # one targeted call for the runtime criteria the families left without a test
             emit(f"Designing tests for {len(missed)} runtime criteria left without one ({', '.join(c['code'] for c in missed[:8])}).")
@@ -173,10 +170,8 @@ class AgentTestGenerationAgent(BaseAgent):
                     if isinstance(item, dict):
                         item["category"] = "agent_specific"
                 raw.extend(extra)
-                rejected = []
                 tests, dropped = normalize_tests(raw, requirements, brd_text, allowed_criteria=chosen_codes, budget=budget,
-                                                 family_caps=caps, rejected=rejected)
-                not_runnable = {code for why, code in rejected if why == NOT_RUNNABLE and code}
+                                                 family_caps=caps)
             except Exception as exc:
                 emit(f"Designing the missing tests failed ({exc}); those criteria are judged from the code.", "warning")
         for why, n in dropped.items():
@@ -193,9 +188,8 @@ class AgentTestGenerationAgent(BaseAgent):
         if missed:
             emit(f"Runtime criteria without a test: {', '.join(c['code'] for c in missed[:20])}", "warning")
         result = {"module": self.MODULE_NAME, "status": "partial" if errors else "success", "test_cases": tests,
-                  "static_only_criteria": static_only + [
-                      {**c, "reason": (f"its test {NOT_RUNNABLE}; judged from the code" if c["code"] in not_runnable
-                                       else "no executable test could be designed")} for c in missed]}
+                  "static_only_criteria": static_only + [{**c, "reason": "no executable test could be designed"}
+                                                         for c in missed]}
         if errors:
             result["error"] = "; ".join(errors)
         return result
@@ -361,7 +355,7 @@ def normalize_tests(raw: List[Any], requirements: List[dict], brd_text: str,
     # without BRD text, a test may quote its requirement's verified source quote — never MTA's own paraphrases
     quote_index = {code: BrdIndex(r.get("source_quote") or "") for code, r in by_code.items()}
     dropped = {"not traceable to a BRD statement": 0, "not tied to a runtime acceptance criterion": 0,
-               "only checkable from the code (static)": 0, NOT_RUNNABLE: 0,
+               "only checkable from the code (static)": 0,
                "repeats another test of the same criterion": 0, "over its family's share of the budget": 0,
                "over the runtime test budget": 0}
 
@@ -395,10 +389,6 @@ def normalize_tests(raw: List[Any], requirements: List[dict], brd_text: str,
         if not traced:
             drop("not traceable to a BRD statement", crit_code)
             continue
-        if needs_fault({k: _unescape(item.get(k)) for k in ("title", "input", "expected_behavior")}):
-            drop(NOT_RUNNABLE, crit_code)
-            continue
-
         variant = str(item.get("variant_type") or "positive").lower().replace(" ", "_")
         priority = str(item.get("priority") or by_code[ref].get("priority") or "medium").lower()
         criteria = item.get("pass_criteria") or []

@@ -22,6 +22,11 @@ It makes no LLM calls; the logic is in `engines/verdict/passfail.py`.
   strength, decided_by`). Requirement traceability turns it into runtime evidence, and compliance scoring counts it. Both work unchanged.
 - `live_reachable` / `live_status = connected` when at least one test executed (used by the scoring gates).
 
+## Approximated tests (`proxy`)
+A test Action Generation could only run as its closest equivalent (a failure it needs cannot be injected, or nothing
+mapped it) keeps a pass the judge observed, but a shortfall — a failed core check or an unmet expectation — becomes
+`inconclusive` ("MTA could only run an approximation of this test …"), never `failed`.
+
 ## Test verdict rules (in order)
 1. **Not validatable → `not_executed`.** Blocked, not mappable, or out of time. The reason is kept.
    - **Input rejected → `inconclusive`.** A positive test that produced nothing (no document, no on-screen result tab, no

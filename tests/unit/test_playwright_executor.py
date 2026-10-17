@@ -472,3 +472,16 @@ def test_a_submit_that_fails_ends_the_plan_with_the_apps_words(app_url, tmp_path
     # a negative test expects the app to refuse: its submit outcome is evidence, not a stop
     neg = execute_plans(app_url, _lists_plan(problem="", variant="negative"), tmp_path / "neg", credentials=CREDS)["results"][0]
     assert neg["status"] == "completed" and "Request failed (500)" in neg["captures"]["dom_excerpt"]
+
+
+def test_every_plan_runs_once_even_when_the_budget_is_spent(app_url, tmp_path):
+    # the budget limits re-runs only: with none left, every plan still gets its first run (never "not_run")
+    failing = _lists_plan(problem="")["plans"][0]
+    ok = {**_one("AP-TC-051", [{"n": 2, "action": "goto", "url": "/flaky"}, {"n": 3, "action": "capture", "what": ["dom_text"]}])["plans"][0]}
+    _HITS["/flaky"] = 1  # no outage this time
+    run = execute_plans(app_url, {"plans": [failing, ok]}, tmp_path, credentials=CREDS, budget_s=0)
+    by = {r["plan_id"]: r for r in run["results"]}
+    assert run["counts"]["not_run"] == 0
+    assert by["AP-TC-051"]["status"] == "completed"
+    assert by["AP-TC-050"]["status"] == "failed" and by["AP-TC-050"].get("attempts", 1) == 1  # no budget for a re-run
+    assert "Request failed (500)" in by["AP-TC-050"]["error"]

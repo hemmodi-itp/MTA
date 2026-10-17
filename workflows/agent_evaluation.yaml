@@ -65,7 +65,7 @@ steps:
   - name: playwright_executor
     description: "Playwright Executor: run every ready plan in Chromium (session from discovery, adaptive parallelism) and record outcomes, screenshots, page text, replies, downloads, network and console errors"
     needs: [action_generation]
-    timeout_s: 7800
+    timeout_s: 13800   # above the executor's HARD_BUDGET_S (12600) + one plan: every test's first run always starts
     provides: [execution_run, execution_error]
   - name: evidence_collection
     description: "Evidence Collection Engine: one bundle per test linked to its acceptance criterion"

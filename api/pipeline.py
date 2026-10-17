@@ -406,8 +406,10 @@ class AgentEvaluationPipeline:
             c = ap["counts"]
             if ap["status"] == "blocked":
                 return f"Blocked: {ap['reason']}"
-            return (f"{c['ready']}/{c['tests']} tests ready to run · {c['unmappable']} not testable via the UI · "
-                    f"{c.get('flow_checks', 0)} flow checks")
+            return (f"{c['ready']}/{c['tests']} tests ready to run"
+                    + (f" ({c['proxy']} as their closest equivalent)" if c.get("proxy") else "")
+                    + (f" · {c['unmappable']} with nothing to run on" if c["unmappable"] else "")
+                    + f" · {c.get('flow_checks', 0)} flow checks")
         if step == "playwright_executor":
             er = result.get("execution_run") or {}
             if not er:

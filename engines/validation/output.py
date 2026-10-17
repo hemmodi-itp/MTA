@@ -246,7 +246,8 @@ def judge_payload(b: Dict[str, Any], artifact_dir: Path) -> Dict[str, Any]:
             "inputs_sent": [{"field": i.get("field"), "value": (i.get("value") or "")[:500]} for i in b.get("inputs") or []
                             if not i.get("synthetic")],
             "expected_behavior": b.get("expected_behavior") or exp.get("expectation"),
-            "pass_criteria": exp.get("pass_criteria") or [], "observed": observed_corpus(b, artifact_dir)}
+            "pass_criteria": exp.get("pass_criteria") or [], "observed": observed_corpus(b, artifact_dir),
+            **({"run_note": f"MTA could only run an approximation of this test: {b['proxy']}"} if b.get("proxy") else {})}
 
 
 def _norm(s: str) -> str:

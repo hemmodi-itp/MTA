@@ -4,7 +4,7 @@ families keep their budget shares, and a runtime criterion left without a test g
 import json
 
 import agents.test_creation.agent_test_generation.agent as gen
-from agents.test_creation.agent_test_generation.agent import NOT_RUNNABLE, normalize_tests
+from agents.test_creation.agent_test_generation.agent import normalize_tests
 
 BRD = ("## Features\nThe system shall generate all five deliverables from the structured form.\n"
        "Users can submit a free-text change request to revise a run.\n"
@@ -45,17 +45,12 @@ def test_the_general_family_cannot_repeat_agent_specific_positives_or_exceed_its
     assert dropped["over its family's share of the budget"] == 1
 
 
-def test_a_test_that_needs_a_fault_injected_is_dropped_and_its_criterion_reported():
+def test_a_test_that_needs_a_fault_injected_is_kept_and_run():
+    # every generated test runs: Action Generation runs it as an ordinary use of the feature (a "proxy")
     raw = [_t("REQ-11", "AC-11.1", "LLM generation failure capture and retry", family="general", variant="robustness",
-              inp="Scenario: Submit document generation request during transient LLM API rate-limit or timeout event."),
-           _t("REQ-01", "AC-01.1", "Generate", inp="Scenario: simulate 50 concurrent users submitting the form")]
-    rejected = []
-    tests, dropped = normalize_tests(raw, REQS, BRD, rejected=rejected)
-    assert tests == [] and dropped[NOT_RUNNABLE] == 2
-    assert sorted(code for why, code in rejected if why == NOT_RUNNABLE) == ["AC-01.1", "AC-11.1"]
-    ok = _t("REQ-01", "AC-01.1", "Validation error when a required field is empty", variant="negative",
-            inp="Problem Statement: (empty)", expected="The app shows an error message naming the field")
-    assert len(normalize_tests([ok], REQS, BRD)[0]) == 1                   # an ordinary validation test is kept
+              inp="Scenario: Submit document generation request during transient LLM API rate-limit or timeout event.")]
+    tests, dropped = normalize_tests(raw, REQS, BRD)
+    assert [t["criterion_code"] for t in tests] == ["AC-11.1"] and not any(dropped.values())
 
 
 def test_literal_backslash_n_inputs_are_unescaped():
@@ -90,8 +85,7 @@ def test_a_runtime_criterion_left_without_a_test_gets_a_top_up(monkeypatch):
     out = agent.execute({"requirements": REQS, "brd_markdown": BRD, "mode": "brd_and_live", "live_url": "https://app.example",
                          "runtime_profile": profile, "app_classification": {"app_type": "Document Generator"}}, {})
     by = {t["criterion_code"]: t for t in out["test_cases"]}
-    assert set(by) == {"AC-01.1", "AC-06.1"} and by["AC-06.1"]["title"] == "Revise the generated run"
+    assert set(by) == {"AC-01.1", "AC-06.1", "AC-11.1"} and by["AC-06.1"]["title"] == "Revise the generated run"
     assert sum(1 for p in prompts if "exactly one positive test" in p) == 1
-    assert "AC-11.1" not in json.dumps([p for p in prompts if "exactly one positive test" in p])  # not re-asked: not runnable
-    static = {c["code"]: c["reason"] for c in out["static_only_criteria"]}
-    assert NOT_RUNNABLE in static["AC-11.1"]                                  # reported, judged from the code
+    assert "AC-11.1" not in json.dumps([p for p in prompts if "exactly one positive test" in p])  # it has its test
+    assert not out["static_only_criteria"]                                    # every runtime criterion has a test

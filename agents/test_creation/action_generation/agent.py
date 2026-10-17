@@ -71,8 +71,13 @@ class ActionGenerationAgent(BaseAgent):
             emit(plan["reason"], "warning")
         else:
             emit(f"Action plans: {c['ready']}/{c['tests']} test(s) ready ({c.get('llm_mapped', 0)} mapped by Gemini, "
-                 f"the rest by rules), {c['unmappable']} not testable through the UI, "
-                 f"{c.get('flow_checks', 0)} flow check(s).", "success" if c["ready"] else "warning")
+                 f"the rest by rules)"
+                 + (f", {c['proxy']} run as their closest equivalent on the app" if c.get("proxy") else "")
+                 + (f", {c['unmappable']} the app offers nothing to run on" if c["unmappable"] else "")
+                 + f", {c.get('flow_checks', 0)} flow check(s).", "success" if c["ready"] else "warning")
+            for p in plan["plans"]:
+                if p.get("proxy"):
+                    emit(f"{p['test_code']} runs as an approximation: {p['proxy']}", "info")
         return {"module": self.MODULE_NAME, "status": "success", "action_plan": plan}
 
     def _propose(self, tests, inv, app_type, classification, request, emit) -> Dict[str, Dict[str, Any]]:

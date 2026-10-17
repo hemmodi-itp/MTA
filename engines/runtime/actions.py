@@ -712,11 +712,10 @@ def generate_action_plan(classification: Optional[Dict[str, Any]], profile: Opti
         cls = _class_for(t, classes, inv)
         steps, reason, source = [], None, "rules"
         generate_first = False
-        if needs_fault(t):  # never mapped onto an ordinary submission that would only pretend to test it
-            plans.append(_plan(t, cls, "unmappable", [], "rules",
-                               "needs the app's LLM / API / network to fail, or load generated: no action through the UI "
-                               "produces that, so the criterion is judged from the code"))
-            continue
+        # every generated test runs. One whose setup MTA cannot create (a failure injected, load) runs as an ordinary use
+        # of the feature, marked `proxy`: the judge decides from what is observable, and a shortfall is not held
+        # against the app (Pass/Fail makes it inconclusive)
+        proxy = FAULT_PROXY if needs_fault(t) else None
         prop = proposals.get(t.get("code"))
         if prop is not None and not api_only:
             if prop.get("applicable") is False:
@@ -745,11 +744,24 @@ def generate_action_plan(classification: Optional[Dict[str, Any]], profile: Opti
                 steps = steps + later
                 generate_first = True
         if reason and not steps:
+            # never left unrun: the closest action the live app offers (its form, chat box or page), marked as such
+            closest = proxy_steps(t, cls, inv, endpoints, api_only)
+            if closest:
+                proxy = proxy or f"{reason} — MTA ran the closest action the live app offers"
+                steps, reason, source = closest, None, "rules"
+        if reason and not steps:
             plans.append(_plan(t, cls, "unmappable", [], source, reason))
             continue
-        # a negative follow-up test (empty change request) still needs a complete, successful generation first
-        shape = {**t, "variant_type": "positive"} if generate_first else t
-        plans.append(_plan(t, cls, "ready", complete(steps, shape, cls, inv, needs_login), source))
+        # a negative follow-up test (empty change request) still needs a complete, successful generation first; a test
+        # whose fault cannot be injected exercises the feature the way an ordinary user would
+        positive = generate_first or (proxy == FAULT_PROXY)
+        shape = {**t, "variant_type": "positive"} if positive else t
+        p = _plan(t, cls, "ready", complete(steps, shape, cls, inv, needs_login), source)
+        if proxy:
+            p["proxy"] = proxy
+            if proxy == FAULT_PROXY:
+                p["variant"] = "positive"  # submitted as a normal, complete use of the feature
+        plans.append(p)
 
     exercised = {_form_of(p, inv) for p in plans if p["status"] == "ready"}
     plans += flow_checks(inv, primary, needs_login, skip_forms=exercised) if not api_only else []
@@ -760,8 +772,43 @@ def generate_action_plan(classification: Optional[Dict[str, Any]], profile: Opti
     return {**base, "status": "ready" if ready else "blocked" if not plans else "partial", "plans": plans,
             "reason": None if ready else "No test could be mapped onto the live app's elements.",
             "counts": {"tests": len(test_cases), "ready": ready, "unmappable": unmappable, "blocked": 0,
+                       "proxy": sum(1 for p in plans if p.get("proxy")),
                        "flow_checks": sum(1 for p in plans if not p["scored"]), "llm_mapped": llm_used,
                        "ungrounded_steps_dropped": ungrounded}}
+
+
+FAULT_PROXY = ("its setup needs the app's LLM / API / network to fail, or load generated, which no action through the UI "
+               "produces: MTA ran it as an ordinary use of the feature and judged what is observable")
+
+
+def proxy_steps(test: Dict[str, Any], cls: str, inv: Dict[str, Any], endpoints: Sequence[Dict[str, Any]],
+                api_only: bool) -> List[Dict[str, Any]]:
+    """The closest action the live app offers for a test nothing else could map: its documented endpoint (REST API), the
+    class rules (form / chat / dashboard), then the chat box, the main form (the test's "Label: value" lines, else its
+    input in the best free-text field), else the page whose title or headings best match the test. [] only when the app
+    offers nothing at all."""
+    if api_only:
+        return http_steps(test, endpoints)[0]
+    steps = rule_steps(test, cls, inv)[0]
+    if steps:
+        return steps
+    els, text = inv["elements"], str(test.get("input") or "")
+    if inv["chat_boxes"]:
+        return [{"action": "send_message", "target": _target(els[inv["chat_boxes"][0]]), "value": text[:MAX_VALUE] or
+                 str(test.get("title") or "")}]
+    form = _main_form(inv, prefer_generate=True)
+    if form:
+        fills = input_fills(test, form, els)
+        main = _best_free_text(form, inv, text)
+        if not fills and main and text:
+            fills = [{"action": "fill", "target": _target(main), "value": text[:MAX_VALUE]}]
+        return fills or [{"action": "goto", "url": form["page"]}]
+    if not inv["pages"]:
+        return []
+    words = set(re.findall(r"[a-z]{4,}", f"{test.get('title') or ''} {text}".lower()))
+    page = max(inv["pages"], key=lambda p: len(words & set(re.findall(
+        r"[a-z]{4,}", " ".join([p["path"], p.get("title") or ""] + list(p.get("headings") or [])).lower()))))
+    return [{"action": "goto", "url": page["path"]}]
 
 
 def effective_classes(app_type: str, components: Sequence[str], inv: Dict[str, Any],
