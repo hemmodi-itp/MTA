@@ -54,36 +54,47 @@ def deterministic_checks(b: Dict[str, Any], artifact_dir: Path) -> List[Dict[str
     def add(cid, name, result, detail, weight="core"):
         checks.append({"id": cid, "name": name, "oracle": "deterministic", "result": result, "detail": detail, "weight": weight})
 
-    add("executed", "The test's actions ran to the end", "pass" if status == "completed" else "fail",
+    add("executed", "The test's actions completed", "pass" if status == "completed" else "fail",
         "all steps passed" if status == "completed" else f"stopped at step {b.get('failed_step')}: {b.get('error')}")
 
     docs = [d for d in obs.get("documents") or [] if d.get("readable")]
+    text_docs = [d for d in docs if d.get("kind") != "image"]  # a diagram PNG has no words by nature
+    views = obs.get("views") or []
     expect_text = " ".join([b.get("expected_behavior") or "", b.get("criterion_statement") or "",
                             *[e.get("expectation") or "" for e in b.get("expectations") or []],
                             *[c for e in b.get("expectations") or [] for c in e.get("pass_criteria") or []]])
     if kind == "document" and not negative:
-        add("document_produced", "A document was produced and downloaded", "pass" if obs.get("documents") else "fail",
-            ", ".join(d.get("name") or "?" for d in obs.get("documents") or []) or "no file was downloaded")
+        # the file is core when the test is about it (an export / download it requires); when it is only collected as
+        # evidence of an on-screen result, a missing file is noted but the result shown on screen is what counts
+        required = comp.get("document_required", True)
+        if obs.get("documents") or required or not views:
+            add("document_produced", "A document was produced and downloaded", "pass" if obs.get("documents") else "fail",
+                ", ".join(d.get("name") or "?" for d in obs.get("documents") or []) or "no file was downloaded",
+                "core" if required else "supporting")
         if obs.get("documents"):
             add("document_readable", "The document opens and can be read", "pass" if docs else "fail",
                 "; ".join(f"{d.get('name')}: {'ok' if d.get('readable') else d.get('error')}" for d in obs["documents"]),
                 "supporting")
+        view_texts = view_bodies(views, artifact_dir)
+        if text_docs or view_texts:
+            words = max([d.get("words") or 0 for d in text_docs] + [len(re.findall(r"\w+", t)) for t in view_texts])
+            source = "document" if text_docs else "result shown on screen"
+            add("document_not_empty", f"The output has substantive content (≥{MIN_DOC_WORDS} words)",
+                "pass" if words >= MIN_DOC_WORDS else "fail", f"{words} words ({source})", "supporting")
         if docs:
-            words = max(d.get("words") or 0 for d in docs)
-            add("document_not_empty", f"The document has substantive content (≥{MIN_DOC_WORDS} words)",
-                "pass" if words >= MIN_DOC_WORDS else "fail", f"{words} words", "supporting")
-            wanted = [f for f, rx in _FORMATS.items() if re.search(rx, expect_text, re.I)]
+            wanted = [f for f, rx in _FORMATS.items() if _asks_for_format(rx, expect_text)]
             if wanted:
                 got = {(d.get("format") or "").lower() for d in docs}
                 add("document_format", f"The document is in the requested format ({', '.join(wanted)})",
                     "pass" if got & set(wanted) else "fail", f"got {', '.join(sorted(got)) or 'none'}")
-            reflected = _input_reflected(b, " ".join(_full_doc_text(d, artifact_dir) for d in docs))
-            if reflected:
-                hit, total, missing = reflected
-                add("input_reflected", "The document reflects what the test entered",
-                    "pass" if hit / total >= 0.5 else "fail",
-                    f"{hit}/{total} key terms from the input appear" + (f"; missing: {', '.join(missing[:6])}" if missing else ""),
-                    "supporting")
+        corpus = " ".join([_full_doc_text(d, artifact_dir) for d in text_docs] + view_texts)
+        reflected = _input_reflected(b, corpus) if corpus.strip() else None
+        if reflected:
+            hit, total, missing = reflected
+            add("input_reflected", "The output reflects what the test entered",
+                "pass" if hit / total >= 0.5 else "fail",
+                f"{hit}/{total} key terms from the input appear" + (f"; missing: {', '.join(missing[:6])}" if missing else ""),
+                "supporting")
     if kind == "reply":
         reply = obs.get("reply") or ""
         add("reply_present", "A reply appeared", "pass" if reply.strip() else "fail", f"{len(reply)} characters")
@@ -125,6 +136,16 @@ def deterministic_checks(b: Dict[str, Any], artifact_dir: Path) -> List[Dict[str
     return checks
 
 
+_FILE_CONTEXT = r"\b(export\w*|download\w*|sav(e|ed|es)|as an?|in|to|into|produces?|generates?)\b\W+(\w+\W+){0,3}"
+
+
+def _asks_for_format(rx: str, text: str) -> bool:
+    """The expectation asks for a FILE in this format ("exports … as a DOCX file", "downloads a PDF", "a DOCX file"),
+    not merely mentions the format ("previews of generated markdown documents" is about the on-screen preview)."""
+    fmt = rx.replace(r"\b(", "(").replace(r")\b", ")").replace(r"\b", "")
+    return bool(re.search(_FILE_CONTEXT + rf"\b{fmt}\b", text, re.I) or re.search(rf"\b{fmt}\W+(file|export|download)s?\b", text, re.I))
+
+
 def _input_reflected(b: Dict[str, Any], doc_text: str):
     """Distinctive words the test itself entered (not filler data) that the output should carry over."""
     given = " ".join(i.get("value") or "" for i in b.get("inputs") or [] if not i.get("synthetic") and i.get("action") != "check")
@@ -144,15 +165,17 @@ def _time_limit_ms(text: str) -> Optional[float]:
     return value if unit.startswith("ms") or unit.startswith("milli") else value * 60_000 if unit.startswith("min") else value * 1000
 
 
-def _view_text(v: Dict[str, Any], artifact_dir: Path, n_views: int) -> str:
-    """A result tab's text, sized so all tabs fit the judge's budget together."""
-    budget = max(2_000, DOC_TEXT_FOR_JUDGE // max(1, n_views))
+def _view_text(v: Dict[str, Any], artifact_dir: Path, n_views: int, limit: Optional[int] = -1) -> str:
+    """A result tab's text, sized so all tabs fit the judge's budget together (limit=None: the whole text)."""
+    budget = max(2_000, DOC_TEXT_FOR_JUDGE // max(1, n_views)) if limit == -1 else limit
+    text = None
     if v.get("text_file") and artifact_dir:
         try:
-            return (artifact_dir / v["text_file"]).read_text(encoding="utf-8")[:budget]
+            text = (artifact_dir / v["text_file"]).read_text(encoding="utf-8")
         except Exception:
             pass
-    return (v.get("text_excerpt") or "")[:budget]
+    text = text if text is not None else (v.get("text_excerpt") or "")
+    return text if budget is None else text[:budget]
 
 
 def _full_doc_text(d: Dict[str, Any], artifact_dir: Path) -> str:
@@ -175,17 +198,42 @@ def needs_judge(b: Dict[str, Any]) -> bool:
                 or o.get("http_response"))
 
 
+def view_bodies(views: List[Dict[str, Any]], artifact_dir: Path) -> List[str]:
+    """Each result tab's own text: the lines every tab shares at its start and end (navigation, header, footer) are cut."""
+    texts = [_view_text(v, artifact_dir, 1, limit=None).splitlines() for v in views]
+    if len(texts) < 2:
+        return ["\n".join(t) for t in texts]
+    head = 0
+    while all(len(t) > head for t in texts) and len({t[head].strip() for t in texts}) == 1:
+        head += 1
+    tail = 0
+    while all(len(t) > head + tail for t in texts) and len({t[-1 - tail].strip() for t in texts}) == 1:
+        tail += 1
+    return ["\n".join(t[head:len(t) - tail]) for t in texts]
+
+
+def _same_text(view: str, doc_texts: List[str]) -> bool:
+    """A result tab whose text a downloaded document already carries (the BRD tab and BRD.docx): sent to the judge once."""
+    words = _norm(view).split()
+    probe = " ".join(words[len(words) // 3:len(words) // 3 + 25])  # a stretch from the body, past headings and badges
+    return len(words) >= 60 and len(probe) >= 80 and any(probe in d for d in doc_texts)
+
+
 def observed_corpus(b: Dict[str, Any], artifact_dir: Path) -> Dict[str, Any]:
     """The observed output the judge sees and quotes are checked against."""
     o = b["observed"]
     docs = [{"name": d.get("name"), "format": d.get("format"), "words": d.get("words"), "headings": (d.get("headings") or [])[:40],
              "embedded_images": d.get("images"), "is_image": d.get("kind") == "image",
              "text": _full_doc_text(d, artifact_dir)[:DOC_TEXT_FOR_JUDGE]} for d in o.get("documents") or [] if d.get("readable")]
+    doc_texts = [_norm(_full_doc_text(d, artifact_dir)) for d in o.get("documents") or [] if d.get("readable")]
+    all_views = o.get("views") or []
+    bodies = view_bodies(all_views, artifact_dir)
+    views = [(v, t) for v, t in zip(all_views, bodies) if not _same_text(t, doc_texts)]
+    budget = max(2_000, DOC_TEXT_FOR_JUDGE // max(1, len(views)))
     return {"output_kind": b["completeness"].get("expected_output"), "reply": o.get("reply"),
             "page_output": o.get("ui_output") or (o.get("page_text_excerpt") if not o.get("reply") else None),
             "page_change": o.get("page_change"), "messages": o.get("messages") or [], "documents": docs,
-            "result_views": [{"name": v.get("name"), "text": _view_text(v, artifact_dir, len(o.get("views") or []))}
-                             for v in o.get("views") or []],
+            "result_views": [{"name": v.get("name"), "text": t[:budget]} for v, t in views],
             "http_response": o.get("http_response"),
             "unreadable_documents": [d.get("name") for d in o.get("documents") or [] if not d.get("readable")],
             "execution": b["execution_status"] + (f" (stopped at step {b['failed_step']}: {b.get('error')})" if b.get("failed_step") else "")}
@@ -198,7 +246,8 @@ def judge_payload(b: Dict[str, Any], artifact_dir: Path) -> Dict[str, Any]:
             "inputs_sent": [{"field": i.get("field"), "value": (i.get("value") or "")[:500]} for i in b.get("inputs") or []
                             if not i.get("synthetic")],
             "expected_behavior": b.get("expected_behavior") or exp.get("expectation"),
-            "pass_criteria": exp.get("pass_criteria") or [], "observed": observed_corpus(b, artifact_dir)}
+            "pass_criteria": exp.get("pass_criteria") or [], "observed": observed_corpus(b, artifact_dir),
+            **({"run_note": f"MTA could only run an approximation of this test: {b['proxy']}"} if b.get("proxy") else {})}
 
 
 def _norm(s: str) -> str:

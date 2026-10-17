@@ -79,3 +79,18 @@ def test_accept_cases_on_a_stateful_field_are_cut_with_the_reason(designed):
     titles = {c["title"] for c in cut}
     assert titles and all("accepted" in t for t in titles) and all(c["_cut_reason"] == "stateful" for c in cut)
     assert any("max+1" in c["title"] for c in keep if (c.get("target") or {}).get("form_id") == form.form_id)
+
+
+def test_a_native_message_without_a_blocked_submit_is_not_field_invalid():
+    """2026-10-16 run: add-to-cart is novalidate — the browser had a message for quantity 0 but did not block, the
+    page posted and re-rendered, and verifyFieldInvalid timed out."""
+    from tools.test_design.cases import rejection_oracles
+    from tools.test_design.inputs import Field, Form
+    fld = Field(form_id="F", name="quantity", label="Quantity", type="number", locator=None, required=False,
+                constraints={}, messages={}, options=[], default_value=None)
+    for blocked, want in ((False, "submission_rejected"), (True, "field_invalid")):
+        frm = Form.__new__(Form)                         # only what rejection_oracles reads
+        frm.method, frm.action = "post", "/cart/add"
+        frm.probes = [{"probe": "below_min", "field": "quantity", "aria_invalid": [], "network": [{"method": "POST"}],
+                       "native": {"blocked": blocked, "messages": {"quantity": "Value must be greater than or equal to 1."}}}]
+        assert rejection_oracles(frm, fld, [], ["below_min"])[0]["type"] == want

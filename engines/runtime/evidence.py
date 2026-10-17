@@ -31,6 +31,8 @@ from pathlib import Path
 from difflib import SequenceMatcher
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from engines.runtime.rejection import INPUT_REJECTED
+
 TEXT_LIMIT = 200_000
 EXCERPT = 2_000
 _MESSAGE = re.compile(r"\b(required|invalid|must|error|failed|failure|please (enter|fill|provide|select)|not allowed|"
@@ -161,6 +163,7 @@ def _bundle(r: Dict[str, Any], plan: Dict[str, Any], test: Dict[str, Any], root:
         "execution_status": r["status"],
         "failed_step": r.get("failed_step"),
         "error": r.get("error"),
+        "unset_inputs": r.get("unset_inputs") or [],  # fields MTA could not set; the test went on without them
         "duration_ms": r.get("duration_ms"),
         "inputs": _inputs(plan),
         "observed": observed,
@@ -184,6 +187,8 @@ def _identity(r: Dict, plan: Dict, test: Dict, statements: Dict) -> Dict[str, An
         "class": r.get("class") or plan.get("class"),
         "kind": r.get("kind") or plan.get("kind") or "brd_test", "scored": bool(r.get("scored", plan.get("scored", True))),
         "test_input": test.get("input"), "expected_behavior": test.get("expected_behavior"),
+        # MTA could only run the closest equivalent of this test (its setup cannot be created through the UI)
+        "proxy": plan.get("proxy"),
     }
 
 
@@ -218,20 +223,27 @@ def _observations(obs: Dict) -> Dict[str, Any]:
     net = obs.get("network") or []
     slow = max(net, key=lambda n: n["ms"], default=None)
     return {"api_calls": len(net), "api_failures": [n for n in net if n["status"] >= 400 or n["status"] == 0][:10],
+            # successful calls with their duration: lets Pass/Fail tell a server timeout (a 5xx slower than every
+            # success of the same endpoint in the run) from a fast crash
+            "api_ok": [{k: n[k] for k in ("method", "path", "ms")} for n in net if 200 <= n["status"] < 300][:30],
             "slowest_call": slow, "console_errors": (obs.get("console_errors") or [])[:10],
             "page_errors": (obs.get("page_errors") or [])[:10]}
 
 
 def _completeness(r: Dict, plan: Dict, cls: Optional[str], observed: Dict, artifacts: List[Dict]) -> Dict[str, Any]:
     steps = plan.get("steps") or []
-    wants_doc = any(s["action"] == "expect_download" for s in steps) or (cls in _DOC_CLASSES and r.get("variant") == "positive")
+    downloads = [s for s in steps if s["action"] == "expect_download"]
+    wants_doc = bool(downloads) or (cls in _DOC_CLASSES and r.get("variant") == "positive")
+    # the file is what the test checks (an export / download step it requires), or only collected as evidence of the
+    # result (an optional step: the test is about something the result shows on screen)
+    doc_required = any(not s.get("optional") for s in downloads) or (wants_doc and not downloads)
     wants_reply = any(s["action"] == "send_message" for s in steps)
     wants_http = any(s["action"] == "http" for s in steps)
     expected = "document" if wants_doc else "reply" if wants_reply else "http_response" if wants_http else "ui_output"
     missing = []
     if not any(a["type"] == "screenshot" for a in artifacts) and not wants_http:
         missing.append("no final screenshot")
-    if wants_doc and not observed["documents"]:
+    if wants_doc and doc_required and not observed["documents"]:
         missing.append("expected a downloaded document but none was produced")
     if wants_doc and observed["documents"] and not any(d.get("readable") for d in observed["documents"]):
         missing.append("the downloaded document could not be read")
@@ -241,10 +253,14 @@ def _completeness(r: Dict, plan: Dict, cls: Optional[str], observed: Dict, artif
         missing.append("no HTTP response")
     if expected == "ui_output" and not observed["ui_output"] and not observed["messages"]:
         missing.append("nothing new appeared on the page after the actions")
-    captured = {"document": bool(observed["documents"]) and any(d.get("readable") for d in observed["documents"]),
+    captured = {"document": (bool(observed["documents"]) and any(d.get("readable") for d in observed["documents"]))
+                or (not doc_required and bool(observed.get("views") or observed["ui_output"])),
                 "reply": bool(observed["reply"]), "http_response": bool(observed["http_response"]),
                 "ui_output": bool(observed["ui_output"] or observed["messages"])}[expected]
-    return {"output_captured": captured, "expected_output": expected, "missing": missing}
+    out = {"output_captured": captured, "expected_output": expected, "missing": missing}
+    if expected == "document" and not doc_required:
+        out["document_required"] = False
+    return out
 
 
 # ── text helpers ────────────────────────────────────────────────────────────
@@ -276,10 +292,13 @@ def _appeared(before: str, after: str) -> Tuple[str, str]:
 
 
 def _messages(text: str) -> List[str]:
+    """Status / validation / error lines. A validation message listing every field the app wants can be long (BRD_Agent:
+    16 fields, ~600 characters): one that rejects the input is kept whole."""
     out = []
     for line in text.splitlines():
         line = line.strip()
-        if 3 <= len(line) <= 300 and _MESSAGE.search(line) and line not in out:
+        long_rejection = 300 < len(line) <= 2000 and bool(INPUT_REJECTED.search(line[:300]))
+        if (3 <= len(line) <= 300 and _MESSAGE.search(line) or long_rejection) and line not in out:
             out.append(line)
     return out[:12]
 

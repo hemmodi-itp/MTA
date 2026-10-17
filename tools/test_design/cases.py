@@ -89,9 +89,12 @@ def rejection_oracles(form: Form, fld: Field, message_kinds: Iterable[str], prob
     marks the field, and a rule the DOM does not state (a price below 0 in a text input, a length with no
     maxlength) never makes it :invalid: asserting it there fails on a correct app."""
     probe = probe_for(form, fld.name, probe_kinds) if native_evidence else None
+    native = (probe or {}).get("native") or {}
+    # a native message alone is not enough: on a `novalidate` form the browser does not block, the page posts and
+    # re-renders, and the field is no longer invalid — it must have BLOCKED the submit (or the app set aria-invalid)
     seen_invalid = probe is not None and (
         fld.name in (probe.get("aria_invalid") or [])
-        or bool(((probe.get("native") or {}).get("messages") or {}).get(fld.name)))
+        or (bool(native.get("blocked")) and bool((native.get("messages") or {}).get(fld.name))))
     first = {"type": "field_invalid", "field": fld.name} if seen_invalid else \
         {"type": "submission_rejected", "field": fld.name}
     oracles: List[Dict[str, Any]] = [first]

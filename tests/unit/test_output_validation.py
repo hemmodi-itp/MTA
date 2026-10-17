@@ -107,3 +107,92 @@ def test_not_executed_bundle_is_not_validatable(tmp_path):
     assert r["status"] == "not_validatable" and "behind a login" in r["summary"]
     ok = assemble(_bundle(tmp_path), deterministic_checks(_bundle(tmp_path), tmp_path), None, "LLM down")
     assert ok["status"] == "validated" and ok["core_failures"] == [] and "judge unavailable" in ok["summary"]
+
+
+def test_a_format_is_required_only_when_the_expectation_asks_for_that_file():
+    from engines.validation.output import _FORMATS, _asks_for_format
+    ask = lambda f, t: _asks_for_format(_FORMATS[f], t)
+    assert ask("docx", "User exports the BRD, TSD, or one-pager as a DOCX file with diagrams embedded as images.")
+    assert ask("pdf", "The report downloads a PDF")
+    assert not ask("md", "User views side-by-side formatted previews of generated markdown documents and rendered Mermaid diagrams.")
+
+
+# ── on-screen results, optional files, judge resilience ─────────────────────
+
+CHROME = "BRD Agent Suite\nAI Document Generator\nDashboard\nNew Request\nHistory\nBRD\nTSD\nFlowchart"
+
+
+def _views(tmp_path, bodies):
+    out = []
+    for name, body in bodies.items():
+        (tmp_path / "AP-TC-001" / f"view-{name}.txt").write_text(CHROME + "\n" + body + "\nGenerated 2m ago", encoding="utf-8")
+        out.append({"name": name, "text_file": f"AP-TC-001/view-{name}.txt"})
+    return out
+
+
+def test_a_file_collected_only_as_evidence_is_not_a_core_check(tmp_path):
+    # a preview / history test on a Document Generator: the files are collected, but the test is about the screen
+    b = _bundle(tmp_path, title="Side-by-side previews", expected_behavior="Formatted previews are shown")
+    b["observed"]["documents"] = []
+    b["observed"]["views"] = _views(tmp_path, {"BRD": DOC_TEXT, "Flowchart": "flowchart TD; A-->B"})
+    b["completeness"] = {"output_captured": True, "expected_output": "document", "missing": [], "document_required": False}
+    checks = {c["id"]: c for c in deterministic_checks(b, tmp_path)}
+    assert "document_produced" not in checks or checks["document_produced"]["weight"] == "supporting"
+    assert checks["document_not_empty"]["result"] == "pass" and "result shown on screen" in checks["document_not_empty"]["detail"]
+    assert checks["input_reflected"]["result"] == "pass"                           # read from the on-screen result
+    required = _bundle(tmp_path)
+    required["observed"]["documents"] = []
+    assert next(c for c in deterministic_checks(required, tmp_path) if c["id"] == "document_produced")["weight"] == "core"
+
+
+def test_diagram_images_do_not_count_as_an_empty_document(tmp_path):
+    b = _bundle(tmp_path)
+    b["observed"]["documents"] = [{"name": "flowchart.png", "format": "png", "kind": "image", "readable": True, "words": 0}]
+    b["observed"]["views"] = _views(tmp_path, {"BRD": DOC_TEXT})
+    checks = {c["id"]: c for c in deterministic_checks(b, tmp_path)}
+    assert checks["document_not_empty"]["result"] == "pass"          # TC-018 was flagged "0 words" for its PNGs
+
+
+def test_judge_sees_each_text_once_without_page_chrome(tmp_path):
+    from engines.validation.output import observed_corpus
+    b = _bundle(tmp_path)
+    b["observed"]["views"] = _views(tmp_path, {"BRD": DOC_TEXT, "Flowchart": "flowchart TD; Intake-->Review-->Approve"})
+    corpus = observed_corpus(b, tmp_path)
+    names = [v["name"] for v in corpus["result_views"]]
+    assert names == ["Flowchart"]                                       # the BRD tab repeats brd.docx: sent once
+    assert corpus["result_views"][0]["text"].startswith("flowchart TD") and "New Request" not in corpus["result_views"][0]["text"]
+
+
+class _FlakyJudge:
+    """Fails every call with more than one test (like a batch timing out); answers single-test calls, skipping none."""
+
+    def __init__(self):
+        self.calls = []
+
+    def generate_json(self, prompt, schema=None, temperature=None):
+        import json as _json
+        import re as _re
+        ids = sorted(set(_re.findall(r'"bundle_id": "(EV-[^"]+)"', prompt)))
+        self.calls.append(ids)
+        if len(ids) > 1:
+            raise TimeoutError("Gemini JSON call: no reply within 180s")
+        return _json.dumps({"judgements": [{"bundle_id": i, "assessment": "meets", "score": 90, "reasoning": "ok",
+                                            "criteria_results": [{"criterion": "c", "result": "met",
+                                                                  "quote": "Clinic patients cannot book appointments online"}]}
+                                           for i in ids]})
+
+
+def test_a_failed_batch_is_judged_test_by_test(tmp_path, monkeypatch):
+    import agents.evaluation.output_validation.agent as ova
+    judge = _FlakyJudge()
+    agent = ova.OutputValidationAgent({})
+    monkeypatch.setattr(agent._registry, "get_llm", lambda *a, **k: judge)
+    monkeypatch.setattr(ova, "run_artifact_dir", lambda run_id: tmp_path)
+    bundles = []
+    for i in (1, 2, 3, 4):
+        b = _bundle(tmp_path, bundle_id=f"EV-TC-00{i}", test_code=f"TC-00{i}")
+        bundles.append(b)
+    out = agent.execute({"evidence_collection": {"bundles": bundles}, "run_id": "r"}, {})
+    results = out["output_validation"]["results"]
+    assert all(r["judge"] and r["judge"]["assessment"] == "meets" for r in results)  # nobody left "judge unavailable"
+    assert sorted(c[0] for c in judge.calls if len(c) == 1) == ["EV-TC-001", "EV-TC-002", "EV-TC-003", "EV-TC-004"]

@@ -47,6 +47,20 @@ def test_aqp_side_and_setup_problems_are_inconclusive_not_app_failures():
     assert other["verdict"] == "failed"
 
 
+def test_unreachable_app_is_inconclusive_but_a_server_error_is_a_failure():
+    v = _v(checks=[_check("executed", "fail", detail="stopped")])
+    for err in ("Error: Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://app.example/new",
+                "no download was produced: no download or export control appeared — the app showed: “Failed to fetch”",
+                "HTTP 503 opening /new"):
+        t = decide_test(v, {"error": err})
+        assert t["verdict"] == "inconclusive" and "could not be reached" in t["reasons"][0], err
+    t = decide_test(v, {"error": "no download was produced — the app showed: “Request failed (500)”"})
+    assert t["verdict"] == "failed"
+    q = decide_test(v, {"error": "no download was produced — the app showed: “429 RESOURCE_EXHAUSTED. "
+                                 "{'error': {'code': 429, 'message': 'Resource has been exhausted (e.g. check quota).'}}”"})
+    assert q["verdict"] == "inconclusive" and "quota" in q["reasons"][0]
+
+
 def test_deterministic_oracle_passes_without_judge_but_semantic_does_not():
     v = _v(checks=[_check("executed", "pass"), _check("time_limit", "pass")])
     assert decide_test(v, {}, oracle_hint="deterministic")["verdict"] == "passed"
@@ -122,3 +136,97 @@ def test_positive_test_rejected_by_app_validation_is_inconclusive_not_failed():
     neg = decide_test({**v, "variant": "negative"}, b)
     assert neg["verdict"] == "failed"  # decided by its own checks, not excused as a setup problem
     assert "not an app defect" not in " ".join(neg["reasons"])      # for negative tests a rejection is the expected outcome
+
+
+def _gen_bundle(bid, status, ms, ok=()):
+    return {"bundle_id": bid, "observed": {"documents": [], "messages": []},
+            "observations": {"api_failures": [{"method": "POST", "path": "/api/generate", "status": status, "ms": ms}] if status is not None else [],
+                             "api_ok": [{"method": "POST", "path": "/api/generate", "ms": m} for m in ok]}}
+
+
+def test_a_server_timeout_is_a_reliability_defect_not_a_feature_failure():
+    from engines.verdict.passfail import server_cutoffs
+    fail = [_check("executed", "fail"), _check("document_produced", "fail")]
+    ov = {"results": [_v("TC-001", "AC-01.1", checks=[_check("executed", "pass")], judge=_judge("meets", 95)),
+                      _v("TC-002", "AC-02.1", checks=fail), _v("TC-003", "AC-03.1", checks=fail)]}
+    ev = {"bundles": [_gen_bundle("EV-TC-001", None, 0, ok=[120_000, 166_000]),
+                      _gen_bundle("EV-TC-002", 500, 180_234),        # later than every success: cut off by a timeout
+                      _gen_bundle("EV-TC-003", 500, 4_000)]}         # fast: the feature may well have crashed it
+    assert set(server_cutoffs(ev["bundles"])) == {"EV-TC-002"}
+    r = decide_all(ov, ev)
+    by = {t["test_code"]: t for t in r["tests"]}
+    assert by["TC-002"]["verdict"] == "inconclusive" and "cut off by a timeout" in by["TC-002"]["reasons"][0]
+    assert by["TC-003"]["verdict"] == "failed"
+    assert r["reliability"] == [{"endpoint": "POST /api/generate", "status": 500, "status_text": "HTTP 500", "cut_off": 1, "tests": ["TC-002"],
+                                 "after_s": 180, "succeeded": 2, "slowest_ok_s": 166}]
+    timed = _v("TC-004", "AC-09.1", checks=fail + [_check("time_limit", "fail")])  # a stated time limit: still a failure
+    assert decide_test(timed, _gen_bundle("EV-TC-004", 500, 180_234), cutoff=server_cutoffs(ev["bundles"])["EV-TC-002"])["verdict"] == "failed"
+
+
+def test_validation_stopping_a_negative_test_about_something_else_is_inconclusive():
+    msg = "Please add at least one point to every field before generating: Constraints."
+    b = {"observed": {"documents": [], "messages": [msg]}}
+    about_failure = _v(checks=[_check("executed", "pass")], judge=_judge("does_not_meet", 10), variant="negative",
+                       expected_behavior="An actionable error is shown when generation fails")
+    assert decide_test(about_failure, b)["verdict"] == "inconclusive"
+    about_validation = _v(checks=[_check("executed", "pass")], judge=_judge("meets", 90), variant="negative",
+                          expected_behavior="The app rejects the submission and names the missing required field")
+    assert decide_test(about_validation, b)["verdict"] == "passed"
+
+
+def test_cutoffs_near_the_slowest_success_and_dropped_connections_are_caught():
+    from engines.verdict.passfail import server_cutoffs
+    ok = [105_000, 110_000, 113_000, 119_000, 158_000, 183_000]                       # BRD_Agent's run cmvbz7go
+    bundles = [_gen_bundle("EV-OK", None, 0, ok=ok), _gen_bundle("EV-500", 500, 181_000), _gen_bundle("EV-0", 0, 188_000),
+               _gen_bundle("EV-FAST", 500, 3_000)]
+    cut = server_cutoffs(bundles)
+    assert set(cut) == {"EV-500", "EV-0"} and cut["EV-0"]["status"] == "dropped connection"
+
+
+def test_a_shortfall_with_the_tests_own_input_unset_is_inconclusive():
+    v = _v(checks=[_check("executed", "pass")], judge=_judge("does_not_meet", 20, ["custom section present"]))
+    b = {"observed": {"documents": [{"name": "BRD.docx"}]}, "unset_inputs": [{"field": "Section Title", "synthetic": False}]}
+    t = decide_test(v, b)
+    assert t["verdict"] == "inconclusive" and "could not set Section Title" in t["reasons"][0]
+    filler = {**b, "unset_inputs": [{"field": "Constraints", "synthetic": True}]}       # MTA's own filler: still a failure
+    assert decide_test(v, filler)["verdict"] == "failed"
+
+
+def test_a_submit_the_app_rejected_is_inconclusive_and_never_reaches_later_steps():
+    # TC-007 of BRD_Agent run cmvc4qzw: the generation was rejected, a follow-up was typed into the form, the test went on
+    # to /dashboard and "failed" for want of a download. The executor now stops at the rejected submit and says so.
+    v = _v(checks=[_check("executed", "fail", detail="stopped at step 15")], judge=_judge("does_not_meet", 0))
+    err = ("the app rejected the submitted input: “Please add at least one point to every field before generating "
+           "(or mark it \"Not applicable\" if it genuinely doesn't apply): Decision Audience, Objectives, Risks”")
+    t = decide_test(v, {"error": err, "observed": {"documents": [], "messages": [], "final_url": "/new"}})
+    assert t["verdict"] == "inconclusive" and "Please add at least one point" in t["reasons"][0]
+
+
+def test_a_result_shown_on_screen_counts_as_produced():
+    v = _v(checks=[_check("executed", "pass")], judge=_judge("meets", 95))
+    b = {"observed": {"documents": [], "views": [{"name": "BRD"}],
+                      "messages": ["Please add at least one point to every field before generating: Risks."]}}
+    assert decide_test(v, b)["verdict"] == "passed"   # an earlier, fixed rejection does not undo the generated result
+
+
+def test_cutoffs_group_one_endpoint_across_generated_ids():
+    from engines.verdict.passfail import server_cutoffs
+
+    def b(bid, failures=(), ok=()):
+        return {"bundle_id": bid, "observed": {}, "observations": {
+            "api_failures": [{"method": "POST", "path": p, "status": 0, "ms": ms} for p, ms in failures],
+            "api_ok": [{"method": "POST", "path": p, "ms": ms} for p, ms in ok]}}
+    bundles = [b("EV-1", ok=[("/api/runs/20261017-082842-b05a14/diagrams", 10_000), ("/api/runs/20261017-083159-dfa3a1/diagrams", 12_000)]),
+               b("EV-2", failures=[("/api/runs/20261017-085202-9dff67/diagrams", 73_000)])]
+    cut = server_cutoffs(bundles)
+    assert cut["EV-2"]["endpoint"] == "POST /api/runs/{id}/diagrams" and cut["EV-2"]["ok_calls"] == 2
+
+
+def test_an_approximated_test_passes_on_evidence_but_its_shortfall_is_never_a_failure():
+    proxy = {"proxy": "latency claim — MTA ran the closest action the live app offers",
+             "observed": {"documents": [{"name": "a"}]}}
+    failed = decide_test(_v(judge=_judge("does_not_meet", 20, ["retries after an LLM failure"])), proxy)
+    assert failed["verdict"] == "inconclusive" and "approximation" in failed["reasons"][0]
+    core = decide_test(_v(checks=[_check("executed", "pass"), _check("document_produced", "fail")]), proxy)
+    assert core["verdict"] == "inconclusive"
+    assert decide_test(_v(judge=_judge("meets", 95)), proxy)["verdict"] == "passed"   # observed: a pass stands

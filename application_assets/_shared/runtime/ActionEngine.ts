@@ -157,6 +157,17 @@ export function synthesizeUpload(fileName: string): string {
     return file;
 }
 
+/** The request body contains `text` — as sent, or once a form body (application/x-www-form-urlencoded: "a+b%21") is
+ * decoded, which is how a browser sends a typed value with spaces or punctuation. */
+export function bodyHas(body: string, text: string): boolean {
+    if (body.includes(text)) return true;
+    try {
+        return decodeURIComponent(body.replace(/\+/g, ' ')).includes(text);
+    } catch {
+        return false;
+    }
+}
+
 /** 200 matches 200; "2xx" matches 200-299; "success" matches 200-399 (a POST answered with a redirect). */
 export function statusMatches(actual: number | null, expected: number | string): boolean {
     if (actual === null) return false;
@@ -624,7 +635,7 @@ export class ActionEngine {
             await expect.poll(() => {
                 const hits = log.entries({ method, url: re })
                     .filter((h) => status === undefined || statusMatches(h.status, status))
-                    .filter((h) => bodyContains === undefined || (h.post_data ?? '').includes(bodyContains));
+                    .filter((h) => bodyContains === undefined || bodyHas(h.post_data ?? '', bodyContains));
                 return hits.length;
             }, {
                 message: message ?? `Expected a ${what} request` + (status !== undefined ? ` with status ${status}` : '')

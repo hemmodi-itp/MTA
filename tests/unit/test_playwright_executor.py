@@ -93,13 +93,99 @@ document.getElementById('go').onclick = () => {
 };
 </script>"""
 
-PAGES = {"/": LOGIN, "/login": LOGIN, "/new": NEW, "/shop": SHOP, "/landing": LANDING, "/late-login": LATE_LOGIN,
-         "/plan": REPEATER}
+# BRD_Agent-like backend failure: Generate shows the app's own error banner and no download ever appears
+BROKEN = """<!doctype html><title>New</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<h1>New request</h1><button id=gen>Generate Documents</button><div id=out></div>
+<script>document.getElementById('gen').onclick = () => {
+  document.getElementById('out').innerHTML = '<p class="text-red-600 error-banner">Request failed (500)</p>'; };</script>"""
+
+# BRD_Agent-like intake: every field carries its own "Not applicable" box (same label each time), and Generate demands
+# a point in every field not marked "Not applicable", naming the ones missing
+INTAKE = """<!doctype html><title>Intake</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<div class=form>
+  <div class=field data-name="Problem Statement"><div class=head><label for=p>Problem Statement (required)</label></div><textarea id=p></textarea></div>
+  <div class=field data-name="Constraints"><div class=head><span>Constraints</span>
+    <label><input type=checkbox class=na> Not applicable — omit this section</label></div>
+    <textarea placeholder="One item per line"></textarea></div>
+  <div class=field data-name="Dependencies"><div class=head><span>Dependencies</span>
+    <label><input type=checkbox class=na> Not applicable — omit this section</label></div>
+    <textarea placeholder="What this depends on"></textarea></div>
+  <button type=button id=go>Generate Documents</button><div id=out></div>
+</div>
+<script>
+document.querySelectorAll('.na').forEach(b => b.onchange = () => {  // like BRD_Agent: an omitted field is disabled
+  b.closest('.field').querySelector('textarea').disabled = b.checked; });
+document.getElementById('go').onclick = () => {
+  const blocks = [...document.querySelectorAll('.field')];
+  const name = b => b.dataset.name;
+  const na = b => b.querySelector('.na') && b.querySelector('.na').checked;
+  const missing = blocks.filter(b => !na(b) && !b.querySelector('textarea').value.trim()).map(name);
+  document.getElementById('out').innerHTML = missing.length
+    ? '<p class=error>Please add at least one point to every field before generating (or mark it "Not applicable" if it genuinely doesn&#39;t apply):' + missing.join(', ') + '.</p>'
+    : '<h2>Documents ready</h2><p>omitted: ' + (blocks.filter(na).map(name).join(', ') || 'none') + '</p>';
+};
+</script>"""
+
+# BRD_Agent-like full intake (run cmvc4qzw): a hint line that LOOKS like a validation message is on the page from the
+# start; the "Objectives (required)" / "Risks (required)" lists start empty, a "Objectives" section menu link sits
+# elsewhere on the page, and Generate names every empty field in one long message (> 250 characters), then — once
+# complete — moves on to a result page that offers a change-request box
+LISTS = """<!doctype html><title>New Request</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<nav><a href="#obj"><span>Objectives</span></a> <a href="#risk"><span>Risks</span></a></nav>
+<p>Please fill in the details below; leave anything blank or tick "Auto-generate" on a field the AI should infer.</p>
+<div class=form>
+  <div class=field><label for=p>Problem Statement (required)</label><textarea id=p></textarea></div>
+  <div class=field><label for=a>Decision Audience</label><input id=a></div>
+  <div class=field><label for=c>Constraints</label><textarea id=c></textarea></div>
+  <div class=field id=obj><label>Objectives (required)</label><div class=rows></div><button type=button class=add>+ Add</button></div>
+  <div class=field id=risk><label>Risks (required)</label><div class=rows></div><button type=button class=add>+ Add</button></div>
+  <button type=button id=go>Generate Documents</button><div id=out></div>
+</div>
+<script>
+document.querySelectorAll('.add').forEach(b => b.onclick = () => {
+  const i = document.createElement('input'); i.placeholder = b.parentElement.id === 'obj' ? 'Objective' : 'Risk';
+  b.parentElement.querySelector('.rows').appendChild(i); });
+document.getElementById('go').onclick = () => {
+  const empty = [];
+  if (!document.getElementById('a').value.trim()) empty.push('Decision Audience');
+  if (!document.getElementById('c').value.trim()) empty.push('Constraints');
+  if (![...document.querySelectorAll('#obj input')].some(i => i.value.trim())) empty.push('Objectives');
+  if (![...document.querySelectorAll('#risk input')].some(i => i.value.trim())) empty.push('Risks');
+  if (!document.getElementById('p').value.trim()) { document.getElementById('out').innerHTML = '<p class=error>Request failed (500)</p>'; return; }
+  if (empty.length) { document.getElementById('out').innerHTML = '<div class="alert">Please add at least one point to every field ' +
+    'before generating (or mark it "Not applicable" if it genuinely doesn&#39;t apply, which keeps the section out of every ' +
+    'generated document, including the BRD, the TSD, both diagrams and the one-pager): ' + empty.join(', ') + '.</div>'; return; }
+  sessionStorage.setItem('problem', document.getElementById('p').value);
+  location.href = '/result-run';
+};
+</script>"""
+
+RESULT = """<!doctype html><title>Run</title>
+<script>if (!localStorage.getItem('session')) location.replace('/login');</script>
+<h1>Documents ready</h1><p id=prob></p><div><h3>Request a change</h3>
+<textarea placeholder="e.g. Add a risk about vendor lock-in"></textarea><button id=apply>Apply Change</button></div><div id=rev></div>
+<script>document.getElementById('prob').textContent = 'Problem: ' + sessionStorage.getItem('problem');
+document.getElementById('apply').onclick = () => { document.getElementById('rev').textContent =
+  'Revision 2 applied: ' + document.querySelector('textarea').value; };</script>"""
+
+PAGES = {"/": LOGIN, "/intake": INTAKE, "/login": LOGIN, "/new": NEW, "/shop": SHOP, "/landing": LANDING, "/late-login": LATE_LOGIN,
+         "/plan": REPEATER, "/broken": BROKEN, "/flaky": "<!doctype html><title>Flaky</title><h1>Back again</h1>",
+         "/lists": LISTS, "/result-run": RESULT}
+_HITS: dict = {}
 
 
 class _Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):  # noqa: N802
-        body = PAGES.get(self.path.split("?")[0])
+        path = self.path.split("?")[0]
+        _HITS[path] = _HITS.get(path, 0) + 1
+        if path == "/flaky" and _HITS[path] == 1:  # the first visit drops the connection: a brief outage
+            self.close_connection = True
+            self.connection.close()
+            return
+        body = PAGES.get(path)
         self.send_response(200 if body else 404)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
@@ -224,7 +310,8 @@ def test_generated_download_found_at_runtime_and_collected_as_evidence(app_url, 
     assert "Your BRD is ready" in b["observed"]["ui_output"] and "Create a BRD" not in b["observed"]["ui_output"]
     doc = b["observed"]["documents"][0]
     assert doc["readable"] and "Problem: Clinic patients cannot book appointments online" in doc["text_excerpt"]
-    assert b["completeness"] == {"output_captured": True, "expected_output": "document", "missing": []}
+    # the test is about the BRD's content: the file is collected as evidence, not required
+    assert b["completeness"] == {"output_captured": True, "expected_output": "document", "missing": [], "document_required": False}
 
 
 def test_login_follows_landing_link_and_waits_for_late_form(app_url):
@@ -266,3 +353,135 @@ def test_list_rows_behind_add_buttons_are_discovered_and_filled(app_url, tmp_pat
     r = run["results"][0]
     assert r["status"] == "completed", r["steps"]
     assert "Plan ready for Clinic booking: Online booking / risks: Low adoption" in r["captures"]["dom_excerpt"]
+
+
+def _one(plan_id, steps):
+    return {"plans": [{"plan_id": plan_id, "test_code": plan_id[3:], "status": "ready", "scored": True,
+                       "steps": [{"n": 1, "action": "login"}] + steps}]}
+
+
+def test_failure_names_the_error_the_app_showed(app_url, tmp_path):
+    plan = _one("AP-TC-030", [{"n": 2, "action": "goto", "url": "/broken"},
+                              {"n": 3, "action": "click", "target": {"kind": "button", "text": "Generate Documents"}},
+                              {"n": 4, "action": "expect_download", "target": {"kind": "auto"}}])
+    r = execute_plans(app_url, plan, tmp_path, credentials=CREDS)["results"][0]
+    assert r["status"] == "failed" and r["failed_step"] == 4
+    assert r["error"].startswith("no download was produced") and "the app showed: “Request failed (500)”" in r["error"]
+
+
+def test_unreachable_app_pauses_then_reruns_the_plan(app_url, tmp_path):
+    _HITS.pop("/flaky", None)
+    run = execute_plans(app_url, _one("AP-TC-031", [{"n": 2, "action": "goto", "url": "/flaky"},
+                                                    {"n": 3, "action": "capture", "what": ["dom_text"]}]),
+                        tmp_path, credentials=CREDS)
+    r = run["results"][0]
+    assert len(run["results"]) == 1 and r["status"] == "completed", r
+    assert "net::ERR_" in r["first_attempt_error"] and "Back again" in r["captures"]["dom_excerpt"]
+    assert run["retried"] == ["AP-TC-031"] and run["app_outages"] == [{"recovered_after_s": 0}]
+
+
+def test_same_labelled_boxes_resolve_by_field_and_rejected_input_is_completed(app_url, tmp_path):
+    from engines.runtime.actions import build_inventory
+
+    prof = discover(app_url, known_pages=["/intake"], credentials=CREDS, max_pages=3)
+    inv = build_inventory(prof)
+    boxes = [e for e in inv["elements"].values() if e["kind"] == "field" and e["type"] == "checkbox"]
+    assert sorted(e.get("group") for e in boxes) == ["Constraints", "Dependencies"]   # which field each box belongs to
+    problem = next(e for e in inv["elements"].values() if e.get("label", "").startswith("Problem Statement"))
+    na_deps = next(e for e in boxes if e["group"] == "Dependencies")
+    test = {"id": "t40", "code": "TC-040", "title": "Dependencies section omitted when marked not applicable",
+            "variant_type": "positive", "input": "Problem Statement: Clinic booking is manual",
+            "expected_behavior": "The Dependencies section is omitted"}
+    proposal = {"TC-040": {"applicable": True, "steps": [
+        {"action": "fill", "element_id": problem["id"], "value": "Clinic booking is manual"},
+        {"action": "check", "element_id": na_deps["id"]}]}}
+    plan = generate_action_plan({"app_type": "Document Generator", "components": []}, prof, [test], proposals=proposal,
+                                has_credentials=True)
+    # the plan completes Constraints itself (a generating form is submitted complete); drop that to exercise the
+    # executor's own completion of the fields the app names
+    assert any(s.get("synthetic") and (s.get("target") or {}).get("label") == "One item per line" for s in plan["plans"][0]["steps"])
+    steps = [s for s in plan["plans"][0]["steps"] if s["action"] != "expect_download"  # the fixture offers no file
+             and not (s.get("synthetic") and s["action"] == "fill")]
+    run = execute_plans(app_url, {"plans": [{**plan["plans"][0], "steps": steps}]}, tmp_path, credentials=CREDS)
+    r = run["results"][0]
+    assert r["status"] == "completed", r["steps"]
+    # the Dependencies box was ticked (not the first same-labelled one), and the field the app then asked for was filled
+    assert "omitted: Dependencies" in r["captures"]["dom_excerpt"] and "Documents ready" in r["captures"]["dom_excerpt"]
+    assert "the app asked for Constraints" in r["completed_input"] and "MTA filled Constraints" in r["completed_input"]
+
+
+def test_a_field_mta_cannot_set_does_not_end_the_test(app_url, tmp_path):
+    na = {"kind": "field", "page": "/intake", "label": "Not applicable — omit this section", "type": "checkbox", "group": "Dependencies"}
+    plan = _one("AP-TC-041", [
+        {"n": 2, "action": "goto", "url": "/intake"},
+        {"n": 3, "action": "fill", "target": {"kind": "field", "label": "Problem Statement (required)"}, "value": "Manual booking"},
+        {"n": 4, "action": "check", "target": na},
+        {"n": 5, "action": "fill", "target": {"kind": "field", "label": "What this depends on"}, "value": "N/A"},  # now disabled
+        {"n": 6, "action": "fill", "target": {"kind": "field", "label": "No such field"}, "value": "x"},        # not on the page
+        {"n": 7, "action": "click", "target": {"kind": "button", "text": "Generate Documents"}},
+        {"n": 8, "action": "wait_for", "kind": "settled", "timeout_ms": 30_000},
+        {"n": 9, "action": "capture", "what": ["dom_text"]}])
+    plan["plans"][0]["variant"] = "positive"
+    r = execute_plans(app_url, plan, tmp_path, credentials=CREDS)["results"][0]
+    st = {s["n"]: s for s in r["steps"]}
+    assert r["status"] == "completed", r["steps"]                                    # nothing ended the test early
+    assert st[5]["status"] == "skipped" and "disabled" in st[5]["detail"]           # the app's own state is respected
+    assert st[6]["status"] == "skipped" and [u["field"] for u in r["unset_inputs"]] == ["No such field"]
+    assert "MTA filled Constraints" in r["completed_input"]                          # the field the app asked for
+    assert "omitted: Dependencies" in r["captures"]["dom_excerpt"]
+
+
+def _lists_plan(problem="Clinic booking is manual", follow_up=None, variant="positive"):
+    steps = [{"action": "goto", "url": "/lists"},
+             {"action": "fill", "target": {"kind": "field", "label": "Problem Statement (required)"}, "value": problem},
+             {"action": "click", "target": {"kind": "button", "text": "Generate Documents"}},
+             {"action": "wait_for", "kind": "settled", "timeout_ms": 30_000}]
+    if follow_up is not None:
+        steps += [{"action": "follow_up", "value": follow_up, "known_labels": ["Problem Statement (required)", "Constraints"],
+                   "box_label": "e.g. Add a risk about vendor lock-in", "submit_text": "Apply Change"},
+                  {"action": "wait_for", "kind": "settled", "timeout_ms": 30_000}]
+    steps += [{"action": "capture", "what": ["dom_text"]}]
+    plan = _one("AP-TC-050", [{**s, "n": i} for i, s in enumerate(steps, 2)])
+    plan["plans"][0]["variant"] = variant
+    return plan
+
+
+def test_a_long_rejection_naming_lists_is_completed_and_the_follow_up_uses_the_results_box(app_url, tmp_path):
+    # BRD_Agent: the app's message listed 16 fields (~600 characters) and MTA ignored it as "too long"; 6 of 20 tests
+    # were rejected. Here: lists behind "+ Add", a same-named menu link, a hint that looks like a validation message.
+    r = execute_plans(app_url, _lists_plan(follow_up="Add a risk about data residency"), tmp_path, credentials=CREDS)["results"][0]
+    assert r["status"] == "completed", r["steps"]
+    assert "Decision Audience" in r["completed_input"] and "Objectives" in r["completed_input"] \
+        and "Risks" in r["completed_input"]
+    assert r["final_url"] == "/result-run" and "Problem: Clinic booking is manual" in r["captures"]["dom_excerpt"]
+    fu = next(s for s in r["steps"] if s["action"] == "follow_up")
+    assert "vendor lock-in" in fu["detail"]                                      # the result's own box, not the form's
+    assert "Revision 2 applied: Add a risk about data residency" in r["captures"]["dom_excerpt"]
+
+
+def test_a_submit_that_fails_ends_the_plan_with_the_apps_words(app_url, tmp_path, monkeypatch):
+    import engines.runtime.executor as executor
+    monkeypatch.setattr(executor, "SERVER_ERROR_COOL_DOWN_S", 0)
+    # no problem statement: the fixture answers "Request failed (500)" on the form page — the plan must not go on to a
+    # follow-up typed into the input form (TC-006/007 of run cmvc4qzw typed their change request into Problem Statement)
+    r = execute_plans(app_url, _lists_plan(problem="", follow_up="Add a risk"), tmp_path, credentials=CREDS)["results"][0]
+    assert r["status"] == "failed" and r["failed_step"] == 5, r["steps"]
+    assert r["error"].startswith("the app reported an error instead of a result: “Request failed (500)”")
+    assert [s["status"] for s in r["steps"] if s["action"] == "follow_up"] == ["skipped"]
+    assert r["attempts"] == 3 and "Request failed (500)" in r["first_attempt_error"]  # a server error earns 2 re-runs
+    # a negative test expects the app to refuse: its submit outcome is evidence, not a stop
+    neg = execute_plans(app_url, _lists_plan(problem="", variant="negative"), tmp_path / "neg", credentials=CREDS)["results"][0]
+    assert neg["status"] == "completed" and "Request failed (500)" in neg["captures"]["dom_excerpt"]
+
+
+def test_every_plan_runs_once_even_when_the_budget_is_spent(app_url, tmp_path):
+    # the budget limits re-runs only: with none left, every plan still gets its first run (never "not_run")
+    failing = _lists_plan(problem="")["plans"][0]
+    ok = {**_one("AP-TC-051", [{"n": 2, "action": "goto", "url": "/flaky"}, {"n": 3, "action": "capture", "what": ["dom_text"]}])["plans"][0]}
+    _HITS["/flaky"] = 1  # no outage this time
+    run = execute_plans(app_url, {"plans": [failing, ok]}, tmp_path, credentials=CREDS, budget_s=0)
+    by = {r["plan_id"]: r for r in run["results"]}
+    assert run["counts"]["not_run"] == 0
+    assert by["AP-TC-051"]["status"] == "completed"
+    assert by["AP-TC-050"]["status"] == "failed" and by["AP-TC-050"].get("attempts", 1) == 1  # no budget for a re-run
+    assert "Request failed (500)" in by["AP-TC-050"]["error"]

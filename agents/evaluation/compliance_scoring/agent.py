@@ -49,6 +49,7 @@ class ComplianceScoringAgent(BaseAgent):
         result["skipped"] = len(tests) - result["passed"] - result["failed"]  # inconclusive + not executed
         recs = recommendations(reqs, verdicts, findings,
                                discrepancies=(request.get("brd_compliance") or {}).get("discrepancies") or [])
+        recs = _reliability_recs((request.get("pass_fail") or {}).get("reliability")) + recs
 
         if result["compliance"] is None:
             emit("No scorable requirements — the BRD was written from the code, so compliance is not scored.", "warning")
@@ -59,6 +60,17 @@ class ComplianceScoringAgent(BaseAgent):
                  + ", ".join(f"{g['gate']} {g['level']}" for g in result["gates"]), "success")
         return {"module": self.MODULE_NAME, "status": "success", "score": result, "recommendations": recs,
                 "summary": _summary(result, reqs)}
+
+
+def _reliability_recs(reliability) -> list:
+    """One recommendation per endpoint the app cut off with a server timeout during the run (engines/verdict/passfail)."""
+    return [{"category": "flaky_behavior", "severity": "critical", "evidence_type": "scenario", "evidence_ref": e["endpoint"],
+             "summary": f"Reliability: {e['endpoint']} failed ({e.get('status_text') or e['status']}) after about {e['after_s']}s in "
+                        f"{e['cut_off']} test(s) ({', '.join(e['tests'][:6])}) while {e['succeeded']} call(s) succeeded "
+                        f"(slowest {e['slowest_ok_s']}s): requests that run longer are cut off by a timeout in the app's stack "
+                        "(server, proxy or ingress). Raise that timeout or run the work as a background job the page polls, "
+                        "and make the work faster; the features those tests targeted could not be verified."}
+            for e in reliability or []]
 
 
 def _login_error(profile) -> Optional[str]:

@@ -40,6 +40,11 @@ class PassFailAgent(BaseAgent):
              f"{c['not_executed']} not executed (of {c['tests']} tests). Criteria at runtime: {c['criteria_supported']} "
              f"supported, {c['criteria_refuted']} refuted, {c['criteria_unverified']} unverified.",
              "success" if c["failed"] == 0 and c["passed"] else "warning")
+        for e in result.get("reliability") or []:
+            emit(f"Reliability: the app's {e['endpoint']} was cut off ({e.get('status_text') or e['status']}) after about {e['after_s']}s in "
+                 f"{e['cut_off']} test(s) ({', '.join(e['tests'][:8])}), while {e['succeeded']} call(s) succeeded (slowest "
+                 f"{e['slowest_ok_s']}s) — a request timeout in the app. Those tests are inconclusive for their feature.",
+                 "warning")
         for t in [t for t in result["tests"] if t.get("scored") and t["verdict"] == "failed"][:5]:
             emit(f"{t['test_code']} failed: {(t['reasons'] or ['?'])[0][:240]}", "warning")
         executed = c["passed"] + c["failed"]

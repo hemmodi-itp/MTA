@@ -48,9 +48,9 @@ from agents.base_agent import BaseAgent
 from contracts.artifacts import load_payload, load_records, save_artifact
 from tools.base_url import resolve_project_base_url
 from tools.safety.plan_filter import filter_plan
-from tools.test_creation.request_oracles import ground_plan, known_endpoints
+from tools.test_creation.request_oracles import ground_plan, ground_record_ids, known_endpoints, observed_paths
 from tools.test_creation.select_options import ground_number_inputs, ground_selects, number_inputs, select_options
-from tools.test_creation.message_oracles import error_keys, ground_messages, known_messages
+from tools.test_creation.message_oracles import dynamic_keys, error_keys, ground_dynamic_areas, ground_messages, known_messages
 from tools.test_creation.required_fields import complete_required_fields
 from tools.test_creation.busy_states import ground_busy_states
 from tools.safety.policy import SafetyPolicy, load_safety_policy
@@ -316,9 +316,13 @@ class ScriptGenerationAgent(BaseAgent):
             # the options each <select> really has (tools/test_creation/select_options)
             "select_options": select_options(locator_map, form_model),
             "number_inputs": number_inputs(locator_map),
+            # the record ids discovery saw (and api_tests.ownership names) — a test names only those
+            "seen_paths": observed_paths(_load_json_or_empty(os.path.join(comprehension_dir, "app_map.json")),
+                                         _ownership_paths(project_dir)),
             # the messages the BRD quotes and the app showed (tools/test_creation/message_oracles)
             "messages": known_messages(form_model, _load_json_or_empty(os.path.join(comprehension_dir, "requirements.json"))),
             "error_areas": error_keys(locator_map),
+            "dynamic_areas": dynamic_keys(locator_map),
             # test design's valid value per form field, for required fields a test left empty
             "valid_values": _design_valid_values(project_dir, safe) if (form_model or {}).get("forms") else {},
         }
@@ -707,9 +711,11 @@ class ScriptGenerationAgent(BaseAgent):
         """Ground every expectation and input of a plan in what discovery saw — each step guards against one kind
         of false failure on a correct app and logs every change it makes."""
         plan = self._ground_requests(plan, sid, g["endpoints"], base_url)
+        plan = self._log_changes(sid, *ground_record_ids(plan, g["seen_paths"]))
         plan = self._ground_selects(plan, sid, g["select_options"], design_cases)
         plan = self._log_changes(sid, *ground_number_inputs(plan, g["number_inputs"]))
         plan = self._ground_messages(plan, sid, g["messages"], g["error_areas"])
+        plan = self._log_changes(sid, *ground_dynamic_areas(plan, g["dynamic_areas"]))
         plan = self._complete_required(plan, sid, g["locator_map"], g["form_model"], base_url, g["valid_values"])
         return self._ground_busy(plan, sid)
 
@@ -1142,6 +1148,17 @@ def _load_scenarios(path: str) -> List[Dict[str, Any]]:
     return raw if isinstance(raw, list) else []
 
 
+def _ownership_paths(project_dir: str) -> List[str]:
+    """project.yaml api_tests.ownership paths — records the project says exist (e.g. /api/orders/1)."""
+    try:
+        import yaml
+        with open(os.path.join(project_dir, "project.yaml"), encoding="utf-8") as fh:
+            cfg = (yaml.safe_load(fh) or {}).get("api_tests") or {}
+        return [o["path"] for o in cfg.get("ownership") or [] if isinstance(o, dict) and o.get("path")]
+    except Exception:
+        return []
+
+
 def _design_valid_values(project_dir: str, safe: str) -> Dict[Tuple[str, str], Any]:
     """(form_id, field) -> the valid value Phase 3 test design derives (DOM + BRD + observed + code constraints)."""
     try:
@@ -1400,11 +1417,12 @@ def _url_path(url: Any) -> Optional[str]:
 
 
 def _strip_unbacked_field_invalid(test: dict, case: dict) -> dict:
-    """A case that says the input is rejected but NOT that the field is marked invalid (no probe saw aria-invalid or
-    a native message — the app validates in its own script) gets no verifyFieldInvalid from the LLM either: it can
-    never pass on a correct app. Removed steps are noted on the test (`removed_oracles`)."""
+    """A design case without field_invalid evidence (no probe saw the browser block with a message or the app set
+    aria-invalid) gets no verifyFieldInvalid from the LLM either — whether the case expects a rejection or, like
+    "HTML in a description is stored and shown escaped", an acceptance: it can never pass on a correct app.
+    Removed steps are noted on the test (`removed_oracles`)."""
     kinds = {o.get("type") for o in case.get("oracles") or []}
-    if "submission_rejected" not in kinds or "field_invalid" in kinds:
+    if "field_invalid" in kinds:
         return test
     steps = test.get("steps") or []
     kept = [s for s in steps if not (isinstance(s, dict) and s.get("action") == "verifyFieldInvalid")]

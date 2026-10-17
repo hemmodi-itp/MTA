@@ -44,6 +44,8 @@ $tests
 - Negative / security / robustness tests: "met" means the app refused, flagged or safely handled the input as the expectation says.
   Generating normal output for malicious or invalid input is "not_met".
 - If execution stopped early or no output was produced, judge what is there; missing output is usually "not_met".
+- A test with a "run_note" was run as an approximation (e.g. a failure it needs could not be injected): judge only
+  what the observed output shows; an item the approximation could not exercise is "cannot_tell", not "not_met".
 - assessment: meets (all items met), partially_meets, does_not_meet, or cannot_tell. score 0-100 = how fully the output satisfies
   the expectation.
 - reasoning: 1-3 sentences naming what was and was not satisfied.

@@ -30,8 +30,10 @@ def select_options(locator_map: Dict[str, Dict[str, Any]], form_model: Optional[
         for fld in form.get("fields") or []:
             opts = ((fld.get("constraints") or {}).get("options")) or []
             if opts:
+                # every option counts as a choice — the placeholder ("Choose a category", value "") too: selecting it
+                # is how a negative test leaves the select empty
                 fields[(form.get("form_id"), fld.get("name"))] = [
-                    o for o in opts if isinstance(o, dict) and str(o.get("value", "")).strip() and not o.get("disabled")]
+                    o for o in opts if isinstance(o, dict) and not o.get("disabled")]
     out: Dict[str, Dict[str, Any]] = {}
     for key, entry in (locator_map or {}).items():
         m = _NAME_IN_CSS.search(str(entry.get("locator") or ""))
@@ -75,7 +77,7 @@ def ground_selects(plan: dict, options: Dict[str, Dict[str, Any]],
                 drop = (f"{info['field']} has no option {step.get('value')!r}; a value the UI cannot choose is "
                         "tested through the API")
                 break
-            first = info["options"][0]
+            first = next((o for o in info["options"] if str(o.get("value", "")).strip()), info["options"][0])
             new = first["text"] if by_text else first["value"]
             changes.append({"test": test.get("name"), "change": "option replaced", "field": info["field"],
                             "before": step.get("value"), "after": new,

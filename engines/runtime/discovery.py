@@ -63,7 +63,22 @@ _PAGE_SCAN_JS = r"""() => {
     const id = el.getAttribute('aria-labelledby'); if (id && document.getElementById(id)) return document.getElementById(id).innerText.trim();
     return el.getAttribute('aria-label') || el.getAttribute('placeholder') || el.getAttribute('name') || el.id || '';
   };
+  // the field a checkbox / radio qualifies: per-field "Not applicable" / "Auto-generate" boxes share one label, so the
+  // title of the smallest block that also holds another control (its text box, select or "+ Add") tells them apart.
+  // Mirrored in executor._RESOLVE_JS.
+  const OTHER = 'input:not([type=hidden]):not([type=checkbox]):not([type=radio]),textarea,select,[contenteditable=true],button';
+  const groupOf = el => {
+    for (let a = el.parentElement, k = 0; a && a !== document.body && k < 8; a = a.parentElement, k++) {
+      if (!a.querySelector(OTHER)) continue;
+      const own = [...a.querySelectorAll('input[type=checkbox],input[type=radio]')].map(labelOf).filter(Boolean);
+      const line = (a.innerText || '').split('\n').map(l => own.reduce((t, o) => t.split(o).join(' '), l)
+        .replace(/\(required\)|\*/gi, '').replace(/\s+/g, ' ').trim()).find(Boolean);
+      return (line || '').slice(0, 80);
+    }
+    return '';
+  };
   const fieldInfo = el => ({
+    group: /^(checkbox|radio)$/i.test(el.getAttribute('type') || '') ? groupOf(el) : undefined,
     label: labelOf(el).slice(0, 120), name: el.getAttribute('name') || '', tag: el.tagName.toLowerCase(),
     type: (el.getAttribute('type') || (el.tagName === 'TEXTAREA' ? 'textarea' : el.tagName === 'SELECT' ? 'select' : el.isContentEditable ? 'contenteditable' : 'text')).toLowerCase(),
     required: !!(el.required || el.getAttribute('aria-required') === 'true'),
@@ -300,6 +315,16 @@ _ADD_ROW_JS = r"""([mode, i, token]) => {
     const ctxEl = b.closest('li,tr,article,[class*=card i],[class*=item i],[class*=row i]');
     const info = { text: txt(b), nth: all.indexOf(b),
       context: ctxEl && ctxEl !== document.body ? (ctxEl.innerText || '').replace(txt(b), '').replace(/\s+/g, ' ').trim().slice(0, 100) : '' };
+    // the list's own title, and whether it is required ("Objectives (required)", "Risks *"): the smallest block around
+    // this button that holds no other "+ Add" and has a title line
+    const REQ = /\(required\)|\*\s*$/i;
+    for (let a = b.parentElement, k = 0; a && a !== document.body && k < 6; a = a.parentElement, k++) {
+      if ([...a.querySelectorAll('button,[role=button]')].filter(x => x !== b && isAdd(txt(x))).length) break;
+      const lines = (a.innerText || '').split('\n').map(l => l.trim()).filter(l => /[A-Za-z]{3}/.test(l) && !isAdd(l));
+      const title = lines.find(l => REQ.test(l)) || '';
+      if (title) { info.section = title.replace(/\(required\)|\*/gi, '').replace(/\s+/g, ' ').trim().slice(0, 80); info.required = true; break; }
+      if (!info.section && lines.length) info.section = lines[0].slice(0, 80);
+    }
     b.setAttribute('data-aqp-click', token); return info; }
   // mode === 'new': inputs that appeared since the last mark
   const fresh = inputs().filter(el => !el.getAttribute('data-aqp-known'));
@@ -353,8 +378,13 @@ def _summarise_page(d: Dict[str, Any]) -> Dict[str, Any]:
         if not fields:
             continue
         for x in fields:  # many apps mark required fields only in the label: "Name (required)", "Name *"
-            if not x["required"] and _REQUIRED_LABEL.search(x.get("label") or ""):
+            if not x["required"] and (_REQUIRED_LABEL.search(x.get("label") or "")
+                                      or (x.get("revealed_by") or {}).get("required")):  # a row of a required list
                 x["required"] = True
+        labels = [x.get("label") or "" for x in fields]
+        for x in fields:  # the group only matters when the label alone is ambiguous ("Not applicable" × 9)
+            if not x.get("group") or labels.count(x.get("label") or "") < 2:
+                x.pop("group", None)
         submit = next((b for b in f["buttons"] if _SUBMIT_WORDS.search(b)), f["buttons"][0] if f["buttons"] else None)
         forms.append({"kind": f["kind"], "action": f["action"], "method": f["method"], "field_count": len(fields),
                       "required_fields": sum(1 for x in fields if x["required"]),
